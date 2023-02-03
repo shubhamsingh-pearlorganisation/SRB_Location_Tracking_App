@@ -4,10 +4,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./screens/HomeScreen";
 import SelectLocation from "./screens/SelectLocation";
-import SplashChild from "./screens/SplashChild";
+import SplashChild from "./screens/OnBoarding";
 import SplashPartner from "./screens/SplashPartner";
 import FlashMessage from "react-native-flash-message";
-import otp from "./screens/Otp";
+import Otp from "./screens/Otp";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -16,11 +16,11 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
     
-      <Stack.Screen name="SplashChild" component={SplashChild} />
-      <Stack.Screen name="SplashPartner" component={SplashPartner} />
-      <Stack.Screen name="Otp" component={otp} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="SelectLocation" component={SelectLocation} />
+      <Stack.Screen name="SplashChild" component={SplashChild} options = {{headerShown: false}}/>
+      <Stack.Screen name="SplashPartner" component={SplashPartner}  options = {{headerShown: false}}/>
+      <Stack.Screen name="Otp" component={Otp}  options = {{headerShown: false}}/>
+      <Stack.Screen name="Home" component={HomeScreen}  options = {{headerShown: false}}/>
+      <Stack.Screen name="SelectLocation" component={SelectLocation}  options = {{headerShown: false}}/>
       </Stack.Navigator>
       <FlashMessage
         position="bottom"
