@@ -10,22 +10,31 @@ import {
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebaseConfig";
 import fireb from "firebase/compat";
-
+import { useToast } from "react-native-toast-notifications";
 
 const Otp = ({ navigation }: any) => {
   const onPressSubmit = () => {
     navigation.navigate("Home");
   };
+  const toast = useToast();
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [code, setCode] = useState("");
   const [verificationId, setVerificationId] = useState<any>(null);
   const recaptchaVerifier = useRef<any>(null);
-  const sendVerification = () => {
+
+  const sendVerification = async () => {
     const phoneProvider = new fireb.auth.PhoneAuthProvider();
-    phoneProvider
-      .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
-      .then(setVerificationId);
+    const verCode = await phoneProvider.verifyPhoneNumber(
+      phoneNumber,
+      recaptchaVerifier.current
+    );
+    if (verCode) {
+      setVerificationId(verCode);
+      toast.show("Verification Code sent successfully!", { type: "success" });
+    }
   };
+
   const confirmCode = () => {
     const credential = fireb.auth.PhoneAuthProvider.credential(
       verificationId,
@@ -47,11 +56,13 @@ const Otp = ({ navigation }: any) => {
         firebaseConfig={firebaseConfig}
       />
 
-      <Text style={styles.otpText}>Let’s start.{"\n"} Sign up with number.</Text>
+      <Text style={styles.otpText}>
+        Let’s start.{"\n"} Sign up with number.
+      </Text>
       <TextInput
         placeholder="Enter Number"
         onChangeText={setPhoneNumber}
-        keyboardType="number-pad"
+        keyboardType="phone-pad"
         autoComplete="tel"
         style={styles.textInput}
         placeholderTextColor="rgba(255,255,255,0.6)"
@@ -63,17 +74,22 @@ const Otp = ({ navigation }: any) => {
       >
         <Text style={styles.buttonText}>Send Verification</Text>
       </TouchableOpacity>
-      <TextInput
-        placeholder="Confirm code"
-        onChangeText={setCode}
-        keyboardType="number-pad"
-        autoComplete="tel"
-        style={styles.textInput}
-        placeholderTextColor="rgba(255,255,255,0.6)"
-      />
-      <TouchableOpacity style={styles.sendCode} onPress={confirmCode}>
-        <Text style={styles.buttonText}>Confirm Verification</Text>
-      </TouchableOpacity>
+
+      {verificationId && (
+        <>
+          <TextInput
+            placeholder="Confirm code"
+            onChangeText={setCode}
+            keyboardType="phone-pad"
+            autoComplete="tel"
+            style={styles.textInput}
+            placeholderTextColor="rgba(255,255,255,0.6)"
+          />
+          <TouchableOpacity style={styles.sendCode} onPress={confirmCode}>
+            <Text style={styles.buttonText}>Confirm Verification</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };
@@ -97,8 +113,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
   },
-  
-  
+
   sendVerification: {
     marginRight: 40,
     marginLeft: 40,

@@ -14,9 +14,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -31,10 +29,7 @@
       "favicon": "./assets/favicon.png"
     },
     "expo": {
-      "plugins": [
-        "@react-native-firebase/app",
-        "@react-native-firebase/auth"
-      ]
+      "plugins": ["@react-native-firebase/app", "@react-native-firebase/auth"]
     },
     "extra": {
       "eas": {

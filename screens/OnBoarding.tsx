@@ -12,8 +12,6 @@ const SplashChild = ({ navigation }: any) => {
     <View style={styles.container}>
       <Image style={styles.top} source={require("../assets/childSplash.png")} />
 
-      
-
       <View style={styles.footer}>
         <TouchableOpacity style={styles.sendCode} onPress={onPressSubmit}>
           <Text style={styles.buttonText}>Next</Text>
@@ -29,12 +27,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#705ECF",
-    
   },
   top: {
     marginTop: 50,
-    minHeight:300,
-    minWidth:300,
+    minHeight: 300,
+    minWidth: 300,
     // flex: 1,
     width: "100%",
     height: "80%",
