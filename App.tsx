@@ -15,16 +15,25 @@ const App = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <ToastProvider
-    
-    >
-      
+    <ToastProvider>
       <NavigationContainer>
-        <Stack.Navigator >
-        <Stack.Screen name="OnBoarding" component={OnBoarding} options={{ headerShown: false }} />
-        <Stack.Screen name="otp" component={Otp} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Navigator>
+          <Stack.Screen
+            name="OnBoarding"
+            component={OnBoarding}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="otp"
+            component={Otp}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
+        <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
         <FlashMessage position="bottom" />
       </NavigationContainer>
     </ToastProvider>
@@ -38,6 +47,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    height:"100%"
+    height: "100%",
   },
 });

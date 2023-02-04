@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import LinearGradient from "expo-linear-gradient";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
 import { useNavigation } from "@react-navigation/native";
@@ -17,7 +16,6 @@ import { useNavigation } from "@react-navigation/native";
 // constants
 import { images, theme } from "../constants";
 const { onboarding1, onboarding2, onboarding3, onboarding4 } = images;
-
 
 // theme
 const { COLORS, FONTS, SIZES } = theme;
@@ -67,8 +65,7 @@ const OnBoarding = ({ navigation }: any) => {
 
   function renderContent() {
     return (
-      <View
-      >
+      <View>
         <Animated.ScrollView
           horizontal
           pagingEnabled
@@ -160,7 +157,7 @@ const OnBoarding = ({ navigation }: any) => {
           <Text
             style={{
               fontWeight: "400",
-              fontSize: SIZES.width > 300 && SIZES.height>600 ? 25 : 20,
+              fontSize: SIZES.width > 300 && SIZES.height > 600 ? 25 : 20,
               color: "Black",
               alignSelf: "center",
             }}
@@ -177,26 +174,26 @@ const OnBoarding = ({ navigation }: any) => {
             color: COLORS.white,
             bottom: "10%",
             fontSize: 18,
-            
-            justifyContent:'center'
+
+            justifyContent: "center",
           }}
         >
           You already have an account?
           <TouchableOpacity
             onPress={onPressSubmit}
             style={{
-              justifyContent:'center'
+              justifyContent: "center",
             }}
           >
             <Text
               style={{
                 color: "white",
                 fontWeight: "800",
-                fontSize: SIZES.width > 400 && SIZES.height>600 ? 20 : 15,
-                minHeight: SIZES.width > 400 && SIZES.height>600 ? 30 : 50,
-                padding: SIZES.width > 400 && SIZES.height>600 ? 5 : 10,
-                paddingTop:SIZES.width > 400 && SIZES.height>600 ? 5 : 10, 
-                width:"100%"
+                fontSize: SIZES.width > 400 && SIZES.height > 600 ? 20 : 15,
+                minHeight: SIZES.width > 400 && SIZES.height > 600 ? 30 : 50,
+                padding: SIZES.width > 400 && SIZES.height > 600 ? 5 : 10,
+                paddingTop: SIZES.width > 400 && SIZES.height > 600 ? 5 : 10,
+                width: "100%",
               }}
             >
               Log in
@@ -251,7 +248,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "WHITE",
-    
   },
   imageAndTextContainer: {
     width: SIZES.width,
