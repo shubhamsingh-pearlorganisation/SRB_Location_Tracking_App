@@ -28,12 +28,13 @@ const App = () => {
             component={Otp}
             options={{ headerShown: false }}
           />
-        </Stack.Navigator>
-        <Stack.Screen
+          <Stack.Screen
             name="Home"
             component={HomeScreen}
             options={{ headerShown: false }}
           />
+        </Stack.Navigator>
+        
         <FlashMessage position="bottom" />
       </NavigationContainer>
     </ToastProvider>
