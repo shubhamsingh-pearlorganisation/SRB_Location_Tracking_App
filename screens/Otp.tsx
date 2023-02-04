@@ -27,9 +27,6 @@ const Otp = ({ navigation }: any) => {
   const recaptchaVerifier = useRef<any>(null);
   const [disableVerificationBtn, setDisableVerificationBtn] = useState(true);
   const [countriesList, setCountriesList] = useState<any>([]);
-  const sendVerificationBtn = useRef(null);
-
-  console.log("sendVerificationBtn:: ", sendVerificationBtn.current);
 
   // Fetching Countries and store in component's state
   useEffect(() => {
@@ -109,7 +106,6 @@ const Otp = ({ navigation }: any) => {
               opacity: disableVerificationBtn ? 0.5 : 1,
             },
           ]}
-          ref={sendVerificationBtn}
         >
           Send Verification
         </Text>
