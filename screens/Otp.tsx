@@ -21,11 +21,13 @@ const Otp = ({ navigation }: any) => {
   };
 
   const toast = useToast();
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [code, setCode] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState<any>("");
+  const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState<any>(null);
   const recaptchaVerifier = useRef<any>(null);
   const [disableVerificationBtn, setDisableVerificationBtn] = useState(true);
+  const [disableConfirmVerificationBtn, setDisableConfirmVerificationBtn] =
+    useState(true);
   const [countriesList, setCountriesList] = useState<any>([]);
 
   // Fetching Countries and store in component's state
@@ -35,39 +37,74 @@ const Otp = ({ navigation }: any) => {
 
   // Enabling or Disabling Send Verification Button
   useEffect(() => {
-    if (phoneNumber && phoneNumber.length === 10)
+    if (phoneNumber && phoneNumber.length === 13)
+      // 13 length to check +91 also
       setDisableVerificationBtn(false);
     else setDisableVerificationBtn(true);
   }, [phoneNumber]);
 
+  // Enabling or Disabling Confirm Verification Code Button
+  useEffect(() => {
+    if (verificationCode && verificationCode.length === 6)
+      setDisableConfirmVerificationBtn(false);
+    else setDisableConfirmVerificationBtn(true);
+  }, [verificationCode]);
+
+  // This method is used to send verification code from firebase.
   const sendVerification = async () => {
     try {
-      const phoneProvider = new fireb.auth.PhoneAuthProvider();
-      const verCode = await phoneProvider.verifyPhoneNumber(
-        phoneNumber,
-        recaptchaVerifier.current
-      );
-      if (verCode) {
-        setVerificationId(verCode);
-        toast.show("Verification code sent successfully!", { type: "success" });
+      const reg = /^[0]?[6789]\d{9}$/; // Normal Indian Mobile Number Regex
+      const regexWithPlus91 = /^((\+91?)|\+)?[7-9][0-9]{9}$/; // Indian Mobile Number Regex with +91
+
+      if (isNaN(phoneNumber) && phoneNumber != "+") {
+        toast.show("This is not a valid Mobile Number", { type: "error" });
+      } else if (
+        phoneNumber.length === 13 && // 13 length to check +91 also
+        regexWithPlus91.test(phoneNumber) === false
+      ) {
+        toast.show("Please enter a valid Indian Mobile Number", {
+          type: "error",
+        });
+      } else if (
+        phoneNumber.length === 13 && // 13 length to check +91 also
+        regexWithPlus91.test(phoneNumber) === true
+      ) {
+        const phoneProvider = new fireb.auth.PhoneAuthProvider();
+        alert(phoneNumber);
+        const verCode = await phoneProvider.verifyPhoneNumber(
+          phoneNumber,
+          recaptchaVerifier.current
+        );
+        if (verCode) {
+          setVerificationId(verCode);
+          toast.show("Verification code sent successfully!", {
+            type: "success",
+          });
+        }
       }
-    } catch (err) {
-      console.log("Getting error in sending verification code: ", err);
+    } catch (error: any) {
+      toast.show(error.message, {
+        type: "error",
+      });
     }
   };
 
-  const confirmCode = () => {
-    const credential = fireb.auth.PhoneAuthProvider.credential(
-      verificationId,
-      code
-    );
-    fireb
-      .auth()
-      .signInWithCredential(credential)
-      .then((result) => {
-        navigation.navigate("Home");
-        // console.log(result);
+  // This method is used to confirm verification code from firebase.
+  const confirmCode = async () => {
+    try {
+      const credential = fireb.auth.PhoneAuthProvider.credential(
+        verificationId,
+        verificationCode
+      );
+      if (credential) {
+        const result = await fireb.auth().signInWithCredential(credential);
+        if (result) navigation.navigate("Home");
+      }
+    } catch (error: any) {
+      toast.show(error.message, {
+        type: "error",
       });
+    }
   };
 
   return (
@@ -82,12 +119,14 @@ const Otp = ({ navigation }: any) => {
 
       <TextInput
         placeholder="Enter Number"
-        onChangeText={setPhoneNumber}
+        onChangeText={(value: any) => {
+          setPhoneNumber(value);
+        }}
         keyboardType="phone-pad"
         autoComplete="tel"
         style={styles.textInput}
         placeholderTextColor="rgba(255,255,255,0.6)"
-        maxLength={10}
+        maxLength={13} // 13 length to check +91 also
       />
       <TouchableOpacity
         style={[
@@ -100,6 +139,7 @@ const Otp = ({ navigation }: any) => {
         disabled={disableVerificationBtn}
       >
         <Text
+          disabled={disableVerificationBtn}
           style={[
             styles.buttonText,
             {
@@ -115,14 +155,29 @@ const Otp = ({ navigation }: any) => {
         <>
           <TextInput
             placeholder="Confirm code"
-            onChangeText={setCode}
+            onChangeText={setVerificationCode}
             keyboardType="phone-pad"
             autoComplete="tel"
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
+            maxLength={6}
           />
-          <TouchableOpacity style={styles.sendCode} onPress={confirmCode}>
-            <Text style={styles.buttonText}>Confirm Verification</Text>
+          <TouchableOpacity
+            style={styles.sendCode}
+            onPress={confirmCode}
+            disabled={disableConfirmVerificationBtn}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                {
+                  opacity: disableConfirmVerificationBtn ? 0.5 : 1,
+                },
+              ]}
+              disabled={disableConfirmVerificationBtn}
+            >
+              Confirm Verification
+            </Text>
           </TouchableOpacity>
         </>
       )}
