@@ -28,6 +28,7 @@ const Otp = ({ navigation }: any) => {
   const [disableVerificationBtn, setDisableVerificationBtn] = useState(true);
   const [countriesList, setCountriesList] = useState<any>([]);
 
+  // Fetching Countries and store in component's state
   useEffect(() => {
     setCountriesList(countriesData);
   }, []);
