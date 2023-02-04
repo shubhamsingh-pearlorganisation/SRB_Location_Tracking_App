@@ -182,7 +182,7 @@ const Otp = ({ navigation }: any) => {
       )}
     </View>
   );
-}; 
+};
 export default Otp;
 
 const styles = StyleSheet.create({

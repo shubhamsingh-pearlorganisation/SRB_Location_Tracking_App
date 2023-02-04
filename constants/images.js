@@ -7,5 +7,5 @@ export default {
   onboarding1,
   onboarding2,
   onboarding3,
-  onboarding4
-}
+  onboarding4,
+};
