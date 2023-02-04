@@ -9,6 +9,7 @@ import SplashPartner from "./screens/SplashPartner";
 import FlashMessage from "react-native-flash-message";
 import Otp from "./screens/Otp";
 import { ToastProvider } from "react-native-toast-notifications";
+import { SafeAreaView } from "react-native-safe-area-context/lib/typescript/SafeAreaView";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -17,11 +18,11 @@ const App = () => {
     <ToastProvider
     
     >
+      
       <NavigationContainer>
-        <Stack.Navigator style={{
-      height:"100%"
-    }}>
+        <Stack.Navigator >
         <Stack.Screen name="OnBoarding" component={OnBoarding} options={{ headerShown: false }} />
+        <Stack.Screen name="otp" component={Otp} options={{ headerShown: false }} />
         </Stack.Navigator>
         <FlashMessage position="bottom" />
       </NavigationContainer>

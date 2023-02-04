@@ -12,9 +12,12 @@ import {
 import LinearGradient from "expo-linear-gradient";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
+import { useNavigation } from "@react-navigation/native";
+
 // constants
 import { images, theme } from "../constants";
 const { onboarding1, onboarding2, onboarding3, onboarding4 } = images;
+
 
 // theme
 const { COLORS, FONTS, SIZES } = theme;
@@ -42,7 +45,10 @@ const onBoardings = [
   },
 ];
 
-const OnBoarding = () => {
+const OnBoarding = ({ navigation }: any) => {
+  const onPressSubmit = () => {
+    navigation.navigate("otp");
+  };
   const [completed, setCompleted] = React.useState(false);
 
   const scrollX = new Animated.Value(0);
@@ -62,9 +68,6 @@ const OnBoarding = () => {
   function renderContent() {
     return (
       <View
-      style={{
-        height:"100%"
-      }}
       >
         <Animated.ScrollView
           horizontal
@@ -83,9 +86,12 @@ const OnBoarding = () => {
             <View
               //center
               //bottom
-              
+
               key={`img-${index}`}
-              style={[styles.imageAndTextContainer, { flex: 2, alignItems: 'center', justifyContent: 'center' }]}
+              style={[
+                styles.imageAndTextContainer,
+                { flex: 2, alignItems: "center", justifyContent: "center" },
+              ]}
             >
               <View
                 style={{
@@ -95,25 +101,23 @@ const OnBoarding = () => {
                   backgroundColor: "white",
                   zIndex: -1,
                   width: "100%",
-                  height: "100%"
+                  height: "100%",
                 }}
               >
                 <Image
                   source={item.img}
-                  resizeMode="contain"
+                  resizeMode="stretch"
                   style={{
-                    top:"5%",
+                    top: "5%",
                     width: "100%",
                     height: "100%",
                   }}
                 />
-
               </View>
 
               <View
                 style={{
                   position: "absolute",
-                  // bottom: "40%",
                   height: "100%",
                   width: "100%",
                   zIndex: 1,
@@ -140,11 +144,10 @@ const OnBoarding = () => {
           style={{
             position: "absolute",
             // left: "40%",
-            alignSelf:'center',
+            alignSelf: "center",
             bottom: "15%",
-            width: SIZES.width - (SIZES.width*0.2),
+            width: SIZES.width - SIZES.width * 0.2,
             height: 60,
-            
             justifyContent: "center",
             borderTopLeftRadius: 30,
             borderBottomLeftRadius: 30,
@@ -152,11 +155,16 @@ const OnBoarding = () => {
             borderTopRightRadius: 30,
             backgroundColor: "white",
           }}
-          onPress={() => {
-            console.log("Button on pressed");
-          }}
+          onPress={onPressSubmit}
         >
-          <Text style={{ fontWeight: "400", fontSize: 20, color: "Black", alignSelf:'center' }}>
+          <Text
+            style={{
+              fontWeight: "400",
+              fontSize: SIZES.width > 300 && SIZES.height>600 ? 25 : 20,
+              color: "Black",
+              alignSelf: "center",
+            }}
+          >
             Get Started
           </Text>
         </TouchableOpacity>
@@ -165,17 +173,35 @@ const OnBoarding = () => {
           style={{
             ...FONTS.body3,
             textAlign: "center",
-            marginTop: SIZES.base,
+            marginTop: 0,
             color: COLORS.white,
-            bottom:"10%"
+            bottom: "10%",
+            fontSize: 18,
+            
+            justifyContent:'center'
           }}
-        >You already have an account?
-        <TouchableOpacity><Text
-        style={{
-          color:'white',
-          fontWeight:'800',
-          fontSize:15
-        }}> Log in</Text></TouchableOpacity>
+        >
+          You already have an account?
+          <TouchableOpacity
+            onPress={onPressSubmit}
+            style={{
+              justifyContent:'center'
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontWeight: "800",
+                fontSize: SIZES.width > 400 && SIZES.height>600 ? 20 : 15,
+                minHeight: SIZES.width > 400 && SIZES.height>600 ? 30 : 50,
+                padding: SIZES.width > 400 && SIZES.height>600 ? 5 : 10,
+                paddingTop:SIZES.width > 400 && SIZES.height>600 ? 5 : 10, 
+                width:"100%"
+              }}
+            >
+              Log in
+            </Text>
+          </TouchableOpacity>
         </Text>
       </View>
     );
@@ -195,7 +221,7 @@ const OnBoarding = () => {
 
           const dotSize = dotPosition.interpolate({
             inputRange: [index - 1, index, index + 1],
-            outputRange: [SIZES.base, 17, SIZES.base],
+            outputRange: [8, 8, 10],
             extrapolate: "clamp",
           });
 
@@ -225,6 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "WHITE",
+    
   },
   imageAndTextContainer: {
     width: SIZES.width,
