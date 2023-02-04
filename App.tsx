@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./screens/HomeScreen";
 import SelectLocation from "./screens/SelectLocation";
-import SplashChild from "./screens/OnBoarding";
+import OnBoarding from "./screens/OnBoarding";
 import SplashPartner from "./screens/SplashPartner";
 import FlashMessage from "react-native-flash-message";
 import Otp from "./screens/Otp";
@@ -14,34 +14,14 @@ const App = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <ToastProvider>
+    <ToastProvider
+    
+    >
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="SplashChild"
-            component={SplashChild}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SplashPartner"
-            component={SplashPartner}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Otp"
-            component={Otp}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SelectLocation"
-            component={SelectLocation}
-            options={{ headerShown: false }}
-          />
+        <Stack.Navigator style={{
+      height:"100%"
+    }}>
+        <Stack.Screen name="OnBoarding" component={OnBoarding} options={{ headerShown: false }} />
         </Stack.Navigator>
         <FlashMessage position="bottom" />
       </NavigationContainer>
@@ -56,5 +36,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    height:"100%"
   },
 });

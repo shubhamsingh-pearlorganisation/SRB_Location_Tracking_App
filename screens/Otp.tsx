@@ -150,7 +150,6 @@ const Otp = ({ navigation }: any) => {
           Send Verification
         </Text>
       </TouchableOpacity>
-
       {verificationId && (
         <>
           <TextInput
@@ -183,7 +182,7 @@ const Otp = ({ navigation }: any) => {
       )}
     </View>
   );
-};
+}; 
 export default Otp;
 
 const styles = StyleSheet.create({
