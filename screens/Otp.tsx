@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebaseConfig";
@@ -29,6 +29,7 @@ const Otp = ({ navigation }: any) => {
   const [disableConfirmVerificationBtn, setDisableConfirmVerificationBtn] =
     useState(true);
   const [countriesList, setCountriesList] = useState<any>([]);
+  const [showLoader, setShowLoader] = useState(false);
 
   // Fetching Countries and store in component's state
   useEffect(() => {
@@ -69,13 +70,15 @@ const Otp = ({ navigation }: any) => {
         phoneNumber.length === 13 && // 13 length to check +91 also
         regexWithPlus91.test(phoneNumber) === true
       ) {
+        setShowLoader(true);
+
         const phoneProvider = new fireb.auth.PhoneAuthProvider();
-        // alert(phoneNumber);
         const verCode = await phoneProvider.verifyPhoneNumber(
           phoneNumber,
           recaptchaVerifier.current
         );
         if (verCode) {
+          setShowLoader(false);
           setVerificationId(verCode);
           toast.show("Verification code sent successfully!", {
             type: "success",
@@ -83,6 +86,8 @@ const Otp = ({ navigation }: any) => {
         }
       }
     } catch (error: any) {
+      setShowLoader(false);
+
       toast.show(error.message, {
         type: "error",
       });
@@ -92,15 +97,20 @@ const Otp = ({ navigation }: any) => {
   // This method is used to confirm verification code from firebase.
   const confirmCode = async () => {
     try {
+      setShowLoader(true);
       const credential = fireb.auth.PhoneAuthProvider.credential(
         verificationId,
         verificationCode
       );
       if (credential) {
         const result = await fireb.auth().signInWithCredential(credential);
-        if (result) navigation.navigate("Home");
+        if (result) {
+          navigation.navigate("Home");
+          setShowLoader(false);
+        }
       }
     } catch (error: any) {
+      setShowLoader(false);
       toast.show(error.message, {
         type: "error",
       });
@@ -116,7 +126,7 @@ const Otp = ({ navigation }: any) => {
       <Text style={styles.otpText}>
         Let’s start.{"\n"} Sign up with number.
       </Text>
-
+      {showLoader && <ActivityIndicator />}
       <TextInput
         placeholder="Enter Number"
         onChangeText={(value: any) => {
