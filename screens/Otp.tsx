@@ -70,7 +70,7 @@ const Otp = ({ navigation }: any) => {
         regexWithPlus91.test(phoneNumber) === true
       ) {
         const phoneProvider = new fireb.auth.PhoneAuthProvider();
-        alert(phoneNumber);
+        // alert(phoneNumber);
         const verCode = await phoneProvider.verifyPhoneNumber(
           phoneNumber,
           recaptchaVerifier.current
