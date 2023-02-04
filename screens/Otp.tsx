@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,27 +11,48 @@ import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebaseConfig";
 import fireb from "firebase/compat";
 import { useToast } from "react-native-toast-notifications";
+import countriesData from "../assets/api-data/countries.json";
+
+// ---------------------------------------------------------------------------------------------
 
 const Otp = ({ navigation }: any) => {
   const onPressSubmit = () => {
     navigation.navigate("Home");
   };
-  const toast = useToast();
 
+  const toast = useToast();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [code, setCode] = useState("");
   const [verificationId, setVerificationId] = useState<any>(null);
   const recaptchaVerifier = useRef<any>(null);
+  const [disableVerificationBtn, setDisableVerificationBtn] = useState(true);
+  const [countriesList, setCountriesList] = useState<any>([]);
+
+  // Fetching Countries and store in component's state
+  useEffect(() => {
+    setCountriesList(countriesData);
+  }, []);
+
+  // Enabling or Disabling Send Verification Button
+  useEffect(() => {
+    if (phoneNumber && phoneNumber.length === 10)
+      setDisableVerificationBtn(false);
+    else setDisableVerificationBtn(true);
+  }, [phoneNumber]);
 
   const sendVerification = async () => {
-    const phoneProvider = new fireb.auth.PhoneAuthProvider();
-    const verCode = await phoneProvider.verifyPhoneNumber(
-      phoneNumber,
-      recaptchaVerifier.current
-    );
-    if (verCode) {
-      setVerificationId(verCode);
-      toast.show("Verification Code sent successfully!", { type: "success" });
+    try {
+      const phoneProvider = new fireb.auth.PhoneAuthProvider();
+      const verCode = await phoneProvider.verifyPhoneNumber(
+        phoneNumber,
+        recaptchaVerifier.current
+      );
+      if (verCode) {
+        setVerificationId(verCode);
+        toast.show("Verification code sent successfully!", { type: "success" });
+      }
+    } catch (err) {
+      console.log("Getting error in sending verification code: ", err);
     }
   };
 
@@ -45,7 +66,7 @@ const Otp = ({ navigation }: any) => {
       .signInWithCredential(credential)
       .then((result) => {
         navigation.navigate("Home");
-        console.log(result);
+        // console.log(result);
       });
   };
 
@@ -55,10 +76,10 @@ const Otp = ({ navigation }: any) => {
         ref={recaptchaVerifier}
         firebaseConfig={firebaseConfig}
       />
-
       <Text style={styles.otpText}>
         Let’s start.{"\n"} Sign up with number.
       </Text>
+
       <TextInput
         placeholder="Enter Number"
         onChangeText={setPhoneNumber}
@@ -66,13 +87,28 @@ const Otp = ({ navigation }: any) => {
         autoComplete="tel"
         style={styles.textInput}
         placeholderTextColor="rgba(255,255,255,0.6)"
+        maxLength={10}
       />
-
       <TouchableOpacity
-        style={styles.sendVerification}
+        style={[
+          styles.sendVerification,
+          {
+            opacity: disableVerificationBtn ? 0.5 : 1,
+          },
+        ]}
         onPress={sendVerification}
+        disabled={disableVerificationBtn}
       >
-        <Text style={styles.buttonText}>Send Verification</Text>
+        <Text
+          style={[
+            styles.buttonText,
+            {
+              opacity: disableVerificationBtn ? 0.5 : 1,
+            },
+          ]}
+        >
+          Send Verification
+        </Text>
       </TouchableOpacity>
       {verificationId && (
         <>
@@ -141,7 +177,6 @@ const styles = StyleSheet.create({
     color: "#705ECF",
     backgroundColor: "rgba(0,0,0,0)",
     textAlign: "center",
-    // borderRadius: 500,
   },
   otpText: {
     position: "relative",
@@ -150,30 +185,11 @@ const styles = StyleSheet.create({
     left: 10,
     top: 10,
     marginBottom: 150,
-
-    fontFamily: "Poppins",
     fontStyle: "normal",
     fontWeight: "bold",
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
-
     color: "#FFFFFF",
   },
-  // mybtn: {
-  //   position: "relative",
-  //   width: 350,
-  //   height: 82,
-  //   left: 10,
-  //   top: 10,
-
-  //   fontFamily: "Poppins",
-  //   fontStyle: "normal",
-  //   fontWeight: "bold",
-  //   fontSize: 30,
-  //   lineHeight: 35,
-  //   textAlign: "center",
-
-  //   color: "#FFFFFF",
-  // },
 });
