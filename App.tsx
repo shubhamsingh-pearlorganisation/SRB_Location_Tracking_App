@@ -15,6 +15,7 @@ import Register from "./screens/RegisterScreen";
 import EmergencyContactsScreen from "./screens/EmergencyContacts/Home";
 import { COLORS } from "./constants";
 import AddGroup from "./screens/AddGroup";
+import EditGroup from "./screens/EditGroup";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -61,6 +62,19 @@ const App = () => {
             component={EmergencyContactsScreen}
             options={{
               title: "Emergency",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="EditGroup"
+            component={EditGroup}
+            options={{
+              title: "Edit Group",
               headerTintColor: COLORS.voilet,
               headerTitleStyle: {
                 fontWeight: "bold",
