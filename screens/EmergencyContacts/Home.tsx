@@ -8,11 +8,13 @@ import {
   Pressable,
 } from "react-native";
 
-// constants
 import { images } from "../../constants";
 const { emergencyContactHome } = images;
 
-const EmergencyContactsScreen = () => {
+const EmergencyContactsScreen = ({ navigation }: any) => {
+  const handleAddContact = () => {
+    navigation.navigate("EmergencyContactsListing");
+  };
   return (
     <View style={styles.container}>
       <Image source={emergencyContactHome} style={styles.image} />
@@ -21,7 +23,7 @@ const EmergencyContactsScreen = () => {
 
       <Pressable
         style={styles.addContactBtn}
-        onPress={() => Alert.alert("Add contact button pressed")}
+        onPress={() => handleAddContact()}
       >
         <Text style={styles.addContactBtnText}>Add Contact</Text>
       </Pressable>

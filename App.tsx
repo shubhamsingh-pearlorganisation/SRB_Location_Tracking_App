@@ -12,10 +12,12 @@ import { ToastProvider } from "react-native-toast-notifications";
 import { SafeAreaView } from "react-native-safe-area-context/lib/typescript/SafeAreaView";
 import MainScreen from "./screens/MainScreen";
 import Register from "./screens/RegisterScreen";
-import EmergencyContactsScreen from "./screens/EmergencyContacts/Home";
 import { COLORS } from "./constants";
 import AddGroup from "./screens/AddGroup";
 import EditGroup from "./screens/EditGroup";
+import ContactsListing from "./screens/EmergencyContacts/ContactsListing";
+import EmergencyContactsScreen from "./screens/EmergencyContacts/Home";
+import EmergencyTimerScreen from "./screens/EmergencyContacts/EmergencyTimerScreen";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -61,7 +63,33 @@ const App = () => {
             name="Emergency"
             component={EmergencyContactsScreen}
             options={{
-              title: "Emergency",
+              title: "Emergency Service",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="EmergencyContactsListing"
+            component={ContactsListing}
+            options={{
+              title: "Emergency Service",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="EmergencyTimer"
+            component={EmergencyTimerScreen}
+            options={{
+              title: "Emergency Service",
               headerTintColor: COLORS.voilet,
               headerTitleStyle: {
                 fontWeight: "bold",

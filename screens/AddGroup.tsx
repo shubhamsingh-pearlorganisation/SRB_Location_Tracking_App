@@ -50,7 +50,7 @@ const AddGroup = () => {
             <View
               style={{
                 flexDirection: "row",
-                margin: "10",
+                margin: 10,
               }}
             >
               <Text style={styles.cardHeading}>Public</Text>
@@ -80,7 +80,7 @@ const AddGroup = () => {
             <View
               style={{
                 flexDirection: "row",
-                margin: "10",
+                margin: 10,
               }}
             >
               <Text style={styles.cardHeading}>Private</Text>
@@ -97,30 +97,30 @@ const AddGroup = () => {
       </View>
 
       <TouchableOpacity
-          style={{
-            position: SIZES.height>500?"absolute":"relative",
-            bottom:SIZES.height>500 ?"20%":"10%",
-            marginTop:"5%",
-            alignSelf: "center",
-            width: SIZES.width - SIZES.width * 0.2,
-            height: 60,
-            justifyContent: "center",
-            borderRadius:30,
-            backgroundColor: "#705ECF",
-          }}
+        style={{
+          position: SIZES.height > 500 ? "absolute" : "relative",
+          bottom: SIZES.height > 500 ? "20%" : "10%",
+          marginTop: "5%",
+          alignSelf: "center",
+          width: SIZES.width - SIZES.width * 0.2,
+          height: 60,
+          justifyContent: "center",
+          borderRadius: 30,
+          backgroundColor: "#705ECF",
+        }}
         //   onPress={onPressSubmit}
+      >
+        <Text
+          style={{
+            fontWeight: "400",
+            fontSize: SIZES.width > 300 && SIZES.height > 600 ? 25 : 20,
+            color: "white",
+            alignSelf: "center",
+          }}
         >
-          <Text
-            style={{
-              fontWeight: "400",
-              fontSize: SIZES.width > 300 && SIZES.height > 600 ? 25 : 20,
-              color: "white",
-              alignSelf: "center",
-            }}
-          >
-            Create
-          </Text>
-        </TouchableOpacity>
+          Create
+        </Text>
+      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   textInput: {
-    fontSize: SIZES.width>300?50:30,
+    fontSize: SIZES.width > 300 ? 50 : 30,
     backgroundColor: "transparent",
     textAlign: "center",
     borderBottomWidth: 0,
@@ -181,9 +181,9 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: SIZES.width > 600 ? 20 : 15,
-    width:'50%',
-    bottom:0,
-    position:'absolute'
+    width: "50%",
+    bottom: 0,
+    position: "absolute",
   },
 });
 
