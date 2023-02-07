@@ -50,7 +50,7 @@ const AddGroup = () => {
             <View
               style={{
                 flexDirection: "row",
-                margin: "10",
+                margin: 10,
               }}
             >
               <Text style={styles.cardHeading}>Public</Text>
@@ -80,7 +80,7 @@ const AddGroup = () => {
             <View
               style={{
                 flexDirection: "row",
-                margin: "10",
+                margin: 10,
               }}
             >
               <Text style={styles.cardHeading}>Private</Text>
