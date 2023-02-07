@@ -27,6 +27,7 @@
     "react-native": "^0.70.5",
     "react-native-datepicker": "^1.7.2",
     "react-native-dotenv": "^3.4.7",
+    "react-native-dropdown-select-list": "^2.0.4",
     "react-native-flash-message": "^0.4.0",
     "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-ionicons": "^4.6.5",

@@ -45,7 +45,7 @@ const OnBoarding = ({ navigation }: any) => {
     navigation.navigate("Register");
   };
 
-  const loginUser=()=>{
+  const loginUser = () => {
     navigation.navigate("otp");
   };
 
@@ -127,7 +127,7 @@ const OnBoarding = ({ navigation }: any) => {
               >
                 <Text
                   style={{
-                    fontSize:30,
+                    fontSize: 30,
                     color: COLORS.white,
                     textAlign: "center",
                   }}
@@ -173,27 +173,24 @@ const OnBoarding = ({ navigation }: any) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-            bottom:'15%',
-            
+            bottom: "15%",
           }}
         >
           <Text
             style={{
               color: "white",
-              fontSize:15,
+              fontSize: 15,
               justifyContent: "center",
             }}
           >
             You already have an account?
           </Text>
-          <TouchableOpacity
-            onPress={loginUser}
-          >
+          <TouchableOpacity onPress={loginUser}>
             <Text
               style={{
                 color: "white",
                 fontWeight: "800",
-                fontSize:15
+                fontSize: 15,
               }}
             >
               Log in

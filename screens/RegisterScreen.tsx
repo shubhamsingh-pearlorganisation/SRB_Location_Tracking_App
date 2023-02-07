@@ -20,14 +20,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS, FONTS, SIZES } from "../constants";
 
 import * as ImagePicker from "expo-image-picker";
-import DatePicker from 'react-native-datepicker';
+import DatePicker from "react-native-datepicker";
 
 const Register = ({ navigation }: any) => {
   const onPressSubmit = () => {
     navigation.navigate("Main");
   };
 
-  const [date, setDate] = useState('09-10-2020');
+  const [date, setDate] = useState("09-10-2020");
 
   const [enabledAddIcon, setEnabledAddIcon] = useState(true);
 
@@ -173,7 +173,8 @@ const Register = ({ navigation }: any) => {
           Your Birthday
         </Text>
 
-        <DatePicker style={styles.datePickerStyle}
+        <DatePicker
+          style={styles.datePickerStyle}
           date={date} //initial date from state
           mode="date" //The enum of date, datetime and time
           placeholder="select date"
@@ -184,7 +185,7 @@ const Register = ({ navigation }: any) => {
           cancelBtnText="Cancel"
           customStyles={{
             dateIcon: {
-              display: 'none',
+              display: "none",
             },
             // dateInput: {
             //   marginLeft: 36,
@@ -192,18 +193,19 @@ const Register = ({ navigation }: any) => {
           }}
           onDateChange={(date) => {
             setDate(date);
-          }} />
+          }}
+        />
 
-<TouchableOpacity
+        <TouchableOpacity
           style={{
-            position: SIZES.height>500?"relative":"absolute",
-            bottom:SIZES.height>500 ?"2%":"5%",
-            marginTop:"5%",
+            position: SIZES.height > 500 ? "relative" : "absolute",
+            bottom: SIZES.height > 500 ? "2%" : "5%",
+            marginTop: "5%",
             alignSelf: "center",
             width: SIZES.width - SIZES.width * 0.2,
             height: 60,
             justifyContent: "center",
-            borderRadius:30,
+            borderRadius: 30,
             backgroundColor: "white",
           }}
           onPress={onPressSubmit}
@@ -234,8 +236,8 @@ const styles = StyleSheet.create({
   },
   datePickerStyle: {
     width: 200,
-    alignSelf:'center',
-    marginBottom:10,
+    alignSelf: "center",
+    marginBottom: 10,
   },
   addImage: {
     justifyContent: "center",

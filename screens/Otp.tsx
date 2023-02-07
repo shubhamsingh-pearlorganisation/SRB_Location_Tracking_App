@@ -13,7 +13,8 @@ import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebaseConfig";
 import fireb from "firebase/compat";
 import { useToast } from "react-native-toast-notifications";
-import countriesData from "../assets/api-data/countries.json";
+import countriesData from "../assets/api-data/countriesData.json";
+import { SelectList } from "react-native-dropdown-select-list";
 
 // ---------------------------------------------------------------------------------------------
 
@@ -32,6 +33,8 @@ const Otp = ({ navigation }: any) => {
     useState(true);
   const [countriesList, setCountriesList] = useState<any>([]);
   const [showLoader, setShowLoader] = useState(false);
+  const [selectedCountryCode, setSelectedCountryCode] = React.useState("");
+  const [completePhoneNumber, setCompletePhoneNumber] = useState("");
 
   // Fetching Countries and store in component's state
   useEffect(() => {
@@ -40,11 +43,16 @@ const Otp = ({ navigation }: any) => {
 
   // Enabling or Disabling Send Verification Button
   useEffect(() => {
-    if (phoneNumber && phoneNumber.length === 13)
-      // 13 length to check +91 also
+    if (phoneNumber && phoneNumber.length >= 10 && phoneNumber.length < 13)
       setDisableVerificationBtn(false);
     else setDisableVerificationBtn(true);
   }, [phoneNumber]);
+
+  useEffect(() => {
+    if (phoneNumber && selectedCountryCode) {
+      setCompletePhoneNumber(selectedCountryCode + "" + phoneNumber);
+    }
+  }, [phoneNumber, selectedCountryCode]);
 
   // Enabling or Disabling Confirm Verification Code Button
   useEffect(() => {
@@ -56,27 +64,31 @@ const Otp = ({ navigation }: any) => {
   // This method is used to send verification code from firebase.
   const sendVerification = async () => {
     try {
-      const reg = /^[0]?[6789]\d{9}$/; // Normal Indian Mobile Number Regex
-      const regexWithPlus91 = /^((\+91?)|\+)?[7-9][0-9]{9}$/; // Indian Mobile Number Regex with +91
+      // const reg = /^[0]?[6789]\d{9}$/; // Normal Indian Mobile Number Regex
+      // const regexWithPlus91 = /^((\+91?)|\+)?[7-9][0-9]{9}$/; // Indian Mobile Number Regex with +91
 
-      if (isNaN(phoneNumber) && phoneNumber != "+") {
-        toast.show("This is not a valid Mobile Number", { type: "error" });
-      } else if (
-        phoneNumber.length === 13 && // 13 length to check +91 also
-        regexWithPlus91.test(phoneNumber) === false
+      const globalMobileNumberRegex = /^[0-9]{10}$/; //10 digit mobile number regex
+
+      if (
+        isNaN(phoneNumber) ||
+        (phoneNumber &&
+          phoneNumber.length >= 10 &&
+          phoneNumber.length < 13 &&
+          globalMobileNumberRegex.test(phoneNumber) === false)
       ) {
         toast.show("Please enter a valid Indian Mobile Number", {
           type: "error",
         });
       } else if (
-        phoneNumber.length === 13 && // 13 length to check +91 also
-        regexWithPlus91.test(phoneNumber) === true
+        phoneNumber.length >= 10 &&
+        phoneNumber.length < 13 &&
+        globalMobileNumberRegex.test(phoneNumber) === true
       ) {
         setShowLoader(true);
 
         const phoneProvider = new fireb.auth.PhoneAuthProvider();
         const verCode = await phoneProvider.verifyPhoneNumber(
-          phoneNumber,
+          completePhoneNumber,
           recaptchaVerifier.current
         );
         if (verCode) {
@@ -89,7 +101,6 @@ const Otp = ({ navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-
       toast.show(error.message, {
         type: "error",
       });
@@ -109,6 +120,7 @@ const Otp = ({ navigation }: any) => {
         if (result) {
           navigation.navigate("Main");
           setShowLoader(false);
+          console.log("result: ", result);
         }
       }
     } catch (error: any) {
@@ -122,80 +134,105 @@ const Otp = ({ navigation }: any) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
-      <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={firebaseConfig}
-      />
-      <Text style={styles.otpText}>
-        Let’s start.{"\n"} Sign up with number.
-      </Text>
-      {showLoader && <ActivityIndicator />}
-      <TextInput
-        placeholder="Enter Number"
-        onChangeText={(value: any) => {
-          setPhoneNumber(value);
-        }}
-        keyboardType="phone-pad"
-        autoComplete="tel"
-        style={styles.textInput}
-        placeholderTextColor="rgba(255,255,255,0.6)"
-        maxLength={13} // 13 length to check +91 also
-      />
-      <TouchableOpacity
-        style={[
-          styles.sendVerification,
-          {
-            opacity: disableVerificationBtn ? 0.5 : 1,
-          },
-        ]}
-        onPress={sendVerification}
-        disabled={disableVerificationBtn}
-      >
-        <Text
-          disabled={disableVerificationBtn}
-          style={[
-            styles.buttonText,
-            {
-              opacity: disableVerificationBtn ? 0.5 : 1,
-            },
-          ]}
-        >
-          Send Verification
+        <FirebaseRecaptchaVerifierModal
+          ref={recaptchaVerifier}
+          firebaseConfig={firebaseConfig}
+        />
+        <Text style={styles.otpText}>
+          Let’s start.{"\n"} Sign up with number.
         </Text>
-      </TouchableOpacity>
-      {verificationId && (
-        <>
+        {showLoader && <ActivityIndicator />}
+
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {countriesList && (
+            <SelectList
+              boxStyles={{ backgroundColor: "#fff" }}
+              setSelected={(val: any) => {
+                setSelectedCountryCode(val);
+              }}
+              data={countriesList}
+              save="key"
+            />
+          )}
+
+          <Text style={{ color: "#fff", fontSize: 20, marginLeft: 20 }}>
+            {selectedCountryCode && <Text>{selectedCountryCode}</Text>}
+          </Text>
+
           <TextInput
-            placeholder="Confirm code"
-            onChangeText={setVerificationCode}
+            placeholder="Enter Number"
+            onChangeText={(value: any) => {
+              setPhoneNumber(value);
+            }}
             keyboardType="phone-pad"
             autoComplete="tel"
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
-            maxLength={6}
+            maxLength={12}
           />
-          <TouchableOpacity
-            style={styles.sendCode}
-            onPress={confirmCode}
-            disabled={disableConfirmVerificationBtn}
+        </View>
+        <TouchableOpacity
+          style={[
+            styles.sendVerification,
+            {
+              opacity: disableVerificationBtn ? 0.5 : 1,
+            },
+          ]}
+          onPress={sendVerification}
+          disabled={disableVerificationBtn}
+        >
+          <Text
+            disabled={disableVerificationBtn}
+            style={[
+              styles.buttonText,
+              {
+                opacity: disableVerificationBtn ? 0.5 : 1,
+              },
+            ]}
           >
-            <Text
-              style={[
-                styles.buttonText,
-                {
-                  opacity: disableConfirmVerificationBtn ? 0.5 : 1,
-                },
-              ]}
+            Send Verification
+          </Text>
+        </TouchableOpacity>
+
+        {verificationId && (
+          <>
+            <TextInput
+              placeholder="Confirm code"
+              onChangeText={setVerificationCode}
+              keyboardType="phone-pad"
+              autoComplete="tel"
+              style={styles.textInput}
+              placeholderTextColor="rgba(255,255,255,0.6)"
+              maxLength={6}
+            />
+            <TouchableOpacity
+              style={styles.sendCode}
+              onPress={confirmCode}
               disabled={disableConfirmVerificationBtn}
             >
-              Confirm Verification
-            </Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    opacity: disableConfirmVerificationBtn ? 0.5 : 1,
+                  },
+                ]}
+                disabled={disableConfirmVerificationBtn}
+              >
+                Confirm Verification
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
     </KeyboardAvoidingView>
-    
   );
 };
 export default Otp;

@@ -14,7 +14,11 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const MenuScreen = () => {
+const MenuScreen = ({ navigation }: any) => {
+  const redirectToEmergencyScreen = () => {
+    navigation.navigate("Emergency");
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -93,7 +97,7 @@ const MenuScreen = () => {
           }}
         >
           <Ionicons
-            style={[styles.icons,]}
+            style={[styles.icons]}
             name="ios-share-outline"
             size={30}
             color={"black"}
@@ -116,7 +120,7 @@ const MenuScreen = () => {
           }}
         >
           <MaterialCommunityIcons
-            style={[styles.icons,]}
+            style={[styles.icons]}
             name="car-brake-alert"
             size={30}
             color={"black"}
@@ -128,6 +132,7 @@ const MenuScreen = () => {
               alignSelf: "center",
               fontWeight: "600",
             }}
+            onPress={redirectToEmergencyScreen}
           >
             Emergency
           </Text>
@@ -166,11 +171,11 @@ const MenuScreen = () => {
         style={{
           bottom: 0,
           position: "absolute",
-          marginBottom:'5%',
-          borderTopColor:'black',
-          borderTopWidth:2,
-          width:'99%',
-          margin:10
+          marginBottom: "5%",
+          borderTopColor: "black",
+          borderTopWidth: 2,
+          width: "99%",
+          margin: 10,
         }}
       >
         <View

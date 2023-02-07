@@ -1,5 +1,5 @@
 import { Dimensions } from "react-native";
-import { useFonts } from 'expo-font';
+import { useFonts } from "expo-font";
 const { width, height } = Dimensions.get("window");
 
 export const COLORS = {
@@ -7,7 +7,7 @@ export const COLORS = {
   white: "#FFFFFF",
   gray: "#6A6A6A",
   blue: "#0682FE",
-  voilet: "#705ECF"
+  voilet: "#705ECF",
 };
 export const SIZES = {
   // global sizes
@@ -31,8 +31,6 @@ export const SIZES = {
   height,
 };
 
-
-
-const appTheme = { COLORS, SIZES};
+const appTheme = { COLORS, SIZES };
 
 export default appTheme;

@@ -16,9 +16,9 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants";
 import MenuScreen from "./MenuScreen";
+import EmergencyContactsScreen from "./EmergencyContacts/Home";
 
 const MainScreen = ({ navigation }: any) => {
-
   const newGroup = () => {
     navigation.navigate("Register");
   };
@@ -62,7 +62,13 @@ const MainScreen = ({ navigation }: any) => {
             fontSize: 30,
           },
           headerRight: () => (
-            <Ionicons containerStyle={styles.iconContainer} size = {40} name="add" color={COLORS.voilet} onPress={newGroup}/>
+            <Ionicons
+              containerStyle={styles.iconContainer}
+              size={40}
+              name="add"
+              color={COLORS.voilet}
+              onPress={newGroup}
+            />
           ),
         }}
       />
@@ -84,8 +90,8 @@ const MainScreen = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
   icon: {
-    width:100,
-    height:100,
+    width: 100,
+    height: 100,
     paddingLeft: 10,
   },
   iconContainer: {
