@@ -7,13 +7,17 @@ import {
   Platform,
   Dimensions,
   TouchableOpacity,
-} from "react-native";
+  StatusBar,
+  SafeAreaView} from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { getCurrentLocation } from "../core/utils/helper";
 import imagePath from "../core/utils/constants";
 import { GOOGLE_API_KEY } from "../core/utils/constants";
+import Otp from "./Otp";
+
+
 
 type locationTypes = {
   latitude: number;
@@ -138,8 +142,11 @@ const HomeScreen = ({ navigation }: any) => {
     });
   };
 
+  
+
   return (
-    <View style={styles.homeWrapper}>
+    <SafeAreaView style={styles.homeWrapper}>
+      
       <View style={styles.mapBox}>
         <MapView
           ref={mapRef}
@@ -225,7 +232,8 @@ const HomeScreen = ({ navigation }: any) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+      
+    </SafeAreaView>
   );
 };
 

@@ -9,16 +9,13 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-
-import { useNavigation } from "@react-navigation/native";
 
 // constants
 import { images, theme } from "../constants";
 const { onboarding1, onboarding2, onboarding3, onboarding4 } = images;
 
 // theme
-const { COLORS, FONTS, SIZES } = theme;
+const { COLORS, SIZES } = theme;
 
 const onBoardings = [
   {
@@ -44,9 +41,14 @@ const onBoardings = [
 ];
 
 const OnBoarding = ({ navigation }: any) => {
-  const onPressSubmit = () => {
+  const newUser = () => {
+    navigation.navigate("Register");
+  };
+
+  const loginUser=()=>{
     navigation.navigate("otp");
   };
+
   const [completed, setCompleted] = React.useState(false);
 
   const scrollX = new Animated.Value(0);
@@ -58,7 +60,7 @@ const OnBoarding = ({ navigation }: any) => {
       }
     });
 
-    return () => scrollX.removeListener();
+    return;
   }, []);
 
   // Render
@@ -103,7 +105,7 @@ const OnBoarding = ({ navigation }: any) => {
               >
                 <Image
                   source={item.img}
-                  resizeMode="stretch"
+                  resizeMode="contain"
                   style={{
                     top: "5%",
                     width: "100%",
@@ -125,7 +127,7 @@ const OnBoarding = ({ navigation }: any) => {
               >
                 <Text
                   style={{
-                    ...FONTS.h1,
+                    fontSize:30,
                     color: COLORS.white,
                     textAlign: "center",
                   }}
@@ -152,7 +154,7 @@ const OnBoarding = ({ navigation }: any) => {
             borderTopRightRadius: 30,
             backgroundColor: "white",
           }}
-          onPress={onPressSubmit}
+          onPress={newUser}
         >
           <Text
             style={{
@@ -166,40 +168,38 @@ const OnBoarding = ({ navigation }: any) => {
           </Text>
         </TouchableOpacity>
 
-        <Text
+        <View
           style={{
-            ...FONTS.body3,
-            textAlign: "center",
-            marginTop: 0,
-            color: COLORS.white,
-            bottom: "10%",
-            fontSize: 18,
-
+            flexDirection: "row",
+            alignItems: "center",
             justifyContent: "center",
+            bottom:'15%',
+            
           }}
         >
-          You already have an account?
-          <TouchableOpacity
-            onPress={onPressSubmit}
+          <Text
             style={{
+              color: "white",
+              fontSize:15,
               justifyContent: "center",
             }}
+          >
+            You already have an account?
+          </Text>
+          <TouchableOpacity
+            onPress={loginUser}
           >
             <Text
               style={{
                 color: "white",
                 fontWeight: "800",
-                fontSize: SIZES.width > 400 && SIZES.height > 600 ? 20 : 15,
-                minHeight: SIZES.width > 400 && SIZES.height > 600 ? 30 : 50,
-                padding: SIZES.width > 400 && SIZES.height > 600 ? 5 : 10,
-                paddingTop: SIZES.width > 400 && SIZES.height > 600 ? 5 : 10,
-                width: "100%",
+                fontSize:15
               }}
             >
               Log in
             </Text>
           </TouchableOpacity>
-        </Text>
+        </View>
       </View>
     );
   }
@@ -218,14 +218,14 @@ const OnBoarding = ({ navigation }: any) => {
 
           const dotSize = dotPosition.interpolate({
             inputRange: [index - 1, index, index + 1],
-            outputRange: [8, 8, 10],
+            outputRange: [8, 10, 8],
             extrapolate: "clamp",
           });
 
           return (
             <Animated.View
               key={`dot-${index}`}
-              opacity={opacity}
+              // opacity={opacity}
               style={[styles.dot, { width: dotSize, height: dotSize }]}
             />
           );

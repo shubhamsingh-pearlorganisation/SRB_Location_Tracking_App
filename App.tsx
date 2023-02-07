@@ -10,6 +10,8 @@ import FlashMessage from "react-native-flash-message";
 import Otp from "./screens/Otp";
 import { ToastProvider } from "react-native-toast-notifications";
 import { SafeAreaView } from "react-native-safe-area-context/lib/typescript/SafeAreaView";
+import MainScreen from "./screens/MainScreen";
+import Register from "./screens/RegisterScreen";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -29,8 +31,13 @@ const App = () => {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Home"
-            component={HomeScreen}
+            name="Main"
+            component={MainScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={Register}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

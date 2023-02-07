@@ -1,4 +1,5 @@
 import { Dimensions } from "react-native";
+import { useFonts } from 'expo-font';
 const { width, height } = Dimensions.get("window");
 
 export const COLORS = {
@@ -6,6 +7,7 @@ export const COLORS = {
   white: "#FFFFFF",
   gray: "#6A6A6A",
   blue: "#0682FE",
+  voilet: "#705ECF"
 };
 export const SIZES = {
   // global sizes
@@ -28,33 +30,9 @@ export const SIZES = {
   width,
   height,
 };
-export const FONTS = {
-  h1: { fontFamily: "Roboto-Black", fontSize: SIZES.h1, lineHeight: 36 },
-  h2: { fontFamily: "Roboto-Bold", fontSize: SIZES.h2, lineHeight: 30 },
-  h3: { fontFamily: "Roboto-Bold", fontSize: SIZES.h3, lineHeight: 22 },
-  h4: { fontFamily: "Roboto-Bold", fontSize: SIZES.h4, lineHeight: 22 },
-  body1: {
-    fontFamily: "Roboto-Regular",
-    fontSize: SIZES.body1,
-    lineHeight: 36,
-  },
-  body2: {
-    fontFamily: "Roboto-Regular",
-    fontSize: SIZES.body2,
-    lineHeight: 30,
-  },
-  body3: {
-    fontFamily: "Roboto-Regular",
-    fontSize: SIZES.body3,
-    lineHeight: 22,
-  },
-  body4: {
-    fontFamily: "Roboto-Regular",
-    fontSize: SIZES.body4,
-    lineHeight: 22,
-  },
-};
 
-const appTheme = { COLORS, SIZES, FONTS };
+
+
+const appTheme = { COLORS, SIZES};
 
 export default appTheme;

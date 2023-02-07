@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebaseConfig";
@@ -17,7 +19,7 @@ import countriesData from "../assets/api-data/countries.json";
 
 const Otp = ({ navigation }: any) => {
   const onPressSubmit = () => {
-    navigation.navigate("Home");
+    navigation.navigate("Main");
   };
 
   const toast = useToast();
@@ -105,7 +107,7 @@ const Otp = ({ navigation }: any) => {
       if (credential) {
         const result = await fireb.auth().signInWithCredential(credential);
         if (result) {
-          navigation.navigate("Home");
+          navigation.navigate("Main");
           setShowLoader(false);
         }
       }
@@ -118,7 +120,8 @@ const Otp = ({ navigation }: any) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <View style={styles.container}>
       <FirebaseRecaptchaVerifierModal
         ref={recaptchaVerifier}
         firebaseConfig={firebaseConfig}
@@ -191,6 +194,8 @@ const Otp = ({ navigation }: any) => {
         </>
       )}
     </View>
+    </KeyboardAvoidingView>
+    
   );
 };
 export default Otp;
