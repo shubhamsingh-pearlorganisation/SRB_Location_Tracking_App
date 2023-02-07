@@ -14,6 +14,7 @@ import {
 import { TextInput, RadioButton } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { SIZES } from "../constants";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const EditGroup = () => {
   const [focus, setFocus] = useState(false);
@@ -25,8 +26,15 @@ const EditGroup = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          margin: 10,
+        }}
+      >
         <Text style={styles.textInput}>Group Title</Text>
+        <MaterialIcons name="edit" size={30} />
       </View>
       <View style={styles.cardHolder}>
         <View style={styles.card}>
