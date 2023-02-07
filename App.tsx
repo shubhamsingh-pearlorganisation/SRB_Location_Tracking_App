@@ -15,6 +15,7 @@ import Register from "./screens/RegisterScreen";
 import AddGroups from "./screens/AddGroup";
 import AddGroup from "./screens/AddGroup";
 import { COLORS } from "./constants";
+import EditGroup from "./screens/EditGroup";
 
 
 
@@ -52,6 +53,19 @@ const App = () => {
             component={AddGroup}
             options={{
               title: "Add Group",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible:false
+            }}
+          />
+          <Stack.Screen
+            name="EditGroup"
+            component={EditGroup}
+            options={{
+              title: "Edit Group",
               headerTintColor: COLORS.voilet,
               headerTitleStyle: {
                 fontWeight: "bold",

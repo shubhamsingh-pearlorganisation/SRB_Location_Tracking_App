@@ -6,18 +6,25 @@ import {
     StyleSheet,
     Platform,
     Dimensions,
-    TouchableOpacity} from "react-native";
+    TouchableOpacity,
+    Pressable} from "react-native";
 
 
-const Groups = () =>{
+const Groups = ({navigation}:any) =>{
 
-    
+        const onPressSubmit =()=>{
+            navigation.navigate('EditGroup')
+        }
 
     return(
         <View>
             <Text>
             Groups
         </Text>
+        <Pressable
+        onPress={onPressSubmit}>
+            <Text>Edit</Text>
+        </Pressable>
         </View>
         
     );
