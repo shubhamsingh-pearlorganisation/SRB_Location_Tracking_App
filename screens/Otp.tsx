@@ -200,7 +200,6 @@ const Otp = ({ navigation }: any) => {
             Send Verification
           </Text>
         </TouchableOpacity>
-
         {verificationId && (
           <>
             <TextInput

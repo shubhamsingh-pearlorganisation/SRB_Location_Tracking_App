@@ -20,7 +20,7 @@ import EmergencyContactsScreen from "./EmergencyContacts/Home";
 
 const MainScreen = ({ navigation }: any) => {
   const newGroup = () => {
-    navigation.navigate("Register");
+    navigation.navigate("AddGroup");
   };
 
   const Tab = createBottomTabNavigator();
@@ -94,6 +94,11 @@ const styles = StyleSheet.create({
     height: 100,
     paddingLeft: 10,
   },
+  // icon: {
+  //   width: 100,
+  //   height: 100,
+  //   paddingLeft: 10,
+  // },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
