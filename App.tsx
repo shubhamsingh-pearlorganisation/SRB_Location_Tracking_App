@@ -12,9 +12,16 @@ import { ToastProvider } from "react-native-toast-notifications";
 import { SafeAreaView } from "react-native-safe-area-context/lib/typescript/SafeAreaView";
 import MainScreen from "./screens/MainScreen";
 import Register from "./screens/RegisterScreen";
+import AddGroups from "./screens/AddGroup";
+import AddGroup from "./screens/AddGroup";
+import { COLORS } from "./constants";
+
+
 
 const App = () => {
   const Stack = createNativeStackNavigator();
+
+  
 
   return (
     <ToastProvider>
@@ -39,6 +46,19 @@ const App = () => {
             name="Register"
             component={Register}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AddGroup"
+            component={AddGroup}
+            options={{
+              title: "Add Group",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible:false
+            }}
           />
         </Stack.Navigator>
 

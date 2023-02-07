@@ -122,80 +122,79 @@ const Otp = ({ navigation }: any) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
-      <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={firebaseConfig}
-      />
-      <Text style={styles.otpText}>
-        Let’s start.{"\n"} Sign up with number.
-      </Text>
-      {showLoader && <ActivityIndicator />}
-      <TextInput
-        placeholder="Enter Number"
-        onChangeText={(value: any) => {
-          setPhoneNumber(value);
-        }}
-        keyboardType="phone-pad"
-        autoComplete="tel"
-        style={styles.textInput}
-        placeholderTextColor="rgba(255,255,255,0.6)"
-        maxLength={13} // 13 length to check +91 also
-      />
-      <TouchableOpacity
-        style={[
-          styles.sendVerification,
-          {
-            opacity: disableVerificationBtn ? 0.5 : 1,
-          },
-        ]}
-        onPress={sendVerification}
-        disabled={disableVerificationBtn}
-      >
-        <Text
-          disabled={disableVerificationBtn}
+        <FirebaseRecaptchaVerifierModal
+          ref={recaptchaVerifier}
+          firebaseConfig={firebaseConfig}
+        />
+        <Text style={styles.otpText}>
+          Let’s start.{"\n"} Sign up with number.
+        </Text>
+        {showLoader && <ActivityIndicator />}
+        <TextInput
+          placeholder="Enter Number"
+          onChangeText={(value: any) => {
+            setPhoneNumber(value);
+          }}
+          keyboardType="phone-pad"
+          autoComplete="tel"
+          style={styles.textInput}
+          placeholderTextColor="rgba(255,255,255,0.6)"
+          maxLength={13} // 13 length to check +91 also
+        />
+        <TouchableOpacity
           style={[
-            styles.buttonText,
+            styles.sendVerification,
             {
               opacity: disableVerificationBtn ? 0.5 : 1,
             },
           ]}
+          onPress={sendVerification}
+          disabled={disableVerificationBtn}
         >
-          Send Verification
-        </Text>
-      </TouchableOpacity>
-      {verificationId && (
-        <>
-          <TextInput
-            placeholder="Confirm code"
-            onChangeText={setVerificationCode}
-            keyboardType="phone-pad"
-            autoComplete="tel"
-            style={styles.textInput}
-            placeholderTextColor="rgba(255,255,255,0.6)"
-            maxLength={6}
-          />
-          <TouchableOpacity
-            style={styles.sendCode}
-            onPress={confirmCode}
-            disabled={disableConfirmVerificationBtn}
+          <Text
+            disabled={disableVerificationBtn}
+            style={[
+              styles.buttonText,
+              {
+                opacity: disableVerificationBtn ? 0.5 : 1,
+              },
+            ]}
           >
-            <Text
-              style={[
-                styles.buttonText,
-                {
-                  opacity: disableConfirmVerificationBtn ? 0.5 : 1,
-                },
-              ]}
+            Send Verification
+          </Text>
+        </TouchableOpacity>
+        {verificationId && (
+          <>
+            <TextInput
+              placeholder="Confirm code"
+              onChangeText={setVerificationCode}
+              keyboardType="phone-pad"
+              autoComplete="tel"
+              style={styles.textInput}
+              placeholderTextColor="rgba(255,255,255,0.6)"
+              maxLength={6}
+            />
+            <TouchableOpacity
+              style={styles.sendCode}
+              onPress={confirmCode}
               disabled={disableConfirmVerificationBtn}
             >
-              Confirm Verification
-            </Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    opacity: disableConfirmVerificationBtn ? 0.5 : 1,
+                  },
+                ]}
+                disabled={disableConfirmVerificationBtn}
+              >
+                Confirm Verification
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
     </KeyboardAvoidingView>
-    
   );
 };
 export default Otp;

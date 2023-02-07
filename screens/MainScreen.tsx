@@ -18,9 +18,8 @@ import { COLORS } from "../constants";
 import MenuScreen from "./MenuScreen";
 
 const MainScreen = ({ navigation }: any) => {
-
   const newGroup = () => {
-    navigation.navigate("Register");
+    navigation.navigate("AddGroup");
   };
 
   const Tab = createBottomTabNavigator();
@@ -62,7 +61,13 @@ const MainScreen = ({ navigation }: any) => {
             fontSize: 30,
           },
           headerRight: () => (
-            <Ionicons containerStyle={styles.iconContainer} size = {40} name="add" color={COLORS.voilet} onPress={newGroup}/>
+            <Ionicons
+              containerStyle={styles.iconContainer}
+              size={40}
+              name="add"
+              color={COLORS.voilet}
+              onPress={newGroup}
+            />
           ),
         }}
       />
@@ -83,11 +88,11 @@ const MainScreen = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  icon: {
-    width:100,
-    height:100,
-    paddingLeft: 10,
-  },
+  // icon: {
+  //   width: 100,
+  //   height: 100,
+  //   paddingLeft: 10,
+  // },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
