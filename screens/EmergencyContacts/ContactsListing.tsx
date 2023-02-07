@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
 } from "react-native";
+import { SIZES } from "../../constants";
 
 const ContactsListing = ({ navigation }: any) => {
   const redirectToTimerScreen = () => {
@@ -28,8 +29,8 @@ const ContactsListing = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 108,
-    display: "flex",
+    marginTop: "20%",
+    // display: "flex",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
@@ -37,19 +38,22 @@ const styles = StyleSheet.create({
   title: {
     fontStyle: "normal",
     fontWeight: "600",
-    fontSize: 24,
-    lineHeight: 36,
+    fontSize: SIZES.height> 700? 40:30,
+    // lineHeight: 36,
     textAlign: "center",
     color: "#000000",
     marginBottom: 47,
   },
   image: {
-    width: 142,
-    height: 142,
-    marginBottom: 87,
+    width: SIZES.width>400? SIZES.width*.2:SIZES.width*.4,
+    height:SIZES.width>400? SIZES.width*.2:SIZES.width*.4,
+    marginBottom: "20%",
     backgroundColor: "#FF0000",
     position: "relative",
     borderRadius: 91,
+    justifyContent:'center',
+    alignContent:'center',
+    padding:"2%"
   },
   needHelp: {
     fontStyle: "normal",
@@ -58,9 +62,9 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     textAlign: "center",
     color: "#FFFFFF",
-    position: "absolute",
-    top: 36,
-    right: 12,
+    // position: "absolute",
+    // top: 36,
+    // right: 12,
   },
   pressHere: {
     fontStyle: "normal",
@@ -69,19 +73,19 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     textAlign: "center",
     color: "#FFFFFF",
-    position: "absolute",
-    top: 81,
-    right: 12,
+    // position: "absolute",
+    // top: 81,
+    // right: 12,
   },
 
   lineStyle: {
     borderWidth: 1,
     borderColor: "#FFFFFF",
-    position: "absolute",
-    width: "80%",
-    textAlign: "center",
-    left: 12,
-    top: 71,
+    // position: "absolute",
+    // width: "80%",
+    // textAlign: "center",
+    // left: 12,
+    // top: 71,
   },
 });
 
