@@ -10,11 +10,13 @@ import {
   KeyboardAvoidingView,
   Button,
   Pressable,
+  ScrollView,
 } from "react-native";
 import { TextInput, RadioButton } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import { SIZES } from "../constants";
+import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const EditGroup = () => {
   const [focus, setFocus] = useState(false);
@@ -23,6 +25,35 @@ const EditGroup = () => {
   const [state, setState] = useState("public");
   const [publicChecked, setpublicChecked] = useState("true");
   const [privateChecked, setprivateChecked] = useState("false");
+
+  function renderMembers() {
+    return (
+      <Pressable style={styles.memberListItem}>
+        <View style={styles.memberListItemImage}>
+          <MaterialCommunityIcons
+            name="numeric-1"
+            size={20}
+            color={COLORS.voilet}
+          />
+        </View>
+        <View>
+          <Text style={styles.memberListItemName}>Username</Text>
+          <Text style={styles.memberListItemCode}>Location</Text>
+          <Text style={styles.memberListItemCode}>Location line</Text>
+        </View>
+        <View style={styles.memberListItemType}>
+          <Text
+            style={{
+              color: "black",
+              fontWeight: "700",
+            }}
+          >
+            07th Feb {"\n"}05:16 pm
+          </Text>
+        </View>
+      </Pressable>
+    );
+  }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -100,9 +131,10 @@ const EditGroup = () => {
 
       <TouchableOpacity
         style={{
-          position: SIZES.height > 500 ? "absolute" : "relative",
-          bottom: SIZES.height > 500 ? "20%" : "10%",
+          // position: SIZES.height > 500 ? "absolute" : "relative",
+          // bottom: SIZES.height > 500 ? "20%" : "10%",
           marginTop: "5%",
+          marginBottom: "10%",
           alignSelf: "center",
           width: SIZES.width - SIZES.width * 0.2,
           height: 60,
@@ -120,9 +152,20 @@ const EditGroup = () => {
             alignSelf: "center",
           }}
         >
-          Create
+          Update
         </Text>
       </TouchableOpacity>
+      <View 
+      style={styles.memberList}
+      >
+        <ScrollView
+        style={{
+          backgroundColor:'grey'
+        }}
+        >{renderMembers()}
+        {renderMembers()}
+        {renderMembers()}</ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -132,6 +175,57 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
+  },
+  memberListItem: {
+    backgroundColor:'white',
+    alignItems: "center",
+    height: "auto",
+    flexDirection: "row",
+    padding: "2%",
+    marginBottom:2
+  },
+  memberListItemImage: {
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOpacity: 0.4,
+    shadowOffset: {
+      width: 0,
+      height: -1,
+    },
+    elevation: 5,
+    shadowRadius: 5,
+    padding: "1%",
+    marginRight: 10,
+    marginLeft: 0,
+    borderRadius: 20,
+  },
+  memberListItemName: {
+    fontSize: 20,
+  },
+  memberListItemCode: {
+    fontSize: 15,
+    color: "grey",
+  },
+  memberListItemType: {
+    borderRadius: 10,
+    width: "auto",
+    height: "auto",
+    padding: 5,
+    alignContent: "center",
+    justifyContent: "center",
+    fontWeight: "700",
+    fontSize: 15,
+    right: "1%",
+    position: "absolute",
+  },
+  memberList: {
+    bottom: 0,
+    position: "absolute",
+    backgroundColor: "transparent",
+    width: SIZES.width,
+    zIndex: 0,
+    padding: 30,
+    height:"40%"
   },
   textInput: {
     fontSize: SIZES.width > 300 ? 50 : 30,

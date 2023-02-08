@@ -26,7 +26,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { SIZES } from "../constants";
+import { COLORS, SIZES } from "../constants";
 import { animated, useSpring } from "@react-spring/native";
 
 type locationTypes = {
@@ -46,22 +46,21 @@ const HomeScreen = ({ navigation }: any) => {
   const [drop, setDrop] = useState(false);
   const onPressDropDownBtn = () => {
     setDrop(!drop);
-    setOnUp(false)
+    setOnUp(false);
   };
 
   const redirectToAddGroupScreen = () => {
     navigation.navigate("AddGroup");
   };
 
-  const [onUp, setOnUp] = useState(false)
+  const [onUp, setOnUp] = useState(false);
 
-  const onPressUpBtn = () =>{
-    setOnUp(!onUp)
-  }
+  const onPressUpBtn = () => {
+    setOnUp(!onUp);
+  };
 
   const customStyle2 = onUp ? styles.expand : styles.collapse;
   const customStyle = drop ? styles.dropDownEnabled : styles.dropDownDisabled;
-  
 
   const [state, setState] = useState<any>({
     curLoc: {
@@ -173,6 +172,62 @@ const HomeScreen = ({ navigation }: any) => {
     });
   };
 
+  function renderGroups(){
+    return(
+      <Pressable style={styles.groupListItem}>
+        <View>
+          <Text style={styles.groupListItemName}>
+            Group Name
+          </Text>
+          <Text  style={styles.groupListItemCode}>
+            Group Code
+          </Text>
+        </View>
+        <View style={styles.groupListItemType}>
+          <Text style={{
+            color:'white',
+            fontWeight:'700'
+          }}>
+          Group Type
+        </Text>
+        </View>
+        
+      </Pressable>
+    );
+
+    
+  }
+
+  function renderMembers(){
+    return(
+      <Pressable style={styles.memberListItem}>
+        <View style={styles.memberListItemImage}>
+          <Ionicons name="person-sharp" size={20} color={COLORS.voilet}/>
+        </View>
+        <View>
+          <Text style={styles.memberListItemName}>
+            Username
+          </Text>
+          <Text  style={styles.memberListItemCode}>
+            Location
+          </Text>
+          <Text  style={styles.memberListItemCode}>
+            Location line
+          </Text>
+        </View>
+        <View style={styles.memberListItemType}>
+          <Text style={{
+            color:'black',
+            fontWeight:'700'
+          }}>
+          07th Feb {'\n'}05:16 pm
+        </Text>
+        </View>
+        
+      </Pressable>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.homeWrapper}>
       <View style={styles.mapBox}>
@@ -271,80 +326,12 @@ const HomeScreen = ({ navigation }: any) => {
       >
         <ScrollView
           style={{
+            width:"100%",
             margin: "2%",
             marginBottom: SIZES.height > 700 ? "12%" : "17%",
           }}
         >
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            GroupView
-          </Text>
+          {renderGroups()}
         </ScrollView>
 
         <View
@@ -433,7 +420,9 @@ const HomeScreen = ({ navigation }: any) => {
             borderRadius: 30,
           }}
           onPress={onPressDropDownBtn}
-        ><MaterialIcons name="keyboard-arrow-up" size={20} /></TouchableOpacity>
+        >
+          <MaterialIcons name="keyboard-arrow-up" size={20} />
+        </TouchableOpacity>
       </View>
 
       {/* ______________view having location mapping button________________ */}
@@ -454,11 +443,15 @@ const HomeScreen = ({ navigation }: any) => {
 
       {/* Bottom users View  */}
       <View
-      
-      style={[
-        styles.memberList,
+        style={[
+          styles.memberList,
           customStyle2,
-          { paddingBottom: SIZES.height > 700 ? "10%" : "20%" },]}>
+          {
+            paddingBottom: SIZES.height > 700 ? "3%" : "1%",
+            justifyContent: "center",
+          },
+        ]}
+      >
         <TouchableOpacity
           style={{
             top: "2%",
@@ -471,63 +464,44 @@ const HomeScreen = ({ navigation }: any) => {
           }}
           onPress={onPressUpBtn}
         >
-        <MaterialIcons name={onUp?"keyboard-arrow-down":"keyboard-arrow-up"} size={20} />
+          <MaterialIcons
+            name={onUp ? "keyboard-arrow-down" : "keyboard-arrow-up"}
+            size={20}
+          />
         </TouchableOpacity>
         <ScrollView
           style={{
             height: "70%",
           }}
         >
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            User1
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            User1
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            User1
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            User1
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            User1
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            User1
-          </Text>
-          <Text
-            style={{
-              fontSize: 60,
-            }}
-          >
-            User1
-          </Text>
+          {renderMembers()}
         </ScrollView>
+        <Pressable
+          style={{
+            width: SIZES.width * 0.06,
+            height: SIZES.width * 0.06,
+            backgroundColor: "white",
+            alignSelf: "center",
+            shadowColor: "black",
+            shadowOpacity: 0.4,
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            elevation: 5,
+            shadowRadius: 5,
+            borderRadius: 30,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Ionicons
+            size={40}
+            name="add"
+            color={COLORS.voilet}
+            // onPress={newGroup}
+          />
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -540,6 +514,48 @@ const styles = StyleSheet.create({
   mapBox: {
     flex: 1,
   },
+  memberListItem:{
+    alignItems:'center',
+    height:'auto',
+    flexDirection:'row',
+    borderBottomWidth:1,
+    borderTopWidth:1,
+    padding:'2%'
+  },
+  memberListItemImage:{
+    backgroundColor:'white',
+    shadowColor: "black",
+    shadowOpacity: 0.4,
+    shadowOffset: {
+      width: 0,
+      height: -1,
+    },
+    elevation: 5,
+    shadowRadius: 5,
+    padding:'1%',
+    marginRight:10,
+    marginLeft:0,
+    borderRadius:20
+  },
+  memberListItemName:{
+    fontSize:20,
+  },
+  memberListItemCode:{
+    fontSize:15,
+    color:'grey'
+  },
+  memberListItemType:{
+    borderRadius:10,
+    width:'auto',
+    height:'auto',
+    padding:5,
+    alignContent:'center',
+    justifyContent:'center',
+    fontWeight:'700',
+    fontSize:15,
+    right:'1%',
+    position:'absolute',
+  },
   memberList: {
     bottom: 0,
     position: "absolute",
@@ -549,6 +565,14 @@ const styles = StyleSheet.create({
     padding: 30,
     borderTopLeftRadius: SIZES.width > 350 ? 40 : 20,
     borderTopRightRadius: SIZES.width > 350 ? 40 : 20,
+    shadowColor: "black",
+    shadowOpacity: 0.4,
+    shadowOffset: {
+      width: 0,
+      height: -1,
+    },
+    elevation: 5,
+    shadowRadius: 5,
   },
   groupListDropDownBtn: {
     marginTop: SIZES.height * 0.05,
@@ -569,6 +593,34 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     zIndex: 1,
   },
+  groupListItem:{
+    alignItems:'center',
+    height:'auto',
+    flexDirection:'row',
+    borderBottomWidth:1,
+    borderTopWidth:1,
+    padding:'2%'
+  },
+  groupListItemName:{
+    fontSize:20,
+  },
+  groupListItemCode:{
+    fontSize:15,
+    color:'grey'
+  },
+  groupListItemType:{
+    backgroundColor:'green',
+    borderRadius:10,
+    width:'auto',
+    height:'auto',
+    padding:5,
+    alignContent:'center',
+    justifyContent:'center',
+    fontWeight:'700',
+    fontSize:15,
+    right:'1%',
+    position:'absolute',
+  },
   groupListDropDown: {
     marginTop: -SIZES.height * 0.6,
     position: "absolute",
@@ -576,9 +628,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: SIZES.width,
     zIndex: 0,
-    padding: 10,
+    padding: "1%",
     borderBottomLeftRadius: SIZES.width > 350 ? 40 : 20,
     borderBottomRightRadius: SIZES.width > 350 ? 40 : 20,
+    shadowColor: "black",
+    shadowOpacity: 0.4,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    elevation: 5,
+    shadowRadius: 5,
+    justifyContent:'center',
+    alignItems:'center'
   },
   dropDownEnabled: {
     transform: [
@@ -594,11 +656,11 @@ const styles = StyleSheet.create({
       },
     ],
   },
-  expand:{
-    height:SIZES.height * 0.8
+  expand: {
+    height: SIZES.height * 0.8,
   },
-  collapse:{
-    height:SIZES.height * 0.3
+  collapse: {
+    height: SIZES.height * 0.3,
   },
 });
 
