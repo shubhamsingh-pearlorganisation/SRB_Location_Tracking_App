@@ -16,7 +16,6 @@ import MapViewDirections from "react-native-maps-directions";
 import { getCurrentLocation } from "../core/utils/helper";
 import imagePath from "../core/utils/constants";
 import { GOOGLE_API_KEY } from "../core/utils/constants";
-import Otp from "./Otp";
 
 type locationTypes = {
   latitude: number;

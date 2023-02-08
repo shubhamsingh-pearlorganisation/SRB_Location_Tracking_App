@@ -1,15 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
-import SelectLocation from "./screens/SelectLocation";
 import OnBoarding from "./screens/OnBoarding";
-import SplashPartner from "./screens/SplashPartner";
 import FlashMessage from "react-native-flash-message";
-import Otp from "./screens/Otp";
 import { ToastProvider } from "react-native-toast-notifications";
-import { SafeAreaView } from "react-native-safe-area-context/lib/typescript/SafeAreaView";
 import MainScreen from "./screens/MainScreen";
 import Register from "./screens/RegisterScreen";
 import { COLORS } from "./constants";
@@ -18,6 +12,7 @@ import EditGroup from "./screens/EditGroup";
 import ContactsListing from "./screens/EmergencyContacts/ContactsListing";
 import EmergencyContactsScreen from "./screens/EmergencyContacts/Home";
 import EmergencyTimerScreen from "./screens/EmergencyContacts/EmergencyTimerScreen";
+import Login from "./screens/Login";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -32,8 +27,8 @@ const App = () => {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="otp"
-            component={Otp}
+            name="Login"
+            component={Login}
             options={{ headerShown: false }}
           />
           <Stack.Screen

@@ -16,16 +16,14 @@ import countriesData from "../assets/api-data/countriesData.json";
 import { SelectList } from "react-native-dropdown-select-list";
 import { regexes } from "../core/utils/constants";
 import { instance } from "../core/utils/AxiosInterceptor";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 
 // ---------------------------------------------------------------------------------------------
 
-const Otp = ({ navigation }: any) => {
-  const onPressSubmit = () => {
-    navigation.navigate("Main");
-  };
-
+const Login = ({ navigation }: any) => {
   const toast = useToast();
+
+  // Local Component's State
   const [phoneNumber, setPhoneNumber] = useState<any>("");
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState<any>(null);
@@ -68,7 +66,8 @@ const Otp = ({ navigation }: any) => {
       setDisableConfirmVerificationBtn(false);
     else setDisableConfirmVerificationBtn(true);
   }, [verificationCode]);
-  // ==================================================================================================
+
+  // -------------------------------------------------------------------------------------------
 
   // This method is used to send verification code from firebase.
   const sendVerification = async () => {
@@ -96,7 +95,7 @@ const Otp = ({ navigation }: any) => {
           completePhoneNumber,
           recaptchaVerifier.current
         );
-        // If Verification code exists
+        // If Verification code received
         if (verCode) {
           setShowLoader(false);
           setVerificationId(verCode);
@@ -123,11 +122,10 @@ const Otp = ({ navigation }: any) => {
       );
       if (credential) {
         const result = await fireb.auth().signInWithCredential(credential);
-        // If Verification code correct
+        // If Verification code matched from firebase
         if (result) {
           setShowLoader(false);
           generateAuthenticationToken(); //Generating Authentication Token to proceed further
-          // console.log("result: ", result);
         }
       }
     } catch (error: any) {
@@ -141,11 +139,7 @@ const Otp = ({ navigation }: any) => {
   // This method is used to generating authentication token
   const generateAuthenticationToken = async () => {
     try {
-      // For "Content-Type": "application/json",
-      // const payload = {
-      //   method: "POST",
-      //   body: JSON.stringify({ contact: completePhoneNumber }),
-      // };
+      setShowLoader(true);
 
       // For "Content-Type": "multipart/form-data",
       const formData = new FormData();
@@ -161,19 +155,19 @@ const Otp = ({ navigation }: any) => {
         console.log("authentication-token: ", jwtToken);
         console.log("userDetails: ", userDetails);
 
-        // Saving JWT (Authentication) token to Async Storage React Native
+        // Saving JWT (Authentication) token to Expo Secure Store
+        await SecureStore.setItemAsync("authentication-token", jwtToken);
 
-        // jwtToken &&
-        //   (await AsyncStorage.setItem(
-        //     "authentication-token",
-        //     JSON.stringify(jwtToken)
-        //   ));
+        setShowLoader(false);
 
         if (isNewUser) navigation.navigate("Register");
         else navigation.navigate("Main");
-      } else
+      } else {
+        setShowLoader(false);
         console.log("Getting an error while generating authentication token");
+      }
     } catch (error) {
+      setShowLoader(false);
       console.log(
         "Getting an error while generating authentication token : ",
         error
@@ -285,7 +279,7 @@ const Otp = ({ navigation }: any) => {
     </KeyboardAvoidingView>
   );
 };
-export default Otp;
+export default Login;
 
 const styles = StyleSheet.create({
   container: {
