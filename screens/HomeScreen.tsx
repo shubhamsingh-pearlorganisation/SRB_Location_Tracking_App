@@ -9,6 +9,10 @@ import {
   TouchableOpacity,
   StatusBar,
   SafeAreaView,
+  Pressable,
+  NativeModules,
+  Animated,
+  ScrollView,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
@@ -16,12 +20,20 @@ import MapViewDirections from "react-native-maps-directions";
 import { getCurrentLocation } from "../core/utils/helper";
 import imagePath from "../core/utils/constants";
 import { GOOGLE_API_KEY } from "../core/utils/constants";
-import Otp from "./Otp";
+import Otp from "./Login";
+
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { SIZES } from "../constants";
+import { animated, useSpring } from "@react-spring/native";
 
 type locationTypes = {
   latitude: number;
   longitude: number;
 };
+
 const screen = Dimensions.get("window");
 const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE_DELTA = 0.04;
@@ -31,6 +43,17 @@ const HomeScreen = ({ navigation }: any) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const mapRef: any = useRef();
   const markerRef: any = useRef();
+  const [drop, setDrop] = useState(false);
+  const onPressDropDownBtn = () => {
+    setDrop(!drop);
+  };
+
+  const redirectToAddGroupScreen = () => {
+    navigation.navigate("AddGroup");
+  };
+
+  const customStyle = drop ? styles.dropDownEnabled : styles.dropDownDisabled;
+
   const [state, setState] = useState<any>({
     curLoc: {
       latitude: 30.7333,
@@ -208,7 +231,9 @@ const HomeScreen = ({ navigation }: any) => {
             />
           )}
         </MapView>
-        <TouchableOpacity
+
+        {/* ___________________button for taking location and dropping path on the map____________________  */}
+        {/* <TouchableOpacity
           style={{
             position: "absolute",
             bottom: 0,
@@ -217,9 +242,198 @@ const HomeScreen = ({ navigation }: any) => {
           onPress={onCenter}
         >
           <Image source={imagePath.centerBtn} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
-      <View style={[styles.buttonBox, tw`justify-center`]}>
+      {/* Top group list drop down button */}
+      <Pressable
+        style={styles.groupListDropDownBtn}
+        onPress={onPressDropDownBtn}
+      >
+        <Text>Group Name</Text>
+        <MaterialIcons name="keyboard-arrow-down" size={20} />
+      </Pressable>
+      {/* Drop Down Group List */}
+      <View
+        style={[
+          styles.groupListDropDown,
+          customStyle,
+          { paddingTop: SIZES.height > 700 ? "10%" : "20%" },
+        ]}
+      >
+        <ScrollView
+          style={{
+            margin: "2%",
+            marginBottom: SIZES.height > 700 ? "12%" : "17%",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+          <Text
+            style={{
+              fontSize: 60,
+            }}
+          >
+            GroupView
+          </Text>
+        </ScrollView>
+
+        <View
+          style={{
+            width: "100%",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            bottom: "10%",
+            position: "absolute",
+            padding: "2%",
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              width: SIZES.width * 0.25,
+              height: "auto",
+              borderRadius: 30,
+              backgroundColor: "#705ECF",
+              padding: 4,
+            }}
+            onPress={redirectToAddGroupScreen}
+          >
+            <Text
+              style={{
+                fontWeight: "400",
+                fontSize: SIZES.width > 400 ? 20 : 12,
+                color: "white",
+                alignSelf: "center",
+              }}
+            >
+              New Group
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: SIZES.width * 0.25,
+              height: "auto",
+              borderRadius: 30,
+              backgroundColor: "#705ECF",
+              padding: 4,
+            }}
+            onPress={redirectToAddGroupScreen}
+          >
+            <Text
+              style={{
+                fontWeight: "400",
+                fontSize: SIZES.width > 400 ? 20 : 12,
+                color: "white",
+                alignSelf: "center",
+              }}
+            >
+              Join Group
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: SIZES.width * 0.25,
+              height: "auto",
+              borderRadius: 30,
+              backgroundColor: "#705ECF",
+              padding: 4,
+            }}
+            // onPress={redirectToAddGroupScreen}
+          >
+            <Text
+              style={{
+                fontWeight: "400",
+                fontSize: SIZES.width > 400 ? 20 : 12,
+                color: "white",
+                alignSelf: "center",
+              }}
+            >
+              Invite Group
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          style={{
+            bottom: "2%",
+            position: "absolute",
+            width: "8%",
+            height: "2%",
+            backgroundColor: "rgba(0,0,0,.2)",
+            alignSelf: "center",
+            borderRadius: 30,
+          }}
+          onPress={onPressDropDownBtn}
+        />
+      </View>
+
+      {/* ______________view having location mapping button________________ */}
+      {/* <View
+        style={[
+          // styles.buttonBox,
+          tw`justify-center`,
+        ]}
+      >
         <TouchableOpacity onPress={onPressLocation}>
           <Text
             style={tw`bg-black text-white w-64 p-4 mx-auto text-center text-lg`}
@@ -227,6 +441,55 @@ const HomeScreen = ({ navigation }: any) => {
             Enter Location
           </Text>
         </TouchableOpacity>
+      </View> */}
+
+      {/* Bottom users View  */}
+      <View
+      
+      style={[
+        styles.memberList,
+          
+          { paddingBottom: SIZES.height > 700 ? "10%" : "20%" },]}>
+        <TouchableOpacity
+          style={{
+            top: "2%",
+            position: "absolute",
+            width: "8%",
+            height: "auto",
+            backgroundColor: "rgba(0,0,0,.2)",
+            alignSelf: "center",
+            borderRadius: 30,
+          }}
+          // onPress={onPressDropDownBtn}
+        >
+        <MaterialIcons name="keyboard-arrow-up" size={20} />
+        </TouchableOpacity>
+        <ScrollView
+        style={{
+          height:"70%"
+        }}>
+          <Text style={{
+              fontSize: 60,
+            }}>User1</Text>
+          <Text style={{
+              fontSize: 60,
+            }}>User1</Text>
+            <Text style={{
+              fontSize: 60,
+            }}>User1</Text>
+            <Text style={{
+              fontSize: 60,
+            }}>User1</Text>
+            <Text style={{
+              fontSize: 60,
+            }}>User1</Text>
+            <Text style={{
+              fontSize: 60,
+            }}>User1</Text>
+            <Text style={{
+              fontSize: 60,
+            }}>User1</Text>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -237,10 +500,62 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mapBox: {
-    flex: 3,
-  },
-  buttonBox: {
     flex: 1,
+  },
+  memberList:{
+    bottom:0,
+    position: "absolute",
+    height: SIZES.height * 0.3,
+    backgroundColor: "white",
+    width: SIZES.width,
+    zIndex: 0,
+    padding: 30,
+    borderTopLeftRadius: SIZES.width > 350 ? 40 : 20,
+    borderTopRightRadius: SIZES.width > 350 ? 40 : 20,
+  },
+  groupListDropDownBtn: {
+    marginTop: SIZES.height * 0.05,
+    flexDirection: "row",
+    position: "absolute",
+    backgroundColor: "white",
+    padding: 5,
+    alignSelf: "center",
+    shadowColor: "black",
+    shadowOpacity: 1,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    elevation: 10,
+    shadowRadius: 5,
+    borderRadius: 20,
+    justifyContent: "center",
+    zIndex: 1,
+  },
+  groupListDropDown: {
+    marginTop: -SIZES.height * 0.6,
+    position: "absolute",
+    height: SIZES.height * 0.5,
+    backgroundColor: "white",
+    width: SIZES.width,
+    zIndex: 0,
+    padding: 10,
+    borderBottomLeftRadius: SIZES.width > 350 ? 40 : 20,
+    borderBottomRightRadius: SIZES.width > 350 ? 40 : 20,
+  },
+  dropDownEnabled: {
+    transform: [
+      {
+        translateY: SIZES.height * 0.6,
+      },
+    ],
+  },
+  dropDownDisabled: {
+    transform: [
+      {
+        translateY: -SIZES.height * 0.6,
+      },
+    ],
   },
 });
 

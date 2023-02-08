@@ -46,7 +46,7 @@ const OnBoarding = ({ navigation }: any) => {
   };
 
   const loginUser = () => {
-    navigation.navigate("otp");
+    navigation.navigate("Login");
   };
 
   const [completed, setCompleted] = React.useState(false);

@@ -7,7 +7,7 @@ import SelectLocation from "./screens/SelectLocation";
 import OnBoarding from "./screens/OnBoarding";
 import SplashPartner from "./screens/SplashPartner";
 import FlashMessage from "react-native-flash-message";
-import Otp from "./screens/Otp";
+import Login from "./screens/Login";
 import { ToastProvider } from "react-native-toast-notifications";
 import { SafeAreaView } from "react-native-safe-area-context/lib/typescript/SafeAreaView";
 import MainScreen from "./screens/MainScreen";
@@ -32,8 +32,8 @@ const App = () => {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="otp"
-            component={Otp}
+            name="Login"
+            component={Login}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -44,6 +44,11 @@ const App = () => {
           <Stack.Screen
             name="Register"
             component={Register}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SelectLocation"
+            component={SelectLocation}
             options={{ headerShown: false }}
           />
           <Stack.Screen

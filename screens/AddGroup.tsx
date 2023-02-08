@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   textInput: {
-    fontSize: SIZES.width > 300 ? 50 : 30,
+    fontSize: SIZES.width > 400 ? 50 : 30,
     backgroundColor: "transparent",
     textAlign: "center",
     borderBottomWidth: 0,
