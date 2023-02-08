@@ -7,7 +7,6 @@ import {
   StyleSheet,
   ActivityIndicator,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebaseConfig";
@@ -15,15 +14,16 @@ import fireb from "firebase/compat";
 import { useToast } from "react-native-toast-notifications";
 import countriesData from "../assets/api-data/countriesData.json";
 import { SelectList } from "react-native-dropdown-select-list";
+import { regexes } from "../core/utils/constants";
+import { instance } from "../core/utils/AxiosInterceptor";
+import * as SecureStore from "expo-secure-store";
 
 // ---------------------------------------------------------------------------------------------
 
-const Otp = ({ navigation }: any) => {
-  const onPressSubmit = () => {
-    navigation.navigate("Main");
-  };
-
+const Login = ({ navigation }: any) => {
   const toast = useToast();
+
+  // Local Component's State
   const [phoneNumber, setPhoneNumber] = useState<any>("");
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState<any>(null);
@@ -43,11 +43,17 @@ const Otp = ({ navigation }: any) => {
 
   // Enabling or Disabling Send Verification Button
   useEffect(() => {
-    if (phoneNumber && phoneNumber.length >= 10 && phoneNumber.length < 13)
+    if (
+      phoneNumber &&
+      phoneNumber.length >= 10 &&
+      phoneNumber.length < 13 &&
+      selectedCountryCode
+    )
       setDisableVerificationBtn(false);
     else setDisableVerificationBtn(true);
-  }, [phoneNumber]);
+  }, [phoneNumber, selectedCountryCode]);
 
+  //Merging Phone Number with Country Code
   useEffect(() => {
     if (phoneNumber && selectedCountryCode) {
       setCompletePhoneNumber(selectedCountryCode + "" + phoneNumber);
@@ -61,36 +67,35 @@ const Otp = ({ navigation }: any) => {
     else setDisableConfirmVerificationBtn(true);
   }, [verificationCode]);
 
+  // -------------------------------------------------------------------------------------------
+
   // This method is used to send verification code from firebase.
   const sendVerification = async () => {
     try {
-      // const reg = /^[0]?[6789]\d{9}$/; // Normal Indian Mobile Number Regex
-      // const regexWithPlus91 = /^((\+91?)|\+)?[7-9][0-9]{9}$/; // Indian Mobile Number Regex with +91
-
-      const globalMobileNumberRegex = /^[0-9]{10}$/; //10 digit mobile number regex
+      const globalMobileNumberRegex = regexes.tenDigitMobileNumber; //10 digit mobile number regex
 
       if (
         isNaN(phoneNumber) ||
         (phoneNumber &&
           phoneNumber.length >= 10 &&
           phoneNumber.length < 13 &&
-          globalMobileNumberRegex.test(phoneNumber) === false)
+          !globalMobileNumberRegex.test(phoneNumber))
       ) {
-        toast.show("Please enter a valid Indian Mobile Number", {
+        toast.show("Please enter a valid Mobile Number", {
           type: "error",
         });
       } else if (
         phoneNumber.length >= 10 &&
         phoneNumber.length < 13 &&
-        globalMobileNumberRegex.test(phoneNumber) === true
+        globalMobileNumberRegex.test(phoneNumber)
       ) {
         setShowLoader(true);
-
         const phoneProvider = new fireb.auth.PhoneAuthProvider();
-        const verCode = await phoneProvider.verifyPhoneNumber(
+        const verCode: any = await phoneProvider.verifyPhoneNumber(
           completePhoneNumber,
           recaptchaVerifier.current
         );
+        // If Verification code received
         if (verCode) {
           setShowLoader(false);
           setVerificationId(verCode);
@@ -117,10 +122,10 @@ const Otp = ({ navigation }: any) => {
       );
       if (credential) {
         const result = await fireb.auth().signInWithCredential(credential);
+        // If Verification code matched from firebase
         if (result) {
-          navigation.navigate("Main");
           setShowLoader(false);
-          console.log("result: ", result);
+          generateAuthenticationToken(); //Generating Authentication Token to proceed further
         }
       }
     } catch (error: any) {
@@ -131,6 +136,46 @@ const Otp = ({ navigation }: any) => {
     }
   };
 
+  // This method is used to generating authentication token
+  const generateAuthenticationToken = async () => {
+    try {
+      setShowLoader(true);
+
+      // For "Content-Type": "multipart/form-data",
+      const formData = new FormData();
+      formData.append("contact", completePhoneNumber);
+
+      const response = await instance.post("/api/generate_api_token", formData);
+      if (response.status === 200) {
+        const isNewUser = response.data?.is_new_user;
+        const jwtToken = response.data?.token_id;
+        const userDetails = response?.data.data;
+
+        console.log("isNewUser: ", isNewUser);
+        console.log("authentication-token: ", jwtToken);
+        console.log("userDetails: ", userDetails);
+
+        // Saving JWT (Authentication) token to Expo Secure Store
+        await SecureStore.setItemAsync("authentication-token", jwtToken);
+
+        setShowLoader(false);
+
+        if (isNewUser) navigation.navigate("Register");
+        else navigation.navigate("Main");
+      } else {
+        setShowLoader(false);
+        console.log("Getting an error while generating authentication token");
+      }
+    } catch (error) {
+      setShowLoader(false);
+      console.log(
+        "Getting an error while generating authentication token : ",
+        error
+      );
+    }
+  };
+
+  // -------------------------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
@@ -234,7 +279,7 @@ const Otp = ({ navigation }: any) => {
     </KeyboardAvoidingView>
   );
 };
-export default Otp;
+export default Login;
 
 const styles = StyleSheet.create({
   container: {

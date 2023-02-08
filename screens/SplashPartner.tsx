@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const SplashPartner = ({ navigation }: any) => {
   const onPressSubmit = () => {
-    navigation.navigate("otp");
+    navigation.navigate("Login");
   };
   return (
     <View style={styles.container}>

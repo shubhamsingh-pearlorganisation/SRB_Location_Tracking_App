@@ -31,12 +31,12 @@ const MenuScreen = ({ navigation }: any) => {
         <MaterialIcons
           style={[styles.icons, { paddingLeft: 5 }]}
           name="keyboard-arrow-left"
-          size={SIZES.width>400 ? 30:20}
+          size={SIZES.width > 400 ? 30 : 20}
           color={"black"}
         />
         <Text
           style={{
-            fontSize: SIZES.width>400 ? 30:20,
+            fontSize: SIZES.width > 400 ? 30 : 20,
             alignSelf: "center",
             fontWeight: "600",
           }}
@@ -46,7 +46,7 @@ const MenuScreen = ({ navigation }: any) => {
         <FontAwesome5
           style={[styles.icons, { right: 0, position: "absolute" }]}
           name="user-circle"
-          size={SIZES.width>400 ? 30:20}
+          size={SIZES.width > 400 ? 30 : 20}
           color={"black"}
         />
       </View>
@@ -63,12 +63,12 @@ const MenuScreen = ({ navigation }: any) => {
         <FontAwesome5
           style={[styles.icons, { left: 0 }]}
           name="user-circle"
-          size={SIZES.width>400 ? 30:20}
+          size={SIZES.width > 400 ? 30 : 20}
           color={"black"}
         />
         <Text
           style={{
-            fontSize: SIZES.width>400 ? 30:20,
+            fontSize: SIZES.width > 400 ? 30 : 20,
             alignSelf: "center",
             fontWeight: "600",
           }}
@@ -78,7 +78,7 @@ const MenuScreen = ({ navigation }: any) => {
         <MaterialIcons
           style={[styles.icons, { right: 0, position: "absolute" }]}
           name="keyboard-arrow-right"
-          size={SIZES.width>400 ? 30:20}
+          size={SIZES.width > 400 ? 30 : 20}
           color={"black"}
         />
       </View>
@@ -100,13 +100,13 @@ const MenuScreen = ({ navigation }: any) => {
           <Ionicons
             style={[styles.icons]}
             name="ios-share-outline"
-            size={SIZES.width>400 ? 30:20}
+            size={SIZES.width > 400 ? 30 : 20}
             color={"black"}
           />
 
           <Text
             style={{
-              fontSize: SIZES.width>400 ? 30:20,
+              fontSize: SIZES.width > 400 ? 30 : 20,
               alignSelf: "center",
               fontWeight: "600",
             }}
@@ -123,13 +123,13 @@ const MenuScreen = ({ navigation }: any) => {
           <MaterialCommunityIcons
             style={[styles.icons]}
             name="car-brake-alert"
-            size={SIZES.width>400 ? 30:20}
+            size={SIZES.width > 400 ? 30 : 20}
             color={"black"}
           />
 
           <Text
             style={{
-              fontSize: SIZES.width>400 ? 30:20,
+              fontSize: SIZES.width > 400 ? 30 : 20,
               alignSelf: "center",
               fontWeight: "600",
             }}
@@ -148,13 +148,13 @@ const MenuScreen = ({ navigation }: any) => {
         <Ionicons
           style={[styles.icons, { paddingLeft: 5 }]}
           name="settings-sharp"
-          size={SIZES.width>400 ? 30:20}
+          size={SIZES.width > 400 ? 30 : 20}
           color={"black"}
         />
 
         <Text
           style={{
-            fontSize: SIZES.width>400 ? 30:20,
+            fontSize: SIZES.width > 400 ? 30 : 20,
             alignSelf: "center",
             fontWeight: "600",
           }}
@@ -164,7 +164,7 @@ const MenuScreen = ({ navigation }: any) => {
         <MaterialIcons
           style={[styles.icons, { right: 0, position: "absolute" }]}
           name="keyboard-arrow-right"
-          size={SIZES.width>400 ? 30:20}
+          size={SIZES.width > 400 ? 30 : 20}
           color={"black"}
         />
       </View>
@@ -194,7 +194,7 @@ const MenuScreen = ({ navigation }: any) => {
 
           <Text
             style={{
-              fontSize: SIZES.width>400 ? 30:20,
+              fontSize: SIZES.width > 400 ? 30 : 20,
               alignSelf: "center",
               fontWeight: "600",
             }}
@@ -217,7 +217,7 @@ const MenuScreen = ({ navigation }: any) => {
 
           <Text
             style={{
-              fontSize: SIZES.width>400 ? 30:20,
+              fontSize: SIZES.width > 400 ? 30 : 20,
               alignSelf: "center",
               fontWeight: "600",
             }}
@@ -234,13 +234,13 @@ const MenuScreen = ({ navigation }: any) => {
           <MaterialIcons
             style={[styles.icons, { paddingLeft: 5 }]}
             name="logout"
-            size={SIZES.width>400 ? 30:20}
+            size={SIZES.width > 400 ? 30 : 20}
             color={"black"}
           />
 
           <Text
             style={{
-              fontSize: SIZES.width>400 ? 30:20,
+              fontSize: SIZES.width > 400 ? 30 : 20,
               alignSelf: "center",
               fontWeight: "600",
             }}
