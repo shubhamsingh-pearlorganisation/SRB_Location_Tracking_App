@@ -52,7 +52,15 @@ const HomeScreen = ({ navigation }: any) => {
     navigation.navigate("AddGroup");
   };
 
+  const [onUp, setOnUp] = useState(false)
+
+  const onPressUpBtn = () =>{
+    setOnUp(!onUp)
+  }
+
+  const customStyle2 = onUp ? styles.expand : styles.collapse;
   const customStyle = drop ? styles.dropDownEnabled : styles.dropDownDisabled;
+  
 
   const [state, setState] = useState<any>({
     curLoc: {
@@ -448,7 +456,7 @@ const HomeScreen = ({ navigation }: any) => {
       
       style={[
         styles.memberList,
-          
+          customStyle2,
           { paddingBottom: SIZES.height > 700 ? "10%" : "20%" },]}>
         <TouchableOpacity
           style={{
@@ -460,9 +468,9 @@ const HomeScreen = ({ navigation }: any) => {
             alignSelf: "center",
             borderRadius: 30,
           }}
-          // onPress={onPressDropDownBtn}
+          onPress={onPressUpBtn}
         >
-        <MaterialIcons name="keyboard-arrow-up" size={20} />
+        <MaterialIcons name={onUp?"keyboard-arrow-down":"keyboard-arrow-up"} size={20} />
         </TouchableOpacity>
         <ScrollView
         style={{
@@ -505,7 +513,6 @@ const styles = StyleSheet.create({
   memberList:{
     bottom:0,
     position: "absolute",
-    height: SIZES.height * 0.3,
     backgroundColor: "white",
     width: SIZES.width,
     zIndex: 0,
@@ -556,6 +563,12 @@ const styles = StyleSheet.create({
         translateY: -SIZES.height * 0.6,
       },
     ],
+  },
+  expand:{
+    height:SIZES.height * 0.8
+  },
+  collapse:{
+    height:SIZES.height * 0.3
   },
 });
 
