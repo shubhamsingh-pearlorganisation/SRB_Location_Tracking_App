@@ -46,6 +46,7 @@ const HomeScreen = ({ navigation }: any) => {
   const [drop, setDrop] = useState(false);
   const onPressDropDownBtn = () => {
     setDrop(!drop);
+    setOnUp(false)
   };
 
   const redirectToAddGroupScreen = () => {
@@ -426,13 +427,13 @@ const HomeScreen = ({ navigation }: any) => {
             bottom: "2%",
             position: "absolute",
             width: "8%",
-            height: "2%",
+            height: "auto",
             backgroundColor: "rgba(0,0,0,.2)",
             alignSelf: "center",
             borderRadius: 30,
           }}
           onPress={onPressDropDownBtn}
-        />
+        ><MaterialIcons name="keyboard-arrow-up" size={20} /></TouchableOpacity>
       </View>
 
       {/* ______________view having location mapping button________________ */}
