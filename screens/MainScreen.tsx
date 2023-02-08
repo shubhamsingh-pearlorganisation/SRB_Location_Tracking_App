@@ -23,8 +23,7 @@ const MainScreen = ({ navigation }: any) => {
     navigation.navigate("AddGroup");
   };
 
-  const Tab = createBottomTabNavigator(
-  );
+  const Tab = createBottomTabNavigator();
 
   return (
     <Tab.Navigator
@@ -90,7 +89,6 @@ const MainScreen = ({ navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-  
   iconContainer: {
     // borderBottomWidth:1,
     // borderColor:'black',
@@ -98,7 +96,6 @@ const styles = StyleSheet.create({
     // justifyContent: "space-evenly",
     // width: "50%",
   },
-  
 });
 
 export default MainScreen;

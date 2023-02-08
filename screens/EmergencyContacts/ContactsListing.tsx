@@ -38,22 +38,22 @@ const styles = StyleSheet.create({
   title: {
     fontStyle: "normal",
     fontWeight: "600",
-    fontSize: SIZES.height> 700? 40:30,
+    fontSize: SIZES.height > 700 ? 40 : 30,
     // lineHeight: 36,
     textAlign: "center",
     color: "#000000",
     marginBottom: 47,
   },
   image: {
-    width: SIZES.width>400? SIZES.width*.2:SIZES.width*.4,
-    height:SIZES.width>400? SIZES.width*.2:SIZES.width*.4,
+    width: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
+    height: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
     marginBottom: "20%",
     backgroundColor: "#FF0000",
     position: "relative",
     borderRadius: 91,
-    justifyContent:'center',
-    alignContent:'center',
-    padding:"2%"
+    justifyContent: "center",
+    alignContent: "center",
+    padding: "2%",
   },
   needHelp: {
     fontStyle: "normal",
