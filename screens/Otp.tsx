@@ -7,7 +7,6 @@ import {
   StyleSheet,
   ActivityIndicator,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebaseConfig";
@@ -15,6 +14,9 @@ import fireb from "firebase/compat";
 import { useToast } from "react-native-toast-notifications";
 import countriesData from "../assets/api-data/countriesData.json";
 import { SelectList } from "react-native-dropdown-select-list";
+import { regexes } from "../core/utils/constants";
+import { instance } from "../core/utils/AxiosInterceptor";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // ---------------------------------------------------------------------------------------------
 
@@ -43,11 +45,17 @@ const Otp = ({ navigation }: any) => {
 
   // Enabling or Disabling Send Verification Button
   useEffect(() => {
-    if (phoneNumber && phoneNumber.length >= 10 && phoneNumber.length < 13)
+    if (
+      phoneNumber &&
+      phoneNumber.length >= 10 &&
+      phoneNumber.length < 13 &&
+      selectedCountryCode
+    )
       setDisableVerificationBtn(false);
     else setDisableVerificationBtn(true);
-  }, [phoneNumber]);
+  }, [phoneNumber, selectedCountryCode]);
 
+  //Merging Phone Number with Country Code
   useEffect(() => {
     if (phoneNumber && selectedCountryCode) {
       setCompletePhoneNumber(selectedCountryCode + "" + phoneNumber);
@@ -60,37 +68,35 @@ const Otp = ({ navigation }: any) => {
       setDisableConfirmVerificationBtn(false);
     else setDisableConfirmVerificationBtn(true);
   }, [verificationCode]);
+  // ==================================================================================================
 
   // This method is used to send verification code from firebase.
   const sendVerification = async () => {
     try {
-      // const reg = /^[0]?[6789]\d{9}$/; // Normal Indian Mobile Number Regex
-      // const regexWithPlus91 = /^((\+91?)|\+)?[7-9][0-9]{9}$/; // Indian Mobile Number Regex with +91
-
-      const globalMobileNumberRegex = /^[0-9]{10}$/; //10 digit mobile number regex
+      const globalMobileNumberRegex = regexes.tenDigitMobileNumber; //10 digit mobile number regex
 
       if (
         isNaN(phoneNumber) ||
         (phoneNumber &&
           phoneNumber.length >= 10 &&
           phoneNumber.length < 13 &&
-          globalMobileNumberRegex.test(phoneNumber) === false)
+          !globalMobileNumberRegex.test(phoneNumber))
       ) {
-        toast.show("Please enter a valid Indian Mobile Number", {
+        toast.show("Please enter a valid Mobile Number", {
           type: "error",
         });
       } else if (
         phoneNumber.length >= 10 &&
         phoneNumber.length < 13 &&
-        globalMobileNumberRegex.test(phoneNumber) === true
+        globalMobileNumberRegex.test(phoneNumber)
       ) {
         setShowLoader(true);
-
         const phoneProvider = new fireb.auth.PhoneAuthProvider();
-        const verCode = await phoneProvider.verifyPhoneNumber(
+        const verCode: any = await phoneProvider.verifyPhoneNumber(
           completePhoneNumber,
           recaptchaVerifier.current
         );
+        // If Verification code exists
         if (verCode) {
           setShowLoader(false);
           setVerificationId(verCode);
@@ -117,10 +123,11 @@ const Otp = ({ navigation }: any) => {
       );
       if (credential) {
         const result = await fireb.auth().signInWithCredential(credential);
+        // If Verification code correct
         if (result) {
-          navigation.navigate("Main");
           setShowLoader(false);
-          console.log("result: ", result);
+          generateAuthenticationToken(); //Generating Authentication Token to proceed further
+          // console.log("result: ", result);
         }
       }
     } catch (error: any) {
@@ -131,6 +138,50 @@ const Otp = ({ navigation }: any) => {
     }
   };
 
+  // This method is used to generating authentication token
+  const generateAuthenticationToken = async () => {
+    try {
+      // For "Content-Type": "application/json",
+      // const payload = {
+      //   method: "POST",
+      //   body: JSON.stringify({ contact: completePhoneNumber }),
+      // };
+
+      // For "Content-Type": "multipart/form-data",
+      const formData = new FormData();
+      formData.append("contact", completePhoneNumber);
+
+      const response = await instance.post("/api/generate_api_token", formData);
+      if (response.status === 200) {
+        const isNewUser = response.data?.is_new_user;
+        const jwtToken = response.data?.token_id;
+        const userDetails = response?.data.data;
+
+        console.log("isNewUser: ", isNewUser);
+        console.log("authentication-token: ", jwtToken);
+        console.log("userDetails: ", userDetails);
+
+        // Saving JWT (Authentication) token to Async Storage React Native
+
+        // jwtToken &&
+        //   (await AsyncStorage.setItem(
+        //     "authentication-token",
+        //     JSON.stringify(jwtToken)
+        //   ));
+
+        if (isNewUser) navigation.navigate("Register");
+        else navigation.navigate("Main");
+      } else
+        console.log("Getting an error while generating authentication token");
+    } catch (error) {
+      console.log(
+        "Getting an error while generating authentication token : ",
+        error
+      );
+    }
+  };
+
+  // -------------------------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
