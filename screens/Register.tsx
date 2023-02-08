@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,60 +6,104 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  ActivityIndicator,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
 } from "react-native";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import { firebaseConfig } from "../firebaseConfig";
-import fireb from "firebase/compat";
-import { useToast } from "react-native-toast-notifications";
-import countriesData from "../assets/api-data/countries.json";
 
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, FONTS, SIZES } from "../constants";
-
 import * as ImagePicker from "expo-image-picker";
-import DatePicker from "react-native-datepicker";
+import { instance } from "../core/utils/AxiosInterceptor";
+// import DatePicker from "react-native-datepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-const Register = ({ navigation }: any) => {
-  const onPressSubmit = () => {
-    navigation.navigate("Main");
-  };
+// -----------------------------------------------------------------------------------
 
-  const [date, setDate] = useState("09-10-2020");
-
+const Register = ({ route, navigation }: any) => {
+  // const [date, setDate] = useState("09-10-2020");
   const [enabledAddIcon, setEnabledAddIcon] = useState(true);
-
-  const [image, setImage] = useState(null);
-
-  useEffect(() => {
-    async () => {};
+  const [image, setImage] = useState<any>(null);
+  const [mobileNumber] = useState(
+    route?.params?.userDetails?.contact
+      ? route?.params?.userDetails?.contact
+      : ""
+  );
+  const [userDetails, setUserDetails] = useState<any>({
+    name: "",
+    emailId: "",
+    dob: "",
   });
-  const pickImage = async () => {
+
+  // This method is used to select profile image
+  const uploadProfileImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(result?.assets[0]?.uri);
       setEnabledAddIcon(false);
     }
   };
 
+  useEffect(() => {
+    image && updateUserProfileImage; //Upload Profile Image API Called
+  }, [image]);
+
+  const updateDetails = () => {
+    // navigation.navigate("Main");
+    console.log("userDetails::: ", userDetails);
+    updateUserDetails();
+  };
+
+  // This method is used to update User Details
+  const updateUserDetails = async () => {
+    try {
+      const { name, emailId, dob } = userDetails;
+      const formData = new FormData();
+      formData.append("token_id", "8cd4a0e0b8d5ceb20d46728fd531a04b");
+      formData.append("name", name);
+      formData.append("email", emailId);
+      formData.append("dob", dob);
+
+      const response = await instance.post("/users_update", formData);
+      if (response.status === 200) {
+        console.log("User Details Update Response:: ", response);
+      } else {
+        console.log("Getting an error while updating User Details");
+      }
+    } catch (error) {
+      console.log("Getting an error while updating User Details:: ", error);
+    }
+  };
+
+  // This method is used to update user's profile image
+  const updateUserProfileImage = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("token_id", "8cd4a0e0b8d5ceb20d46728fd531a04b");
+      formData.append("image", image);
+      const response = await instance.post("/users_image_update", formData);
+      if (response.status === 200) {
+        console.log("Image Upload API Response:: ", response);
+      } else {
+        console.log("Getting an error while updating User's Profile Image");
+      }
+    } catch (error) {
+      console.log(
+        "Getting an error while updating User Profile Image :: ",
+        error
+      );
+    }
+  };
+  // ---------------------------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
-        {/* Firebase captcha verification */}
-        {/* <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={firebaseConfig}
-      /> */}
         <Text style={styles.otpText}>
           You haven’t got account?{"\n"} Let's Create...
         </Text>
-        <TouchableOpacity style={styles.addImage} onPress={pickImage}>
+        <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
           {enabledAddIcon && (
             <Ionicons
               name="add"
@@ -85,83 +129,35 @@ const Register = ({ navigation }: any) => {
         >
           Image
         </Text>
-        {/* {showLoader && <ActivityIndicator />} */}
-        <TextInput
-          placeholder="Enter Number"
-          onChangeText={(value: any) => {
-            //   setPhoneNumber(value);
-          }}
-          keyboardType="phone-pad"
-          autoComplete="tel"
-          style={styles.textInput}
-          placeholderTextColor="rgba(255,255,255,0.6)"
-          maxLength={13} // 13 length to check +91 also
-        />
-        {/* <TouchableOpacity
-        style={[
-          styles.sendVerification,
-          {
-            opacity: disableVerificationBtn ? 0.5 : 1,
-          },
-        ]}
-        onPress={sendVerification}
-        disabled={disableVerificationBtn}
-      >
-        <Text
-          disabled={disableVerificationBtn}
-          style={[
-            styles.buttonText,
-            {
-              opacity: disableVerificationBtn ? 0.5 : 1,
-            },
-          ]}
-        >
-          Send Verification
-        </Text>
-      </TouchableOpacity>
-      {verificationId && (
-        <>
+        <View pointerEvents="none">
           <TextInput
-            placeholder="Confirm code"
-            onChangeText={setVerificationCode}
-            keyboardType="phone-pad"
-            autoComplete="tel"
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
-            maxLength={6}
+            value={mobileNumber}
+            contextMenuHidden={true}
           />
-          <TouchableOpacity
-            style={styles.sendCode}
-            onPress={confirmCode}
-            disabled={disableConfirmVerificationBtn}
-          >
-            <Text
-              style={[
-                styles.buttonText,
-                {
-                  opacity: disableConfirmVerificationBtn ? 0.5 : 1,
-                },
-              ]}
-              disabled={disableConfirmVerificationBtn}
-            >
-              Confirm Verification
-            </Text>
-          </TouchableOpacity>
-        </>
-      )} */}
+        </View>
 
         <TextInput
-          placeholder="Enter Name"
+          placeholder="Enter your name"
           keyboardType="default"
           style={styles.textInput2}
           placeholderTextColor="rgba(255,255,255,0.6)"
+          value={userDetails?.name}
+          onChangeText={(val: any) =>
+            setUserDetails({ ...userDetails, name: val })
+          }
         />
 
         <TextInput
-          placeholder="Enter Email"
+          placeholder="Enter your email"
           keyboardType="email-address"
           style={styles.textInput2}
           placeholderTextColor="rgba(255,255,255,0.6)"
+          value={userDetails?.emailId}
+          onChangeText={(val: any) =>
+            setUserDetails({ ...userDetails, emailId: val })
+          }
         />
 
         <Text
@@ -173,13 +169,21 @@ const Register = ({ navigation }: any) => {
           Your Birthday
         </Text>
 
-        <DatePicker
+        <DateTimePicker
+          value={userDetails.dob}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={(val: any) => setUserDetails({ ...userDetails, dob: val })}
+        />
+
+        {/* <DateTimePicker
           style={styles.datePickerStyle}
-          date={date} //initial date from state
+          value={userDetails.dob} //initial date from state
           mode="date" //The enum of date, datetime and time
           placeholder="select date"
           format="DD-MM-YYYY"
-          minDate="01-01-2016"
+          minDate="01-01-1900"
           maxDate="01-01-2019"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
@@ -187,14 +191,11 @@ const Register = ({ navigation }: any) => {
             dateIcon: {
               display: "none",
             },
-            // dateInput: {
-            //   marginLeft: 36,
-            // },
           }}
-          onDateChange={(date) => {
-            setDate(date);
-          }}
-        />
+          onDateChange={(val: any) =>
+            setUserDetails({ ...userDetails, dob: val })
+          }
+        /> */}
 
         <TouchableOpacity
           style={{
@@ -208,7 +209,7 @@ const Register = ({ navigation }: any) => {
             borderRadius: 30,
             backgroundColor: "white",
           }}
-          onPress={onPressSubmit}
+          onPress={updateDetails}
         >
           <Text
             style={{

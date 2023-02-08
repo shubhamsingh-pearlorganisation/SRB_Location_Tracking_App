@@ -145,7 +145,7 @@ const Login = ({ navigation }: any) => {
       const formData = new FormData();
       formData.append("contact", completePhoneNumber);
 
-      const response = await instance.post("/api/generate_api_token", formData);
+      const response = await instance.post("/generate_api_token", formData);
       if (response.status === 200) {
         const isNewUser = response.data?.is_new_user;
         const jwtToken = response.data?.token_id;
@@ -160,7 +160,7 @@ const Login = ({ navigation }: any) => {
 
         setShowLoader(false);
 
-        if (isNewUser) navigation.navigate("Register");
+        if (isNewUser) navigation.navigate("Register", { userDetails });
         else navigation.navigate("Main");
       } else {
         setShowLoader(false);

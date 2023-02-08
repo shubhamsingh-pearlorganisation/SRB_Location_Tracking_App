@@ -6,7 +6,7 @@ import FlashMessage from "react-native-flash-message";
 import Login from "./screens/Login";
 import { ToastProvider } from "react-native-toast-notifications";
 import MainScreen from "./screens/MainScreen";
-import Register from "./screens/RegisterScreen";
+import Register from "./screens/Register";
 import { COLORS } from "./constants";
 import AddGroup from "./screens/AddGroup";
 import EditGroup from "./screens/EditGroup";
