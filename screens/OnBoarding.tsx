@@ -42,7 +42,9 @@ const onBoardings = [
 
 const OnBoarding = ({ navigation }: any) => {
   const newUser = () => {
-    navigation.navigate("Register");
+    navigation.navigate("Register", {
+      userDetails: { name: "Shubham Singh", contact: "+916239460056" },
+    });
   };
 
   const loginUser = () => {
