@@ -10,13 +10,13 @@ import "@firebase/firestore";
 
 // Initialize Firebase
 export const firebaseConfig = {
-  apiKey: "AIzaSyCiIlnIjXu-m20RcxA4XvTXJm8SyZjBhSM",
-  authDomain: "srb-tracking-react-native.firebaseapp.com",
-  projectId: "srb-tracking-react-native",
-  storageBucket: "srb-tracking-react-native.appspot.com",
-  messagingSenderId: "35120521852",
-  appId: "1:35120521852:web:c00ffd602bf65fff8b5ff9",
-  measurementId: "G-YDV1Y8YXL0",
+  apiKey: "AIzaSyC77X8vst2FAz_OLxb3FqBuWiJa-tDpIsA",
+  authDomain: "srb-location-app-1ddbb.firebaseapp.com",
+  projectId: "srb-location-app-1ddbb",
+  storageBucket: "srb-location-app-1ddbb.appspot.com",
+  messagingSenderId: "976516671492",
+  appId: "1:976516671492:web:d339de72f8e225ee056d51",
+  measurementId: "G-DY7MF230PL",
 };
 if (!firebase.apps.length > 0) {
   firebase.initializeApp(firebaseConfig);
