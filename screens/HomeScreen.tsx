@@ -445,11 +445,12 @@ const HomeScreen = ({ navigation }: any) => {
 
       {/* Bottom users View  */}
       <View
-      
-      style={[
-        styles.memberList,
-          
-          { paddingBottom: SIZES.height > 700 ? "10%" : "20%" },]}>
+        style={[
+          styles.memberList,
+
+          { paddingBottom: SIZES.height > 700 ? "10%" : "20%" },
+        ]}
+      >
         <TouchableOpacity
           style={{
             top: "2%",
@@ -462,33 +463,62 @@ const HomeScreen = ({ navigation }: any) => {
           }}
           // onPress={onPressDropDownBtn}
         >
-        <MaterialIcons name="keyboard-arrow-up" size={20} />
+          <MaterialIcons name="keyboard-arrow-up" size={20} />
         </TouchableOpacity>
         <ScrollView
-        style={{
-          height:"70%"
-        }}>
-          <Text style={{
+          style={{
+            height: "70%",
+          }}
+        >
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-          <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
+            }}
+          >
+            User1
+          </Text>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -502,8 +532,8 @@ const styles = StyleSheet.create({
   mapBox: {
     flex: 1,
   },
-  memberList:{
-    bottom:0,
+  memberList: {
+    bottom: 0,
     position: "absolute",
     height: SIZES.height * 0.3,
     backgroundColor: "white",

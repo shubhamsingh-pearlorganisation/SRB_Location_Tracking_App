@@ -22,12 +22,12 @@ instance.interceptors.request.use(
     // Do something before request is sent
     console.log("config: ", config);
     // Fetching JWT (Authentication) token from Expo Secure Store
-    const jwtToken = fetchAuthenticationTokenFromExpoStore();
+    // const jwtToken = fetchAuthenticationTokenFromExpoStore();
 
-    console.log("jwtToken::::jwtToken::: ", jwtToken);
-    if (jwtToken) {
-      config.headers["Authorization"] = "Bearer " + jwtToken;
-    }
+    // console.log("jwtToken::::jwtToken::: ", jwtToken);
+    // if (jwtToken) {
+    //   config.headers["Authorization"] = "Bearer " + jwtToken;
+    // }
     // config.headers['Content-Type'] = 'application/json';
     return config;
   },

@@ -156,7 +156,7 @@ const Login = ({ navigation }: any) => {
         console.log("userDetails: ", userDetails);
 
         // Saving JWT (Authentication) token to Expo Secure Store
-        await SecureStore.setItemAsync("authentication-token", jwtToken);
+        // await SecureStore.setItemAsync("authentication-token", jwtToken);
 
         setShowLoader(false);
 
