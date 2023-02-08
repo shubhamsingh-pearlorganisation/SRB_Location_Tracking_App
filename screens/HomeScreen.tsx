@@ -473,30 +473,59 @@ const HomeScreen = ({ navigation }: any) => {
         <MaterialIcons name={onUp?"keyboard-arrow-down":"keyboard-arrow-up"} size={20} />
         </TouchableOpacity>
         <ScrollView
-        style={{
-          height:"70%"
-        }}>
-          <Text style={{
+          style={{
+            height: "70%",
+          }}
+        >
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-          <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
-            <Text style={{
+            }}
+          >
+            User1
+          </Text>
+          <Text
+            style={{
               fontSize: 60,
-            }}>User1</Text>
+            }}
+          >
+            User1
+          </Text>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -510,8 +539,8 @@ const styles = StyleSheet.create({
   mapBox: {
     flex: 1,
   },
-  memberList:{
-    bottom:0,
+  memberList: {
+    bottom: 0,
     position: "absolute",
     backgroundColor: "white",
     width: SIZES.width,
