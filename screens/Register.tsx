@@ -8,6 +8,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -15,10 +16,15 @@ import { COLORS, SIZES } from "../constants";
 import * as ImagePicker from "expo-image-picker";
 import { instance } from "../core/utils/AxiosInterceptor";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useToast } from "react-native-toast-notifications";
+
 // -----------------------------------------------------------------------------------
 
 const Register = ({ route, navigation }: any) => {
+  const toast = useToast();
+
   const [enabledAddIcon, setEnabledAddIcon] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
   const [image, setImage] = useState<any>(null);
   const [mobileNumber] = useState(
     route?.params?.userDetails?.contact
@@ -39,14 +45,24 @@ const Register = ({ route, navigation }: any) => {
 
   // This method is used to select profile image
   const uploadProfileImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result?.assets[0]?.uri);
-      setEnabledAddIcon(false);
+    try {
+      setShowLoader(true);
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        quality: 1,
+      });
+      setShowLoader(false);
+      if (!result.canceled) {
+        setImage(result?.assets[0]?.uri);
+        setEnabledAddIcon(false);
+        toast.show("Profile Image Added successfully!", {
+          type: "success",
+        });
+      }
+    } catch (error: any) {
+      toast.show(error.message, {
+        type: "error",
+      });
     }
   };
 
@@ -55,20 +71,38 @@ const Register = ({ route, navigation }: any) => {
     try {
       const { name, emailId, dob } = userDetails;
       const formData = new FormData();
-      formData.append("token_id", "8cd4a0e0b8d5ceb20d46728fd531a04b");
+      formData.append("token_id", "58d375ba87a61032b3db45688c7d4ffb");
       formData.append("name", name);
       formData.append("email", emailId);
       formData.append("dob", dob);
+      setShowLoader(true);
 
       const response = await instance.post("/users_update", formData);
-      if (response.status === 200) {
+      if (response.status === 200 && response.data?.status === true) {
+        setShowLoader(false);
         console.log("User Details Update Response:: ", response);
-        // navigation.navigate("Main");
+        toast.show("User's Details updated successfully!", {
+          type: "success",
+        });
+        navigation.navigate("Main");
       } else {
+        setShowLoader(false);
         console.log("Getting an error while updating User Details");
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Something went wrong",
+          {
+            type: "error",
+          }
+        );
       }
-    } catch (error) {
+    } catch (error: any) {
+      setShowLoader(false);
       console.log("Getting an error while updating User Details:: ", error);
+      toast.show(error.message ? error.message : "Something went wrong", {
+        type: "error",
+      });
     }
   };
 
@@ -76,19 +110,37 @@ const Register = ({ route, navigation }: any) => {
   const updateUserProfileImage = async () => {
     try {
       const formData = new FormData();
-      formData.append("token_id", "8cd4a0e0b8d5ceb20d46728fd531a04b");
+      formData.append("token_id", "58d375ba87a61032b3db45688c7d4ffb");
       formData.append("image", image);
+      setShowLoader(true);
       const response = await instance.post("/users_image_update", formData);
-      if (response.status === 200) {
+      if (response.status === 200 && response.data?.status === true) {
+        setShowLoader(false);
         console.log("Image Upload API Response:: ", response);
+        toast.show("Profile Image updated successfully!", {
+          type: "success",
+        });
       } else {
+        setShowLoader(false);
         console.log("Getting an error while updating User's Profile Image");
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Something went wrong",
+          {
+            type: "error",
+          }
+        );
       }
-    } catch (error) {
+    } catch (error: any) {
+      setShowLoader(false);
       console.log(
         "Getting an error while updating User Profile Image :: ",
         error
       );
+      toast.show(error.message ? error.message : "Something went wrong", {
+        type: "error",
+      });
     }
   };
 
@@ -119,7 +171,6 @@ const Register = ({ route, navigation }: any) => {
 
   // This method is used to update profile details
   const updateDetails = () => {
-    // navigation.navigate("Main");
     console.log("userDetails::: ", userDetails);
     updateUserDetails();
   };
@@ -130,6 +181,8 @@ const Register = ({ route, navigation }: any) => {
         <Text style={styles.otpText}>
           You haven’t got account?{"\n"} Let's Create...
         </Text>
+        {showLoader && <ActivityIndicator />}
+
         <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
           {enabledAddIcon && (
             <Ionicons

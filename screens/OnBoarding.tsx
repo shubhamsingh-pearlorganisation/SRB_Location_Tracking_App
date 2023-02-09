@@ -7,7 +7,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  ImageBackground,
 } from "react-native";
 
 // constants
@@ -41,18 +40,12 @@ const onBoardings = [
 ];
 
 const OnBoarding = ({ navigation }: any) => {
-  const newUser = () => {
-    navigation.navigate("Register", {
-      userDetails: { name: "Shubham Singh", contact: "+916239460056" },
-    });
-  };
-
-  const loginUser = () => {
+  // This method is used to redirect user to login screen
+  const redirectToLogin = () => {
     navigation.navigate("Login");
   };
 
   const [completed, setCompleted] = React.useState(false);
-
   const scrollX = new Animated.Value(0);
 
   React.useEffect(() => {
@@ -61,12 +54,9 @@ const OnBoarding = ({ navigation }: any) => {
         setCompleted(true);
       }
     });
-
-    return;
   }, []);
 
   // Render
-
   function renderContent() {
     return (
       <View>
@@ -87,7 +77,6 @@ const OnBoarding = ({ navigation }: any) => {
             <View
               //center
               //bottom
-
               key={`img-${index}`}
               style={[
                 styles.imageAndTextContainer,
@@ -156,7 +145,7 @@ const OnBoarding = ({ navigation }: any) => {
             borderTopRightRadius: 30,
             backgroundColor: "white",
           }}
-          onPress={newUser}
+          onPress={redirectToLogin}
         >
           <Text
             style={{
@@ -187,7 +176,7 @@ const OnBoarding = ({ navigation }: any) => {
           >
             You already have an account?
           </Text>
-          <TouchableOpacity onPress={loginUser}>
+          <TouchableOpacity onPress={redirectToLogin}>
             <Text
               style={{
                 color: "white",

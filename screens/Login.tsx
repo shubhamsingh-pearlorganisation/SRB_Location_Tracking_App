@@ -105,7 +105,7 @@ const Login = ({ navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      toast.show(error.message, {
+      toast.show(error.message ? error.message : "Something went wrong", {
         type: "error",
       });
     }
@@ -129,7 +129,7 @@ const Login = ({ navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      toast.show(error.message, {
+      toast.show(error.message ? error.message : "Something went wrong", {
         type: "error",
       });
     }
@@ -139,13 +139,14 @@ const Login = ({ navigation }: any) => {
   const generateAuthenticationToken = async () => {
     try {
       setShowLoader(true);
+      setVerificationCode("");
 
       // For "Content-Type": "multipart/form-data",
       const formData = new FormData();
       formData.append("contact", completePhoneNumber);
 
       const response = await instance.post("/generate_api_token", formData);
-      if (response.status === 200) {
+      if (response.status === 200 && response.data?.status === true) {
         const isNewUser = response.data?.is_new_user;
         const jwtToken = response.data?.token_id;
         const userDetails = response?.data.data;
@@ -163,13 +164,24 @@ const Login = ({ navigation }: any) => {
       } else {
         setShowLoader(false);
         console.log("Getting an error while generating authentication token");
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Something went wrong",
+          {
+            type: "error",
+          }
+        );
       }
-    } catch (error) {
+    } catch (error: any) {
       setShowLoader(false);
       console.log(
         "Getting an error while generating authentication token : ",
         error
       );
+      toast.show(error.message ? error.message : "Something went wrong", {
+        type: "error",
+      });
     }
   };
 
