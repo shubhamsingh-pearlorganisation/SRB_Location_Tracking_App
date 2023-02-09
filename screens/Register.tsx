@@ -7,19 +7,20 @@ import {
   StyleSheet,
   Image,
   KeyboardAvoidingView,
+  Pressable,
+  Platform,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS, FONTS, SIZES } from "../constants";
+import { COLORS, SIZES } from "../constants";
 import * as ImagePicker from "expo-image-picker";
 import { instance } from "../core/utils/AxiosInterceptor";
 // import DatePicker from "react-native-datepicker";
-import DateTimePicker from "@react-native-community/datetimepicker";
-
+// import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 // -----------------------------------------------------------------------------------
 
 const Register = ({ route, navigation }: any) => {
-  // const [date, setDate] = useState("09-10-2020");
   const [enabledAddIcon, setEnabledAddIcon] = useState(true);
   const [image, setImage] = useState<any>(null);
   const [mobileNumber] = useState(
@@ -30,8 +31,13 @@ const Register = ({ route, navigation }: any) => {
   const [userDetails, setUserDetails] = useState<any>({
     name: "",
     emailId: "",
-    dob: "",
   });
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dob, setDob] = useState<any>("");
+
+  useEffect(() => {
+    image && updateUserProfileImage; //Upload Profile Image API Called
+  }, [image]);
 
   // This method is used to select profile image
   const uploadProfileImage = async () => {
@@ -44,16 +50,6 @@ const Register = ({ route, navigation }: any) => {
       setImage(result?.assets[0]?.uri);
       setEnabledAddIcon(false);
     }
-  };
-
-  useEffect(() => {
-    image && updateUserProfileImage; //Upload Profile Image API Called
-  }, [image]);
-
-  const updateDetails = () => {
-    // navigation.navigate("Main");
-    console.log("userDetails::: ", userDetails);
-    updateUserDetails();
   };
 
   // This method is used to update User Details
@@ -95,6 +91,37 @@ const Register = ({ route, navigation }: any) => {
         error
       );
     }
+  };
+
+  // --------------------------- Date Picker Handling -- Start -----------------------------------
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: any) => {
+    let tempDate = new Date(date);
+    let fDate =
+      tempDate.getDate() +
+      "-" +
+      (tempDate.getMonth() + 1) +
+      "-" +
+      tempDate.getFullYear();
+
+    console.log("fDate::: ", fDate);
+    setDob(fDate);
+    hideDatePicker();
+  };
+  // --------------------------- Date Picker Handling -- Finish -----------------------------------
+
+  // This method is used to update profile details
+  const updateDetails = () => {
+    // navigation.navigate("Main");
+    console.log("userDetails::: ", userDetails);
+    updateUserDetails();
   };
   // ---------------------------------------------------------------------------------------------
   return (
@@ -159,43 +186,24 @@ const Register = ({ route, navigation }: any) => {
             setUserDetails({ ...userDetails, emailId: val })
           }
         />
+        <Pressable onPress={showDatePicker}>
+          <Text
+            style={{
+              color: "white",
+              margin: 10,
+            }}
+          >
+            Your Birthday
+          </Text>
 
-        <Text
-          style={{
-            color: "white",
-            margin: 10,
-          }}
-        >
-          Your Birthday
-        </Text>
-
-        <DateTimePicker
-          value={userDetails.dob}
-          mode="date"
-          is24Hour={true}
-          display="default"
-          onChange={(val: any) => setUserDetails({ ...userDetails, dob: val })}
-        />
-
-        {/* <DateTimePicker
-          style={styles.datePickerStyle}
-          value={userDetails.dob} //initial date from state
-          mode="date" //The enum of date, datetime and time
-          placeholder="select date"
-          format="DD-MM-YYYY"
-          minDate="01-01-1900"
-          maxDate="01-01-2019"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              display: "none",
-            },
-          }}
-          onDateChange={(val: any) =>
-            setUserDetails({ ...userDetails, dob: val })
-          }
-        /> */}
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+          />
+          <Text style={{ fontSize: 20, color: "#FFF" }}>{dob}</Text>
+        </Pressable>
 
         <TouchableOpacity
           style={{
