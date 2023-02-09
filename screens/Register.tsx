@@ -8,15 +8,12 @@ import {
   Image,
   KeyboardAvoidingView,
   Pressable,
-  Platform,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import * as ImagePicker from "expo-image-picker";
 import { instance } from "../core/utils/AxiosInterceptor";
-// import DatePicker from "react-native-datepicker";
-// import DateTimePicker from "@react-native-community/datetimepicker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 // -----------------------------------------------------------------------------------
 
@@ -31,12 +28,13 @@ const Register = ({ route, navigation }: any) => {
   const [userDetails, setUserDetails] = useState<any>({
     name: "",
     emailId: "",
+    dob: "",
   });
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [dob, setDob] = useState<any>("");
 
   useEffect(() => {
-    image && updateUserProfileImage; //Upload Profile Image API Called
+    console.log("Profile Image: ", image);
+    image && updateUserProfileImage(); //Upload Profile Image API Called
   }, [image]);
 
   // This method is used to select profile image
@@ -65,6 +63,7 @@ const Register = ({ route, navigation }: any) => {
       const response = await instance.post("/users_update", formData);
       if (response.status === 200) {
         console.log("User Details Update Response:: ", response);
+        // navigation.navigate("Main");
       } else {
         console.log("Getting an error while updating User Details");
       }
@@ -104,15 +103,16 @@ const Register = ({ route, navigation }: any) => {
 
   const handleConfirm = (date: any) => {
     let tempDate = new Date(date);
-    let fDate =
-      tempDate.getDate() +
-      "-" +
-      (tempDate.getMonth() + 1) +
-      "-" +
-      tempDate.getFullYear();
 
-    console.log("fDate::: ", fDate);
-    setDob(fDate);
+    const currentDate = tempDate.getDate();
+    const month = tempDate.getMonth() + 1;
+    const year = tempDate.getFullYear();
+    let fullDate = `${year}-${month < 10 ? "0" + month : month}-${
+      currentDate < 10 ? "0" + currentDate : currentDate
+    }`;
+
+    console.log("fDate::: ", fullDate);
+    setUserDetails({ ...userDetails, dob: fullDate });
     hideDatePicker();
   };
   // --------------------------- Date Picker Handling -- Finish -----------------------------------
@@ -191,6 +191,8 @@ const Register = ({ route, navigation }: any) => {
             style={{
               color: "white",
               margin: 10,
+              fontSize: 16,
+              fontWeight: "600",
             }}
           >
             Your Birthday
@@ -202,7 +204,16 @@ const Register = ({ route, navigation }: any) => {
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
           />
-          <Text style={{ fontSize: 20, color: "#FFF" }}>{dob}</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              color: "#FFF",
+              fontWeight: "600",
+              marginLeft: 10,
+            }}
+          >
+            {userDetails?.dob}
+          </Text>
         </Pressable>
 
         <TouchableOpacity

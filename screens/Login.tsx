@@ -16,7 +16,6 @@ import countriesData from "../assets/api-data/countriesData.json";
 import { SelectList } from "react-native-dropdown-select-list";
 import { regexes } from "../core/utils/constants";
 import { instance } from "../core/utils/AxiosInterceptor";
-import * as SecureStore from "expo-secure-store";
 
 // ---------------------------------------------------------------------------------------------
 
@@ -155,8 +154,7 @@ const Login = ({ navigation }: any) => {
         console.log("authentication-token: ", jwtToken);
         console.log("userDetails: ", userDetails);
 
-        // Saving JWT (Authentication) token to Expo Secure Store
-        // await SecureStore.setItemAsync("authentication-token", jwtToken);
+        // Saving JWT (Authentication) token
 
         setShowLoader(false);
 

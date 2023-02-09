@@ -1,10 +1,4 @@
 import axios from "axios";
-import * as SecureStore from "expo-secure-store";
-
-//This method is used to fetch JWT token from expo secure storage
-const fetchAuthenticationTokenFromExpoStore = async () => {
-  return await SecureStore.getItemAsync("authentication-token");
-};
 
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -21,10 +15,8 @@ instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
     console.log("config: ", config);
-    // Fetching JWT (Authentication) token from Expo Secure Store
-    // const jwtToken = fetchAuthenticationTokenFromExpoStore();
 
-    // console.log("jwtToken::::jwtToken::: ", jwtToken);
+    // const jwtToken = "";
     // if (jwtToken) {
     //   config.headers["Authorization"] = "Bearer " + jwtToken;
     // }
