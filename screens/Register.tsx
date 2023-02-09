@@ -17,7 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import { instance } from "../core/utils/AxiosInterceptor";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
-import { fetchJWTToken } from "../core/utils/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // -----------------------------------------------------------------------------------
 
@@ -53,9 +53,23 @@ const Register = ({ route, navigation }: any) => {
   );
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
+  // ---------------------------------------------------------------------------------------------------
+  //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
+  const fetchJWTToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem("authentication-token");
+      if (token !== null) {
+        console.log("token:::::::::::::::::: ", token);
+        setJwtToken(token);
+      }
+    } catch (e: any) {
+      console.log("Getting an error while fetching JWT Token:: ", e.message);
+    }
+  };
+
   // Fetching JWT Token
   useEffect(() => {
-    setJwtToken(fetchJWTToken());
+    fetchJWTToken();
   }, []);
 
   // This method is used to select profile image
@@ -85,6 +99,7 @@ const Register = ({ route, navigation }: any) => {
   const updateUserDetails = async () => {
     try {
       const { name, emailId, dob } = userDetails;
+
       const formData = new FormData();
       formData.append("token_id", jwtToken);
       formData.append("name", name);
@@ -191,7 +206,7 @@ const Register = ({ route, navigation }: any) => {
         {showLoader && <ActivityIndicator />}
 
         <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
-          {enabledAddIcon && (
+          {enabledAddIcon && !dataFromLoginScreen?.image && (
             <Ionicons
               name="add"
               size={40}
