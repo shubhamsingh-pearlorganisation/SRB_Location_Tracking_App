@@ -11,7 +11,7 @@ const data = [
   },
   {
     title: "OnBoarding Screen 3",
-    body: "We will help you in your business aspects.",
+    body: "We will helpp you in your business aspects.",
     imgUrl: "./assets/img3.png",
   },
   {
