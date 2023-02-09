@@ -17,6 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import { instance } from "../core/utils/AxiosInterceptor";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
+import { fetchJWTToken } from "../core/utils/constants";
 
 // -----------------------------------------------------------------------------------
 
@@ -25,18 +26,37 @@ const Register = ({ route, navigation }: any) => {
 
   const [enabledAddIcon, setEnabledAddIcon] = useState(true);
   const [showLoader, setShowLoader] = useState(false);
-  const [image, setImage] = useState<any>(null);
-  const [mobileNumber] = useState(
-    route?.params?.userDetails?.contact
+  const [jwtToken, setJwtToken] = useState<any>("");
+
+  const [dataFromLoginScreen] = useState({
+    contact: route?.params?.userDetails?.contact
       ? route?.params?.userDetails?.contact
-      : "N.A"
-  );
-  const [userDetails, setUserDetails] = useState<any>({
-    name: "",
-    emailId: "",
-    dob: "",
+      : "",
+    dob: route?.params?.userDetails?.dob ? route?.params?.userDetails?.dob : "",
+    email: route?.params?.userDetails?.email
+      ? route?.params?.userDetails?.email
+      : "",
+    image: route?.params?.userDetails?.image
+      ? route?.params?.userDetails?.image
+      : "",
+    name: route?.params?.userDetails?.name
+      ? route?.params?.userDetails?.name
+      : "",
   });
+  const [userDetails, setUserDetails] = useState<any>({
+    name: dataFromLoginScreen?.name ? dataFromLoginScreen?.name : "",
+    emailId: dataFromLoginScreen?.email ? dataFromLoginScreen?.email : "",
+    dob: dataFromLoginScreen?.dob ? dataFromLoginScreen?.dob : "",
+  });
+  const [image, setImage] = useState<any>(
+    dataFromLoginScreen?.image ? dataFromLoginScreen?.image : ""
+  );
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  // Fetching JWT Token
+  useEffect(() => {
+    setJwtToken(fetchJWTToken());
+  }, []);
 
   // This method is used to select profile image
   const uploadProfileImage = async () => {
@@ -66,7 +86,7 @@ const Register = ({ route, navigation }: any) => {
     try {
       const { name, emailId, dob } = userDetails;
       const formData = new FormData();
-      formData.append("token_id", "a832fb139affc9e31da5eb18fb11d25d");
+      formData.append("token_id", jwtToken);
       formData.append("name", name);
       formData.append("email", emailId);
       formData.append("dob", dob);
@@ -103,7 +123,7 @@ const Register = ({ route, navigation }: any) => {
     try {
       alert(image);
       const formData = new FormData();
-      formData.append("token_id", "a832fb139affc9e31da5eb18fb11d25d");
+      formData.append("token_id", jwtToken);
       formData.append("image", image);
 
       setShowLoader(true);
@@ -200,7 +220,7 @@ const Register = ({ route, navigation }: any) => {
           <TextInput
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
-            value={mobileNumber}
+            value={dataFromLoginScreen?.contact}
             contextMenuHidden={true}
           />
         </View>

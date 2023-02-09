@@ -16,7 +16,7 @@ import countriesData from "../assets/api-data/countriesData.json";
 import { SelectList } from "react-native-dropdown-select-list";
 import { regexes } from "../core/utils/constants";
 import { instance } from "../core/utils/AxiosInterceptor";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // ---------------------------------------------------------------------------------------------
 
 const Login = ({ navigation }: any) => {
@@ -155,8 +155,8 @@ const Login = ({ navigation }: any) => {
         console.log("authentication-token: ", jwtToken);
         console.log("userDetails: ", userDetails);
 
-        // Saving JWT (Authentication) token
-
+        //This method is used to save JWT Token in @react-native-async-storage/async-storage
+        await AsyncStorage.setItem("authentication-token", jwtToken);
         setShowLoader(false);
 
         // Redirection of user
