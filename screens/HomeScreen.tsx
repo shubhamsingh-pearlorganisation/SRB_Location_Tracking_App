@@ -53,6 +53,10 @@ const HomeScreen = ({ navigation }: any) => {
     navigation.navigate("AddGroup");
   };
 
+  const redirectToAddMemberScreen = () =>{
+    navigation.navigate("AddMember")
+  }
+
   const [onUp, setOnUp] = useState(false);
 
   const onPressUpBtn = () => {
@@ -454,7 +458,7 @@ const HomeScreen = ({ navigation }: any) => {
       >
         <TouchableOpacity
           style={{
-            top: "2%",
+            top: 5,
             position: "absolute",
             width: "8%",
             height: "auto",
@@ -472,6 +476,7 @@ const HomeScreen = ({ navigation }: any) => {
         <ScrollView
           style={{
             height: "70%",
+            marginTop:"1%"
           }}
         >
           {renderMembers()}
@@ -493,13 +498,15 @@ const HomeScreen = ({ navigation }: any) => {
             borderRadius: 30,
             alignItems: "center",
             justifyContent: "center",
+            
           }}
+          onPress={redirectToAddMemberScreen}
         >
           <Ionicons
             size={40}
             name="add"
             color={COLORS.voilet}
-            // onPress={newGroup}
+            
           />
         </Pressable>
       </View>

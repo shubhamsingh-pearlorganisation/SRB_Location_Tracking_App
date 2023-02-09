@@ -7,6 +7,7 @@ import {
   Platform,
   Dimensions,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -20,6 +21,11 @@ const MenuScreen = ({ navigation }: any) => {
     navigation.navigate("Emergency");
   };
 
+  const redirectProfilePage = () => {
+    navigation.navigate("ProfileScreen");
+
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -28,17 +34,12 @@ const MenuScreen = ({ navigation }: any) => {
           flexDirection: "row",
         }}
       >
-        <MaterialIcons
-          style={[styles.icons, { paddingLeft: 5 }]}
-          name="keyboard-arrow-left"
-          size={SIZES.width > 400 ? 30 : 20}
-          color={"black"}
-        />
         <Text
           style={{
             fontSize: SIZES.width > 400 ? 30 : 20,
             alignSelf: "center",
             fontWeight: "600",
+            marginLeft:'2%'
           }}
         >
           User Name
@@ -50,37 +51,40 @@ const MenuScreen = ({ navigation }: any) => {
           color={"black"}
         />
       </View>
-      <View
-        style={{
-          width: "99%",
-          flexDirection: "row",
-          marginTop: "5%",
-          borderBottomColor: "black",
-          borderBottomWidth: 2,
-          margin: 10,
-        }}
-      >
-        <FontAwesome5
-          style={[styles.icons, { left: 0 }]}
-          name="user-circle"
-          size={SIZES.width > 400 ? 30 : 20}
-          color={"black"}
-        />
-        <Text
+      <View>
+        <Pressable
           style={{
-            fontSize: SIZES.width > 400 ? 30 : 20,
-            alignSelf: "center",
-            fontWeight: "600",
+            width: "99%",
+            flexDirection: "row",
+            marginTop: "5%",
+            borderBottomColor: "black",
+            borderBottomWidth: 2,
+            margin: 10,
           }}
+          onPress={()=>redirectProfilePage()}
         >
-          Profile
-        </Text>
-        <MaterialIcons
-          style={[styles.icons, { right: 0, position: "absolute" }]}
-          name="keyboard-arrow-right"
-          size={SIZES.width > 400 ? 30 : 20}
-          color={"black"}
-        />
+          <FontAwesome5
+            style={[styles.icons, { left: 0 }]}
+            name="user-circle"
+            size={SIZES.width > 400 ? 30 : 20}
+            color={"black"}
+          />
+          <Text
+            style={{
+              fontSize: SIZES.width > 400 ? 30 : 20,
+              alignSelf: "center",
+              fontWeight: "600",
+            }}
+          >
+            Profile
+          </Text>
+          <MaterialIcons
+            style={[styles.icons, { right: 0, position: "absolute" }]}
+            name="keyboard-arrow-right"
+            size={SIZES.width > 400 ? 30 : 20}
+            color={"black"}
+          />
+        </Pressable>
       </View>
 
       <View
@@ -114,15 +118,43 @@ const MenuScreen = ({ navigation }: any) => {
             Share Temporary Location
           </Text>
         </View>
-        <View
+        <View>
+          <Pressable
+            style={{
+              width: "99%",
+              flexDirection: "row",
+            }}
+            onPress={redirectToEmergencyScreen}
+          >
+            <MaterialCommunityIcons
+              style={[styles.icons]}
+              name="car-brake-alert"
+              size={SIZES.width > 400 ? 30 : 20}
+              color={"black"}
+            />
+
+            <Text
+              style={{
+                fontSize: SIZES.width > 400 ? 30 : 20,
+                alignSelf: "center",
+                fontWeight: "600",
+              }}
+            >
+              Emergency
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+      <View>
+        <Pressable
           style={{
             width: "99%",
             flexDirection: "row",
           }}
         >
-          <MaterialCommunityIcons
-            style={[styles.icons]}
-            name="car-brake-alert"
+          <Ionicons
+            style={[styles.icons, { paddingLeft: 5 }]}
+            name="settings-sharp"
             size={SIZES.width > 400 ? 30 : 20}
             color={"black"}
           />
@@ -133,40 +165,16 @@ const MenuScreen = ({ navigation }: any) => {
               alignSelf: "center",
               fontWeight: "600",
             }}
-            onPress={redirectToEmergencyScreen}
           >
-            Emergency
+            Settings
           </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          width: "99%",
-          flexDirection: "row",
-        }}
-      >
-        <Ionicons
-          style={[styles.icons, { paddingLeft: 5 }]}
-          name="settings-sharp"
-          size={SIZES.width > 400 ? 30 : 20}
-          color={"black"}
-        />
-
-        <Text
-          style={{
-            fontSize: SIZES.width > 400 ? 30 : 20,
-            alignSelf: "center",
-            fontWeight: "600",
-          }}
-        >
-          Settings
-        </Text>
-        <MaterialIcons
-          style={[styles.icons, { right: 0, position: "absolute" }]}
-          name="keyboard-arrow-right"
-          size={SIZES.width > 400 ? 30 : 20}
-          color={"black"}
-        />
+          <MaterialIcons
+            style={[styles.icons, { right: 0, position: "absolute" }]}
+            name="keyboard-arrow-right"
+            size={SIZES.width > 400 ? 30 : 20}
+            color={"black"}
+          />
+        </Pressable>
       </View>
       <View
         style={{
@@ -179,74 +187,80 @@ const MenuScreen = ({ navigation }: any) => {
           margin: 10,
         }}
       >
-        <View
-          style={{
-            width: "99%",
-            flexDirection: "row",
-          }}
-        >
-          <MaterialCommunityIcons
-            style={[styles.icons, { paddingLeft: 5 }]}
-            name="frequently-asked-questions"
-            size={30}
-            color={"black"}
-          />
-
-          <Text
+        <View>
+          <Pressable
             style={{
-              fontSize: SIZES.width > 400 ? 30 : 20,
-              alignSelf: "center",
-              fontWeight: "600",
+              width: "99%",
+              flexDirection: "row",
             }}
           >
-            FAQ & Support
-          </Text>
+            <MaterialCommunityIcons
+              style={[styles.icons, { paddingLeft: 5 }]}
+              name="frequently-asked-questions"
+              size={30}
+              color={"black"}
+            />
+
+            <Text
+              style={{
+                fontSize: SIZES.width > 400 ? 30 : 20,
+                alignSelf: "center",
+                fontWeight: "600",
+              }}
+            >
+              FAQ & Support
+            </Text>
+          </Pressable>
         </View>
-        <View
-          style={{
-            width: "99%",
-            flexDirection: "row",
-          }}
-        >
-          <MaterialCommunityIcons
-            style={[styles.icons, { paddingLeft: 5 }]}
-            name="thought-bubble"
-            size={30}
-            color={"black"}
-          />
-
-          <Text
+        <View>
+          <Pressable
             style={{
-              fontSize: SIZES.width > 400 ? 30 : 20,
-              alignSelf: "center",
-              fontWeight: "600",
+              width: "99%",
+              flexDirection: "row",
             }}
           >
-            Feeback & suggestions
-          </Text>
+            <MaterialCommunityIcons
+              style={[styles.icons, { paddingLeft: 5 }]}
+              name="thought-bubble"
+              size={30}
+              color={"black"}
+            />
+
+            <Text
+              style={{
+                fontSize: SIZES.width > 400 ? 30 : 20,
+                alignSelf: "center",
+                fontWeight: "600",
+              }}
+            >
+              Feeback & suggestions
+            </Text>
+          </Pressable>
         </View>
-        <View
-          style={{
-            width: "99%",
-            flexDirection: "row",
-          }}
-        >
-          <MaterialIcons
-            style={[styles.icons, { paddingLeft: 5 }]}
-            name="logout"
-            size={SIZES.width > 400 ? 30 : 20}
-            color={"black"}
-          />
-
-          <Text
+        <View>
+          <Pressable
             style={{
-              fontSize: SIZES.width > 400 ? 30 : 20,
-              alignSelf: "center",
-              fontWeight: "600",
+              width: "99%",
+              flexDirection: "row",
             }}
           >
-            Logout
-          </Text>
+            <MaterialIcons
+              style={[styles.icons, { paddingLeft: 5 }]}
+              name="logout"
+              size={SIZES.width > 400 ? 30 : 20}
+              color={"black"}
+            />
+
+            <Text
+              style={{
+                fontSize: SIZES.width > 400 ? 30 : 20,
+                alignSelf: "center",
+                fontWeight: "600",
+              }}
+            >
+              Logout
+            </Text>
+          </Pressable>
         </View>
       </View>
     </View>

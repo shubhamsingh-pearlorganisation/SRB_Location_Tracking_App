@@ -14,6 +14,8 @@ import ContactsListing from "./screens/EmergencyContacts/ContactsListing";
 import EmergencyContactsScreen from "./screens/EmergencyContacts/Home";
 import EmergencyTimerScreen from "./screens/EmergencyContacts/EmergencyTimerScreen";
 import SelectLocation from "./screens/SelectLocation";
+import AddMember from "./screens/AddMember";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -104,6 +106,33 @@ const App = () => {
             component={EditGroup}
             options={{
               title: "Edit Group",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="AddMember"
+            component={AddMember}
+            options={{
+              title: "Add Member",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
+            options={{
+              title: "Add Member",
               headerTintColor: COLORS.voilet,
               headerTitleStyle: {
                 fontWeight: "bold",
