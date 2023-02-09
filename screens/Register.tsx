@@ -136,7 +136,6 @@ const Register = ({ route, navigation }: any) => {
   // This method is used to update user's profile image
   const updateUserProfileImage = async () => {
     try {
-      alert(image);
       const formData = new FormData();
       formData.append("token_id", jwtToken);
       formData.append("image", image);
@@ -149,7 +148,6 @@ const Register = ({ route, navigation }: any) => {
           type: "success",
         });
       } else {
-        alert("fail");
         setShowLoader(false);
         toast.show(
           response.data?.message
