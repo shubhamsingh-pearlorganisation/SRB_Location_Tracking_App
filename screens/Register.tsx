@@ -29,7 +29,7 @@ const Register = ({ route, navigation }: any) => {
   const [mobileNumber] = useState(
     route?.params?.userDetails?.contact
       ? route?.params?.userDetails?.contact
-      : ""
+      : "N.A"
   );
   const [userDetails, setUserDetails] = useState<any>({
     name: "",
@@ -37,11 +37,6 @@ const Register = ({ route, navigation }: any) => {
     dob: "",
   });
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  useEffect(() => {
-    console.log("Profile Image: ", image);
-    image && updateUserProfileImage(); //Upload Profile Image API Called
-  }, [image]);
 
   // This method is used to select profile image
   const uploadProfileImage = async () => {
@@ -53,11 +48,11 @@ const Register = ({ route, navigation }: any) => {
       });
       setShowLoader(false);
       if (!result.canceled) {
-        setImage(result?.assets[0]?.uri);
+        // setImage(result?.assets[0]?.uri);
+        setImage(result?.assets[0]);
+        console.log("result?.assets[0]:: ", result?.assets[0]);
         setEnabledAddIcon(false);
-        toast.show("Profile Image Added successfully!", {
-          type: "success",
-        });
+        updateUserProfileImage();
       }
     } catch (error: any) {
       toast.show(error.message, {
@@ -71,7 +66,7 @@ const Register = ({ route, navigation }: any) => {
     try {
       const { name, emailId, dob } = userDetails;
       const formData = new FormData();
-      formData.append("token_id", "58d375ba87a61032b3db45688c7d4ffb");
+      formData.append("token_id", "a832fb139affc9e31da5eb18fb11d25d");
       formData.append("name", name);
       formData.append("email", emailId);
       formData.append("dob", dob);
@@ -80,14 +75,12 @@ const Register = ({ route, navigation }: any) => {
       const response = await instance.post("/users_update", formData);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
-        console.log("User Details Update Response:: ", response);
         toast.show("User's Details updated successfully!", {
           type: "success",
         });
         navigation.navigate("Main");
       } else {
         setShowLoader(false);
-        console.log("Getting an error while updating User Details");
         toast.show(
           response.data?.message
             ? response.data?.message
@@ -99,7 +92,6 @@ const Register = ({ route, navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      console.log("Getting an error while updating User Details:: ", error);
       toast.show(error.message ? error.message : "Something went wrong", {
         type: "error",
       });
@@ -109,20 +101,21 @@ const Register = ({ route, navigation }: any) => {
   // This method is used to update user's profile image
   const updateUserProfileImage = async () => {
     try {
+      alert(image);
       const formData = new FormData();
-      formData.append("token_id", "58d375ba87a61032b3db45688c7d4ffb");
+      formData.append("token_id", "a832fb139affc9e31da5eb18fb11d25d");
       formData.append("image", image);
+
       setShowLoader(true);
       const response = await instance.post("/users_image_update", formData);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
-        console.log("Image Upload API Response:: ", response);
         toast.show("Profile Image updated successfully!", {
           type: "success",
         });
       } else {
+        alert("fail");
         setShowLoader(false);
-        console.log("Getting an error while updating User's Profile Image");
         toast.show(
           response.data?.message
             ? response.data?.message
@@ -134,10 +127,6 @@ const Register = ({ route, navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      console.log(
-        "Getting an error while updating User Profile Image :: ",
-        error
-      );
       toast.show(error.message ? error.message : "Something went wrong", {
         type: "error",
       });
@@ -163,7 +152,6 @@ const Register = ({ route, navigation }: any) => {
       currentDate < 10 ? "0" + currentDate : currentDate
     }`;
 
-    console.log("fDate::: ", fullDate);
     setUserDetails({ ...userDetails, dob: fullDate });
     hideDatePicker();
   };
@@ -171,7 +159,6 @@ const Register = ({ route, navigation }: any) => {
 
   // This method is used to update profile details
   const updateDetails = () => {
-    console.log("userDetails::: ", userDetails);
     updateUserDetails();
   };
   // ---------------------------------------------------------------------------------------------

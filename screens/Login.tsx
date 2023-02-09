@@ -159,11 +159,19 @@ const Login = ({ navigation }: any) => {
 
         setShowLoader(false);
 
-        if (isNewUser) navigation.navigate("Register", { userDetails });
+        // Redirection of user
+        if (
+          !isNewUser &&
+          userDetails.contact.length > 0 &&
+          (userDetails.name === "" ||
+            userDetails.email === "" ||
+            userDetails.dob === "")
+        ) {
+          navigation.navigate("Register", { userDetails });
+        } else if (isNewUser) navigation.navigate("Register", { userDetails });
         else navigation.navigate("Main");
       } else {
         setShowLoader(false);
-        console.log("Getting an error while generating authentication token");
         toast.show(
           response.data?.message
             ? response.data?.message
@@ -175,10 +183,6 @@ const Login = ({ navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      console.log(
-        "Getting an error while generating authentication token : ",
-        error
-      );
       toast.show(error.message ? error.message : "Something went wrong", {
         type: "error",
       });
