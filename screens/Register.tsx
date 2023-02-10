@@ -46,6 +46,24 @@ const Register = ({ route, navigation }: any) => {
     route?.params?.userDetails?.image ? route?.params?.userDetails?.image : ""
   );
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isImageUploaded, setImageUploaded] = useState(false);
+
+  // Calling Profile Image Upload Api when user upload image using library
+  useEffect(() => {
+    if (image && isImageUploaded) {
+      const imageData = {
+        uri: image?.uri ? image?.uri : "",
+        type: image?.type ? image?.type : "image",
+        name: image?.name ? image?.name : "profile_img",
+      };
+      updateUserProfileImage(imageData);
+    }
+  }, [image]);
+
+  // Fetching JWT Token when component's mounted
+  useEffect(() => {
+    fetchAuthenticationToken();
+  }, []);
 
   // ---------------------------------------------------------------------------------------------------
   //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
@@ -61,14 +79,10 @@ const Register = ({ route, navigation }: any) => {
     }
   };
 
-  // Fetching JWT Token when component's mounted
-  useEffect(() => {
-    fetchAuthenticationToken();
-  }, []);
-
   // This method is used to upload profile image using library - launchImageLibraryAsync
   const uploadProfileImage = async () => {
     try {
+      setImageUploaded(false);
       setShowLoader(true);
       let result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
@@ -80,7 +94,7 @@ const Register = ({ route, navigation }: any) => {
         setImage(result?.assets[0]);
         console.log("result?.assets[0]:: ", result?.assets[0]);
         setEnabledAddIcon(false);
-        updateUserProfileImage();
+        setImageUploaded(true);
       }
     } catch (error: any) {
       toast.show(
@@ -91,6 +105,7 @@ const Register = ({ route, navigation }: any) => {
           type: "error",
         }
       );
+      setImageUploaded(false);
     }
   };
 
@@ -138,11 +153,11 @@ const Register = ({ route, navigation }: any) => {
   };
 
   // This method is used to update user's profile image using an API
-  const updateUserProfileImage = async () => {
+  const updateUserProfileImage = async (imageData: any) => {
     try {
       const formData = new FormData();
       formData.append("token_id", jwtToken);
-      formData.append("image", image);
+      formData.append("image", imageData);
 
       setShowLoader(true);
       const response = await instance.post("/users_image_update", formData);

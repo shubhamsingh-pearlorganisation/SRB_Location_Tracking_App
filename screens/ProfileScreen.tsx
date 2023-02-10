@@ -1,26 +1,12 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Alert,
-  Image,
-  Pressable,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useState } from "react";
-import { Feather } from "@expo/vector-icons";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import { profile } from "../constants/images";
 
-const ProfileScreen = ({navigation}:any) => {
-
-    const goBack = () =>{
-        navigation.navigate("Main")
-    }
+const ProfileScreen = ({ navigation }: any) => {
+  const goBack = () => {
+    navigation.navigate("Main");
+  };
 
   return (
     <View style={styles.container}>
@@ -29,10 +15,10 @@ const ProfileScreen = ({navigation}:any) => {
           style={{
             top: "2%",
             left: "2%",
-            right:"2%",
+            right: "2%",
             position: "absolute",
             flexDirection: "row",
-            width: 'auto',
+            width: "auto",
           }}
         >
           <TouchableOpacity
@@ -43,7 +29,7 @@ const ProfileScreen = ({navigation}:any) => {
               flexDirection: "row",
               width: "100%",
             }}
-            onPress={()=>goBack()}
+            onPress={() => goBack()}
           >
             <MaterialIcons
               name="keyboard-arrow-left"
@@ -59,7 +45,7 @@ const ProfileScreen = ({navigation}:any) => {
                   alignSelf: "center",
                   textAlign: "left",
                   padding: 0,
-                  borderWidth:0
+                  borderWidth: 0,
                 },
               ]}
             >
