@@ -368,7 +368,7 @@ const HomeScreen = ({ navigation }: any) => {
               backgroundColor: "#705ECF",
               padding: 4,
             }}
-            onPress={redirectToAddGroupScreen}
+            // onPress={redirectToAddGroupScreen}
           >
             <Text
               style={{
@@ -389,7 +389,7 @@ const HomeScreen = ({ navigation }: any) => {
               backgroundColor: "#705ECF",
               padding: 4,
             }}
-            // onPress={redirectToAddGroupScreen}
+            onPress={redirectToAddMemberScreen}
           >
             <Text
               style={{
