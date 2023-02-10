@@ -105,9 +105,14 @@ const Login = ({ navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      toast.show(error.message ? error.message : "Something went wrong", {
-        type: "error",
-      });
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error in sending verification code. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -129,9 +134,14 @@ const Login = ({ navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      toast.show(error.message ? error.message : "Something went wrong", {
-        type: "error",
-      });
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error in validating verification code. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -156,26 +166,36 @@ const Login = ({ navigation }: any) => {
         console.log("userDetails: ", userDetails);
 
         //This method is used to save JWT Token in @react-native-async-storage/async-storage
-        await AsyncStorage.setItem("authentication-token", jwtToken);
+        jwtToken &&
+          (await AsyncStorage.setItem("authentication-token", jwtToken));
         setShowLoader(false);
 
-        // Redirection of user
+        // Redirection of user based on below conditions:
+        // ================================================
+        // When user is not new
+        // When we received contact number in api's response
+        // when we don't received name or dob
         if (
           !isNewUser &&
           userDetails.contact.length > 0 &&
           (userDetails.name === "" ||
-            userDetails.email === "" ||
+            // userDetails.email === "" || //Client Refused to add email check here
             userDetails.dob === "")
         ) {
           navigation.navigate("Register", { userDetails });
-        } else if (isNewUser) navigation.navigate("Register", { userDetails });
+        }
+        // Redirection of user based on below condition:
+        // When user is new
+        else if (isNewUser) navigation.navigate("Register", { userDetails });
+        // Redirection of user based on below conditions:
+        // When user is not new and when we received name, dob and contact in api's response
         else navigation.navigate("Main");
       } else {
         setShowLoader(false);
         toast.show(
           response.data?.message
             ? response.data?.message
-            : "Something went wrong",
+            : "Getting an error in generating authentication code. Please try again later.",
           {
             type: "error",
           }
@@ -183,9 +203,14 @@ const Login = ({ navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      toast.show(error.message ? error.message : "Something went wrong", {
-        type: "error",
-      });
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error in generating authentication code. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -294,7 +319,8 @@ const Login = ({ navigation }: any) => {
   );
 };
 export default Login;
-
+// ==================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     flex: 1,

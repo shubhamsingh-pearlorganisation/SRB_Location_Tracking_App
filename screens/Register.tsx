@@ -28,34 +28,28 @@ const Register = ({ route, navigation }: any) => {
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
 
-  const [dataFromLoginScreen] = useState({
-    contact: route?.params?.userDetails?.contact
-      ? route?.params?.userDetails?.contact
-      : "",
-    dob: route?.params?.userDetails?.dob ? route?.params?.userDetails?.dob : "",
-    email: route?.params?.userDetails?.email
-      ? route?.params?.userDetails?.email
-      : "",
-    image: route?.params?.userDetails?.image
-      ? route?.params?.userDetails?.image
-      : "",
+  // Saving Route's data in component's local state
+  const [userDetails, setUserDetails] = useState<any>({
     name: route?.params?.userDetails?.name
       ? route?.params?.userDetails?.name
       : "",
+    emailId: route?.params?.userDetails?.email
+      ? route?.params?.userDetails?.email
+      : "",
+    dob: route?.params?.userDetails?.dob ? route?.params?.userDetails?.dob : "",
+    contact: route?.params?.userDetails?.contact
+      ? route?.params?.userDetails?.contact
+      : "",
   });
-  const [userDetails, setUserDetails] = useState<any>({
-    name: dataFromLoginScreen?.name ? dataFromLoginScreen?.name : "",
-    emailId: dataFromLoginScreen?.email ? dataFromLoginScreen?.email : "",
-    dob: dataFromLoginScreen?.dob ? dataFromLoginScreen?.dob : "",
-  });
+  // Saving Image in Component's local image state
   const [image, setImage] = useState<any>(
-    dataFromLoginScreen?.image ? dataFromLoginScreen?.image : ""
+    route?.params?.userDetails?.image ? route?.params?.userDetails?.image : ""
   );
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   // ---------------------------------------------------------------------------------------------------
   //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
-  const fetchJWTToken = async () => {
+  const fetchAuthenticationToken = async () => {
     try {
       const token = await AsyncStorage.getItem("authentication-token");
       if (token !== null) {
@@ -67,12 +61,12 @@ const Register = ({ route, navigation }: any) => {
     }
   };
 
-  // Fetching JWT Token
+  // Fetching JWT Token when component's mounted
   useEffect(() => {
-    fetchJWTToken();
+    fetchAuthenticationToken();
   }, []);
 
-  // This method is used to select profile image
+  // This method is used to upload profile image using library - launchImageLibraryAsync
   const uploadProfileImage = async () => {
     try {
       setShowLoader(true);
@@ -89,9 +83,14 @@ const Register = ({ route, navigation }: any) => {
         updateUserProfileImage();
       }
     } catch (error: any) {
-      toast.show(error.message, {
-        type: "error",
-      });
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting error in uploading profile image.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -110,7 +109,7 @@ const Register = ({ route, navigation }: any) => {
       const response = await instance.post("/users_update", formData);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
-        toast.show("User's Details updated successfully!", {
+        toast.show("User's details updated successfully!", {
           type: "success",
         });
         navigation.navigate("Main");
@@ -119,7 +118,7 @@ const Register = ({ route, navigation }: any) => {
         toast.show(
           response.data?.message
             ? response.data?.message
-            : "Something went wrong",
+            : "Getting an error while updating user details. Please try again later.",
           {
             type: "error",
           }
@@ -127,13 +126,18 @@ const Register = ({ route, navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      toast.show(error.message ? error.message : "Something went wrong", {
-        type: "error",
-      });
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while updating user details. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
-  // This method is used to update user's profile image
+  // This method is used to update user's profile image using an API
   const updateUserProfileImage = async () => {
     try {
       const formData = new FormData();
@@ -152,7 +156,7 @@ const Register = ({ route, navigation }: any) => {
         toast.show(
           response.data?.message
             ? response.data?.message
-            : "Something went wrong",
+            : "Getting an error while updating user's profile image. Please try again later.",
           {
             type: "error",
           }
@@ -160,9 +164,14 @@ const Register = ({ route, navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      toast.show(error.message ? error.message : "Something went wrong", {
-        type: "error",
-      });
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while updating user's profile image. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -181,6 +190,7 @@ const Register = ({ route, navigation }: any) => {
     const currentDate = tempDate.getDate();
     const month = tempDate.getMonth() + 1;
     const year = tempDate.getFullYear();
+    // Making Full Date which we need to send in API
     let fullDate = `${year}-${month < 10 ? "0" + month : month}-${
       currentDate < 10 ? "0" + currentDate : currentDate
     }`;
@@ -204,7 +214,7 @@ const Register = ({ route, navigation }: any) => {
         {showLoader && <ActivityIndicator />}
 
         <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
-          {enabledAddIcon && !dataFromLoginScreen?.image && (
+          {enabledAddIcon && !userDetails?.image && (
             <Ionicons
               name="add"
               size={40}
@@ -233,7 +243,7 @@ const Register = ({ route, navigation }: any) => {
           <TextInput
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
-            value={dataFromLoginScreen?.contact}
+            value={userDetails?.contact}
             contextMenuHidden={true}
           />
         </View>

@@ -1,5 +1,6 @@
 import * as Location from "expo-location";
 import { showMessage } from "react-native-flash-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const getCurrentLocation = () => {
   return new Promise(async (resolve, reject) => {
@@ -34,4 +35,17 @@ const showSuccess = (message: string) => {
   });
 };
 
-export { getCurrentLocation, showError, showSuccess };
+//This method is used to fetch JWT Token from @react-native-async-storage/async-storage
+const fetchAuthenticationToken = async () => {
+  try {
+    const token = await AsyncStorage.getItem("authentication-token");
+    if (token !== null) {
+      console.log("token:::::::::::::::::: ", token);
+      return token; // JSON.stringify(token);
+    }
+  } catch (e: any) {
+    console.log("Getting an error while fetching JWT Token:: ", e.message);
+  }
+};
+
+export { getCurrentLocation, showError, showSuccess, fetchAuthenticationToken };
