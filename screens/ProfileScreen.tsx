@@ -15,7 +15,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
-import * as ImagePicker from "expo-image-picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 // import { fetchAuthenticationToken } from "../core/utils/helper";
 
@@ -125,7 +124,7 @@ const ProfileScreen = ({ navigation }: any) => {
   // --------------------------- Date Picker Handling -- Finish -----------------------------------
 
   return !isEditable ? (
-    // ---------------------------------non editable view----------------------------------------
+    // ---------------------------------Non Editable View----------------------------------------
     <View style={styles.container}>
       <View style={styles.topView}>
         <View
@@ -217,7 +216,7 @@ const ProfileScreen = ({ navigation }: any) => {
       </View>
     </View>
   ) : (
-    // ---------------------------------editable view----------------------------------------
+    // ---------------------------------Editable View----------------------------------------
     <View style={styles.container}>
       <View style={styles.topView}>
         <View

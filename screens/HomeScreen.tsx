@@ -53,9 +53,9 @@ const HomeScreen = ({ navigation }: any) => {
     navigation.navigate("AddGroup");
   };
 
-  const redirectToAddMemberScreen = () =>{
-    navigation.navigate("AddMember")
-  }
+  const redirectToAddMemberScreen = () => {
+    navigation.navigate("AddMember");
+  };
 
   const [onUp, setOnUp] = useState(false);
 
@@ -176,58 +176,48 @@ const HomeScreen = ({ navigation }: any) => {
     });
   };
 
-  function renderGroups(){
-    return(
+  function renderGroups() {
+    return (
       <Pressable style={styles.groupListItem}>
         <View>
-          <Text style={styles.groupListItemName}>
-            Group Name
-          </Text>
-          <Text  style={styles.groupListItemCode}>
-            Group Code
-          </Text>
+          <Text style={styles.groupListItemName}>Group Name</Text>
+          <Text style={styles.groupListItemCode}>Group Code</Text>
         </View>
         <View style={styles.groupListItemType}>
-          <Text style={{
-            color:'white',
-            fontWeight:'700'
-          }}>
-          Group Type
-        </Text>
+          <Text
+            style={{
+              color: "white",
+              fontWeight: "700",
+            }}
+          >
+            Group Type
+          </Text>
         </View>
-        
       </Pressable>
     );
-
-    
   }
 
-  function renderMembers(){
-    return(
+  function renderMembers() {
+    return (
       <Pressable style={styles.memberListItem}>
         <View style={styles.memberListItemImage}>
-          <Ionicons name="person-sharp" size={20} color={COLORS.voilet}/>
+          <Ionicons name="person-sharp" size={20} color={COLORS.voilet} />
         </View>
         <View>
-          <Text style={styles.memberListItemName}>
-            Username
-          </Text>
-          <Text  style={styles.memberListItemCode}>
-            Location
-          </Text>
-          <Text  style={styles.memberListItemCode}>
-            Location line
-          </Text>
+          <Text style={styles.memberListItemName}>Username</Text>
+          <Text style={styles.memberListItemCode}>Location</Text>
+          <Text style={styles.memberListItemCode}>Location line</Text>
         </View>
         <View style={styles.memberListItemType}>
-          <Text style={{
-            color:'black',
-            fontWeight:'700'
-          }}>
-          07th Feb {'\n'}05:16 pm
-        </Text>
+          <Text
+            style={{
+              color: "black",
+              fontWeight: "700",
+            }}
+          >
+            07th Feb {"\n"}05:16 pm
+          </Text>
         </View>
-        
       </Pressable>
     );
   }
@@ -330,7 +320,7 @@ const HomeScreen = ({ navigation }: any) => {
       >
         <ScrollView
           style={{
-            width:"100%",
+            width: "100%",
             margin: "2%",
             marginBottom: SIZES.height > 700 ? "12%" : "17%",
           }}
@@ -476,7 +466,7 @@ const HomeScreen = ({ navigation }: any) => {
         <ScrollView
           style={{
             height: "70%",
-            marginTop:"1%"
+            marginTop: "1%",
           }}
         >
           {renderMembers()}
@@ -498,16 +488,10 @@ const HomeScreen = ({ navigation }: any) => {
             borderRadius: 30,
             alignItems: "center",
             justifyContent: "center",
-            
           }}
           onPress={redirectToAddMemberScreen}
         >
-          <Ionicons
-            size={40}
-            name="add"
-            color={COLORS.voilet}
-            
-          />
+          <Ionicons size={40} name="add" color={COLORS.voilet} />
         </Pressable>
       </View>
     </SafeAreaView>
@@ -521,16 +505,16 @@ const styles = StyleSheet.create({
   mapBox: {
     flex: 1,
   },
-  memberListItem:{
-    alignItems:'center',
-    height:'auto',
-    flexDirection:'row',
-    borderBottomWidth:1,
-    borderTopWidth:1,
-    padding:'2%'
+  memberListItem: {
+    alignItems: "center",
+    height: "auto",
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    padding: "2%",
   },
-  memberListItemImage:{
-    backgroundColor:'white',
+  memberListItemImage: {
+    backgroundColor: "white",
     shadowColor: "black",
     shadowOpacity: 0.4,
     shadowOffset: {
@@ -539,29 +523,29 @@ const styles = StyleSheet.create({
     },
     elevation: 5,
     shadowRadius: 5,
-    padding:'1%',
-    marginRight:10,
-    marginLeft:0,
-    borderRadius:20
+    padding: "1%",
+    marginRight: 10,
+    marginLeft: 0,
+    borderRadius: 20,
   },
-  memberListItemName:{
-    fontSize:20,
+  memberListItemName: {
+    fontSize: 20,
   },
-  memberListItemCode:{
-    fontSize:15,
-    color:'grey'
+  memberListItemCode: {
+    fontSize: 15,
+    color: "grey",
   },
-  memberListItemType:{
-    borderRadius:10,
-    width:'auto',
-    height:'auto',
-    padding:5,
-    alignContent:'center',
-    justifyContent:'center',
-    fontWeight:'700',
-    fontSize:15,
-    right:'1%',
-    position:'absolute',
+  memberListItemType: {
+    borderRadius: 10,
+    width: "auto",
+    height: "auto",
+    padding: 5,
+    alignContent: "center",
+    justifyContent: "center",
+    fontWeight: "700",
+    fontSize: 15,
+    right: "1%",
+    position: "absolute",
   },
   memberList: {
     bottom: 0,
@@ -600,33 +584,33 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     zIndex: 1,
   },
-  groupListItem:{
-    alignItems:'center',
-    height:'auto',
-    flexDirection:'row',
-    borderBottomWidth:1,
-    borderTopWidth:1,
-    padding:'2%'
+  groupListItem: {
+    alignItems: "center",
+    height: "auto",
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    padding: "2%",
   },
-  groupListItemName:{
-    fontSize:20,
+  groupListItemName: {
+    fontSize: 20,
   },
-  groupListItemCode:{
-    fontSize:15,
-    color:'grey'
+  groupListItemCode: {
+    fontSize: 15,
+    color: "grey",
   },
-  groupListItemType:{
-    backgroundColor:'green',
-    borderRadius:10,
-    width:'auto',
-    height:'auto',
-    padding:5,
-    alignContent:'center',
-    justifyContent:'center',
-    fontWeight:'700',
-    fontSize:15,
-    right:'1%',
-    position:'absolute',
+  groupListItemType: {
+    backgroundColor: "green",
+    borderRadius: 10,
+    width: "auto",
+    height: "auto",
+    padding: 5,
+    alignContent: "center",
+    justifyContent: "center",
+    fontWeight: "700",
+    fontSize: 15,
+    right: "1%",
+    position: "absolute",
   },
   groupListDropDown: {
     marginTop: -SIZES.height * 0.6,
@@ -646,8 +630,8 @@ const styles = StyleSheet.create({
     },
     elevation: 5,
     shadowRadius: 5,
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
   dropDownEnabled: {
     transform: [

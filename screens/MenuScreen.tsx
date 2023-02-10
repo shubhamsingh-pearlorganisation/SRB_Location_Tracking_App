@@ -23,19 +23,15 @@ const MenuScreen = ({ navigation }: any) => {
 
   const redirectProfilePage = () => {
     navigation.navigate("ProfileScreen");
+  };
 
-  }
-
-  const redirectFAQScreen = () =>{
+  const redirectFAQScreen = () => {
     navigation.navigate("FAQScreen");
+  };
 
-  }
-
-  const redirectFeedBackScreen = () =>{
+  const redirectFeedBackScreen = () => {
     navigation.navigate("FeedBackScreen");
-
-  }
-
+  };
 
   return (
     <View style={styles.container}>
@@ -50,7 +46,7 @@ const MenuScreen = ({ navigation }: any) => {
             fontSize: SIZES.width > 400 ? 30 : 20,
             alignSelf: "center",
             fontWeight: "600",
-            marginLeft:'2%'
+            marginLeft: "2%",
           }}
         >
           User Name
@@ -72,7 +68,7 @@ const MenuScreen = ({ navigation }: any) => {
             borderBottomWidth: 2,
             margin: 10,
           }}
-          onPress={()=>redirectProfilePage()}
+          onPress={() => redirectProfilePage()}
         >
           <FontAwesome5
             style={[styles.icons, { left: 0 }]}
@@ -204,7 +200,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
-            onPress={()=>redirectFAQScreen()}
+            onPress={() => redirectFAQScreen()}
           >
             <MaterialCommunityIcons
               style={[styles.icons, { paddingLeft: 5 }]}
@@ -230,7 +226,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
-            onPress={()=>redirectFeedBackScreen()}
+            onPress={() => redirectFeedBackScreen()}
           >
             <MaterialCommunityIcons
               style={[styles.icons, { paddingLeft: 5 }]}

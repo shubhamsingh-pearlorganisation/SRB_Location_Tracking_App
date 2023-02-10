@@ -13,5 +13,5 @@ export default {
   onboarding4,
   emergencyContactHome,
   emergencyCallImage,
-  profile
+  profile,
 };

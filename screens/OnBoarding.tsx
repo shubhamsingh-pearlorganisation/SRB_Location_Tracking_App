@@ -42,7 +42,7 @@ const onBoardings = [
 const OnBoarding = ({ navigation }: any) => {
   // This method is used to redirect user to login screen
   const redirectToLogin = () => {
-    navigation.navigate("Main");
+    navigation.navigate("Login");
   };
 
   const [completed, setCompleted] = React.useState(false);

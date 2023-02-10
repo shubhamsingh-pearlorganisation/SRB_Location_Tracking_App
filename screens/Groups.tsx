@@ -25,10 +25,12 @@ const Groups = ({ navigation }: any) => {
   function renderGroups() {
     return (
       <Pressable style={styles.groupListItem}>
-        <View style={{
-          left: 0,
-          position: "absolute",
-        }}>
+        <View
+          style={{
+            left: 0,
+            position: "absolute",
+          }}
+        >
           <View style={styles.groupListItemType}>
             <Text
               style={{
@@ -43,14 +45,22 @@ const Groups = ({ navigation }: any) => {
           <Text style={styles.groupListItemCode}>Group Code</Text>
         </View>
         <View style={styles.groupListItemMemberCount}>
-          <Text style={{
-            fontSize:20,
-            fontWeight:'600'
-          }}>00</Text>
-          <Text style={{
-            fontSize:20,
-            fontWeight:'500'
-          }}>Members</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "600",
+            }}
+          >
+            00
+          </Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "500",
+            }}
+          >
+            Members
+          </Text>
         </View>
         <View
           style={[
@@ -93,7 +103,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderTopWidth: 1,
     padding: "2%",
-    margin:'2%'
+    margin: "2%",
   },
   groupListItemName: {
     fontSize: 20,
@@ -114,10 +124,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   groupListItemMemberCount: {
-    justifyContent:'center',
-    alignItems:'center',
-    fontSize:20,
-    fontWeight:'600'
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 20,
+    fontWeight: "600",
   },
 });
 

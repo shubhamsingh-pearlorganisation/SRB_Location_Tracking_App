@@ -55,9 +55,19 @@ export default function AlertDialog({
             }}
           >
             <View style={{ alignItems: "center", margin: 10 }}>
-              
-              <Text style={{ fontSize: SIZES.width>400? 30:20, marginTop: "2%" }}>{mainDisplayMsg}</Text>
-              <Text style={{ fontSize: SIZES.width>400? 18:12, marginTop: 5 }}>{subDisplayMsg}</Text>
+              <Text
+                style={{
+                  fontSize: SIZES.width > 400 ? 30 : 20,
+                  marginTop: "2%",
+                }}
+              >
+                {mainDisplayMsg}
+              </Text>
+              <Text
+                style={{ fontSize: SIZES.width > 400 ? 18 : 12, marginTop: 5 }}
+              >
+                {subDisplayMsg}
+              </Text>
             </View>
 
             <TouchableOpacity
@@ -69,11 +79,11 @@ export default function AlertDialog({
                 position: "absolute",
                 borderBottomWidth: 0,
                 width: SIZES.width * 0.4,
-                height: 'auto',
+                height: "auto",
                 justifyContent: "center",
                 borderRadius: 30,
                 backgroundColor: COLORS.voilet,
-                bottom:'25%'
+                bottom: "25%",
               }}
             >
               <Text style={{ color: "white", margin: 15 }}>
@@ -89,15 +99,21 @@ export default function AlertDialog({
                 position: "absolute",
                 borderBottomWidth: 0,
                 width: SIZES.width * 0.4,
-                height: 'auto',
+                height: "auto",
                 justifyContent: "center",
                 borderRadius: 30,
                 backgroundColor: COLORS.white,
-                
-                bottom:'1%'
+
+                bottom: "1%",
               }}
             >
-              <Text style={{ color: COLORS.voilet, margin: 15, textDecorationLine:'underline' }}>
+              <Text
+                style={{
+                  color: COLORS.voilet,
+                  margin: 15,
+                  textDecorationLine: "underline",
+                }}
+              >
                 No Keep This Contact
               </Text>
             </TouchableOpacity>

@@ -15,10 +15,10 @@ import { emergencyCallImage } from "../../constants/images";
 import CustomAlert from "../../components/AlertDialog";
 import { useState } from "react";
 
-const EmergencyTimerScreen = ({navigation}:any) => {
-  const redirectBack=()=>{
-    navigation.navigate("EmergencyContactsListing")
-  }
+const EmergencyTimerScreen = ({ navigation }: any) => {
+  const redirectBack = () => {
+    navigation.navigate("EmergencyContactsListing");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -38,8 +38,6 @@ const EmergencyTimerScreen = ({navigation}:any) => {
           </View>
         </Pressable>
       </ImageBackground>
-
-      
 
       <Text
         style={{
@@ -65,7 +63,7 @@ const EmergencyTimerScreen = ({navigation}:any) => {
           borderColor: COLORS.black,
           borderWidth: 1,
         }}
-        onPress={()=>redirectBack()}
+        onPress={() => redirectBack()}
       >
         <Text
           style={{

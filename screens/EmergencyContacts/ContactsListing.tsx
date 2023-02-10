@@ -13,8 +13,7 @@ import { SIZES } from "../../constants";
 import { emergencyCallImage } from "../../constants/images";
 import CustomAlert from "../../components/AlertDialog";
 import { useState } from "react";
-import { Feather } from '@expo/vector-icons'; 
-
+import { Feather } from "@expo/vector-icons";
 
 const ContactsListing = ({ navigation }: any) => {
   const redirectToTimerScreen = () => {
@@ -28,36 +27,43 @@ const ContactsListing = ({ navigation }: any) => {
   //   alert("Successfull!!!")
   // }
 
-  function renderEemergencyContactListItem(){
-    return(
+  function renderEemergencyContactListItem() {
+    return (
       <View
-      style={{
-        flexDirection:'row',
-        borderColor:'black',
-        marginBottom:'.5%',
-        padding:'1%',
-        backgroundColor:'white',
-
-      }}>
-        <View>
-          <Text 
-           style={{
-            fontSize:30,
-          }}
-          >Full Name</Text>
-          <Text style={{
-            fontSize:20,
-          }}>Contact Number</Text>
-        </View>
-        <Pressable style={{
-        right:'2%',
-        position:'absolute',
-        alignSelf:'center'
+        style={{
+          flexDirection: "row",
+          borderColor: "black",
+          marginBottom: ".5%",
+          padding: "1%",
+          backgroundColor: "white",
         }}
-        onPress={()=>setShowAlert(true)}>
-          <Feather name ="minus-circle" size={30} />
+      >
+        <View>
+          <Text
+            style={{
+              fontSize: 30,
+            }}
+          >
+            Full Name
+          </Text>
+          <Text
+            style={{
+              fontSize: 20,
+            }}
+          >
+            Contact Number
+          </Text>
+        </View>
+        <Pressable
+          style={{
+            right: "2%",
+            position: "absolute",
+            alignSelf: "center",
+          }}
+          onPress={() => setShowAlert(true)}
+        >
+          <Feather name="minus-circle" size={30} />
         </Pressable>
-        
       </View>
     );
   }
@@ -73,26 +79,29 @@ const ContactsListing = ({ navigation }: any) => {
       </Pressable>
       <CustomAlert
         mainDisplayMsg={"Sure you want to delete this contact"}
-        subDisplayMsg={"If you change your mind, you’ll have to resend an invite."}
+        subDisplayMsg={
+          "If you change your mind, you’ll have to resend an invite."
+        }
         visibility={showAlert}
-        dismissAlert={()=>{setShowAlert(false)
-          setDeleteContact(false)
+        dismissAlert={() => {
+          setShowAlert(false);
+          setDeleteContact(false);
         }}
-        confirmAction = {()=>{setDeleteContact(true) 
-        setShowAlert(false)}}
-      /> 
+        confirmAction={() => {
+          setDeleteContact(true);
+          setShowAlert(false);
+        }}
+      />
       <Text style={styles.title}>Emergency Contacts</Text>
 
       <View
-      style={{
-        height:'40%',
-        width:'100%',
-        padding:'2%',    
-      }}
+        style={{
+          height: "40%",
+          width: "100%",
+          padding: "2%",
+        }}
       >
-        <ScrollView
-         style={styles.listContainer}
-        >
+        <ScrollView style={styles.listContainer}>
           {renderEemergencyContactListItem()}
           {renderEemergencyContactListItem()}
           {renderEemergencyContactListItem()}
@@ -101,7 +110,6 @@ const ContactsListing = ({ navigation }: any) => {
           {renderEemergencyContactListItem()}
         </ScrollView>
       </View>
-
     </SafeAreaView>
   );
 };
@@ -113,21 +121,21 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignItems: "center",
     // flexDirection: "column",
-    height:SIZES.height
+    height: SIZES.height,
   },
   title: {
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: SIZES.height > 700 ? 40 : 30,
     // lineHeight: 36,
-    height:'auto',
+    height: "auto",
     textAlign: "center",
     color: "#000000",
   },
-  listContainer:{
-    height:'100%',
-    width:'100%',
-    backgroundColor:'rgba(0,0,0,0.1)',
+  listContainer: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "rgba(0,0,0,0.1)",
   },
   image: {
     width: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
