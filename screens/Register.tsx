@@ -17,6 +17,7 @@ import { instance } from "../core/utils/AxiosInterceptor";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CountryDropdown from "../components/CountryDropDown";
 
 // -----------------------------------------------------------------------------------
 
@@ -254,14 +255,19 @@ const Register = ({ route, navigation }: any) => {
         >
           Image
         </Text>
-        <View pointerEvents="none">
+
+          {/* -------------------------phone number holder and country list---------------------------  */}
+          <CountryDropdown />
+
+
+        {/* <View pointerEvents="none">
           <TextInput
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
             value={userDetails?.contact}
             contextMenuHidden={true}
           />
-        </View>
+        </View> */}
 
         <TextInput
           placeholder="Enter your name"

@@ -19,32 +19,48 @@ import { List } from "react-native-paper";
 
 const FAQScreen = () => {
 
-    const [expanded, setExpanded] = useState(true);
+    const [expanded, setExpanded] = useState(false);
 
     const handlePress = () => setExpanded(!expanded);
 
-    return(
-        <View>
-            <List.Section title="Accordions">
-        <List.Accordion
-          title="Uncontrolled Accordion"
-          left={(props) => <List.Icon {...props} icon="folder" />}
-        >
-          <List.Item title="First item" />
-          <List.Item title="Second item" />
-        </List.Accordion>
+    const FAQ = [
+        {
+          Question: "Stay close with family in one touch,\nwe can help you.",
+          Solution: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
+        },
+        {
+            Question: "With us you can be calm to your\nfriends and parents.",
+          Solution: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
+        },
+        {
+            Question: "We will help you in your\n aspects.",
+          Solution: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
+        },
+        {
+            Question: "We will also help you with\nvehicle tracking.",
+          Solution: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
+        },
+      ];
 
+    return(
+        
+            <View>
+            {FAQ.map((item) => (
+               <List.Section >
         <List.Accordion
-          title="Controlled Accordion"
+          title={item.Question}
           left={(props) => <List.Icon {...props} icon="folder" />}
-          expanded={expanded}
           onPress={handlePress}
         >
-          <List.Item title="First item" />
-          <List.Item title="Second item" />
+          <List.Item title={item.Solution} />
         </List.Accordion>
-      </List.Section>
+
+        
+      </List.Section> 
+            ))}
+            
         </View>
+            
     )
 }
 

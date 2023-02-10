@@ -17,6 +17,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { regexes } from "../core/utils/constants";
 import { instance } from "../core/utils/AxiosInterceptor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CountryDropdown from "../components/CountryDropDown";
 // ---------------------------------------------------------------------------------------------
 
 const Login = ({ navigation }: any) => {
@@ -237,18 +238,24 @@ const Login = ({ navigation }: any) => {
             alignItems: "center",
           }}
         >
-          {countriesList && (
-            <SelectList
-              boxStyles={{ backgroundColor: "#fff" }}
-              setSelected={(val: any) => {
-                setSelectedCountryCode(val);
-              }}
-              data={countriesList}
-              save="key"
-            />
-          )}
 
-          <Text style={{ color: "#fff", fontSize: 20, marginLeft: 20 }}>
+          {/* -------------------------phone number holder and country list---------------------------  */}
+
+          {/* {countriesList && (
+            // <SelectList
+            //   boxStyles={{ backgroundColor: "#fff" }}
+            //   setSelected={(val: any) => {
+            //     setSelectedCountryCode(val);
+            //   }}
+            //   data={countriesList}
+            //   save="key"
+            // />
+            
+          )} */}
+
+          <CountryDropdown />
+
+          {/* <Text style={{ color: "#fff", fontSize: 20, marginLeft: 20 }}>
             {selectedCountryCode && <Text>{selectedCountryCode}</Text>}
           </Text>
 
@@ -262,7 +269,7 @@ const Login = ({ navigation }: any) => {
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
             maxLength={12}
-          />
+          /> */}
         </View>
         <TouchableOpacity
           style={[
@@ -385,4 +392,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FFFFFF",
   },
+
+
 });
