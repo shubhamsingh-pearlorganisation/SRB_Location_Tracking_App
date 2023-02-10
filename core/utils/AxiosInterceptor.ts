@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const instance = axios.create({
-  baseURL: "https://lms.srbitsolution.com/api",
+  baseURL: "https://lms.srbitsolution.com/api", //Will replace this baseURL to process.env.REACT_APP_API_BASE_URL
   headers: {
     // "Content-Type": "application/json",
     "Content-Type": "multipart/form-data",

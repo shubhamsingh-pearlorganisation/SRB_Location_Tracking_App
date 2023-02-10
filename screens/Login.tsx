@@ -13,52 +13,31 @@ import { firebaseConfig } from "../firebaseConfig";
 import fireb from "firebase/compat";
 import { useToast } from "react-native-toast-notifications";
 import countriesData from "../assets/api-data/countriesData.json";
-import { SelectList } from "react-native-dropdown-select-list";
+// import { SelectList } from "react-native-dropdown-select-list";
 import { regexes } from "../core/utils/constants";
 import { instance } from "../core/utils/AxiosInterceptor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CountryDropdown from "../components/CountryDropDown";
+import CountryDropdown from "../components/CountryDropdown";
 // ---------------------------------------------------------------------------------------------
 
 const Login = ({ navigation }: any) => {
   const toast = useToast();
 
   // Component's Local States
-  const [phoneNumber, setPhoneNumber] = useState<any>("");
+  const [completePhoneNumber, setCompletePhoneNumber] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState<any>(null);
   const recaptchaVerifier = useRef<any>(null);
   const [disableVerificationBtn, setDisableVerificationBtn] = useState(true);
   const [disableConfirmVerificationBtn, setDisableConfirmVerificationBtn] =
     useState(true);
-  const [countriesList, setCountriesList] = useState<any>([]);
   const [showLoader, setShowLoader] = useState(false);
-  const [selectedCountryCode, setSelectedCountryCode] = React.useState("");
-  const [completePhoneNumber, setCompletePhoneNumber] = useState("");
 
-  // Fetching Countries and store in component's state
+  // Enabling or Disabling Send Verification Code Button
   useEffect(() => {
-    setCountriesList(countriesData);
-  }, []);
-
-  // Enabling or Disabling Send Verification Button
-  useEffect(() => {
-    if (
-      phoneNumber &&
-      phoneNumber.length >= 10 &&
-      phoneNumber.length < 13 &&
-      selectedCountryCode
-    )
-      setDisableVerificationBtn(false);
-    else setDisableVerificationBtn(true);
-  }, [phoneNumber, selectedCountryCode]);
-
-  //Merging Phone Number with Country Code
-  useEffect(() => {
-    if (phoneNumber && selectedCountryCode) {
-      setCompletePhoneNumber(selectedCountryCode + "" + phoneNumber);
-    }
-  }, [phoneNumber, selectedCountryCode]);
+    if (completePhoneNumber.length < 13) setDisableVerificationBtn(true);
+    else setDisableVerificationBtn(false);
+  }, [completePhoneNumber]);
 
   // Enabling or Disabling Confirm Verification Code Button
   useEffect(() => {
@@ -72,37 +51,19 @@ const Login = ({ navigation }: any) => {
   // This method is used to send verification code from firebase.
   const sendVerification = async () => {
     try {
-      const globalMobileNumberRegex = regexes.tenDigitMobileNumber; //10 digit mobile number regex
-
-      if (
-        isNaN(phoneNumber) ||
-        (phoneNumber &&
-          phoneNumber.length >= 10 &&
-          phoneNumber.length < 13 &&
-          !globalMobileNumberRegex.test(phoneNumber))
-      ) {
-        toast.show("Please enter a valid Mobile Number", {
-          type: "error",
+      setShowLoader(true);
+      const phoneProvider = new fireb.auth.PhoneAuthProvider();
+      const verCode: any = await phoneProvider.verifyPhoneNumber(
+        completePhoneNumber,
+        recaptchaVerifier.current
+      );
+      // If Verification code received
+      if (verCode) {
+        setShowLoader(false);
+        setVerificationId(verCode);
+        toast.show("Verification code sent successfully!", {
+          type: "success",
         });
-      } else if (
-        phoneNumber.length >= 10 &&
-        phoneNumber.length < 13 &&
-        globalMobileNumberRegex.test(phoneNumber)
-      ) {
-        setShowLoader(true);
-        const phoneProvider = new fireb.auth.PhoneAuthProvider();
-        const verCode: any = await phoneProvider.verifyPhoneNumber(
-          completePhoneNumber,
-          recaptchaVerifier.current
-        );
-        // If Verification code received
-        if (verCode) {
-          setShowLoader(false);
-          setVerificationId(verCode);
-          toast.show("Verification code sent successfully!", {
-            type: "success",
-          });
-        }
       }
     } catch (error: any) {
       setShowLoader(false);
@@ -217,6 +178,13 @@ const Login = ({ navigation }: any) => {
     }
   };
 
+  // Receiving Complete Mobile Number from CountryDropdown Component
+  const getCompleteMobileNumber = (mobileNumberWithCountryCode: string) => {
+    console.log("mobileNumberWithCountryCode::: ", mobileNumberWithCountryCode);
+    if (mobileNumberWithCountryCode)
+      setCompletePhoneNumber(mobileNumberWithCountryCode);
+  };
+
   // -------------------------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -238,38 +206,7 @@ const Login = ({ navigation }: any) => {
             alignItems: "center",
           }}
         >
-
-          {/* -------------------------phone number holder and country list---------------------------  */}
-
-          {/* {countriesList && (
-            // <SelectList
-            //   boxStyles={{ backgroundColor: "#fff" }}
-            //   setSelected={(val: any) => {
-            //     setSelectedCountryCode(val);
-            //   }}
-            //   data={countriesList}
-            //   save="key"
-            // />
-            
-          )} */}
-
-          <CountryDropdown />
-
-          {/* <Text style={{ color: "#fff", fontSize: 20, marginLeft: 20 }}>
-            {selectedCountryCode && <Text>{selectedCountryCode}</Text>}
-          </Text>
-
-          <TextInput
-            placeholder="Enter Number"
-            onChangeText={(value: any) => {
-              setPhoneNumber(value);
-            }}
-            keyboardType="phone-pad"
-            autoComplete="tel"
-            style={styles.textInput}
-            placeholderTextColor="rgba(255,255,255,0.6)"
-            maxLength={12}
-          /> */}
+          <CountryDropdown getCompleteMobileNumber={getCompleteMobileNumber} />
         </View>
         <TouchableOpacity
           style={[
@@ -392,6 +329,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FFFFFF",
   },
-
-
 });

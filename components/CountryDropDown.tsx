@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import PhoneInput from "react-native-phone-number-input";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { COLORS, SIZES } from "../constants";
 
-const CountryDropdown = () => {
-  const [value, setValue] = useState<any>("");
+const CountryDropdown = (props: any) => {
+  // Component's Local States
+  const [value, setValue] = useState("");
+  const [formattedValue, setFormattedValue] = useState("");
+
+  // Sending Complete Mobile Number to Login Component
   useEffect(() => {
-    console.log(value);
-  }, [value]);
+    props.getCompleteMobileNumber(formattedValue);
+  }, [formattedValue]);
+
   return (
     <View>
       <PhoneInput
@@ -19,13 +24,20 @@ const CountryDropdown = () => {
         textInputStyle={styles.textInputStyle}
         codeTextStyle={styles.codeTextStyle}
         flagButtonStyle={styles.flagStyle}
-        textInputProps = {{placeholderTextColor:COLORS.white}}
+        textInputProps={{ placeholderTextColor: COLORS.white }}
         layout="first"
+        onChangeText={(text) => {
+          setValue(text);
+        }}
+        onChangeFormattedText={(text) => {
+          setFormattedValue(text);
+        }}
       />
     </View>
   );
 };
-
+// =============================================================
+// CSS CODE
 const styles = StyleSheet.create({
   countryCodeContainer: {
     backgroundColor: COLORS.voilet,
@@ -33,7 +45,6 @@ const styles = StyleSheet.create({
   },
   textContainerStyle: {
     backgroundColor: COLORS.voilet,
-    // width:SIZES.width*.1,
   },
   textInputStyle: {
     textAlign: "center",
@@ -45,7 +56,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: COLORS.white,
     alignItems: "center",
-    fontSize: 20,  },
+    fontSize: 20,
+  },
   flagStyle: {
     width: "20%",
     backgroundColor: "white",
