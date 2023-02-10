@@ -16,7 +16,8 @@ import { instance } from "../core/utils/AxiosInterceptor";
 import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-// import { fetchAuthenticationToken } from "../core/utils/helper";
+import * as ImagePicker from "expo-image-picker";
+import { Ionicons } from "@expo/vector-icons";
 
 const ProfileScreen = ({ navigation }: any) => {
   const toast = useToast();
@@ -24,8 +25,17 @@ const ProfileScreen = ({ navigation }: any) => {
   // Component's Local States
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
-  const [userDetails, setUserDetails] = useState<any>({});
+  const [userDetailsPrefilled, setUserDetailsPrefilled] = useState<any>({});
   const [isEditable, setIsEditable] = useState(false);
+  const [userDetails, setUserDetails] = useState<any>({
+    name: "",
+    email: "",
+    dob: "",
+    contact: "",
+  });
+  const [image, setImage] = useState<any>("");
+  const [enabledAddIcon, setEnabledAddIcon] = useState(true);
+  const [isImageUploaded, setImageUploaded] = useState(false);
 
   // Fetching JWT Token  when component's mounted
   useEffect(() => {
@@ -36,10 +46,22 @@ const ProfileScreen = ({ navigation }: any) => {
   useEffect(() => {
     jwtToken.length && fetchUserDetails();
   }, [jwtToken]);
+
+  useEffect(() => {
+    if (userDetailsPrefilled) {
+      setUserDetails({
+        name: userDetailsPrefilled?.name,
+        email: userDetailsPrefilled?.email,
+        dob: userDetailsPrefilled?.dob,
+        contact: userDetailsPrefilled?.contact,
+      });
+      setImage(userDetailsPrefilled?.image);
+    }
+  }, [userDetailsPrefilled]);
   // ---------------------------------------------------------------------------------------------------
 
-  // Redirect to back
-  const goBack = () => {
+  // Redirect to back screen
+  const goToBackScreen = () => {
     navigation.navigate("Main");
   };
   //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
@@ -66,7 +88,7 @@ const ProfileScreen = ({ navigation }: any) => {
       const response = await instance.post("/user_details", formData);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
-        setUserDetails(response.data?.data);
+        setUserDetailsPrefilled(response.data?.data);
         toast.show("User's details fetched successfully!", {
           type: "success",
           placement: "bottom",
@@ -121,10 +143,82 @@ const ProfileScreen = ({ navigation }: any) => {
     setUserDetails({ ...userDetails, dob: fullDate });
     hideDatePicker();
   };
+
+  // This method is used to upload profile image using library - expo-image-picker
+  const uploadProfileImage = async () => {
+    try {
+      setImageUploaded(false);
+      setShowLoader(true);
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        quality: 1,
+      });
+      setShowLoader(false);
+      if (!result.canceled) {
+        // setImage(result?.assets[0]?.uri);
+        setImage(result?.assets[0]);
+        console.log("result?.assets[0]:: ", result?.assets[0]);
+        setEnabledAddIcon(false);
+        setImageUploaded(true);
+      }
+    } catch (error: any) {
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting error in uploading profile image.",
+        {
+          type: "error",
+        }
+      );
+      setImageUploaded(false);
+    }
+  };
+
+  // This method is used to update User Details
+  const updateUserDetails = async () => {
+    try {
+      const { name, email, dob } = userDetails;
+
+      const formData = new FormData();
+      formData.append("token_id", jwtToken);
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("dob", dob);
+      setShowLoader(true);
+
+      const response = await instance.post("/users_update", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        setShowLoader(false);
+        toast.show("User's details updated successfully!", {
+          type: "success",
+        });
+        goToBackScreen();
+      } else {
+        setShowLoader(false);
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while updating user details. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowLoader(false);
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while updating user details. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
   // --------------------------- Date Picker Handling -- Finish -----------------------------------
 
   return !isEditable ? (
-    // ---------------------------------Non Editable View----------------------------------------
     <View style={styles.container}>
       <View style={styles.topView}>
         <View
@@ -145,7 +239,7 @@ const ProfileScreen = ({ navigation }: any) => {
               flexDirection: "row",
               width: "100%",
             }}
-            onPress={() => goBack()}
+            onPress={() => goToBackScreen()}
           >
             <MaterialIcons
               name="keyboard-arrow-left"
@@ -183,7 +277,11 @@ const ProfileScreen = ({ navigation }: any) => {
         </View>
 
         <Image
-          source={userDetails?.image ? { uri: userDetails?.image } : profile}
+          source={
+            userDetailsPrefilled?.image
+              ? { uri: userDetailsPrefilled?.image }
+              : profile
+          }
           style={styles.profileImage}
         />
         <Text
@@ -192,26 +290,30 @@ const ProfileScreen = ({ navigation }: any) => {
             { fontWeight: "600", color: COLORS.white, padding: 0 },
           ]}
         >
-          {userDetails?.name ? userDetails?.name : "User Name"}
+          {userDetailsPrefilled?.name
+            ? userDetailsPrefilled?.name
+            : "User Name"}
         </Text>
         {showLoader && <ActivityIndicator size={"large"} />}
       </View>
 
       <View style={styles.bottomView}>
         <Text style={styles.textView}>
-          {userDetails?.email ? userDetails?.email : "Email"}
+          {userDetailsPrefilled?.email ? userDetailsPrefilled?.email : "Email"}
         </Text>
         <Text style={styles.textView}>
-          {userDetails?.dob
-            ? userDetails?.dob.toString().split("-")[2] +
+          {userDetailsPrefilled?.dob
+            ? userDetailsPrefilled?.dob.toString().split("-")[2] +
               "-" +
-              userDetails?.dob.toString().split("-")[1] +
+              userDetailsPrefilled?.dob.toString().split("-")[1] +
               "-" +
-              userDetails?.dob.toString().split("-")[0]
+              userDetailsPrefilled?.dob.toString().split("-")[0]
             : "Date of Birth"}
         </Text>
         <Text style={styles.textView}>
-          {userDetails?.contact ? userDetails?.contact : "Contact Number"}
+          {userDetailsPrefilled?.contact
+            ? userDetailsPrefilled?.contact
+            : "Contact Number"}
         </Text>
       </View>
     </View>
@@ -237,7 +339,7 @@ const ProfileScreen = ({ navigation }: any) => {
               flexDirection: "row",
               width: "100%",
             }}
-            onPress={() => goBack()}
+            onPress={() => goToBackScreen()}
           >
             <MaterialIcons
               name="keyboard-arrow-left"
@@ -261,13 +363,13 @@ const ProfileScreen = ({ navigation }: any) => {
             </Text>
           </TouchableOpacity>
 
-          {/* -------------------------Edit Profile Button--------------------------------------  */}
           <TouchableOpacity
             style={{
               right: 0,
               top: 0,
               position: "absolute",
             }}
+            onPress={updateUserDetails}
           >
             <Text
               style={[
@@ -285,11 +387,32 @@ const ProfileScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
 
-        {/* ---------------------------implement image picker functionality here------------------  */}
-        <Image
-          source={userDetails?.image ? { uri: userDetails?.image } : profile}
-          style={styles.profileImage}
-        />
+        <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
+          {enabledAddIcon && !userDetails?.image && (
+            <Ionicons
+              name="add"
+              size={40}
+              color={COLORS.voilet}
+              style={{
+                margin: 20,
+              }}
+            />
+          )}
+          {image && (
+            <Image
+              source={{ uri: image }}
+              style={{ width: "100%", height: "100%", borderRadius: 30 }}
+            />
+          )}
+        </TouchableOpacity>
+        <Text
+          style={{
+            color: "white",
+            margin: 10,
+          }}
+        >
+          Image
+        </Text>
         <TextInput
           style={[
             styles.textView,
@@ -302,9 +425,11 @@ const ProfileScreen = ({ navigation }: any) => {
             },
           ]}
           underlineColor="transparent"
-        >
-          {userDetails?.name ? userDetails?.name : "User Name"}
-        </TextInput>
+          value={userDetails?.name ? userDetails?.name : ""}
+          onChangeText={(val: any) =>
+            setUserDetails({ ...userDetails, name: val })
+          }
+        ></TextInput>
         {showLoader && <ActivityIndicator size={"large"} />}
       </View>
 
@@ -316,9 +441,11 @@ const ProfileScreen = ({ navigation }: any) => {
             { backgroundColor: "white" },
           ]}
           underlineColor="transparent"
-        >
-          {userDetails?.email ? userDetails?.email : "Email"}
-        </TextInput>
+          value={userDetails?.email ? userDetails?.email : ""}
+          onChangeText={(val: any) =>
+            setUserDetails({ ...userDetails, email: val })
+          }
+        ></TextInput>
         <Pressable onPress={showDatePicker}>
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
@@ -344,9 +471,11 @@ const ProfileScreen = ({ navigation }: any) => {
             { backgroundColor: "white" },
           ]}
           underlineColor="transparent"
-        >
-          {userDetails?.contact ? userDetails?.contact : "Contact Number"}
-        </TextInput>
+          value={userDetails?.contact ? userDetails?.contact : ""}
+          onChangeText={(val: any) =>
+            setUserDetails({ ...userDetails, contact: val })
+          }
+        ></TextInput>
       </View>
     </View>
   );
@@ -394,6 +523,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: 0,
+  },
+  addImage: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    height: 100,
+    width: 100,
+    borderRadius: 30,
   },
 });
 export default ProfileScreen;
