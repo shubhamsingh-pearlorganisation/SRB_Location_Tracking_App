@@ -26,7 +26,7 @@ const ProfileScreen = ({ navigation }: any) => {
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
   const [userDetails, setUserDetails] = useState<any>({});
-  const [isEditable, setIsEditable] = useState(true);
+  const [isEditable, setIsEditable] = useState(false);
 
   // Fetching JWT Token  when component's mounted
   useEffect(() => {
@@ -177,6 +177,7 @@ const ProfileScreen = ({ navigation }: any) => {
               top: 0,
               position: "absolute",
             }}
+            onPress={() => setIsEditable(true)}
           >
             <MaterialIcons name="edit" size={30} color={COLORS.white} />
           </TouchableOpacity>

@@ -94,7 +94,9 @@ const EditGroup = () => {
                 ]}
               />
             </View>
-            <Text style={styles.cardText}>All members can see eachother & their location.</Text>
+            <Text style={styles.cardText}>
+              All members can see eachother & their location.
+            </Text>
           </Pressable>
         </View>
 
@@ -155,16 +157,16 @@ const EditGroup = () => {
           Update
         </Text>
       </TouchableOpacity>
-      <View 
-      style={styles.memberList}
-      >
+      <View style={styles.memberList}>
         <ScrollView
-        style={{
-          backgroundColor:'grey'
-        }}
-        >{renderMembers()}
-        {renderMembers()}
-        {renderMembers()}</ScrollView>
+          style={{
+            backgroundColor: "grey",
+          }}
+        >
+          {renderMembers()}
+          {renderMembers()}
+          {renderMembers()}
+        </ScrollView>
       </View>
     </KeyboardAvoidingView>
   );
@@ -177,12 +179,12 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   memberListItem: {
-    backgroundColor:'white',
+    backgroundColor: "white",
     alignItems: "center",
     height: "auto",
     flexDirection: "row",
     padding: "2%",
-    marginBottom:2
+    marginBottom: 2,
   },
   memberListItemImage: {
     backgroundColor: "white",
@@ -225,7 +227,7 @@ const styles = StyleSheet.create({
     width: SIZES.width,
     zIndex: 0,
     padding: 30,
-    height:"40%"
+    height: "40%",
   },
   textInput: {
     fontSize: SIZES.width > 300 ? 50 : 30,
