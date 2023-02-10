@@ -94,7 +94,7 @@ const EditGroup = () => {
                 ]}
               />
             </View>
-            <Text style={styles.cardText}>Only you can see other members</Text>
+            <Text style={styles.cardText}>All members can see eachother & their location.</Text>
           </Pressable>
         </View>
 

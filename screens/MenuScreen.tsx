@@ -26,6 +26,17 @@ const MenuScreen = ({ navigation }: any) => {
 
   }
 
+  const redirectFAQScreen = () =>{
+    navigation.navigate("FAQScreen");
+
+  }
+
+  const redirectFeedBackScreen = () =>{
+    navigation.navigate("FeedBackScreen");
+
+  }
+
+
   return (
     <View style={styles.container}>
       <View
@@ -193,6 +204,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
+            onPress={()=>redirectFAQScreen()}
           >
             <MaterialCommunityIcons
               style={[styles.icons, { paddingLeft: 5 }]}
@@ -218,6 +230,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
+            onPress={()=>redirectFeedBackScreen()}
           >
             <MaterialCommunityIcons
               style={[styles.icons, { paddingLeft: 5 }]}

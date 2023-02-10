@@ -16,6 +16,8 @@ import EmergencyTimerScreen from "./screens/EmergencyContacts/EmergencyTimerScre
 import SelectLocation from "./screens/SelectLocation";
 import AddMember from "./screens/AddMember";
 import ProfileScreen from "./screens/ProfileScreen";
+import FAQScreen from "./screens/FAQScreen";
+import FeedBackScreen from "./screens/FeedBackScreen";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -132,7 +134,35 @@ const App = () => {
             name="ProfileScreen"
             component={ProfileScreen}
             options={{
-              title: "Add Member",
+              title: "Profile Page",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="FAQScreen"
+            component={FAQScreen}
+            options={{
+              title: "FAQ & Support",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="FeedBackScreen"
+            component={FeedBackScreen}
+            options={{
+              title: "FeedBackScreen",
               headerTintColor: COLORS.voilet,
               headerTitleStyle: {
                 fontWeight: "bold",
