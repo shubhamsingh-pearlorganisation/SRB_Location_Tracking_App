@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
@@ -13,6 +14,9 @@ import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { profile } from "../constants/images";
+import { TextInput } from "react-native-paper";
+import * as ImagePicker from "expo-image-picker";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 // import { fetchAuthenticationToken } from "../core/utils/helper";
 
 const ProfileScreen = ({ navigation }: any) => {
@@ -22,6 +26,7 @@ const ProfileScreen = ({ navigation }: any) => {
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
   const [userDetails, setUserDetails] = useState<any>({});
+  const [isEditable, setIsEditable] = useState(true);
 
   // Fetching JWT Token  when component's mounted
   useEffect(() => {
@@ -91,7 +96,36 @@ const ProfileScreen = ({ navigation }: any) => {
     }
   };
 
-  return (
+  // --------------------------- Date Picker Handling -- Start -----------------------------------
+  
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: any) => {
+    let tempDate = new Date(date);
+
+    const currentDate = tempDate.getDate();
+    const month = tempDate.getMonth() + 1;
+    const year = tempDate.getFullYear();
+    // Making Full Date of Birth which we need to send in API
+    let fullDate = `${year}-${month < 10 ? "0" + month : month}-${
+      currentDate < 10 ? "0" + currentDate : currentDate
+    }`;
+
+    setUserDetails({ ...userDetails, dob: fullDate });
+    hideDatePicker();
+  };
+  // --------------------------- Date Picker Handling -- Finish -----------------------------------
+
+  return !isEditable ? (
+    // ---------------------------------non editable view----------------------------------------
     <View style={styles.container}>
       <View style={styles.topView}>
         <View
@@ -181,6 +215,114 @@ const ProfileScreen = ({ navigation }: any) => {
         </Text>
       </View>
     </View>
+  ) : (
+    // ---------------------------------editable view----------------------------------------
+    <View style={styles.container}>
+      <View style={styles.topView}>
+        <View
+          style={{
+            top: "2%",
+            left: "2%",
+            right: "2%",
+            position: "absolute",
+            flexDirection: "row",
+            width: "auto",
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              top: 0,
+              left: 0,
+              position: "absolute",
+              flexDirection: "row",
+              width: "100%",
+            }}
+            onPress={() => goBack()}
+          >
+            <MaterialIcons
+              name="keyboard-arrow-left"
+              size={40}
+              color={COLORS.white}
+            />
+            <Text
+              style={[
+                styles.textView,
+                {
+                  fontWeight: "600",
+                  color: COLORS.white,
+                  alignSelf: "center",
+                  textAlign: "left",
+                  padding: 0,
+                  borderWidth: 0,
+                },
+              ]}
+            >
+              Back
+            </Text>
+          </TouchableOpacity>
+
+          {/* -------------------------Edit Profile Button--------------------------------------  */}
+          <TouchableOpacity
+            style={{
+              right: 0,
+              top: 0,
+              position: "absolute",
+            }}
+          >
+            <Text style={[styles.textView,{color:COLORS.white,textAlign: "right",
+                  padding: 0,
+                  borderWidth: 0,}]}>Done</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* ---------------------------implement image picker functionality here------------------  */}
+        <Image
+          source={userDetails?.image ? { uri: userDetails?.image } : profile}
+          style={styles.profileImage}
+        />
+        <TextInput
+          style={[
+            styles.textView,styles.textInputStyle,
+            { fontWeight: "600", color: COLORS.white, padding: 0,backgroundColor: "white" },
+          ]}
+          underlineColor="transparent"
+        >
+          {userDetails?.name ? userDetails?.name : "User Name"}
+        </TextInput>
+        {showLoader && <ActivityIndicator size={"large"} />}
+      </View>
+
+      <View style={styles.bottomView}>
+        <TextInput style={[styles.textView,styles.textInputStyle,{backgroundColor: "white"}]}
+        underlineColor="transparent">
+          {userDetails?.email ? userDetails?.email : "Email"}
+        </TextInput>
+        <Pressable onPress={showDatePicker}>
+          
+
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+          />
+          <Text style={styles.textView}>
+          {userDetails?.dob
+            ? userDetails?.dob.toString().split("-")[2] +
+              "-" +
+              userDetails?.dob.toString().split("-")[1] +
+              "-" +
+              userDetails?.dob.toString().split("-")[0]
+            : "Date of Birth"}
+        </Text>
+        </Pressable>
+        
+        <TextInput style={[styles.textView,styles.textInputStyle,{backgroundColor: "white"}]}
+        underlineColor="transparent">
+          {userDetails?.contact ? userDetails?.contact : "Contact Number"}
+        </TextInput>
+      </View>
+    </View>
   );
 };
 
@@ -221,6 +363,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: "2%",
     borderRadius: 30,
+    
   },
+  textInputStyle:{
+    borderTopLeftRadius:30,
+    borderTopRightRadius:30,
+    padding:0
+  }
 });
 export default ProfileScreen;

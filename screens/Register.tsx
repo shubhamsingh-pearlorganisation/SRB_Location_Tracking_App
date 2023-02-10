@@ -255,7 +255,14 @@ const Register = ({ route, navigation }: any) => {
           Image
         </Text>
 
+<<<<<<< Updated upstream
         <View pointerEvents="none">
+=======
+        {/* -------------------------phone number holder and country list---------------------------  */}
+        <CountryDropdown />
+
+        {/* <View pointerEvents="none">
+>>>>>>> Stashed changes
           <TextInput
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
@@ -303,16 +310,28 @@ const Register = ({ route, navigation }: any) => {
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
           />
-          <Text
-            style={{
-              fontSize: 20,
-              color: "#FFF",
-              fontWeight: "600",
-              marginLeft: 10,
-            }}
-          >
-            {userDetails?.dob}
-          </Text>
+          <View style={{
+            flexDirection:'row',
+            backgroundColor:'transparent'
+          }}>
+            <Text style={styles.dobContainers}>
+              {userDetails?.dob
+                ? userDetails?.dob.toString().split("-")[2]
+                : "00"}
+            </Text>
+            <Text style={styles.dobseperators}>-</Text>
+            <Text style={styles.dobContainers}>
+              {userDetails?.dob
+                ? userDetails?.dob.toString().split("-")[1]
+                : "00"}
+            </Text>
+            <Text style={styles.dobseperators}>-</Text>
+            <Text style={styles.dobContainers}>
+              {userDetails?.dob
+                ? userDetails?.dob.toString().split("-")[0]
+                : "0000"}
+            </Text>
+          </View>
         </Pressable>
 
         <TouchableOpacity
@@ -432,6 +451,20 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     textAlign: "center",
     color: "#FFFFFF",
+  },
+  dobContainers: {
+    backgroundColor:'rgba(255,255,255,0.7)',
+    color:COLORS.black,
+    padding:5,
+    textAlign:'center',
+    alignContent:'center',
+  },
+  dobseperators: {
+    backgroundColor:'transparent',
+    color:COLORS.white,
+    padding:5,
+    textAlign:'center',
+    alignContent:'center'
   },
 });
 
