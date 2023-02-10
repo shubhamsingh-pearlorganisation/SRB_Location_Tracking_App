@@ -16,7 +16,14 @@ import {
 
 
 const JoinGroup = () => {
-
+    return(
+         <View>
+            <Text>
+                Join Group Screen
+            </Text>
+        </View>
+    )
+       
 }
 
 export default JoinGroup;

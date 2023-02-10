@@ -18,6 +18,10 @@ import AddMember from "./screens/AddMember";
 import ProfileScreen from "./screens/ProfileScreen";
 import FAQScreen from "./screens/FAQScreen";
 import FeedBackScreen from "./screens/FeedBackScreen";
+import SettingsScreen from "./screens/SettingsScreen";
+import JoinGroupScreen from "./screens/JoinGroupScreen";
+import JoinGroup from "./screens/JoinGroupScreen";
+import MemberHistory from "./screens/MemberHistoryScreen";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -163,6 +167,45 @@ const App = () => {
             component={FeedBackScreen}
             options={{
               title: "FeedBackScreen",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="SettingsScreen"
+            component={SettingsScreen}
+            options={{
+              title: "Settings",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="JoinGroupScreen"
+            component={JoinGroup}
+            options={{
+              title: "FeedBackScreen",
+              headerTintColor: COLORS.voilet,
+              headerTitleStyle: {
+                fontWeight: "bold",
+                fontSize: 30,
+              },
+              headerBackVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="MemberHistoryScreen"
+            component={MemberHistory}
+            options={{
+              title: "History",
               headerTintColor: COLORS.voilet,
               headerTitleStyle: {
                 fontWeight: "bold",

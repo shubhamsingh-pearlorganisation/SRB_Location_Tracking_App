@@ -16,7 +16,13 @@ import {
 
 
 const MemberHistory = () => {
-
-}
+    return(
+        <View>
+           <Text>
+               Member History Screen
+           </Text>
+       </View>
+   )
+    }
 
 export default MemberHistory;

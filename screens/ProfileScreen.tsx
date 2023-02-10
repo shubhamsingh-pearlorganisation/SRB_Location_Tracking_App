@@ -18,11 +18,13 @@ import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
+import CountryDropdown from "../components/CountryDropdown";
 
 const ProfileScreen = ({ navigation }: any) => {
   const toast = useToast();
 
   // Component's Local States
+  const [completePhoneNumber, setCompletePhoneNumber] = useState("");
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
   const [userDetailsPrefilled, setUserDetailsPrefilled] = useState<any>({});
@@ -218,6 +220,14 @@ const ProfileScreen = ({ navigation }: any) => {
   };
   // --------------------------- Date Picker Handling -- Finish -----------------------------------
 
+   // Receiving Complete Mobile Number from CountryDropdown Component
+   const getCompleteMobileNumber = (mobileNumberWithCountryCode: string) => {
+    console.log("mobileNumberWithCountryCode::: ", mobileNumberWithCountryCode);
+    if (mobileNumberWithCountryCode)
+      setCompletePhoneNumber(mobileNumberWithCountryCode);
+  };
+
+
   return !isEditable ? (
     <View style={styles.container}>
       <View style={styles.topView}>
@@ -388,7 +398,7 @@ const ProfileScreen = ({ navigation }: any) => {
         </View>
 
         <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
-          {enabledAddIcon && !userDetails?.image && (
+          {enabledAddIcon && !image && (
             <Ionicons
               name="add"
               size={40}
@@ -464,7 +474,9 @@ const ProfileScreen = ({ navigation }: any) => {
           </Text>
         </Pressable>
 
-        <TextInput
+        <CountryDropdown getCompleteMobileNumber={getCompleteMobileNumber} />
+
+        {/* <TextInput
           style={[
             styles.textView,
             styles.textInputStyle,
@@ -475,7 +487,7 @@ const ProfileScreen = ({ navigation }: any) => {
           onChangeText={(val: any) =>
             setUserDetails({ ...userDetails, contact: val })
           }
-        ></TextInput>
+        ></TextInput> */}
       </View>
     </View>
   );
