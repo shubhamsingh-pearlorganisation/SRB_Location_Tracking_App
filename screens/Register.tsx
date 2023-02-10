@@ -28,7 +28,7 @@ const Register = ({ route, navigation }: any) => {
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
 
-  // Saving Route's data in component's local state
+  // Saving Route's data in component's local state - userDetails
   const [userDetails, setUserDetails] = useState<any>({
     name: route?.params?.userDetails?.name
       ? route?.params?.userDetails?.name
@@ -71,7 +71,7 @@ const Register = ({ route, navigation }: any) => {
     try {
       const token = await AsyncStorage.getItem("authentication-token");
       if (token !== null) {
-        console.log("token:::::::::::::::::: ", token);
+        console.log("token::::::::: ", token);
         setJwtToken(token);
       }
     } catch (e: any) {
@@ -91,7 +91,7 @@ const Register = ({ route, navigation }: any) => {
       setShowLoader(false);
       if (!result.canceled) {
         // setImage(result?.assets[0]?.uri);
-        setImage(result?.assets[0]);
+        setImage(result?.assets[0]); // result?.assets[0] contains Complete Image Data
         console.log("result?.assets[0]:: ", result?.assets[0]);
         setEnabledAddIcon(false);
         setImageUploaded(true);
@@ -205,7 +205,7 @@ const Register = ({ route, navigation }: any) => {
     const currentDate = tempDate.getDate();
     const month = tempDate.getMonth() + 1;
     const year = tempDate.getFullYear();
-    // Making Full Date of Birth which we need to send in API
+    // Making full "Date of Birth" which we need to send in generate token API
     let fullDate = `${year}-${month < 10 ? "0" + month : month}-${
       currentDate < 10 ? "0" + currentDate : currentDate
     }`;

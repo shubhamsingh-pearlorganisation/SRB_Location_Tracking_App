@@ -21,7 +21,12 @@ const Login = ({ navigation }: any) => {
   const toast = useToast();
 
   // Component's Local States
+  // completePhoneNumber state - Used to send mobile number to firebase's generate verification code api
   const [completePhoneNumber, setCompletePhoneNumber] = useState("");
+
+  // mobileNumberWithoutCode state - Used to send mobile number to client's generate token api
+  const [mobileNumberWithoutCode, setMobileNumberWithoutCode] =
+    useState<any>("");
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState<any>(null);
   const recaptchaVerifier = useRef<any>(null);
@@ -30,11 +35,9 @@ const Login = ({ navigation }: any) => {
     useState(true);
   const [showLoader, setShowLoader] = useState(false);
 
-  const [mobileNumberWithoutCode, setMobileNumberWithoutCode] =
-    useState<any>("");
-
   // Enabling or Disabling Send Verification Code Button
   useEffect(() => {
+    // According to Google Global Mobile Numbers must lies between 7 to 15 digits
     if (completePhoneNumber.length < 7 || completePhoneNumber.length > 15)
       setDisableVerificationBtn(true);
     else setDisableVerificationBtn(false);
@@ -42,6 +45,7 @@ const Login = ({ navigation }: any) => {
 
   // Enabling or Disabling Confirm Verification Code Button
   useEffect(() => {
+    // Verification code must contain 6 digits
     if (verificationCode && verificationCode.length === 6)
       setDisableConfirmVerificationBtn(false);
     else setDisableConfirmVerificationBtn(true);
@@ -110,7 +114,7 @@ const Login = ({ navigation }: any) => {
     }
   };
 
-  // This method is used to generating authentication token
+  // This method is used to generating authentication token using api
   const generateAuthenticationToken = async () => {
     try {
       setShowLoader(true);
@@ -179,15 +183,15 @@ const Login = ({ navigation }: any) => {
     }
   };
 
-  // Receiving Complete Mobile Number from CountryDropdown Component
+  // Receiving Complete Mobile Number with and without country code respectively from CountryDropdown Component
   const getCompleteMobileNumber = (
     mobileNumberWithCountryCode: string,
     mobileNumberWithoutCountryCode: string
   ) => {
-    console.log("mobileNumberWithCountryCode::: ", mobileNumberWithCountryCode);
     if (mobileNumberWithCountryCode)
       setCompletePhoneNumber(mobileNumberWithCountryCode);
-    setMobileNumberWithoutCode(mobileNumberWithoutCountryCode);
+    if (mobileNumberWithoutCountryCode)
+      setMobileNumberWithoutCode(mobileNumberWithoutCountryCode);
   };
 
   // -------------------------------------------------------------------------------------------

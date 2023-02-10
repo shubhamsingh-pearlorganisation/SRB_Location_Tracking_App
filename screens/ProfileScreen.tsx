@@ -18,6 +18,7 @@ import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
+// ============================================================================================
 
 const ProfileScreen = ({ navigation }: any) => {
   const toast = useToast();
@@ -83,7 +84,7 @@ const ProfileScreen = ({ navigation }: any) => {
     try {
       const token = await AsyncStorage.getItem("authentication-token");
       if (token !== null) {
-        console.log("token:::::::::::::::::: ", token);
+        console.log("token::::::::: ", token);
         setJwtToken(token);
       }
     } catch (e: any) {
@@ -269,13 +270,6 @@ const ProfileScreen = ({ navigation }: any) => {
     }
   };
   // --------------------------- Date Picker Handling -- Finish -----------------------------------
-
-  // Receiving Complete Mobile Number from CountryDropdown Component
-  const getCompleteMobileNumber = (mobileNumberWithCountryCode: string) => {
-    console.log("mobileNumberWithCountryCode::: ", mobileNumberWithCountryCode);
-    if (mobileNumberWithCountryCode)
-      setCompletePhoneNumber(mobileNumberWithCountryCode);
-  };
 
   return !isEditable ? (
     <View style={styles.container}>

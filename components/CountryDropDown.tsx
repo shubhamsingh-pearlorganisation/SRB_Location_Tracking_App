@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import PhoneInput from "react-native-phone-number-input";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../constants";
 
 const CountryDropdown = (props: any) => {
   // Component's Local States
-  const [value, setValue] = useState("");
-  const [formattedValue, setFormattedValue] = useState("");
+  const [value, setValue] = useState(""); // Mobile Number without country code
+  const [formattedValue, setFormattedValue] = useState(""); // Mobile Number with country code
 
   // Sending Complete Mobile Number to Login Component
   useEffect(() => {
-    props.getCompleteMobileNumber(formattedValue, value); //Mobile Number with country code
-    // props.getCompleteMobileNumber(value); // //Mobile Number without country code
+    props.getCompleteMobileNumber(formattedValue, value); //Mobile Number with & without country code respectively
   }, [value]);
 
   return (
