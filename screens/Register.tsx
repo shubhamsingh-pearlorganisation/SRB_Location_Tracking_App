@@ -10,7 +10,6 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
-
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import * as ImagePicker from "expo-image-picker";
@@ -24,6 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Register = ({ route, navigation }: any) => {
   const toast = useToast();
 
+  // Component's Local States
   const [enabledAddIcon, setEnabledAddIcon] = useState(true);
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
@@ -79,7 +79,7 @@ const Register = ({ route, navigation }: any) => {
     }
   };
 
-  // This method is used to upload profile image using library - launchImageLibraryAsync
+  // This method is used to upload profile image using library - expo-image-picker
   const uploadProfileImage = async () => {
     try {
       setImageUploaded(false);
@@ -205,7 +205,7 @@ const Register = ({ route, navigation }: any) => {
     const currentDate = tempDate.getDate();
     const month = tempDate.getMonth() + 1;
     const year = tempDate.getFullYear();
-    // Making Full Date which we need to send in API
+    // Making Full Date of Birth which we need to send in API
     let fullDate = `${year}-${month < 10 ? "0" + month : month}-${
       currentDate < 10 ? "0" + currentDate : currentDate
     }`;
@@ -343,7 +343,8 @@ const Register = ({ route, navigation }: any) => {
     </KeyboardAvoidingView>
   );
 };
-
+// ==================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     flex: 1,

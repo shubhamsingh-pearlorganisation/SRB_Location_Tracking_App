@@ -1,11 +1,94 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
+import { useEffect, useState } from "react";
+import { useToast } from "react-native-toast-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { instance } from "../core/utils/AxiosInterceptor";
 import { profile } from "../constants/images";
+// import { fetchAuthenticationToken } from "../core/utils/helper";
 
 const ProfileScreen = ({ navigation }: any) => {
+  const toast = useToast();
+
+  // Component's Local States
+  const [showLoader, setShowLoader] = useState(false);
+  const [jwtToken, setJwtToken] = useState<any>("");
+  const [userDetails, setUserDetails] = useState<any>({});
+
+  // Fetching JWT Token  when component's mounted
+  useEffect(() => {
+    setJwtToken(fetchAuthenticationToken()); // Fetching Authentication Token
+  }, []);
+
+  // Fetching  User's details if toke available
+  useEffect(() => {
+    jwtToken.length && fetchUserDetails();
+  }, [jwtToken]);
+  // ---------------------------------------------------------------------------------------------------
+
+  // Redirect to back
   const goBack = () => {
     navigation.navigate("Main");
+  };
+  //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
+  const fetchAuthenticationToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem("authentication-token");
+      if (token !== null) {
+        console.log("token:::::::::::::::::: ", token);
+        setJwtToken(token);
+      }
+    } catch (e: any) {
+      console.log("Getting an error while fetching JWT Token:: ", e.message);
+    }
+  };
+
+  // This method is used to fetch user details from the api based on token
+  const fetchUserDetails = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("token_id", jwtToken);
+
+      setShowLoader(true);
+
+      const response = await instance.post("/user_details", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        setShowLoader(false);
+        setUserDetails(response.data?.data);
+        toast.show("User's details fetched successfully!", {
+          type: "success",
+          placement: "bottom",
+        });
+      } else {
+        setShowLoader(false);
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while fetching user details. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowLoader(false);
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching user details. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
   };
 
   return (
@@ -65,25 +148,44 @@ const ProfileScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
 
-        <Image source={profile} style={styles.profileImage} />
+        <Image
+          source={userDetails?.image ? { uri: userDetails?.image } : profile}
+          style={styles.profileImage}
+        />
         <Text
           style={[
             styles.textView,
             { fontWeight: "600", color: COLORS.white, padding: 0 },
           ]}
         >
-          User Name
+          {userDetails?.name ? userDetails?.name : "User Name"}
         </Text>
+        {showLoader && <ActivityIndicator size={"large"} />}
       </View>
+
       <View style={styles.bottomView}>
-        <Text style={styles.textView}>Email</Text>
-        <Text style={styles.textView}>Date Of Birth</Text>
-        <Text style={styles.textView}>Contact Number</Text>
+        <Text style={styles.textView}>
+          {userDetails?.email ? userDetails?.email : "Email"}
+        </Text>
+        <Text style={styles.textView}>
+          {userDetails?.dob
+            ? userDetails?.dob.toString().split("-")[2] +
+              "-" +
+              userDetails?.dob.toString().split("-")[1] +
+              "-" +
+              userDetails?.dob.toString().split("-")[0]
+            : "Date of Birth"}
+        </Text>
+        <Text style={styles.textView}>
+          {userDetails?.contact ? userDetails?.contact : "Contact Number"}
+        </Text>
       </View>
     </View>
   );
 };
 
+// ==================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     flex: 1,

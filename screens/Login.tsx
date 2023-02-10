@@ -22,7 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Login = ({ navigation }: any) => {
   const toast = useToast();
 
-  // Local Component's State
+  // Component's Local States
   const [phoneNumber, setPhoneNumber] = useState<any>("");
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationId, setVerificationId] = useState<any>(null);
@@ -128,6 +128,8 @@ const Login = ({ navigation }: any) => {
         const result = await fireb.auth().signInWithCredential(credential);
         // If Verification code matched from firebase
         if (result) {
+          setVerificationCode(""); // Clear Verification Code Input box
+          setVerificationId(null);
           setShowLoader(false);
           generateAuthenticationToken(); //Generating Authentication Token to proceed further
         }
