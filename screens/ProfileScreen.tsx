@@ -97,7 +97,7 @@ const ProfileScreen = ({ navigation }: any) => {
   };
 
   // --------------------------- Date Picker Handling -- Start -----------------------------------
-  
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
@@ -269,9 +269,19 @@ const ProfileScreen = ({ navigation }: any) => {
               position: "absolute",
             }}
           >
-            <Text style={[styles.textView,{color:COLORS.white,textAlign: "right",
+            <Text
+              style={[
+                styles.textView,
+                {
+                  color: COLORS.white,
+                  textAlign: "right",
                   padding: 0,
-                  borderWidth: 0,}]}>Done</Text>
+                  borderWidth: 0,
+                },
+              ]}
+            >
+              Done
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -282,8 +292,14 @@ const ProfileScreen = ({ navigation }: any) => {
         />
         <TextInput
           style={[
-            styles.textView,styles.textInputStyle,
-            { fontWeight: "600", color: COLORS.white, padding: 0,backgroundColor: "white" },
+            styles.textView,
+            styles.textInputStyle,
+            {
+              fontWeight: "600",
+              color: COLORS.white,
+              padding: 0,
+              backgroundColor: "white",
+            },
           ]}
           underlineColor="transparent"
         >
@@ -293,13 +309,17 @@ const ProfileScreen = ({ navigation }: any) => {
       </View>
 
       <View style={styles.bottomView}>
-        <TextInput style={[styles.textView,styles.textInputStyle,{backgroundColor: "white"}]}
-        underlineColor="transparent">
+        <TextInput
+          style={[
+            styles.textView,
+            styles.textInputStyle,
+            { backgroundColor: "white" },
+          ]}
+          underlineColor="transparent"
+        >
           {userDetails?.email ? userDetails?.email : "Email"}
         </TextInput>
         <Pressable onPress={showDatePicker}>
-          
-
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
@@ -307,18 +327,24 @@ const ProfileScreen = ({ navigation }: any) => {
             onCancel={hideDatePicker}
           />
           <Text style={styles.textView}>
-          {userDetails?.dob
-            ? userDetails?.dob.toString().split("-")[2] +
-              "-" +
-              userDetails?.dob.toString().split("-")[1] +
-              "-" +
-              userDetails?.dob.toString().split("-")[0]
-            : "Date of Birth"}
-        </Text>
+            {userDetails?.dob
+              ? userDetails?.dob.toString().split("-")[2] +
+                "-" +
+                userDetails?.dob.toString().split("-")[1] +
+                "-" +
+                userDetails?.dob.toString().split("-")[0]
+              : "Date of Birth"}
+          </Text>
         </Pressable>
-        
-        <TextInput style={[styles.textView,styles.textInputStyle,{backgroundColor: "white"}]}
-        underlineColor="transparent">
+
+        <TextInput
+          style={[
+            styles.textView,
+            styles.textInputStyle,
+            { backgroundColor: "white" },
+          ]}
+          underlineColor="transparent"
+        >
           {userDetails?.contact ? userDetails?.contact : "Contact Number"}
         </TextInput>
       </View>
@@ -363,12 +389,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: "2%",
     borderRadius: 30,
-    
   },
-  textInputStyle:{
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
-    padding:0
-  }
+  textInputStyle: {
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    padding: 0,
+  },
 });
 export default ProfileScreen;
