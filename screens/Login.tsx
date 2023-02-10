@@ -30,9 +30,13 @@ const Login = ({ navigation }: any) => {
     useState(true);
   const [showLoader, setShowLoader] = useState(false);
 
+  const [mobileNumberWithoutCode, setMobileNumberWithoutCode] =
+    useState<any>("");
+
   // Enabling or Disabling Send Verification Code Button
   useEffect(() => {
-    if (completePhoneNumber.length < 13) setDisableVerificationBtn(true);
+    if (completePhoneNumber.length < 7 || completePhoneNumber.length > 15)
+      setDisableVerificationBtn(true);
     else setDisableVerificationBtn(false);
   }, [completePhoneNumber]);
 
@@ -114,7 +118,7 @@ const Login = ({ navigation }: any) => {
 
       // For "Content-Type": "multipart/form-data",
       const formData = new FormData();
-      formData.append("contact", completePhoneNumber);
+      formData.append("contact", mobileNumberWithoutCode);
 
       const response = await instance.post("/generate_api_token", formData);
       if (response.status === 200 && response.data?.status === true) {
@@ -176,10 +180,14 @@ const Login = ({ navigation }: any) => {
   };
 
   // Receiving Complete Mobile Number from CountryDropdown Component
-  const getCompleteMobileNumber = (mobileNumberWithCountryCode: string) => {
+  const getCompleteMobileNumber = (
+    mobileNumberWithCountryCode: string,
+    mobileNumberWithoutCountryCode: string
+  ) => {
     console.log("mobileNumberWithCountryCode::: ", mobileNumberWithCountryCode);
     if (mobileNumberWithCountryCode)
       setCompletePhoneNumber(mobileNumberWithCountryCode);
+    setMobileNumberWithoutCode(mobileNumberWithoutCountryCode);
   };
 
   // -------------------------------------------------------------------------------------------

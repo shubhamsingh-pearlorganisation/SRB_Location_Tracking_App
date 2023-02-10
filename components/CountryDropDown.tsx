@@ -10,8 +10,9 @@ const CountryDropdown = (props: any) => {
 
   // Sending Complete Mobile Number to Login Component
   useEffect(() => {
-    props.getCompleteMobileNumber(formattedValue);
-  }, [formattedValue]);
+    props.getCompleteMobileNumber(formattedValue, value); //Mobile Number with country code
+    // props.getCompleteMobileNumber(value); // //Mobile Number without country code
+  }, [value]);
 
   return (
     <View>

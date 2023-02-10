@@ -18,7 +18,6 @@ import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
-import CountryDropdown from "../components/CountryDropdown";
 
 const ProfileScreen = ({ navigation }: any) => {
   const toast = useToast();
@@ -60,6 +59,19 @@ const ProfileScreen = ({ navigation }: any) => {
       setImage(userDetailsPrefilled?.image);
     }
   }, [userDetailsPrefilled]);
+
+  // Calling Profile Image Upload Api when user upload image using library
+  useEffect(() => {
+    if (image && isImageUploaded) {
+      const imageData = {
+        uri: image?.uri ? image?.uri : "",
+        type: image?.type ? image?.type : "image",
+        name: image?.name ? image?.name : "profile_img",
+      };
+      updateUserProfileImage(imageData);
+    }
+  }, [image]);
+
   // ---------------------------------------------------------------------------------------------------
 
   // Redirect to back screen
@@ -112,6 +124,44 @@ const ProfileScreen = ({ navigation }: any) => {
         error.message
           ? error.message
           : "Getting an error while fetching user details. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
+
+  // This method is used to update user's profile image using an API
+  const updateUserProfileImage = async (imageData: any) => {
+    try {
+      const formData = new FormData();
+      formData.append("token_id", jwtToken);
+      formData.append("image", imageData);
+
+      setShowLoader(true);
+      const response = await instance.post("/users_image_update", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        setShowLoader(false);
+        toast.show("Profile Image updated successfully!", {
+          type: "success",
+        });
+      } else {
+        setShowLoader(false);
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while updating user's profile image. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowLoader(false);
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while updating user's profile image. Please try again later.",
         {
           type: "error",
         }
@@ -220,13 +270,12 @@ const ProfileScreen = ({ navigation }: any) => {
   };
   // --------------------------- Date Picker Handling -- Finish -----------------------------------
 
-   // Receiving Complete Mobile Number from CountryDropdown Component
-   const getCompleteMobileNumber = (mobileNumberWithCountryCode: string) => {
+  // Receiving Complete Mobile Number from CountryDropdown Component
+  const getCompleteMobileNumber = (mobileNumberWithCountryCode: string) => {
     console.log("mobileNumberWithCountryCode::: ", mobileNumberWithCountryCode);
     if (mobileNumberWithCountryCode)
       setCompletePhoneNumber(mobileNumberWithCountryCode);
   };
-
 
   return !isEditable ? (
     <View style={styles.container}>
@@ -474,9 +523,7 @@ const ProfileScreen = ({ navigation }: any) => {
           </Text>
         </Pressable>
 
-        <CountryDropdown getCompleteMobileNumber={getCompleteMobileNumber} />
-
-        {/* <TextInput
+        <TextInput
           style={[
             styles.textView,
             styles.textInputStyle,
@@ -487,7 +534,7 @@ const ProfileScreen = ({ navigation }: any) => {
           onChangeText={(val: any) =>
             setUserDetails({ ...userDetails, contact: val })
           }
-        ></TextInput> */}
+        ></TextInput>
       </View>
     </View>
   );
