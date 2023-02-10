@@ -17,7 +17,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants";
 import MenuScreen from "./MenuScreen";
 import EmergencyContactsScreen from "./EmergencyContacts/Home";
-import { fetchJWTToken } from "../core/utils/constants";
 
 const MainScreen = ({ navigation }: any) => {
   const newGroup = () => {
@@ -25,11 +24,6 @@ const MainScreen = ({ navigation }: any) => {
   };
 
   const Tab = createBottomTabNavigator();
-
-  // Fetching JWT Token
-  useEffect(() => {
-    fetchJWTToken();
-  }, []);
 
   return (
     <Tab.Navigator
