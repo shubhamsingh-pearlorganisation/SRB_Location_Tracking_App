@@ -9,8 +9,9 @@ import {
   KeyboardAvoidingView,
   Pressable,
   ActivityIndicator,
+  Alert,
+  Button,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import * as ImagePicker from "expo-image-picker";
 import { instance } from "../core/utils/AxiosInterceptor";
@@ -24,7 +25,6 @@ const Register = ({ route, navigation }: any) => {
   const toast = useToast();
 
   // Component's Local States
-  const [enabledAddIcon, setEnabledAddIcon] = useState(true);
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
 
@@ -41,115 +41,118 @@ const Register = ({ route, navigation }: any) => {
       ? route?.params?.userDetails?.contact
       : "",
   });
-  // Saving Image in Component's local image state
-  const [image, setImage] = useState<any>(
-    route?.params?.userDetails?.image ? route?.params?.userDetails?.image : ""
-  );
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isImageUploaded, setImageUploaded] = useState(false);
-
-  // Calling Profile Image Upload Api when user upload image using library
-  useEffect(() => {
-    if (image && isImageUploaded) {
-      const imageData = {
-        uri: image?.uri ? image?.uri : "",
-        type: image?.type ? image?.type : "image",
-        name: image?.name ? image?.name : "profile_img",
-      };
-      updateUserProfileImage(imageData);
-    }
-  }, [image]);
 
   // Fetching JWT Token when component's mounted
   useEffect(() => {
     fetchAuthenticationToken();
   }, []);
 
-  // ---------------------------------------------------------------------------------------------------
-  //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
-  const fetchAuthenticationToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem("authentication-token");
-      if (token !== null) {
-        console.log("token::::::::: ", token);
-        setJwtToken(token);
-      }
-    } catch (e: any) {
-      console.log("Getting an error while fetching JWT Token:: ", e.message);
+  // ================================== Image Upload Functionality -- Start =========================
+  // The data of the picked image
+  const [pickedImagePath, setPickedImagePath] = useState<any>({});
+
+  // This function is triggered when the "Select from Gallery" button pressed
+  const uploadImageFromGallery = async () => {
+    // Ask the user for the permission to access the media library
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert("You've refused to allow this appp to access your photos!");
+      return;
+    }
+
+    const result: any = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setPickedImagePath(result.assets[0]);
+      setUserDetails({ ...userDetails, image: "" });
     }
   };
 
-  // This method is used to upload profile image using library - expo-image-picker
-  const uploadProfileImage = async () => {
-    try {
-      setImageUploaded(false);
-      setShowLoader(true);
-      let result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        quality: 1,
-      });
-      setShowLoader(false);
-      if (!result.canceled) {
-        // setImage(result?.assets[0]?.uri);
-        setImage(result?.assets[0]); // result?.assets[0] contains Complete Image Data
-        console.log("result?.assets[0]:: ", result?.assets[0]);
-        setEnabledAddIcon(false);
-        setImageUploaded(true);
-      }
-    } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting error in uploading profile image.",
-        {
-          type: "error",
-        }
-      );
-      setImageUploaded(false);
+  // This function is triggered when the "Open camera" button pressed
+  const uploadImageFromCamera = async () => {
+    // Ask the user for the permission to access the camera
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
+
+    const result: any = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setPickedImagePath(result.assets[0]);
+      setUserDetails({ ...userDetails, image: "" });
     }
   };
 
-  // This method is used to update User Details
-  const updateUserDetails = async () => {
-    try {
-      const { name, emailId, dob } = userDetails;
+  // This method is used to validate iimage data and call upload image api
+  const uploadProfileImage = () => {
+    // Image URL
+    const uri = pickedImagePath?.uri ? pickedImagePath?.uri : "";
 
-      const formData = new FormData();
-      formData.append("token_id", jwtToken);
-      formData.append("name", name);
-      formData.append("email", emailId);
-      formData.append("dob", dob);
-      setShowLoader(true);
+    // URL Last Segment means file name with extension
+    const uriLastSegment = pickedImagePath?.uri
+      ? pickedImagePath?.uri.toString().split("/")[
+          pickedImagePath?.uri.toString().split("/").length - 1
+        ]
+      : "";
 
-      const response = await instance.post("/users_update", formData);
-      if (response.status === 200 && response.data?.status === true) {
-        setShowLoader(false);
-        toast.show("User's details updated successfully!", {
-          type: "success",
-        });
-        navigation.navigate("Main");
-      } else {
-        setShowLoader(false);
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while updating user details. Please try again later.",
-          {
-            type: "error",
-          }
-        );
-      }
-    } catch (error: any) {
-      setShowLoader(false);
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while updating user details. Please try again later.",
-        {
-          type: "error",
-        }
+    // Image Extension
+    const fileExtension = uriLastSegment && uriLastSegment.split(".")[1];
+
+    // Image Type
+    let type;
+    if (
+      pickedImagePath?.type &&
+      pickedImagePath?.type.toString().includes("image/") === true
+    )
+      type = pickedImagePath?.type;
+    else if (
+      pickedImagePath?.type &&
+      pickedImagePath?.type.toString().includes("image/") === false
+    )
+      type = "image/" + pickedImagePath?.type;
+    else type = "";
+
+    // Name
+    const name = pickedImagePath?.name ? pickedImagePath?.name : uriLastSegment;
+
+    // File Name
+    const filename = pickedImagePath?.filename
+      ? pickedImagePath?.filename
+      : uriLastSegment;
+
+    // This is the data which we pass in form data inside image param
+    const imageData = {
+      uri,
+      type,
+      name,
+      filename,
+    };
+
+    // Check Valid Image types
+    if (Object.keys(pickedImagePath).length === 0)
+      Alert.alert("Please select the image first");
+    else if (
+      fileExtension === "png" ||
+      fileExtension === "jpg" ||
+      fileExtension === "jpeg"
+    )
+      updateUserProfileImage(imageData);
+    else
+      Alert.alert(
+        "The selected file type is invalid. Please choose image with PNG, JPG or JPEG format only."
       );
-    }
   };
 
   // This method is used to update user's profile image using an API
@@ -183,6 +186,63 @@ const Register = ({ route, navigation }: any) => {
         error.message
           ? error.message
           : "Getting an error while updating user's profile image. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
+  // ================================== Image Upload Functionality -- Finished =========================
+
+  //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
+  const fetchAuthenticationToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem("authentication-token");
+      if (token !== null) {
+        console.log("token::::::::: ", token);
+        setJwtToken(token);
+      }
+    } catch (e: any) {
+      console.log("Getting an error while fetching JWT Token:: ", e.message);
+    }
+  };
+
+  // This method is used to update User Details
+  const updateUserDetails = async () => {
+    try {
+      const { name, emailId, dob } = userDetails;
+
+      const formData = new FormData();
+      formData.append("token_id", jwtToken);
+      formData.append("name", name);
+      formData.append("email", emailId);
+      formData.append("dob", dob);
+      setShowLoader(true);
+
+      const response = await instance.post("/users_update", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        setShowLoader(false);
+        toast.show("User's details saved successfully!", {
+          type: "success",
+        });
+        navigation.navigate("Main");
+      } else {
+        setShowLoader(false);
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while saving user details. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowLoader(false);
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while saving user details. Please try again later.",
         {
           type: "error",
         }
@@ -223,43 +283,52 @@ const Register = ({ route, navigation }: any) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
+        {showLoader && <ActivityIndicator size={50} />}
+
         <Text style={styles.otpText}>
           You haven’t got account?{"\n"} Let's Create...
         </Text>
-        {showLoader && <ActivityIndicator />}
 
-        <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
-          {enabledAddIcon && !image && (
-            <Ionicons
-              name="add"
-              size={40}
-              color={COLORS.voilet}
-              style={{
-                margin: 20,
-              }}
+        <View>
+          <View style={styles.imageContainer}>
+            {!pickedImagePath?.uri && (
+              <Text
+                style={{
+                  color: "white",
+                  margin: 30,
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+              >
+                Add Profile Image
+              </Text>
+            )}
+            {pickedImagePath?.uri && (
+              <Image
+                source={{ uri: pickedImagePath?.uri }}
+                style={styles.profileImage}
+              />
+            )}
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={uploadImageFromGallery}
+              title="Select from Gallery"
             />
-          )}
-          {image && (
-            <Image
-              source={{ uri: image?.uri }}
-              style={{ width: "100%", height: "100%", borderRadius: 30 }}
+            <Button onPress={uploadImageFromCamera} title="Open camera" />
+            <Button
+              onPress={uploadProfileImage}
+              title="Upload Image"
+              color="orange"
             />
-          )}
-        </TouchableOpacity>
-        <Text
-          style={{
-            color: "white",
-            margin: 10,
-          }}
-        >
-          Image
-        </Text>
+          </View>
+        </View>
 
         <View pointerEvents="none">
           <TextInput
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
-            value={userDetails?.contact}
+            value={"+91"} //For Indian Flag Prefilling
             contextMenuHidden={true}
           />
         </View>
@@ -461,6 +530,25 @@ const styles = StyleSheet.create({
     padding: 5,
     textAlign: "center",
     alignContent: "center",
+  },
+  profileImage: {
+    width: SIZES.width * 0.3,
+    height: SIZES.width * 0.3,
+    borderRadius: 40,
+    marginBottom: "5%",
+  },
+  buttonContainer: {
+    width: 600,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  imageContainer: {
+    alignItems: "center",
+  },
+  image: {
+    width: 400,
+    height: 300,
+    resizeMode: "cover",
   },
 });
 

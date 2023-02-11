@@ -42,7 +42,7 @@ const onBoardings = [
 const OnBoarding = ({ navigation }: any) => {
   // This method is used to redirect user to login screen
   const redirectToLogin = () => {
-    navigation.navigate("Login");
+    navigation.navigate("Register");
   };
 
   const [completed, setCompleted] = React.useState(false);
@@ -75,8 +75,6 @@ const OnBoarding = ({ navigation }: any) => {
         >
           {onBoardings.map((item, index) => (
             <View
-              //center
-              //bottom
               key={`img-${index}`}
               style={[
                 styles.imageAndTextContainer,
@@ -133,7 +131,6 @@ const OnBoarding = ({ navigation }: any) => {
         <TouchableOpacity
           style={{
             position: "absolute",
-            // left: "40%",
             alignSelf: "center",
             bottom: "15%",
             width: SIZES.width - SIZES.width * 0.2,
@@ -260,3 +257,5 @@ const styles = StyleSheet.create({
 });
 
 export default OnBoarding;
+
+// =============================================== THE END =====================================================

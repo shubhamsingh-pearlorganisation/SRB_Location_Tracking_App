@@ -62,7 +62,7 @@ const ProfileScreen = ({ navigation }: any) => {
     }
   }, [userDetailsPrefilled]);
 
-  // ================================== Image Upload Functionality -- Start =========================
+  // =============================== Image Upload Functionality -- Start =========================
   // The data of the picked image
   const [pickedImagePath, setPickedImagePath] = useState<any>({});
 
