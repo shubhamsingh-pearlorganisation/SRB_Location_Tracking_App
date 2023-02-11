@@ -22,6 +22,7 @@ import SettingsScreen from "./screens/SettingsScreen";
 import JoinGroupScreen from "./screens/JoinGroupScreen";
 import JoinGroup from "./screens/JoinGroupScreen";
 import MemberHistory from "./screens/MemberHistoryScreen";
+import ImageUpload from "./screens/ImageUpload";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -213,6 +214,11 @@ const App = () => {
               },
               headerBackVisible: false,
             }}
+          />
+          <Stack.Screen
+            name="ImageUpload"
+            component={ImageUpload}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
 

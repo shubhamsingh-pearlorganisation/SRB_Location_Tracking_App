@@ -229,7 +229,7 @@ const Register = ({ route, navigation }: any) => {
         {showLoader && <ActivityIndicator />}
 
         <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
-          {enabledAddIcon && !userDetails?.image && (
+          {enabledAddIcon && !image && (
             <Ionicons
               name="add"
               size={40}
@@ -241,7 +241,7 @@ const Register = ({ route, navigation }: any) => {
           )}
           {image && (
             <Image
-              source={{ uri: image }}
+              source={{ uri: image?.uri }}
               style={{ width: "100%", height: "100%", borderRadius: 30 }}
             />
           )}

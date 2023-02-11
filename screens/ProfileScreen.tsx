@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Pressable,
+  Button,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
@@ -17,14 +18,12 @@ import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from "expo-image-picker";
-import { Ionicons } from "@expo/vector-icons";
 // ============================================================================================
 
 const ProfileScreen = ({ navigation }: any) => {
   const toast = useToast();
 
   // Component's Local States
-  const [completePhoneNumber, setCompletePhoneNumber] = useState("");
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
   const [userDetailsPrefilled, setUserDetailsPrefilled] = useState<any>({});
@@ -35,9 +34,7 @@ const ProfileScreen = ({ navigation }: any) => {
     dob: "",
     contact: "",
   });
-  const [image, setImage] = useState<any>("");
-  const [enabledAddIcon, setEnabledAddIcon] = useState(true);
-  const [isImageUploaded, setImageUploaded] = useState(false);
+  // const [image, setImage] = useState<any>("");
 
   // Fetching JWT Token  when component's mounted
   useEffect(() => {
@@ -51,29 +48,169 @@ const ProfileScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     if (userDetailsPrefilled) {
+      console.log("userDetailsPrefilled::: ", userDetailsPrefilled);
       setUserDetails({
         name: userDetailsPrefilled?.name,
         email: userDetailsPrefilled?.email,
         dob: userDetailsPrefilled?.dob,
         contact: userDetailsPrefilled?.contact,
+        image: userDetailsPrefilled?.image,
       });
-      setImage(userDetailsPrefilled?.image);
+      // setImage(userDetailsPrefilled?.image);
     }
   }, [userDetailsPrefilled]);
 
-  // Calling Profile Image Upload Api when user upload image using library
-  useEffect(() => {
-    if (image && isImageUploaded) {
-      const imageData = {
-        uri: image?.uri ? image?.uri : "",
-        type: image?.type ? image?.type : "image",
-        name: image?.name ? image?.name : "profile_img",
-      };
-      updateUserProfileImage(imageData);
-    }
-  }, [image]);
+  // ================================== Image Upload Functionality -- Start =========================
+  // The path of the picked image
+  const [pickedImagePath, setPickedImagePath] = useState<any>({});
 
-  // ---------------------------------------------------------------------------------------------------
+  useEffect(() => {
+    pickedImagePath && console.log("pickedImagePath::: ", pickedImagePath);
+    userDetails?.image && console.log("image::: ", userDetails?.image);
+  }, [pickedImagePath, userDetails?.image]);
+
+  // This function is triggered when the "Select an image" button pressed
+  const showImagePicker = async () => {
+    // Ask the user for the permission to access the media library
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your photos!");
+      return;
+    }
+
+    const result: any = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    // Explore the result
+    console.log("result:: open gallery", result);
+
+    if (!result.canceled) {
+      setPickedImagePath(result.assets[0]);
+      // setImage("");
+      setUserDetails({ ...userDetails, image: "" });
+      console.log(result.assets[0]);
+    }
+  };
+
+  // This function is triggered when the "Open camera" button pressed
+  const openCamera = async () => {
+    // Ask the user for the permission to access the camera
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
+
+    const result: any = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    // Explore the result
+    console.log("result:: open camera", result);
+
+    if (!result.canceled) {
+      setPickedImagePath(result.assets[0]);
+      // setImage("");
+      setUserDetails({ ...userDetails, image: "" });
+      console.log(result.assets[0]);
+    }
+  };
+
+  const uploadProfileImage = () => {
+    // Image URL
+    const uri = pickedImagePath?.uri ? pickedImagePath?.uri : "";
+
+    const uriLastSegment = pickedImagePath?.uri
+      ? pickedImagePath?.uri.toString().split("/")[
+          pickedImagePath?.uri.toString().split("/").length - 1
+        ]
+      : "";
+
+    const fileExtension = uriLastSegment && uriLastSegment.split(".")[1];
+
+    // Image Type
+    let type;
+    if (
+      pickedImagePath?.type &&
+      pickedImagePath?.type.toString().includes("image/") === true
+    ) {
+      type = pickedImagePath?.type;
+    } else if (
+      pickedImagePath?.type &&
+      pickedImagePath?.type.toString().includes("image/") === false
+    ) {
+      type = "image/" + pickedImagePath?.type;
+    } else type = "";
+
+    // Name
+    const name = pickedImagePath?.name ? pickedImagePath?.name : uriLastSegment;
+
+    // File Name
+    const filename = pickedImagePath?.filename
+      ? pickedImagePath?.filename
+      : uriLastSegment;
+
+    const imageData = {
+      uri,
+      type,
+      name,
+      filename,
+    };
+
+    if (
+      fileExtension === "png" ||
+      fileExtension === "jpg" ||
+      fileExtension === "jpeg"
+    )
+      updateUserProfileImage(imageData);
+    else alert("The selected file type is invalid");
+  };
+
+  // This method is used to update user's profile image using an API
+  const updateUserProfileImage = async (imageData: any) => {
+    try {
+      const formData = new FormData();
+      formData.append("token_id", jwtToken);
+      formData.append("image", imageData);
+
+      setShowLoader(true);
+      const response = await instance.post("/users_image_update", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        setShowLoader(false);
+        toast.show("Profile Image updated successfully!", {
+          type: "success",
+        });
+      } else {
+        setShowLoader(false);
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while updating user's profile image. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowLoader(false);
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while updating user's profile image. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
+
+  // ================================== Image Upload Functionality -- Finished =========================
 
   // Redirect to back screen
   const goToBackScreen = () => {
@@ -132,44 +269,6 @@ const ProfileScreen = ({ navigation }: any) => {
     }
   };
 
-  // This method is used to update user's profile image using an API
-  const updateUserProfileImage = async (imageData: any) => {
-    try {
-      const formData = new FormData();
-      formData.append("token_id", jwtToken);
-      formData.append("image", imageData);
-
-      setShowLoader(true);
-      const response = await instance.post("/users_image_update", formData);
-      if (response.status === 200 && response.data?.status === true) {
-        setShowLoader(false);
-        toast.show("Profile Image updated successfully!", {
-          type: "success",
-        });
-      } else {
-        setShowLoader(false);
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while updating user's profile image. Please try again later.",
-          {
-            type: "error",
-          }
-        );
-      }
-    } catch (error: any) {
-      setShowLoader(false);
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while updating user's profile image. Please try again later.",
-        {
-          type: "error",
-        }
-      );
-    }
-  };
-
   // --------------------------- Date Picker Handling -- Start -----------------------------------
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -188,6 +287,7 @@ const ProfileScreen = ({ navigation }: any) => {
     const currentDate = tempDate.getDate();
     const month = tempDate.getMonth() + 1;
     const year = tempDate.getFullYear();
+
     // Making Full Date of Birth which we need to send in API
     let fullDate = `${year}-${month < 10 ? "0" + month : month}-${
       currentDate < 10 ? "0" + currentDate : currentDate
@@ -197,35 +297,7 @@ const ProfileScreen = ({ navigation }: any) => {
     hideDatePicker();
   };
 
-  // This method is used to upload profile image using library - expo-image-picker
-  const uploadProfileImage = async () => {
-    try {
-      setImageUploaded(false);
-      setShowLoader(true);
-      let result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        quality: 1,
-      });
-      setShowLoader(false);
-      if (!result.canceled) {
-        // setImage(result?.assets[0]?.uri);
-        setImage(result?.assets[0]);
-        console.log("result?.assets[0]:: ", result?.assets[0]);
-        setEnabledAddIcon(false);
-        setImageUploaded(true);
-      }
-    } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting error in uploading profile image.",
-        {
-          type: "error",
-        }
-      );
-      setImageUploaded(false);
-    }
-  };
+  // --------------------------- Date Picker Handling -- Finished -----------------------------------
 
   // This method is used to update User Details
   const updateUserDetails = async () => {
@@ -269,7 +341,6 @@ const ProfileScreen = ({ navigation }: any) => {
       );
     }
   };
-  // --------------------------- Date Picker Handling -- Finish -----------------------------------
 
   return !isEditable ? (
     <View style={styles.container}>
@@ -316,7 +387,6 @@ const ProfileScreen = ({ navigation }: any) => {
             </Text>
           </TouchableOpacity>
 
-          {/* -------------------------Edit Profile Button--------------------------------------  */}
           <TouchableOpacity
             style={{
               right: 0,
@@ -440,8 +510,8 @@ const ProfileScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
-          {enabledAddIcon && !image && (
+        {/* <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
+          {enabledAddIcon && !pickedImagePath?.uri && (
             <Ionicons
               name="add"
               size={40}
@@ -451,21 +521,38 @@ const ProfileScreen = ({ navigation }: any) => {
               }}
             />
           )}
-          {image && (
+          {pickedImagePath?.uri && (
             <Image
-              source={{ uri: image }}
+              source={{ uri: pickedImagePath?.uri }}
               style={{ width: "100%", height: "100%", borderRadius: 30 }}
             />
           )}
-        </TouchableOpacity>
-        <Text
-          style={{
-            color: "white",
-            margin: 10,
-          }}
-        >
-          Image
-        </Text>
+        </TouchableOpacity> */}
+
+        <View style={styles.screen}>
+          <View style={styles.imageContainer}>
+            {userDetails?.image === "" &&
+              pickedImagePath &&
+              pickedImagePath?.uri !== "" && (
+                <Image
+                  source={{ uri: pickedImagePath?.uri }}
+                  style={styles.profileImage}
+                />
+              )}
+            {userDetails?.image !== "" && pickedImagePath && (
+              <Image
+                source={{ uri: userDetails.image }}
+                style={styles.profileImage}
+              />
+            )}
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button onPress={showImagePicker} title="Select from Gallery" />
+            <Button onPress={openCamera} title="Open camera" />
+            <Button onPress={uploadProfileImage} title="Upload Image" />
+          </View>
+        </View>
+
         <TextInput
           style={[
             styles.textView,
@@ -584,6 +671,25 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     borderRadius: 30,
+  },
+  screen: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    width: 600,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 20,
+  },
+  imageContainer: {
+    padding: 30,
+  },
+  image: {
+    width: 400,
+    height: 300,
+    resizeMode: "cover",
   },
 });
 export default ProfileScreen;
