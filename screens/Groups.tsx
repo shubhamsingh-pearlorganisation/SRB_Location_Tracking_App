@@ -36,7 +36,7 @@ const Groups = ({ navigation }: any) => {
               style={{
                 color: "white",
                 fontWeight: "700",
-                textAlign:'center'
+                textAlign: "center",
               }}
             >
               Group Type
