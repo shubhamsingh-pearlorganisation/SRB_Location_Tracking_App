@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Pressable,
   Button,
+  Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
@@ -18,6 +19,7 @@ import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from "expo-image-picker";
+
 // ============================================================================================
 
 const ProfileScreen = ({ navigation }: any) => {
@@ -26,29 +28,30 @@ const ProfileScreen = ({ navigation }: any) => {
   // Component's Local States
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
+  // "userDetailsPrefilled" state is used to prefilled user's data from the api during view profile
   const [userDetailsPrefilled, setUserDetailsPrefilled] = useState<any>({});
   const [isEditable, setIsEditable] = useState(false);
+  // "userDetails" state is used to store user's form data during update profile
   const [userDetails, setUserDetails] = useState<any>({
     name: "",
     email: "",
     dob: "",
     contact: "",
+    image: "",
   });
-  // const [image, setImage] = useState<any>("");
 
-  // Fetching JWT Token  when component's mounted
+  // Fetching JWT Token when component's mounted
   useEffect(() => {
     setJwtToken(fetchAuthenticationToken()); // Fetching Authentication Token
   }, []);
 
-  // Fetching  User's details if toke available
+  // Fetching User's details if token available
   useEffect(() => {
-    jwtToken.length && fetchUserDetails();
+    jwtToken.length && !isEditable && fetchUserDetails();
   }, [jwtToken]);
 
   useEffect(() => {
     if (userDetailsPrefilled) {
-      console.log("userDetailsPrefilled::: ", userDetailsPrefilled);
       setUserDetails({
         name: userDetailsPrefilled?.name,
         email: userDetailsPrefilled?.email,
@@ -56,27 +59,21 @@ const ProfileScreen = ({ navigation }: any) => {
         contact: userDetailsPrefilled?.contact,
         image: userDetailsPrefilled?.image,
       });
-      // setImage(userDetailsPrefilled?.image);
     }
   }, [userDetailsPrefilled]);
 
   // ================================== Image Upload Functionality -- Start =========================
-  // The path of the picked image
+  // The data of the picked image
   const [pickedImagePath, setPickedImagePath] = useState<any>({});
 
-  useEffect(() => {
-    pickedImagePath && console.log("pickedImagePath::: ", pickedImagePath);
-    userDetails?.image && console.log("image::: ", userDetails?.image);
-  }, [pickedImagePath, userDetails?.image]);
-
-  // This function is triggered when the "Select an image" button pressed
-  const showImagePicker = async () => {
+  // This function is triggered when the "Select from Gallery" button pressed
+  const uploadImageFromGallery = async () => {
     // Ask the user for the permission to access the media library
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert("You've refused to allow this appp to access your photos!");
+      Alert.alert("You've refused to allow this appp to access your photos!");
       return;
     }
 
@@ -85,24 +82,19 @@ const ProfileScreen = ({ navigation }: any) => {
       quality: 1,
     });
 
-    // Explore the result
-    console.log("result:: open gallery", result);
-
     if (!result.canceled) {
       setPickedImagePath(result.assets[0]);
-      // setImage("");
       setUserDetails({ ...userDetails, image: "" });
-      console.log(result.assets[0]);
     }
   };
 
   // This function is triggered when the "Open camera" button pressed
-  const openCamera = async () => {
+  const uploadImageFromCamera = async () => {
     // Ask the user for the permission to access the camera
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert("You've refused to allow this appp to access your camera!");
+      Alert.alert("You've refused to allow this appp to access your camera!");
       return;
     }
 
@@ -111,27 +103,25 @@ const ProfileScreen = ({ navigation }: any) => {
       quality: 1,
     });
 
-    // Explore the result
-    console.log("result:: open camera", result);
-
     if (!result.canceled) {
       setPickedImagePath(result.assets[0]);
-      // setImage("");
       setUserDetails({ ...userDetails, image: "" });
-      console.log(result.assets[0]);
     }
   };
 
+  // This method is used to validate iimage data and call upload image api
   const uploadProfileImage = () => {
     // Image URL
     const uri = pickedImagePath?.uri ? pickedImagePath?.uri : "";
 
+    // URL Last Segment means file name with extension
     const uriLastSegment = pickedImagePath?.uri
       ? pickedImagePath?.uri.toString().split("/")[
           pickedImagePath?.uri.toString().split("/").length - 1
         ]
       : "";
 
+    // Image Extension
     const fileExtension = uriLastSegment && uriLastSegment.split(".")[1];
 
     // Image Type
@@ -139,14 +129,14 @@ const ProfileScreen = ({ navigation }: any) => {
     if (
       pickedImagePath?.type &&
       pickedImagePath?.type.toString().includes("image/") === true
-    ) {
+    )
       type = pickedImagePath?.type;
-    } else if (
+    else if (
       pickedImagePath?.type &&
       pickedImagePath?.type.toString().includes("image/") === false
-    ) {
+    )
       type = "image/" + pickedImagePath?.type;
-    } else type = "";
+    else type = "";
 
     // Name
     const name = pickedImagePath?.name ? pickedImagePath?.name : uriLastSegment;
@@ -156,6 +146,7 @@ const ProfileScreen = ({ navigation }: any) => {
       ? pickedImagePath?.filename
       : uriLastSegment;
 
+    // This is the data which we pass in form data inside image param
     const imageData = {
       uri,
       type,
@@ -163,13 +154,19 @@ const ProfileScreen = ({ navigation }: any) => {
       filename,
     };
 
-    if (
+    // Check Valid Image types
+    if (Object.keys(pickedImagePath).length === 0)
+      Alert.alert("Please select the image first");
+    else if (
       fileExtension === "png" ||
       fileExtension === "jpg" ||
       fileExtension === "jpeg"
     )
       updateUserProfileImage(imageData);
-    else alert("The selected file type is invalid");
+    else
+      Alert.alert(
+        "The selected file type is invalid. Please choose image with PNG, JPG or JPEG format only."
+      );
   };
 
   // This method is used to update user's profile image using an API
@@ -209,13 +206,13 @@ const ProfileScreen = ({ navigation }: any) => {
       );
     }
   };
-
   // ================================== Image Upload Functionality -- Finished =========================
 
   // Redirect to back screen
   const goToBackScreen = () => {
     navigation.navigate("Main");
   };
+
   //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
   const fetchAuthenticationToken = async () => {
     try {
@@ -299,7 +296,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
   // --------------------------- Date Picker Handling -- Finished -----------------------------------
 
-  // This method is used to update User Details
+  // This method is used to update User details
   const updateUserDetails = async () => {
     try {
       const { name, email, dob } = userDetails;
@@ -396,6 +393,7 @@ const ProfileScreen = ({ navigation }: any) => {
             onPress={() => setIsEditable(true)}
           >
             <MaterialIcons name="edit" size={30} color={COLORS.white} />
+            {showLoader && <ActivityIndicator size={50} />}
           </TouchableOpacity>
         </View>
 
@@ -417,7 +415,6 @@ const ProfileScreen = ({ navigation }: any) => {
             ? userDetailsPrefilled?.name
             : "User Name"}
         </Text>
-        {showLoader && <ActivityIndicator size={"large"} />}
       </View>
 
       <View style={styles.bottomView}>
@@ -508,26 +505,16 @@ const ProfileScreen = ({ navigation }: any) => {
               Done
             </Text>
           </TouchableOpacity>
+          <View
+            style={{
+              right: 0,
+              top: 30,
+              position: "absolute",
+            }}
+          >
+            {showLoader && <ActivityIndicator size={50} />}
+          </View>
         </View>
-
-        {/* <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
-          {enabledAddIcon && !pickedImagePath?.uri && (
-            <Ionicons
-              name="add"
-              size={40}
-              color={COLORS.voilet}
-              style={{
-                margin: 20,
-              }}
-            />
-          )}
-          {pickedImagePath?.uri && (
-            <Image
-              source={{ uri: pickedImagePath?.uri }}
-              style={{ width: "100%", height: "100%", borderRadius: 30 }}
-            />
-          )}
-        </TouchableOpacity> */}
 
         <View style={styles.screen}>
           <View style={styles.imageContainer}>
@@ -547,9 +534,16 @@ const ProfileScreen = ({ navigation }: any) => {
             )}
           </View>
           <View style={styles.buttonContainer}>
-            <Button onPress={showImagePicker} title="Select from Gallery" />
-            <Button onPress={openCamera} title="Open camera" />
-            <Button onPress={uploadProfileImage} title="Upload Image" />
+            <Button
+              onPress={uploadImageFromGallery}
+              title="Select from Gallery"
+            />
+            <Button onPress={uploadImageFromCamera} title="Open camera" />
+            <Button
+              onPress={uploadProfileImage}
+              title="Upload Image"
+              color="orange"
+            />
           </View>
         </View>
 
@@ -570,7 +564,6 @@ const ProfileScreen = ({ navigation }: any) => {
             setUserDetails({ ...userDetails, name: val })
           }
         ></TextInput>
-        {showLoader && <ActivityIndicator size={"large"} />}
       </View>
 
       <View style={styles.bottomView}>
@@ -621,7 +614,7 @@ const ProfileScreen = ({ navigation }: any) => {
   );
 };
 
-// ==================================================
+// ====================================================================================================
 // CSS CODE
 const styles = StyleSheet.create({
   container: {
@@ -637,8 +630,8 @@ const styles = StyleSheet.create({
     padding: "1%",
   },
   profileImage: {
-    width: SIZES.width * 0.2,
-    height: SIZES.width * 0.2,
+    width: SIZES.width * 0.3,
+    height: SIZES.width * 0.3,
     borderRadius: 40,
     marginBottom: "5%",
   },
@@ -693,3 +686,5 @@ const styles = StyleSheet.create({
   },
 });
 export default ProfileScreen;
+
+// =============================================== THE END =====================================================
