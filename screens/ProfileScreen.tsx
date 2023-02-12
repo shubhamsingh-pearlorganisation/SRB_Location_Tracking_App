@@ -585,6 +585,8 @@ const ProfileScreen = ({ navigation }: any) => {
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
+            maximumDate={new Date()}
+            minimumDate={new Date("1920-01-01")}
           />
           <Text style={styles.textView}>
             {userDetails?.dob

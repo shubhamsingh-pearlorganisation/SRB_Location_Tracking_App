@@ -28,6 +28,8 @@ const Register = ({ route, navigation }: any) => {
   const [showLoader, setShowLoader] = useState(false);
   const [jwtToken, setJwtToken] = useState<any>("");
 
+  console.log("route?.params?.userDetails::: ", route?.params?.userDetails);
+
   // Saving Route's data in component's local state - userDetails
   const [userDetails, setUserDetails] = useState<any>({
     name: route?.params?.userDetails?.name
@@ -219,6 +221,8 @@ const Register = ({ route, navigation }: any) => {
       formData.append("dob", dob);
       setShowLoader(true);
 
+      console.log("formData::: ", formData);
+
       const response = await instance.post("/users_update", formData);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
@@ -325,10 +329,10 @@ const Register = ({ route, navigation }: any) => {
         </View>
 
         <View pointerEvents="none">
-          <TextInput
+        <TextInput
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
-            value={"+91"} //For Indian Flag Prefilling
+            value={userDetails?.contact}
             contextMenuHidden={true}
           />
         </View>
@@ -371,6 +375,8 @@ const Register = ({ route, navigation }: any) => {
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
+            maximumDate={new Date()}
+            minimumDate={new Date('1920-01-01')}
           />
           <View
             style={{

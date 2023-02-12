@@ -38,10 +38,10 @@ const Login = ({ navigation }: any) => {
   // Enabling or Disabling Send Verification Code Button
   useEffect(() => {
     // According to Google Global Mobile Numbers must lies between 7 to 15 digits
-    if (completePhoneNumber.length < 7 || completePhoneNumber.length > 15)
+    if (mobileNumberWithoutCode.length < 7 || mobileNumberWithoutCode.length > 15)
       setDisableVerificationBtn(true);
     else setDisableVerificationBtn(false);
-  }, [completePhoneNumber]);
+  }, [mobileNumberWithoutCode]);
 
   // Enabling or Disabling Confirm Verification Code Button
   useEffect(() => {
@@ -57,6 +57,7 @@ const Login = ({ navigation }: any) => {
   const sendVerification = async () => {
     try {
       setShowLoader(true);
+      console.log("completePhoneNumber::: ", completePhoneNumber);
       const phoneProvider = new fireb.auth.PhoneAuthProvider();
       const verCode: any = await phoneProvider.verifyPhoneNumber(
         completePhoneNumber,

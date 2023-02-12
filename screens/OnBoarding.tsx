@@ -181,7 +181,7 @@ const OnBoarding = ({ navigation }: any) => {
                 fontSize: 15,
               }}
             >
-              Log in
+              &nbsp; Log in
             </Text>
           </TouchableOpacity>
         </View>
