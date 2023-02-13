@@ -16,6 +16,19 @@ import CustomAlert from "../../components/AlertDialog";
 import { useState } from "react";
 
 const EmergencyTimerScreen = ({ navigation }: any) => {
+  const [timer , setTimer] = useState<any>()
+
+  var intervalID = setInterval(()=>{
+    let n = 10
+    while(n>0){
+      setTimer(n)
+      n = n-1
+    }
+    if(n==0){
+      clearInterval(intervalID)
+    }
+  },1000)
+
   const redirectBack = () => {
     navigation.navigate("EmergencyContactsListing");
   };
@@ -34,7 +47,7 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
       >
         <Pressable>
           <View style={styles.image}>
-            <Text style={styles.needHelp}>10</Text>
+            <Text style={styles.needHelp}>{timer}</Text>
           </View>
         </Pressable>
       </ImageBackground>

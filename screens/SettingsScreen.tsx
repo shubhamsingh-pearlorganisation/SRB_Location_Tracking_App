@@ -14,17 +14,6 @@ import {
   Animated,
   ScrollView,
 } from "react-native";
-<<<<<<< Updated upstream
-
-const Settings = () => {
-  return (
-    <View>
-      <Text>Settings Screen</Text>
-    </View>
-  );
-};
-
-=======
 import { List } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";
 import { COLORS, SIZES } from "../constants";
@@ -140,5 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
->>>>>>> Stashed changes
 export default Settings;

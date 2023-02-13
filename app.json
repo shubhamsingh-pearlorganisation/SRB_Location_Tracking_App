@@ -39,11 +39,7 @@
     },
     "extra": {
       "eas": {
-<<<<<<< Updated upstream
-        "projectId": "srb-reactnativeapp"
-=======
         "projectId": "3a2b9603-7bb5-4d78-bd73-2bf9d820a656"
->>>>>>> Stashed changes
       }
     },
     "owner": "pearlios"
