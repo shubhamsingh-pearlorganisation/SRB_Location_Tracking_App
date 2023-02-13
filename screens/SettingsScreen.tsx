@@ -14,17 +14,6 @@ import {
   Animated,
   ScrollView,
 } from "react-native";
-<<<<<<< Updated upstream
-
-const Settings = () => {
-  return (
-    <View>
-      <Text>Settings Screen</Text>
-    </View>
-  );
-};
-
-=======
 import { List } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";
 import { COLORS, SIZES } from "../constants";
@@ -96,13 +85,19 @@ const Settings = () => {
           </View>
         </List.Accordion>
         <List.Accordion
-        title="Privacy Policy, Terms and Conditons"
-        titleStyle={styles.textHeading}
-        // expanded={expanded}
-        onPress={handlePress}
+          title="Privacy Policy, Terms and Conditons"
+          titleStyle={styles.textHeading}
+          // expanded={expanded}
+          onPress={handlePress}
         >
-            <List.Item title = "Privacy Policy" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."/>
-            <List.Item title = "Terms and Conditions" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."/>
+          <List.Item
+            title="Privacy Policy"
+            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          />
+          <List.Item
+            title="Terms and Conditions"
+            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          />
         </List.Accordion>
       </List.Section>
     </View>
@@ -115,7 +110,7 @@ const styles = StyleSheet.create({
     padding: "2%",
   },
   textHeading: {
-    fontSize: SIZES.width>400? 30:20,
+    fontSize: SIZES.width > 400 ? 30 : 20,
     fontWeight: "600",
     color: "black",
     // backgroundColor: COLORS.white,
@@ -140,5 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
->>>>>>> Stashed changes
 export default Settings;
