@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -15,8 +16,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SIZES } from "../constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../App";
 
 const MenuScreen = ({ navigation }: any) => {
+  const authContextData: any = useContext(AuthContext);
+
   const redirectToEmergencyScreen = () => {
     navigation.navigate("Emergency");
   };
@@ -31,6 +36,19 @@ const MenuScreen = ({ navigation }: any) => {
 
   const redirectFeedBackScreen = () => {
     navigation.navigate("FeedBackScreen");
+  };
+
+  // This method is used to logout the user
+  const handleLogout = () => {
+    try {
+      const result: any = AsyncStorage.clear();
+      if (result) {
+        Alert.alert("User Logout Successfully!");
+        authContextData.setTokenAfterLogin(null); // Sending back token value to app component so that we can redirect to splash screen
+      }
+    } catch (error: any) {
+      Alert.alert("Getting an error during logout: ", error?.message);
+    }
   };
 
   return (
@@ -252,6 +270,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
+            onPress={handleLogout}
           >
             <MaterialIcons
               style={[styles.icons, { paddingLeft: 5 }]}

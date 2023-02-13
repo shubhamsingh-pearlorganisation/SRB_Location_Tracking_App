@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -17,18 +17,16 @@ import * as ImagePicker from "expo-image-picker";
 import { instance } from "../core/utils/AxiosInterceptor";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../App";
 
 // -----------------------------------------------------------------------------------
 
 const Register = ({ route, navigation }: any) => {
   const toast = useToast();
+  const authContextData: any = useContext(AuthContext);
 
   // Component's Local States
   const [showLoader, setShowLoader] = useState(false);
-  const [jwtToken, setJwtToken] = useState<any>("");
-
-  console.log("route?.params?.userDetails::: ", route?.params?.userDetails);
 
   // Saving Route's data in component's local state - userDetails
   const [userDetails, setUserDetails] = useState<any>({
@@ -44,11 +42,6 @@ const Register = ({ route, navigation }: any) => {
       : "",
   });
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  // Fetching JWT Token when component's mounted
-  useEffect(() => {
-    fetchAuthenticationToken();
-  }, []);
 
   // ================================== Image Upload Functionality -- Start =========================
   // The data of the picked image
@@ -161,7 +154,7 @@ const Register = ({ route, navigation }: any) => {
   const updateUserProfileImage = async (imageData: any) => {
     try {
       const formData = new FormData();
-      formData.append("token_id", jwtToken);
+      formData.append("token_id", authContextData?.token);
       formData.append("image", imageData);
 
       setShowLoader(true);
@@ -196,26 +189,13 @@ const Register = ({ route, navigation }: any) => {
   };
   // ================================== Image Upload Functionality -- Finished =========================
 
-  //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
-  const fetchAuthenticationToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem("authentication-token");
-      if (token !== null) {
-        console.log("token::::::::: ", token);
-        setJwtToken(token);
-      }
-    } catch (e: any) {
-      console.log("Getting an error while fetching JWT Token:: ", e.message);
-    }
-  };
-
   // This method is used to update User Details
   const updateUserDetails = async () => {
     try {
       const { name, emailId, dob } = userDetails;
 
       const formData = new FormData();
-      formData.append("token_id", jwtToken);
+      formData.append("token_id", authContextData?.token);
       formData.append("name", name);
       formData.append("email", emailId);
       formData.append("dob", dob);
@@ -329,7 +309,7 @@ const Register = ({ route, navigation }: any) => {
         </View>
 
         <View pointerEvents="none">
-        <TextInput
+          <TextInput
             style={styles.textInput}
             placeholderTextColor="rgba(255,255,255,0.6)"
             value={userDetails?.contact}
@@ -376,7 +356,7 @@ const Register = ({ route, navigation }: any) => {
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
             maximumDate={new Date()}
-            minimumDate={new Date('1920-01-01')}
+            minimumDate={new Date("1920-01-01")}
           />
           <View
             style={{

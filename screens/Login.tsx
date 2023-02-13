@@ -1,4 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
+import { AuthContext } from "../App";
+
 import {
   View,
   Text,
@@ -19,8 +21,10 @@ import CountryDropdown from "../components/CountryDropdown";
 
 const Login = ({ navigation }: any) => {
   const toast = useToast();
+  const authContextData: any = useContext(AuthContext);
 
   // Component's Local States
+
   // completePhoneNumber state - Used to send mobile number to firebase's generate verification code api
   const [completePhoneNumber, setCompletePhoneNumber] = useState("");
 
@@ -38,7 +42,10 @@ const Login = ({ navigation }: any) => {
   // Enabling or Disabling Send Verification Code Button
   useEffect(() => {
     // According to Google Global Mobile Numbers must lies between 7 to 15 digits
-    if (mobileNumberWithoutCode.length < 7 || mobileNumberWithoutCode.length > 15)
+    if (
+      mobileNumberWithoutCode.length < 7 ||
+      mobileNumberWithoutCode.length > 15
+    )
       setDisableVerificationBtn(true);
     else setDisableVerificationBtn(false);
   }, [mobileNumberWithoutCode]);
@@ -136,8 +143,10 @@ const Login = ({ navigation }: any) => {
         console.log("userDetails: ", userDetails);
 
         //This method is used to save JWT Token in @react-native-async-storage/async-storage
-        jwtToken &&
-          (await AsyncStorage.setItem("authentication-token", jwtToken));
+        if (jwtToken) {
+          await AsyncStorage.setItem("authentication-token", jwtToken);
+          authContextData.setTokenAfterLogin(jwtToken);
+        }
         setShowLoader(false);
 
         // Redirection of user based on below conditions:

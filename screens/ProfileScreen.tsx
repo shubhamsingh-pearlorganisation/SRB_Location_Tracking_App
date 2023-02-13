@@ -11,26 +11,29 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useToast } from "react-native-toast-notifications";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from "expo-image-picker";
+import { AuthContext } from "../App";
 
 // ============================================================================================
 
 const ProfileScreen = ({ navigation }: any) => {
   const toast = useToast();
 
+  const authContextData: any = useContext(AuthContext);
+
   // Component's Local States
   const [showLoader, setShowLoader] = useState(false);
-  const [jwtToken, setJwtToken] = useState<any>("");
+
   // "userDetailsPrefilled" state is used to prefilled user's data from the api during view profile
   const [userDetailsPrefilled, setUserDetailsPrefilled] = useState<any>({});
   const [isEditable, setIsEditable] = useState(false);
+
   // "userDetails" state is used to store user's form data during update profile
   const [userDetails, setUserDetails] = useState<any>({
     name: "",
@@ -40,15 +43,10 @@ const ProfileScreen = ({ navigation }: any) => {
     image: "",
   });
 
-  // Fetching JWT Token when component's mounted
-  useEffect(() => {
-    setJwtToken(fetchAuthenticationToken()); // Fetching Authentication Token
-  }, []);
-
   // Fetching User's details if token available
   useEffect(() => {
-    jwtToken.length && !isEditable && fetchUserDetails();
-  }, [jwtToken]);
+    authContextData?.token?.length && !isEditable && fetchUserDetails();
+  }, [authContextData?.token]);
 
   useEffect(() => {
     if (userDetailsPrefilled) {
@@ -173,7 +171,7 @@ const ProfileScreen = ({ navigation }: any) => {
   const updateUserProfileImage = async (imageData: any) => {
     try {
       const formData = new FormData();
-      formData.append("token_id", jwtToken);
+      formData.append("token_id", authContextData?.token);
       formData.append("image", imageData);
 
       setShowLoader(true);
@@ -213,24 +211,11 @@ const ProfileScreen = ({ navigation }: any) => {
     navigation.navigate("Main");
   };
 
-  //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
-  const fetchAuthenticationToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem("authentication-token");
-      if (token !== null) {
-        console.log("token::::::::: ", token);
-        setJwtToken(token);
-      }
-    } catch (e: any) {
-      console.log("Getting an error while fetching JWT Token:: ", e.message);
-    }
-  };
-
   // This method is used to fetch user details from the api based on token
   const fetchUserDetails = async () => {
     try {
       const formData = new FormData();
-      formData.append("token_id", jwtToken);
+      formData.append("token_id", authContextData?.token);
 
       setShowLoader(true);
 
@@ -302,7 +287,7 @@ const ProfileScreen = ({ navigation }: any) => {
       const { name, email, dob } = userDetails;
 
       const formData = new FormData();
-      formData.append("token_id", jwtToken);
+      formData.append("token_id", authContextData?.token);
       formData.append("name", name);
       formData.append("email", email);
       formData.append("dob", dob);
