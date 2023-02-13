@@ -13,21 +13,34 @@ import {
 import { COLORS, SIZES } from "../../constants";
 import { emergencyCallImage } from "../../constants/images";
 import CustomAlert from "../../components/AlertDialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const EmergencyTimerScreen = ({ navigation }: any) => {
-  const [timer , setTimer] = useState<any>()
 
-  var intervalID = setInterval(()=>{
-    let n = 10
-    while(n>0){
-      setTimer(n)
-      n = n-1
-    }
-    if(n==0){
-      clearInterval(intervalID)
-    }
-  },1000)
+  // const manageEmergencyTimer = () => {
+  //   let initialValue = 10;
+  //   for (let i = 0; i < 10; i++) {
+  //     initialValue -= 1;
+  //     setTimer((prev: any) => initialValue - prev);
+  //   }
+  //   if (initialValue === 0) clearInterval(id);
+  // };
+
+  // const id = setInterval(manageEmergencyTimer, 1000);
+
+  const [counter, setCounter] = useState(10);
+
+  // Third Attempts
+  useEffect(() => {
+    const timer:any =
+      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+      if(counter === 0){
+        alert("Emergency Alert Sent Successfully")
+        redirectBack()
+      }
+    return () => clearInterval(timer);
+    
+  }, [counter])
 
   const redirectBack = () => {
     navigation.navigate("EmergencyContactsListing");
@@ -47,7 +60,7 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
       >
         <Pressable>
           <View style={styles.image}>
-            <Text style={styles.needHelp}>{timer}</Text>
+            <Text style={styles.needHelp}>{counter}</Text>
           </View>
         </Pressable>
       </ImageBackground>
