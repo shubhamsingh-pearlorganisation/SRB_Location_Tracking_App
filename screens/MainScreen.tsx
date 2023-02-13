@@ -21,7 +21,7 @@ const MainScreen = ({ navigation }: any) => {
       initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName:any;
+          let iconName: any;
           let rn = route.name;
 
           if (rn === "Home") {
