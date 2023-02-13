@@ -33,6 +33,10 @@ const MenuScreen = ({ navigation }: any) => {
     navigation.navigate("FeedBackScreen");
   };
 
+  const redirectToSettingsScreen = () =>{
+    navigation.navigate("SettingsScreen");
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -158,6 +162,7 @@ const MenuScreen = ({ navigation }: any) => {
             width: "99%",
             flexDirection: "row",
           }}
+          onPress={()=>redirectToSettingsScreen()}
         >
           <Ionicons
             style={[styles.icons, { paddingLeft: 5 }]}

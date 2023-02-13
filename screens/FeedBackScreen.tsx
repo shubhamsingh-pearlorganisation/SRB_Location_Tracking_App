@@ -18,30 +18,40 @@ import { profile } from "../constants/images";
 import { List } from "react-native-paper";
 
 const FeedBackScreen = () => {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   const handlePress = () => setExpanded(!expanded);
 
   return (
     <View>
-      <List.Section title="Accordions">
+      <List.Section title="Feedbacks">
+        <ScrollView>
         <List.Accordion
-          title="Uncontrolled Accordion"
-          left={(props) => <List.Icon {...props} icon="folder" />}
-        >
-          <List.Item title="First item" />
-          <List.Item title="Second item" />
-        </List.Accordion>
-
-        <List.Accordion
-          title="Controlled Accordion"
-          left={(props) => <List.Icon {...props} icon="folder" />}
-          expanded={expanded}
+          title="First Feedback"
+          left={(props) => <List.Icon {...props} icon="account"/>}
+          // expanded={expanded}
           onPress={handlePress}
         >
-          <List.Item title="First item" />
-          <List.Item title="Second item" />
+          <List.Item title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
         </List.Accordion>
+        <List.Accordion
+          title="Second Feedback"
+          left={(props) => <List.Icon {...props} icon="account" />}
+          // expanded={expanded}
+          onPress={handlePress}
+        >
+          <List.Item title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+        </List.Accordion>
+        <List.Accordion
+          title="Third Feedback"
+          left={(props) => <List.Icon {...props} icon="account" />}
+          // expanded={expanded}
+          onPress={handlePress}
+        >
+          <List.Item title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+        </List.Accordion>
+        </ScrollView>
+        
       </List.Section>
     </View>
   );

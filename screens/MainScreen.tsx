@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Platform,
-  Dimensions,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import { StyleSheet } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./HomeScreen";
@@ -30,7 +21,7 @@ const MainScreen = ({ navigation }: any) => {
       initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+          let iconName:any;
           let rn = route.name;
 
           if (rn === "Home") {

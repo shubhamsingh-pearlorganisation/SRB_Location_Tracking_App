@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "expoSrbTracking",
-    "slug": "expoSrbTracking",
+    "slug": "srb-tracking-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +14,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -23,18 +25,27 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.pearlios.expoSrbTracking"
+      "package": "com.pearlios.srbtrackingreactnative",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "expo": {
-      "plugins": ["@react-native-firebase/app", "@react-native-firebase/auth"]
+      "plugins": [
+        "@react-native-firebase/app",
+        "@react-native-firebase/auth"
+      ]
     },
     "extra": {
       "eas": {
+<<<<<<< Updated upstream
         "projectId": "srb-reactnativeapp"
+=======
+        "projectId": "3a2b9603-7bb5-4d78-bd73-2bf9d820a656"
+>>>>>>> Stashed changes
       }
-    }
+    },
+    "owner": "pearlios"
   }
 }

@@ -293,6 +293,7 @@ const Register = ({ route, navigation }: any) => {
           You haven’t got account?{"\n"} Let's Create...
         </Text>
 
+<<<<<<< Updated upstream
         <View>
           <View style={styles.imageContainer}>
             {!pickedImagePath?.uri && (
@@ -318,6 +319,17 @@ const Register = ({ route, navigation }: any) => {
             <Button
               onPress={uploadImageFromGallery}
               title="Select from Gallery"
+=======
+        <TouchableOpacity style={styles.addImage} onPress={uploadProfileImage}>
+          {enabledAddIcon && !image && (
+            <Ionicons
+              name="add"
+              size={40}
+              color={COLORS.voilet}
+              style={{
+                margin: 20,
+              }}
+>>>>>>> Stashed changes
             />
             <Button onPress={uploadImageFromCamera} title="Open camera" />
             <Button
@@ -358,7 +370,11 @@ const Register = ({ route, navigation }: any) => {
             setUserDetails({ ...userDetails, emailId: val })
           }
         />
-        <Pressable onPress={showDatePicker}>
+        <Pressable 
+        style={{
+          width:SIZES.width*.7
+        }}
+        onPress={showDatePicker}>
           <Text
             style={{
               color: "white",

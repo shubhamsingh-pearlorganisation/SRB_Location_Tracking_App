@@ -14,7 +14,7 @@ import fireb from "firebase/compat";
 import { useToast } from "react-native-toast-notifications";
 import { instance } from "../core/utils/AxiosInterceptor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CountryDropdown from "../components/CountryDropdown";
+import CountryDropdown from "../components/CountryDropdownComponent";
 // ---------------------------------------------------------------------------------------------
 
 const Login = ({ navigation }: any) => {

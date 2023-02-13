@@ -220,10 +220,10 @@ const OnBoarding = ({ navigation }: any) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View>{renderContent()}</View>
       <View style={styles.dotsRootContainer}>{renderDots()}</View>
-    </SafeAreaView>
+    </View>
   );
 };
 
