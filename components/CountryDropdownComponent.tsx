@@ -41,7 +41,7 @@ const CountryDropdown = (props: any) => {
 const styles = StyleSheet.create({
   countryCodeContainer: {
     backgroundColor: COLORS.voilet,
-    width: SIZES.width>400 ? SIZES.width*.5 :SIZES.width*.8,
+    width: SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
   },
   textContainerStyle: {
     backgroundColor: COLORS.voilet,

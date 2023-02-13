@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     alignItems: "center",
     // fontSize: 20,
-    fontSize:18
+    fontSize: 18,
   },
   codeTextStyle: {
     textAlign: "center",

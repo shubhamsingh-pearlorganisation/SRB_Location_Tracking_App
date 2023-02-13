@@ -297,7 +297,7 @@ const Register = ({ route, navigation }: any) => {
             <Button
               onPress={uploadImageFromGallery}
               title="Select from Gallery"
-        />
+            />
             <Button onPress={uploadImageFromCamera} title="Open camera" />
             <Button
               onPress={uploadProfileImage}
@@ -337,11 +337,12 @@ const Register = ({ route, navigation }: any) => {
             setUserDetails({ ...userDetails, emailId: val })
           }
         />
-        <Pressable 
-        style={{
-          width:SIZES.width*.7
-        }}
-        onPress={showDatePicker}>
+        <Pressable
+          style={{
+            width: SIZES.width * 0.7,
+          }}
+          onPress={showDatePicker}
+        >
           <Text
             style={{
               color: "white",

@@ -38,13 +38,14 @@ const MenuScreen = ({ navigation }: any) => {
     navigation.navigate("FeedBackScreen");
   };
 
-  const redirectToSettingsScreen = () =>{
+  const redirectToSettingsScreen = () => {
     navigation.navigate("SettingsScreen");
-  }
+  };
   // This method is used to logout the user
   const handleLogout = () => {
     try {
       const result: any = AsyncStorage.clear();
+      console.log("Logout User Result::: ", result);
       if (result) {
         Alert.alert("User Logout Successfully!");
         authContextData.setTokenAfterLogin(null); // Sending back token value to app component so that we can redirect to splash screen
@@ -179,7 +180,7 @@ const MenuScreen = ({ navigation }: any) => {
             width: "99%",
             flexDirection: "row",
           }}
-          onPress={()=>redirectToSettingsScreen()}
+          onPress={() => redirectToSettingsScreen()}
         >
           <Ionicons
             style={[styles.icons, { paddingLeft: 5 }]}

@@ -26,32 +26,31 @@ const FeedBackScreen = () => {
     <View>
       <List.Section title="Feedbacks">
         <ScrollView>
-        <List.Accordion
-          title="First Feedback"
-          left={(props) => <List.Icon {...props} icon="account"/>}
-          // expanded={expanded}
-          onPress={handlePress}
-        >
-          <List.Item title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-        </List.Accordion>
-        <List.Accordion
-          title="Second Feedback"
-          left={(props) => <List.Icon {...props} icon="account" />}
-          // expanded={expanded}
-          onPress={handlePress}
-        >
-          <List.Item title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-        </List.Accordion>
-        <List.Accordion
-          title="Third Feedback"
-          left={(props) => <List.Icon {...props} icon="account" />}
-          // expanded={expanded}
-          onPress={handlePress}
-        >
-          <List.Item title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-        </List.Accordion>
+          <List.Accordion
+            title="First Feedback"
+            left={(props) => <List.Icon {...props} icon="account" />}
+            // expanded={expanded}
+            onPress={handlePress}
+          >
+            <List.Item title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+          </List.Accordion>
+          <List.Accordion
+            title="Second Feedback"
+            left={(props) => <List.Icon {...props} icon="account" />}
+            // expanded={expanded}
+            onPress={handlePress}
+          >
+            <List.Item title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+          </List.Accordion>
+          <List.Accordion
+            title="Third Feedback"
+            left={(props) => <List.Icon {...props} icon="account" />}
+            // expanded={expanded}
+            onPress={handlePress}
+          >
+            <List.Item title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+          </List.Accordion>
         </ScrollView>
-        
       </List.Section>
     </View>
   );

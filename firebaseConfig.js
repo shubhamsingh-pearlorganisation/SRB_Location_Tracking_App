@@ -16,7 +16,7 @@ export const firebaseConfig = {
   storageBucket: "srb-reactnativeapp.appspot.com",
   messagingSenderId: "771423723462",
   appId: "1:771423723462:web:f3a4f165e1184d97921cc7",
-  measurementId: "G-C4WZ7DHHWZ"
+  measurementId: "G-C4WZ7DHHWZ",
 };
 if (!firebase.apps.length > 0) {
   firebase.initializeApp(firebaseConfig);
