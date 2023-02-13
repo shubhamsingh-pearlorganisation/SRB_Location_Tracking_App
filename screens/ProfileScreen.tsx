@@ -619,7 +619,7 @@ const styles = StyleSheet.create({
     width: SIZES.width * 0.3,
     height: SIZES.width * 0.3,
     borderRadius: 40,
-    marginBottom: "5%",
+    marginTop:'10%'
   },
   bottomView: {
     margin: "5%",
@@ -657,10 +657,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonContainer: {
-    width: 600,
+    width: SIZES.width*.8,
     flexDirection: "row",
     justifyContent: "space-around",
-    marginBottom: 20,
+    marginBottom: "10%",
   },
   imageContainer: {
     padding: 30,
@@ -669,7 +669,6 @@ const styles = StyleSheet.create({
     width: SIZES.width>400?SIZES.width*.3:SIZES.width*.4,
     height: SIZES.width>400?SIZES.width*.3:SIZES.width*.4,
     resizeMode: "cover",
-    marginTop:'5%'
   },
   imgBtns: {
     padding:'2%',
