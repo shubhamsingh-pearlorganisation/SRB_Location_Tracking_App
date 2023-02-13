@@ -225,7 +225,7 @@ const Login = ({ navigation }: any) => {
             alignItems: "center",
           }}
         >
-          <CountryDropdown getCompleteMobileNumber={getCompleteMobileNumber} />
+          <CountryDropdown getCompleteMobileNumber={getCompleteMobileNumber}/>
         </View>
         <TouchableOpacity
           style={[
@@ -313,6 +313,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     borderColor: "#fff",
+    alignItems:'center',
+    justifyContent:'center'
   },
   sendCode: {
     marginRight: 40,
@@ -322,6 +324,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     borderColor: "#fff",
+    alignItems:'center',
+    justifyContent:'center'
   },
   buttonText: {
     lineHeight: 50,
@@ -336,10 +340,8 @@ const styles = StyleSheet.create({
   },
   otpText: {
     position: "relative",
-    width: 350,
-    height: 82,
-    left: 10,
-    top: 10,
+    width: "90%",
+    height: 'auto',
     marginBottom: 150,
     fontStyle: "normal",
     fontWeight: "bold",

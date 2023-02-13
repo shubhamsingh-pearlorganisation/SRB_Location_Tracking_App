@@ -41,25 +41,28 @@ const CountryDropdown = (props: any) => {
 const styles = StyleSheet.create({
   countryCodeContainer: {
     backgroundColor: COLORS.voilet,
-    width: SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
+    width:SIZES.width * 0.8,
   },
   textContainerStyle: {
     backgroundColor: COLORS.voilet,
+    width:'auto'
   },
   textInputStyle: {
     textAlign: "center",
     color: COLORS.white,
     alignItems: "center",
     fontSize: 20,
+    width:'auto'
   },
   codeTextStyle: {
     textAlign: "center",
     color: COLORS.white,
     alignItems: "center",
     fontSize: 20,
+    width:'10%'
   },
   flagStyle: {
-    width: "30%",
+    width: "20%",
     backgroundColor: "white",
     borderRadius: 5,
   },

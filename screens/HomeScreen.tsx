@@ -61,6 +61,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   const onPressUpBtn = () => {
     setOnUp(!onUp);
+    setDrop(false)
   };
 
   const customStyle2 = onUp ? styles.expand : styles.collapse;
@@ -407,7 +408,7 @@ const HomeScreen = ({ navigation }: any) => {
           style={{
             bottom: "2%",
             position: "absolute",
-            width: "8%",
+            width:SIZES.width > 400 ? "8%" :"12%",
             height: "auto",
             backgroundColor: "rgba(0,0,0,.2)",
             alignSelf: "center",
@@ -450,7 +451,7 @@ const HomeScreen = ({ navigation }: any) => {
           style={{
             top: 5,
             position: "absolute",
-            width: "8%",
+            width: SIZES.width > 400 ? "8%" :"12%",
             height: "auto",
             backgroundColor: "rgba(0,0,0,.2)",
             alignSelf: "center",
@@ -473,8 +474,8 @@ const HomeScreen = ({ navigation }: any) => {
         </ScrollView>
         <Pressable
           style={{
-            width: SIZES.width * 0.06,
-            height: SIZES.width * 0.06,
+            width: 'auto',
+            height: 'auto',
             backgroundColor: "white",
             alignSelf: "center",
             shadowColor: "black",
@@ -491,7 +492,7 @@ const HomeScreen = ({ navigation }: any) => {
           }}
           onPress={redirectToAddMemberScreen}
         >
-          <Ionicons size={40} name="add" color={COLORS.voilet} />
+          <Ionicons size={SIZES.width > 400 ? 40 : 25} name="add" color={COLORS.voilet} />
         </Pressable>
       </View>
     </SafeAreaView>
@@ -648,7 +649,7 @@ const styles = StyleSheet.create({
     ],
   },
   expand: {
-    height: SIZES.height * 0.8,
+    height: SIZES.height * 0.75,
   },
   collapse: {
     height: SIZES.height * 0.3,

@@ -295,16 +295,18 @@ const Register = ({ route, navigation }: any) => {
             )}
           </View>
           <View style={styles.buttonContainer}>
-            <Button
-              onPress={uploadImageFromGallery}
-              title="Select from Gallery"
-            />
-            <Button onPress={uploadImageFromCamera} title="Open camera" />
-            <Button
-              onPress={uploadProfileImage}
-              title="Upload Image"
-              color="orange"
-            />
+            <Pressable style={styles.imgBtns}
+              onPress={uploadImageFromGallery}>
+                <Text style={styles.imgBtnText}>Gallery</Text>
+              </Pressable>
+              <Pressable style={styles.imgBtns}
+              onPress={uploadImageFromCamera}>
+                <Text  style={styles.imgBtnText}>Camera</Text>
+              </Pressable>
+              <Pressable style={[styles.imgBtns,{backgroundColor:'#FFE5B9'}]}
+              onPress={uploadProfileImage}>
+                <Text  style={[styles.imgBtnText,{fontWeight:'600'}]}>Upload Image</Text>
+              </Pressable>
           </View>
         </View>
 
@@ -340,7 +342,10 @@ const Register = ({ route, navigation }: any) => {
         />
         <Pressable
           style={{
-            width: SIZES.width * 0.7,
+            alignItems: "center",
+            justifyContent: "center",
+            width: "auto",
+            height: "auto",
           }}
           onPress={showDatePicker}
         >
@@ -529,7 +534,7 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
   },
   buttonContainer: {
-    width: 600,
+    width: "80%",
     flexDirection: "row",
     justifyContent: "space-around",
   },
@@ -537,10 +542,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 400,
-    height: 300,
-    resizeMode: "cover",
+    width: SIZES.width > 400 ? SIZES.width * 0.3 : SIZES.width * 0.5,
+    height: SIZES.width > 400 ? SIZES.width * 0.3 : SIZES.width * 0.5,
+    resizeMode: "contain",
   },
+  imgBtns: {
+    padding:'2%',
+    fontSize: SIZES.width > 400 ? 18 : 25,
+    backgroundColor: "white",
+    color: COLORS.voilet,
+    borderRadius:30
+  },
+  imgBtnText:{
+    fontSize: SIZES.width > 400 ? 18 : 25,
+    color: COLORS.voilet,
+  }
 });
 
 export default Register;

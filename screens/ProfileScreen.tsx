@@ -520,16 +520,18 @@ const ProfileScreen = ({ navigation }: any) => {
             )}
           </View>
           <View style={styles.buttonContainer}>
-            <Button
-              onPress={uploadImageFromGallery}
-              title="Select from Gallery"
-            />
-            <Button onPress={uploadImageFromCamera} title="Open camera" />
-            <Button
-              onPress={uploadProfileImage}
-              title="Upload Image"
-              color="orange"
-            />
+            <Pressable style={styles.imgBtns}
+              onPress={uploadImageFromGallery}>
+                <Text style={styles.imgBtnText}>Gallery</Text>
+              </Pressable>
+              <Pressable style={styles.imgBtns}
+              onPress={uploadImageFromCamera}>
+                <Text  style={styles.imgBtnText}>Camera</Text>
+              </Pressable>
+              <Pressable style={[styles.imgBtns,{backgroundColor:'#FFE5B9'}]}
+              onPress={uploadProfileImage}>
+                <Text  style={[styles.imgBtnText,{fontWeight:'600'}]}>Upload Image</Text>
+              </Pressable>
           </View>
         </View>
 
@@ -609,13 +611,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topView: {
-    height: "40%",
+    height: "45%",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     backgroundColor: COLORS.voilet,
     justifyContent: "center",
     alignItems: "center",
     padding: "1%",
+    paddingBottom:'5%'
   },
   profileImage: {
     width: SIZES.width * 0.3,
@@ -672,6 +675,17 @@ const styles = StyleSheet.create({
     height: 300,
     resizeMode: "cover",
   },
+  imgBtns: {
+    padding:'2%',
+    fontSize: SIZES.width > 400 ? 18 : 25,
+    backgroundColor: "white",
+    color: COLORS.voilet,
+    borderRadius:30
+  },
+  imgBtnText:{
+    fontSize: SIZES.width > 400 ? 18 : 25,
+    color: COLORS.voilet,
+  }
 });
 export default ProfileScreen;
 
