@@ -587,18 +587,13 @@ const ProfileScreen = ({ navigation }: any) => {
           </Text>
         </Pressable>
 
-        <TextInput
+        <Text
           style={[
             styles.textView,
             styles.textInputStyle,
             { backgroundColor: "white" },
           ]}
-          underlineColor="transparent"
-          value={userDetails?.contact ? userDetails?.contact : ""}
-          onChangeText={(val: any) =>
-            setUserDetails({ ...userDetails, contact: val })
-          }
-        ></TextInput>
+        >{userDetails?.contact ? userDetails?.contact : ""}</Text>
       </View>
     </View>
   );
@@ -680,7 +675,8 @@ const styles = StyleSheet.create({
     fontSize: SIZES.width > 400 ? 18 : 25,
     backgroundColor: "white",
     color: COLORS.voilet,
-    borderRadius:30
+    borderRadius:30,
+    marginBottom:"5%"
   },
   imgBtnText:{
     fontSize: SIZES.width > 400 ? 18 : 25,
