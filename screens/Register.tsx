@@ -26,6 +26,7 @@ const Register = ({ route, navigation }: any) => {
   const authContextData: any = useContext(AuthContext);
 
   // Component's Local States
+  // ========================
   const [showLoader, setShowLoader] = useState(false);
 
   // Saving Route's data in component's local state - userDetails
@@ -201,7 +202,7 @@ const Register = ({ route, navigation }: any) => {
       formData.append("dob", dob);
       setShowLoader(true);
 
-      console.log("formData::: ", formData);
+      // console.log("formData::: ", formData);
 
       const response = await instance.post("/users_update", formData);
       if (response.status === 200 && response.data?.status === true) {

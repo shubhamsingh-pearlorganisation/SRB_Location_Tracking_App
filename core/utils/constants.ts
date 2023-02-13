@@ -5,6 +5,7 @@ export default {
   zoomOut: require("../../assets/zoom-out.png"),
 };
 
+//Will replace this GOOGLE_API_KEY value to process.env.REACT_APP_GOOGLE_API_KEY
 export const GOOGLE_API_KEY = "AIzaSyAlx8qGhesdmQOyprqMV3Wzppo4Ih4kFso";
 
 export const regexes = {

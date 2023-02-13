@@ -47,9 +47,10 @@ const App = () => {
     try {
       const token = await AsyncStorage.getItem("authentication-token");
       if (token !== null) {
-        console.log("Token Found ::::::::: ", token);
+        // console.log("Token Found ::::::::: ", token);
         setAuthenticationToken(token);
-      } else console.log("Token Not Found ::::::::: ", token);
+      }
+      // else console.log("Token Not Found ::::::::: ", token);
     } catch (e: any) {
       console.log("Getting an error while fetching JWT Token:: ", e.message);
     }

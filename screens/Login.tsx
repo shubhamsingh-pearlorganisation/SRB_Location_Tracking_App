@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { AuthContext } from "../App";
-
 import {
   View,
   Text,
@@ -24,6 +23,7 @@ const Login = ({ navigation }: any) => {
   const authContextData: any = useContext(AuthContext);
 
   // Component's Local States
+  // ========================
 
   // completePhoneNumber state - Used to send mobile number to firebase's generate verification code api
   const [completePhoneNumber, setCompletePhoneNumber] = useState("");
@@ -64,7 +64,7 @@ const Login = ({ navigation }: any) => {
   const sendVerification = async () => {
     try {
       setShowLoader(true);
-      console.log("completePhoneNumber::: ", completePhoneNumber);
+      // console.log("completePhoneNumber::: ", completePhoneNumber);
       const phoneProvider = new fireb.auth.PhoneAuthProvider();
       const verCode: any = await phoneProvider.verifyPhoneNumber(
         completePhoneNumber,
@@ -138,9 +138,9 @@ const Login = ({ navigation }: any) => {
         const jwtToken = response.data?.token_id;
         const userDetails = response?.data.data;
 
-        console.log("isNewUser: ", isNewUser);
-        console.log("authentication-token: ", jwtToken);
-        console.log("userDetails: ", userDetails);
+        // console.log("isNewUser: ", isNewUser);
+        // console.log("authentication-token: ", jwtToken);
+        // console.log("userDetails: ", userDetails);
 
         //This method is used to save JWT Token in @react-native-async-storage/async-storage
         if (jwtToken) {

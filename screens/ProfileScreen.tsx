@@ -28,6 +28,7 @@ const ProfileScreen = ({ navigation }: any) => {
   const authContextData: any = useContext(AuthContext);
 
   // Component's Local States
+  // ========================
   const [showLoader, setShowLoader] = useState(false);
 
   // "userDetailsPrefilled" state is used to prefilled user's data from the api during view profile
