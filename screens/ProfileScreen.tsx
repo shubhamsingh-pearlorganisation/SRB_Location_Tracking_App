@@ -666,9 +666,10 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   image: {
-    width: 400,
-    height: 300,
+    width: SIZES.width>400?SIZES.width*.3:SIZES.width*.4,
+    height: SIZES.width>400?SIZES.width*.3:SIZES.width*.4,
     resizeMode: "cover",
+    marginTop:'5%'
   },
   imgBtns: {
     padding:'2%',
