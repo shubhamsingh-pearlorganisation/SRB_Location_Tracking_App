@@ -71,7 +71,7 @@ const ProfileScreen = ({ navigation }: any) => {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("You've refused to allow this appp to access your photos!");
+      Alert.alert("You've refused to allow this app to access your photos!");
       return;
     }
 
@@ -92,7 +92,7 @@ const ProfileScreen = ({ navigation }: any) => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("You've refused to allow this appp to access your camera!");
+      Alert.alert("You've refused to allow this app to access your camera!");
       return;
     }
 
@@ -154,7 +154,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
     // Check Valid Image types
     if (Object.keys(pickedImagePath).length === 0)
-      Alert.alert("Please select the image first");
+      Alert.alert("Validation Failed", "Please select the image first");
     else if (
       fileExtension === "png" ||
       fileExtension === "jpg" ||
@@ -163,6 +163,7 @@ const ProfileScreen = ({ navigation }: any) => {
       updateUserProfileImage(imageData);
     else
       Alert.alert(
+        "Validation Failed",
         "The selected file type is invalid. Please choose image with PNG, JPG or JPEG format only."
       );
   };
@@ -378,7 +379,9 @@ const ProfileScreen = ({ navigation }: any) => {
             onPress={() => setIsEditable(true)}
           >
             <MaterialIcons name="edit" size={30} color={COLORS.white} />
-            {showLoader && <ActivityIndicator size={SIZES.width>400?50:30} />}
+            {showLoader && (
+              <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />
+            )}
           </TouchableOpacity>
         </View>
 
@@ -497,7 +500,9 @@ const ProfileScreen = ({ navigation }: any) => {
               position: "absolute",
             }}
           >
-            {showLoader && <ActivityIndicator size={SIZES.width>400?50:30} />}
+            {showLoader && (
+              <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />
+            )}
           </View>
         </View>
 
@@ -529,7 +534,12 @@ const ProfileScreen = ({ navigation }: any) => {
               style={[styles.imgBtns, { backgroundColor: "#452FFF" }]}
               onPress={uploadProfileImage}
             >
-              <Text style={[styles.imgBtnText, { fontWeight: "600", color:'white' }]}>
+              <Text
+                style={[
+                  styles.imgBtnText,
+                  { fontWeight: "600", color: "white" },
+                ]}
+              >
                 Upload Image
               </Text>
             </Pressable>
@@ -560,8 +570,11 @@ const ProfileScreen = ({ navigation }: any) => {
           style={[
             styles.textView,
             styles.textInputStyle,
-            { backgroundColor: "white",paddingHorizontal: 0,
-            paddingVertical:0 },
+            {
+              backgroundColor: "white",
+              paddingHorizontal: 0,
+              paddingVertical: 0,
+            },
           ]}
           underlineColor="transparent"
           value={userDetails?.email ? userDetails?.email : ""}
@@ -589,12 +602,7 @@ const ProfileScreen = ({ navigation }: any) => {
           </Text>
         </Pressable>
 
-        <Text
-          style={[
-            styles.textView,
-            { backgroundColor: "white" },
-          ]}
-        >
+        <Text style={[styles.textView, { backgroundColor: "white" }]}>
           {userDetails?.contact ? userDetails?.contact : ""}
         </Text>
       </View>
@@ -623,7 +631,7 @@ const styles = StyleSheet.create({
     height: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.3,
     borderRadius: 20,
     marginTop: "10%",
-    margin:"5%"
+    margin: "5%",
   },
   bottomView: {
     margin: "5%",
@@ -632,7 +640,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   textView: {
-    fontSize: SIZES.width>400?25:20,
+    fontSize: SIZES.width > 400 ? 25 : 20,
     fontWeight: "600",
     color: COLORS.voilet,
     borderColor: COLORS.voilet,
@@ -644,12 +652,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   textInputStyle: {
-    fontSize: SIZES.width>400?25:20,
+    fontSize: SIZES.width > 400 ? 25 : 20,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 10,
-    paddingVertical:0,
-    padding:0
+    paddingVertical: 0,
+    padding: 0,
   },
   addImage: {
     justifyContent: "center",
@@ -670,17 +678,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginBottom: "10%",
   },
-  imageContainer: {
-  },
+  imageContainer: {},
 
   imgBtns: {
     padding: "2%",
     backgroundColor: "white",
     borderRadius: 10,
     marginBottom: "5%",
-    marginLeft:'2%',
-    marginRight:'2%'
-
+    marginLeft: "2%",
+    marginRight: "2%",
   },
   imgBtnText: {
     fontSize: SIZES.width > 400 ? 20 : 15,
