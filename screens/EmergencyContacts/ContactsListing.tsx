@@ -2,15 +2,11 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  Alert,
-  Image,
   Pressable,
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../../constants";
-import { emergencyCallImage } from "../../constants/images";
 import CustomAlert from "../../components/AlertDialog";
 import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
@@ -40,16 +36,12 @@ const ContactsListing = ({ navigation }: any) => {
       >
         <View>
           <Text
-            style={{
-              fontSize: 30,
-            }}
+            style={styles.contactName}
           >
             Full Name
           </Text>
           <Text
-            style={{
-              fontSize: 20,
-            }}
+            style={styles.contactumber}
           >
             Contact Number
           </Text>
@@ -62,7 +54,7 @@ const ContactsListing = ({ navigation }: any) => {
           }}
           onPress={() => setShowAlert(true)}
         >
-          <Feather name="minus-circle" size={30} />
+          <Feather name="minus-circle" size={SIZES.width > 400 ? 30 : 25} />
         </Pressable>
       </View>
     );
@@ -117,17 +109,13 @@ const ContactsListing = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: "20%",
-    // display: "flex",
-    // justifyContent: "center",
     alignItems: "center",
-    // flexDirection: "column",
     height: SIZES.height,
   },
   title: {
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: SIZES.height > 700 ? 40 : 30,
-    // lineHeight: 36,
     height: "auto",
     textAlign: "center",
     color: "#000000",
@@ -155,9 +143,6 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     textAlign: "center",
     color: "#FFFFFF",
-    // position: "absolute",
-    // top: 36,
-    // right: 12,
   },
   pressHere: {
     fontStyle: "normal",
@@ -166,20 +151,18 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     textAlign: "center",
     color: "#FFFFFF",
-    // position: "absolute",
-    // top: 81,
-    // right: 12,
   },
 
   lineStyle: {
     borderWidth: 1,
     borderColor: "#FFFFFF",
-    // position: "absolute",
-    // width: "80%",
-    // textAlign: "center",
-    // left: 12,
-    // top: 71,
   },
+  contactName:{
+    fontSize: SIZES.width > 400 ? 22 : 20,
+  },
+  contactumber:{
+    fontSize: SIZES.width > 400 ? 18 : 15,
+  }
 });
 
 export default ContactsListing;
