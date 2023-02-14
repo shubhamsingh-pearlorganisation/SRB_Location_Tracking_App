@@ -464,8 +464,13 @@ const HomeScreen = ({ navigation }: any) => {
           style={{
             height: "70%",
             marginTop: "1%",
+            marginBottom:'2%'
           }}
         >
+          {renderMembers()}
+          {renderMembers()}
+          {renderMembers()}
+          {renderMembers()}
           {renderMembers()}
         </ScrollView>
         <Pressable
@@ -485,6 +490,7 @@ const HomeScreen = ({ navigation }: any) => {
             borderRadius: 30,
             alignItems: "center",
             justifyContent: "center",
+            marginBottom:SIZES.width>400?0:'5%'
           }}
           onPress={redirectToAddMemberScreen}
         >

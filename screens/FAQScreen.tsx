@@ -42,13 +42,13 @@ const FAQScreen = () => {
             height: "95%",
           }}
         >
-          {FAQ.map((item) => (
-            <List.Section>
+          {FAQ.map((item,i) => (
+            <List.Section key={i}>
               <List.Accordion
                 title={item.Question}
                 titleStyle={styles.answerText}
                 titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-                left={(props) => <List.Icon {...props} icon="folder" />}
+                left={(props) => <List.Icon icon="folder" />}
                 onPress={handlePress}
               >
                 <List.Item

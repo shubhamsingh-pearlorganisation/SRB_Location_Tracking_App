@@ -248,8 +248,8 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: SIZES.width > 400 ? 20 : 15,
-    width: SIZES.width > 400 ? "50%" : "80%",
-    bottom: 0,
+    width: SIZES.width > 400 ? "70%" : "90%",
+    bottom: "20%",
     position: "absolute",
   },
 });

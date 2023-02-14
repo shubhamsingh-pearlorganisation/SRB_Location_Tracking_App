@@ -76,6 +76,7 @@ const Settings = () => {
         <List.Accordion
           title="Privacy Policy, Terms and Conditons"
           titleStyle={styles.textHeading}
+          titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
           // expanded={expanded}
           onPress={handlePress}
         >

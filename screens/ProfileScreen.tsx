@@ -378,7 +378,7 @@ const ProfileScreen = ({ navigation }: any) => {
             onPress={() => setIsEditable(true)}
           >
             <MaterialIcons name="edit" size={30} color={COLORS.white} />
-            {showLoader && <ActivityIndicator size={50} />}
+            {showLoader && <ActivityIndicator size={SIZES.width>400?50:30} />}
           </TouchableOpacity>
         </View>
 
@@ -497,7 +497,7 @@ const ProfileScreen = ({ navigation }: any) => {
               position: "absolute",
             }}
           >
-            {showLoader && <ActivityIndicator size={50} />}
+            {showLoader && <ActivityIndicator size={SIZES.width>400?50:30} />}
           </View>
         </View>
 
@@ -526,10 +526,10 @@ const ProfileScreen = ({ navigation }: any) => {
               <Text style={styles.imgBtnText}>Camera</Text>
             </Pressable>
             <Pressable
-              style={[styles.imgBtns, { backgroundColor: "#FFE5B9" }]}
+              style={[styles.imgBtns, { backgroundColor: "#452FFF" }]}
               onPress={uploadProfileImage}
             >
-              <Text style={[styles.imgBtnText, { fontWeight: "600" }]}>
+              <Text style={[styles.imgBtnText, { fontWeight: "600", color:'white' }]}>
                 Upload Image
               </Text>
             </Pressable>
@@ -560,7 +560,8 @@ const ProfileScreen = ({ navigation }: any) => {
           style={[
             styles.textView,
             styles.textInputStyle,
-            { backgroundColor: "white" },
+            { backgroundColor: "white",paddingHorizontal: 0,
+            paddingVertical:0 },
           ]}
           underlineColor="transparent"
           value={userDetails?.email ? userDetails?.email : ""}
@@ -591,7 +592,6 @@ const ProfileScreen = ({ navigation }: any) => {
         <Text
           style={[
             styles.textView,
-            styles.textInputStyle,
             { backgroundColor: "white" },
           ]}
         >
@@ -619,10 +619,11 @@ const styles = StyleSheet.create({
     paddingBottom: "5%",
   },
   profileImage: {
-    width: SIZES.width * 0.3,
-    height: SIZES.width * 0.3,
-    borderRadius: 40,
+    width: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.3,
+    height: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.3,
+    borderRadius: 20,
     marginTop: "10%",
+    margin:"5%"
   },
   bottomView: {
     margin: "5%",
@@ -631,7 +632,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   textView: {
-    fontSize: 25,
+    fontSize: SIZES.width>400?25:20,
     fontWeight: "600",
     color: COLORS.voilet,
     borderColor: COLORS.voilet,
@@ -642,9 +643,12 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   textInputStyle: {
+    fontSize: SIZES.width>400?25:20,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    padding: 0,
+    paddingHorizontal: 0,
+    paddingVertical:0,
+    padding:0
   },
   addImage: {
     justifyContent: "center",
@@ -662,25 +666,23 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: SIZES.width * 0.8,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     marginBottom: "10%",
   },
   imageContainer: {
-    padding: 30,
   },
-  image: {
-    width: SIZES.width > 400 ? SIZES.width * 0.3 : SIZES.width * 0.4,
-    height: SIZES.width > 400 ? SIZES.width * 0.3 : SIZES.width * 0.4,
-    resizeMode: "cover",
-  },
+
   imgBtns: {
     padding: "2%",
     backgroundColor: "white",
-    borderRadius: 30,
+    borderRadius: 10,
     marginBottom: "5%",
+    marginLeft:'2%',
+    marginRight:'2%'
+
   },
   imgBtnText: {
-    fontSize: SIZES.width > 400 ? 15 : 20,
+    fontSize: SIZES.width > 400 ? 20 : 15,
     color: COLORS.voilet,
   },
 });
