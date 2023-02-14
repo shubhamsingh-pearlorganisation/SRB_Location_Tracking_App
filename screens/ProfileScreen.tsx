@@ -641,12 +641,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: "2%",
     borderRadius: 30,
+    paddingHorizontal: 10,
   },
   textInputStyle: {
     fontSize: SIZES.width>400?25:20,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingHorizontal: 0,
+    paddingHorizontal: 10,
     paddingVertical:0,
     padding:0
   },
