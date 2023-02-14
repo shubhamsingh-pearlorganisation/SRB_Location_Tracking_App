@@ -56,8 +56,8 @@ const EditGroup = ({ route, navigation }: any) => {
             <Image
               source={{ uri: member?.image }}
               style={{
-                width: SIZES.width > 400 ? 50 : 25,
-                height: SIZES.width > 400 ? 50 : 25,
+                width: SIZES.width > 400 ? 50 : 35,
+                height: SIZES.width > 400 ? 50 : 35,
                 borderRadius: 30,
                 marginRight: "2%",
               }}

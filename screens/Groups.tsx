@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   Pressable,
   ActivityIndicator,
   Alert,
-  ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useToast } from "react-native-toast-notifications";
@@ -20,60 +19,7 @@ const Groups = ({ navigation }: any) => {
   const authContextData: any = useContext(AuthContext);
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
-  // Component's Local States
-  // ========================
-  const [groupsList] = useState<any>(
-    groupsAndMembersData?.groupsAndMembersDetails
-  );
-
-  console.log("groupsList *********** ", groupsList);
   const [showLoader, setShowLoader] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   fetchGroups(); // Fetching Groups during component mount
-  // }, []);
-
-  // This method is used to fetch Groups from the Api
-  // const fetchGroups = async (showToast = true) => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("token_id", authContextData?.token);
-  //     setShowLoader(true);
-
-  //     const response = await instance.post("/group_list", formData);
-  //     if (response.status === 200 && response.data?.status === true) {
-  //       setShowLoader(false);
-  //       setGroupsList(
-  //         response.data?.data ? response.data?.data?.reverse() : []
-  //       );
-  //       showToast &&
-  //         response.data?.data?.length > 0 &&
-  //         toast.show("Groups fetched successfully!", {
-  //           type: "success",
-  //         });
-  //     } else {
-  //       setShowLoader(false);
-  //       toast.show(
-  //         response.data?.message
-  //           ? response.data?.message
-  //           : "Getting an error while fetching groups. Please try again later.",
-  //         {
-  //           type: "error",
-  //         }
-  //       );
-  //     }
-  //   } catch (error: any) {
-  //     setShowLoader(false);
-  //     toast.show(
-  //       error.message
-  //         ? error.message
-  //         : "Getting an error while fetching groups. Please try again later.",
-  //       {
-  //         type: "error",
-  //       }
-  //     );
-  //   }
-  // };
 
   // This method is used to show delete confirmation popup
   const deleteGroupConfirmation = async (groupDetails: any) => {
@@ -114,8 +60,7 @@ const Groups = ({ navigation }: any) => {
             type: "success",
           }
         );
-        // fetchGroups(false);
-        groupsAndMembersData.fetchGroupsAndMembersList();
+        groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing
       } else {
         setShowLoader(false);
         toast.show(
@@ -248,12 +193,14 @@ const Groups = ({ navigation }: any) => {
     </>
   ) : (
     <View>
-      {groupsList.length > 0 ? (
-        groupsList.map((group: any, i: number) => (
-          <View key={group?.group_code ? group?.group_code : i}>
-            {renderGroups(group)}
-          </View>
-        ))
+      {groupsAndMembersData?.groupsAndMembersDetails.length > 0 ? (
+        groupsAndMembersData?.groupsAndMembersDetails.map(
+          (group: any, i: number) => (
+            <View key={group?.group_code ? group?.group_code : i}>
+              {renderGroups(group)}
+            </View>
+          )
+        )
       ) : (
         <>
           <Text

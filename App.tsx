@@ -39,7 +39,7 @@ const App = () => {
 
   // Used to store Groups List
   const [groupsAndMembersDetails, setGroupAndMembersDetails] = useState<any>({
-    update: false,
+    update: false, //Used for Groups List Refreshing
     groupsData: [],
   });
 
@@ -52,6 +52,10 @@ const App = () => {
   useEffect(() => {
     fetchAuthenticationToken(); // Fetching Authentication Token
   }, []);
+
+  useEffect(() => {
+    authenticationToken && fetchGroups(false); //Fetching Groups and Members Details API
+  }, [authenticationToken]);
 
   //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
   const fetchAuthenticationToken = async () => {
@@ -68,7 +72,6 @@ const App = () => {
 
   // This method is used to fetch Groups from the Api
   const fetchGroups = async (isUpdateRequired: boolean = false) => {
-    alert(isUpdateRequired);
     try {
       const formData = new FormData();
       formData.append("token_id", authenticationToken);
@@ -76,7 +79,6 @@ const App = () => {
       const response = await instance.post("/group_list", formData);
       if (response.status === 200 && response.data?.status === true) {
         setGroupAndMembersDetails({
-          ...groupsAndMembersDetails,
           update: isUpdateRequired,
           groupsData: response.data?.data?.reverse(),
         });
@@ -102,14 +104,6 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    authenticationToken && fetchGroups(false); //Fetching Groups and Members Details API
-  }, [authenticationToken]);
-
-  useEffect(() => {
-    console.log("groupsAndMembersDetails:Shubham:: ", groupsAndMembersDetails);
-  }, [groupsAndMembersDetails]);
-
   return (
     <ToastProvider>
       <NavigationContainer>
@@ -122,7 +116,7 @@ const App = () => {
           <GroupsAndMembersContext.Provider
             value={{
               groupsAndMembersDetails: groupsAndMembersDetails.groupsData,
-              fetchGroupsAndMembersList: (val: any) => fetchGroups(val),
+              fetchGroupsAndMembersList: fetchGroups,
             }}
           >
             <Stack.Navigator>

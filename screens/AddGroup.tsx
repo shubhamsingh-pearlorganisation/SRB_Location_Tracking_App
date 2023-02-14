@@ -58,7 +58,7 @@ const AddGroup = ({ navigation }: any) => {
             type: "success",
           });
 
-          groupsAndMembersData.fetchGroupsAndMembersList(true);
+          groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing
           navigation.navigate("Groups"); // Redirect back to Groups Listing Screen
         } else {
           setShowLoader(false);
