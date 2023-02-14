@@ -55,7 +55,7 @@ const Register = ({ route, navigation }: any) => {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("You've refused to allow this appp to access your photos!");
+      Alert.alert("You've refused to allow this app to access your photos!");
       return;
     }
 
@@ -76,7 +76,7 @@ const Register = ({ route, navigation }: any) => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("You've refused to allow this appp to access your camera!");
+      Alert.alert("You've refused to allow this app to access your camera!");
       return;
     }
 
@@ -138,7 +138,7 @@ const Register = ({ route, navigation }: any) => {
 
     // Check Valid Image types
     if (Object.keys(pickedImagePath).length === 0)
-      Alert.alert("Please select the image first");
+      Alert.alert("Validation Failed", "Please select the image first");
     else if (
       fileExtension === "png" ||
       fileExtension === "jpg" ||
@@ -147,6 +147,7 @@ const Register = ({ route, navigation }: any) => {
       updateUserProfileImage(imageData);
     else
       Alert.alert(
+        "Validation Failed",
         "The selected file type is invalid. Please choose image with PNG, JPG or JPEG format only."
       );
   };
@@ -295,18 +296,20 @@ const Register = ({ route, navigation }: any) => {
             )}
           </View>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.imgBtns}
-              onPress={uploadImageFromGallery}>
-                <Text style={styles.imgBtnText}>Gallery</Text>
-              </Pressable>
-              <Pressable style={styles.imgBtns}
-              onPress={uploadImageFromCamera}>
-                <Text  style={styles.imgBtnText}>Camera</Text>
-              </Pressable>
-              <Pressable style={[styles.imgBtns,{backgroundColor:'#FFE5B9'}]}
-              onPress={uploadProfileImage}>
-                <Text  style={[styles.imgBtnText,{fontWeight:'600'}]}>Upload Image</Text>
-              </Pressable>
+            <Pressable style={styles.imgBtns} onPress={uploadImageFromGallery}>
+              <Text style={styles.imgBtnText}>Gallery</Text>
+            </Pressable>
+            <Pressable style={styles.imgBtns} onPress={uploadImageFromCamera}>
+              <Text style={styles.imgBtnText}>Camera</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.imgBtns, { backgroundColor: "#FFE5B9" }]}
+              onPress={uploadProfileImage}
+            >
+              <Text style={[styles.imgBtnText, { fontWeight: "600" }]}>
+                Upload Image
+              </Text>
+            </Pressable>
           </View>
         </View>
 
@@ -547,16 +550,16 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   imgBtns: {
-    padding:'2%',
+    padding: "2%",
     fontSize: SIZES.width > 400 ? 18 : 25,
     backgroundColor: "white",
     color: COLORS.voilet,
-    borderRadius:30
+    borderRadius: 30,
   },
-  imgBtnText:{
+  imgBtnText: {
     fontSize: SIZES.width > 400 ? 18 : 25,
     color: COLORS.voilet,
-  }
+  },
 });
 
 export default Register;
