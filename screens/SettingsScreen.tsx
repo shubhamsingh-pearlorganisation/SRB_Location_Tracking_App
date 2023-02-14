@@ -1,18 +1,7 @@
 import { useState } from "react";
 import {
   View,
-  Text,
-  Image,
   StyleSheet,
-  Platform,
-  Dimensions,
-  TouchableOpacity,
-  StatusBar,
-  SafeAreaView,
-  Pressable,
-  NativeModules,
-  Animated,
-  ScrollView,
 } from "react-native";
 import { List } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";

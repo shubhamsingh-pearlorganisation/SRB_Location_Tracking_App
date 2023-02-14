@@ -672,14 +672,12 @@ const styles = StyleSheet.create({
   },
   imgBtns: {
     padding:'2%',
-    fontSize: SIZES.width > 400 ? 18 : 25,
     backgroundColor: "white",
-    color: COLORS.voilet,
     borderRadius:30,
     marginBottom:"5%"
   },
   imgBtnText:{
-    fontSize: SIZES.width > 400 ? 18 : 25,
+    fontSize: SIZES.width > 400 ? 15 : 20,
     color: COLORS.voilet,
   }
 });

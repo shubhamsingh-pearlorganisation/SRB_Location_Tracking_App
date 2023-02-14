@@ -105,7 +105,7 @@ const AddGroup = () => {
           marginTop: "5%",
           alignSelf: "center",
           width: SIZES.width - SIZES.width * 0.2,
-          height: 60,
+          height: SIZES.width > 400 ? 60 : 40,
           justifyContent: "center",
           borderRadius: 30,
           backgroundColor: "#705ECF",
@@ -115,7 +115,7 @@ const AddGroup = () => {
         <Text
           style={{
             fontWeight: "400",
-            fontSize: SIZES.width > 300 && SIZES.height > 600 ? 25 : 20,
+            fontSize: SIZES.width > 400 ? 25 : 20,
             color: "white",
             alignSelf: "center",
           }}
@@ -172,18 +172,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   radio: {
-    height: 30,
-    width: 30,
+    height: SIZES.width > 400 ? 25 : 20,
+    width: SIZES.width > 400 ? 25 : 20,
     borderRadius: 30,
     right: 0,
     position: "absolute",
   },
   cardHeading: {
-    fontSize: SIZES.width > 600 ? 30 : 20,
+    fontSize: SIZES.width > 400 ? 30 : 20,
   },
   cardText: {
-    fontSize: SIZES.width > 600 ? 20 : 15,
-    width: "50%",
+    fontSize: SIZES.width > 400 ? 20 : 15,
+    width:  SIZES.width > 400 ? "50%" : "80%",
     bottom: 0,
     position: "absolute",
   },

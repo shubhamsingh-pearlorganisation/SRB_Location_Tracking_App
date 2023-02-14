@@ -34,6 +34,7 @@ const Groups = ({ navigation }: any) => {
           <View style={styles.groupListItemType}>
             <Text
               style={{
+                fontSize: SIZES.width>400?15:12,
                 color: "white",
                 fontWeight: "700",
                 textAlign: "center",
@@ -48,7 +49,7 @@ const Groups = ({ navigation }: any) => {
         <View style={styles.groupListItemMemberCount}>
           <Text
             style={{
-              fontSize: 20,
+              fontSize: SIZES.width>400?20:18,
               fontWeight: "600",
             }}
           >
@@ -56,7 +57,7 @@ const Groups = ({ navigation }: any) => {
           </Text>
           <Text
             style={{
-              fontSize: 20,
+              fontSize: SIZES.width>400?20:18,
               fontWeight: "500",
             }}
           >
@@ -79,7 +80,7 @@ const Groups = ({ navigation }: any) => {
           >
             <Text
               style={{
-                fontSize: 20,
+                fontSize: SIZES.width>400?20:18,
                 fontWeight: "600",
               }}
             >
@@ -103,14 +104,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    padding: "2%",
+    padding: SIZES.width>400?"3%":"4%",
     margin: "2%",
   },
   groupListItemName: {
-    fontSize: 20,
+    fontSize: SIZES.width>400?20:18,
   },
   groupListItemCode: {
-    fontSize: 15,
+    fontSize: SIZES.width>400?18:15,
     color: "grey",
   },
   groupListItemType: {
@@ -122,12 +123,12 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",
-    fontSize: 15,
+    
   },
   groupListItemMemberCount: {
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 20,
+    fontSize: SIZES.width>400?20:18,
     fontWeight: "600",
   },
 });

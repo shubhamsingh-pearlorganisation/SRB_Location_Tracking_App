@@ -16,6 +16,7 @@ import { useToast } from "react-native-toast-notifications";
 import { instance } from "../core/utils/AxiosInterceptor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CountryDropdown from "../components/CountryDropdownComponent";
+import { SIZES } from "../constants";
 // ---------------------------------------------------------------------------------------------
 
 const Login = ({ navigation }: any) => {
@@ -297,7 +298,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 10,
     paddingHorizontal: 20,
-    fontSize: 24,
+    fontSize: SIZES.width>400?25:18,
     borderBottomColor: "#fff",
     borderBottomWidth: 2,
     marginBottom: 20,

@@ -2,25 +2,17 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  Platform,
-  Dimensions,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Button,
   Pressable,
   ScrollView,
 } from "react-native";
-import { TextInput, RadioButton } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const EditGroup = () => {
-  const [focus, setFocus] = useState(false);
-  const customStyle = focus ? styles.focusedTextInput : styles.textInput;
 
   const [state, setState] = useState("public");
   const [publicChecked, setpublicChecked] = useState("true");
@@ -32,7 +24,7 @@ const EditGroup = () => {
         <View style={styles.memberListItemImage}>
           <MaterialCommunityIcons
             name="numeric-1"
-            size={20}
+            size={SIZES.width > 400 ? 25 : 20}
             color={COLORS.voilet}
           />
         </View>
@@ -65,7 +57,7 @@ const EditGroup = () => {
         }}
       >
         <Text style={styles.textInput}>Group Title</Text>
-        <MaterialIcons name="edit" size={30} />
+        <MaterialIcons name="edit" size={SIZES.width > 400 ? 30 : 25} />
       </View>
       <View style={styles.cardHolder}>
         <View style={styles.card}>
@@ -133,13 +125,11 @@ const EditGroup = () => {
 
       <TouchableOpacity
         style={{
-          // position: SIZES.height > 500 ? "absolute" : "relative",
-          // bottom: SIZES.height > 500 ? "20%" : "10%",
           marginTop: "5%",
           marginBottom: "10%",
           alignSelf: "center",
           width: SIZES.width - SIZES.width * 0.2,
-          height: 60,
+          height: SIZES.width > 400 ? 60 : 40,
           justifyContent: "center",
           borderRadius: 30,
           backgroundColor: "#705ECF",
@@ -149,7 +139,7 @@ const EditGroup = () => {
         <Text
           style={{
             fontWeight: "400",
-            fontSize: SIZES.width > 300 && SIZES.height > 600 ? 25 : 20,
+            fontSize: SIZES.width > 400 ? 25 : 20,
             color: "white",
             alignSelf: "center",
           }}
@@ -202,10 +192,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   memberListItemName: {
-    fontSize: 20,
+    fontSize: SIZES.width>400?20:18,
   },
   memberListItemCode: {
-    fontSize: 15,
+    fontSize: SIZES.width>400?18:15,
     color: "grey",
   },
   memberListItemType: {
@@ -216,7 +206,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",
-    fontSize: 15,
+    fontSize: SIZES.width>400?18:15,
     right: "1%",
     position: "absolute",
   },
@@ -226,11 +216,11 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     width: SIZES.width,
     zIndex: 0,
-    padding: 30,
+    padding: SIZES.width>400?"3%":"4%",
     height: "40%",
   },
   textInput: {
-    fontSize: SIZES.width > 300 ? 50 : 30,
+    fontSize: SIZES.width > 400 ? 50 : 40,
     backgroundColor: "transparent",
     textAlign: "center",
     borderBottomWidth: 0,
@@ -268,18 +258,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   radio: {
-    height: 30,
-    width: 30,
+    height: SIZES.width > 400 ? 25 : 20,
+    width: SIZES.width > 400 ? 25 : 20,
     borderRadius: 30,
     right: 0,
     position: "absolute",
   },
   cardHeading: {
-    fontSize: SIZES.width > 600 ? 30 : 20,
+    fontSize: SIZES.width > 400 ? 30 : 20,
   },
   cardText: {
-    fontSize: SIZES.width > 600 ? 20 : 15,
-    width: "50%",
+    fontSize: SIZES.width > 400 ? 20 : 15,
+    width:  SIZES.width > 400 ? "50%" : "80%",
     bottom: 0,
     position: "absolute",
   },

@@ -8,7 +8,7 @@ import Login from "./screens/Login";
 import { ToastProvider } from "react-native-toast-notifications";
 import MainScreen from "./screens/MainScreen";
 import Register from "./screens/Register";
-import { COLORS } from "./constants";
+import { COLORS, SIZES } from "./constants";
 import AddGroup from "./screens/AddGroup";
 import EditGroup from "./screens/EditGroup";
 import ContactsListing from "./screens/EmergencyContacts/ContactsListing";
@@ -103,7 +103,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -116,7 +116,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -129,7 +129,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -142,7 +142,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -155,7 +155,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -168,7 +168,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -182,7 +182,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -196,7 +196,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -210,7 +210,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -223,7 +223,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -232,11 +232,11 @@ const App = () => {
                   name="JoinGroupScreen"
                   component={JoinGroup}
                   options={{
-                    title: "FeedBackScreen",
+                    title: "Join A Group",
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}
@@ -249,7 +249,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: 30,
+                      fontSize: SIZES.width>400?30:20,
                     },
                     headerBackVisible: false,
                   }}

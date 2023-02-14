@@ -16,7 +16,7 @@ const CountryDropdown = (props: any) => {
   return (
     <View>
       <PhoneInput
-        placeholder="Enter phone number"
+        placeholder="Enter number"
         value={value}
         defaultCode="IN"
         containerStyle={styles.countryCodeContainer}
@@ -41,28 +41,28 @@ const CountryDropdown = (props: any) => {
 const styles = StyleSheet.create({
   countryCodeContainer: {
     backgroundColor: COLORS.voilet,
-    width:SIZES.width * 0.8,
+    width:SIZES.width>400 ? SIZES.width * 0.8:SIZES.width*.9,
   },
   textContainerStyle: {
     backgroundColor: COLORS.voilet,
     width:'auto'
   },
   textInputStyle: {
-    textAlign: "center",
+    textAlign: "left",
     color: COLORS.white,
     alignItems: "center",
-    fontSize: 20,
+    fontSize: SIZES.width>400?25:18,
     width:'auto'
   },
   codeTextStyle: {
     textAlign: "center",
     color: COLORS.white,
-    alignItems: "center",
-    fontSize: 20,
-    width:'10%'
+    fontSize: SIZES.width>400?25:18,
+    width:'25%'
   },
   flagStyle: {
     width: "20%",
+    height:'auto',
     backgroundColor: "white",
     borderRadius: 5,
   },

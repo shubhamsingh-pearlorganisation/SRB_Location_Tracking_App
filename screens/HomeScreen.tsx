@@ -1,4 +1,3 @@
-import tw from "twrnc";
 import {
   View,
   Text,
@@ -7,11 +6,8 @@ import {
   Platform,
   Dimensions,
   TouchableOpacity,
-  StatusBar,
   SafeAreaView,
   Pressable,
-  NativeModules,
-  Animated,
   ScrollView,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
@@ -20,14 +16,10 @@ import MapViewDirections from "react-native-maps-directions";
 import { getCurrentLocation } from "../core/utils/helper";
 import imagePath from "../core/utils/constants";
 import { GOOGLE_API_KEY } from "../core/utils/constants";
-import Otp from "./Login";
 
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
-import { animated, useSpring } from "@react-spring/native";
 
 type locationTypes = {
   latitude: number;
@@ -416,7 +408,7 @@ const HomeScreen = ({ navigation }: any) => {
           }}
           onPress={onPressDropDownBtn}
         >
-          <MaterialIcons name="keyboard-arrow-up" size={20} />
+          <MaterialIcons name="keyboard-arrow-up" size={SIZES.width > 400 ? 20 : 15} />
         </TouchableOpacity>
       </View>
 
@@ -461,7 +453,7 @@ const HomeScreen = ({ navigation }: any) => {
         >
           <MaterialIcons
             name={onUp ? "keyboard-arrow-down" : "keyboard-arrow-up"}
-            size={20}
+            size={SIZES.width > 400 ? 20 : 15}
           />
         </TouchableOpacity>
         <ScrollView
@@ -530,10 +522,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   memberListItemName: {
-    fontSize: 20,
+    fontSize: SIZES.width>400?20:18,
   },
   memberListItemCode: {
-    fontSize: 15,
+    fontSize: SIZES.width>400?18:15,
     color: "grey",
   },
   memberListItemType: {
@@ -544,7 +536,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",
-    fontSize: 15,
+    fontSize: SIZES.width>400?18:15,
     right: "1%",
     position: "absolute",
   },
@@ -594,10 +586,10 @@ const styles = StyleSheet.create({
     padding: "2%",
   },
   groupListItemName: {
-    fontSize: 20,
+    fontSize: SIZES.width>400?20:18,
   },
   groupListItemCode: {
-    fontSize: 15,
+    fontSize: SIZES.width>400?18:15,
     color: "grey",
   },
   groupListItemType: {
@@ -609,7 +601,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",
-    fontSize: 15,
+    fontSize: SIZES.width>400?18:15,
     right: "1%",
     position: "absolute",
   },
