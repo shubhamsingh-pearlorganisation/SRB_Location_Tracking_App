@@ -57,7 +57,7 @@ const AddMember = ({ navigation }: any) => {
           <Text
             style={{
               fontWeight: "600",
-              fontSize: SIZES.width > 300 && SIZES.height > 600 ? 25 : 20,
+              fontSize: SIZES.width > 400  ? 25 : 20,
               color: "white",
               alignSelf: "center",
             }}
@@ -83,13 +83,13 @@ const styles = StyleSheet.create({
     width: "85%",
   },
   headingText: {
-    fontSize: SIZES.height > 700 ? 50 : 20,
+    fontSize: SIZES.width > 400 ? 50 : 20,
     fontWeight: "700",
     color: COLORS.black,
     margin: "2%",
   },
   subText: {
-    fontSize: SIZES.height > 700 ? 25 : 15,
+    fontSize: SIZES.width > 400  ? 25 : 15,
     fontWeight: "400",
     color: "rgba(0,0,0,0.6)",
     margin: "2%",
