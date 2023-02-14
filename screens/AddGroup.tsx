@@ -12,20 +12,18 @@ import {
 import { TextInput } from "react-native-paper";
 import { SIZES } from "../constants";
 import { useToast } from "react-native-toast-notifications";
-import { AuthContext } from "../App";
+import { AuthContext, GroupsAndMembersContext } from "../App";
 import { instance } from "../core/utils/AxiosInterceptor";
 // ----------------------------------------------------------------------------
 const AddGroup = ({ navigation }: any) => {
   const toast = useToast();
 
   const authContextData: any = useContext(AuthContext);
+  const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   // Component's Local States
   // ========================
   const [showLoader, setShowLoader] = useState(false);
-  const [focus, setFocus] = useState(false);
-  const customStyle = focus ? styles.focusedTextInput : styles.textInput;
-
   const [publicChecked, setPublicChecked] = useState(true);
 
   // This "addGroupFormData" state is used to store form data
@@ -59,6 +57,8 @@ const AddGroup = ({ navigation }: any) => {
           toast.show("Group created successfully!", {
             type: "success",
           });
+
+          groupsAndMembersData.fetchGroupsAndMembersList(true);
           navigation.navigate("Groups"); // Redirect back to Groups Listing Screen
         } else {
           setShowLoader(false);
@@ -90,7 +90,7 @@ const AddGroup = ({ navigation }: any) => {
       <View>
         <TextInput
           placeholder="Enter Group Title ..."
-          style={customStyle}
+          style={styles.textInput}
           placeholderTextColor="rgba(0,0,0,0.4)"
           underlineColor="transparent"
           autoFocus

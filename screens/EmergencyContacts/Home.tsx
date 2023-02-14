@@ -1,14 +1,7 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-} from "react-native";
-
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { images } from "../../constants";
 const { emergencyContactHome } = images;
-
+// -----------------------------------------------------------------
 const EmergencyContactsScreen = ({ navigation }: any) => {
   const handleAddContact = () => {
     navigation.navigate("EmergencyContactsListing");
@@ -29,6 +22,8 @@ const EmergencyContactsScreen = ({ navigation }: any) => {
   );
 };
 
+// =========================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     display: "flex",
@@ -75,3 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 export default EmergencyContactsScreen;
+// =============================================== THE END =======================================================

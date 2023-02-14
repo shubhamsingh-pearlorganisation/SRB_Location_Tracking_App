@@ -7,37 +7,68 @@ import {
   KeyboardAvoidingView,
   Pressable,
   ScrollView,
+  Image,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AuthContext } from "../App";
 import { useToast } from "react-native-toast-notifications";
+import { TextInput } from "react-native-paper";
+
 // -----------------------------------------------------------------
 
 const EditGroup = ({ route, navigation }: any) => {
   console.log("groupDetails::: ", route?.params?.groupDetails);
   const toast = useToast();
-  const authContextData: any = useContext(AuthContext);
+  const authContextData: any = useContext(AuthContext); //Used for fetching authentication token
 
   // Component's Local States
   // ========================
-  const [state, setState] = useState("public");
-  const [publicChecked, setpublicChecked] = useState("true");
-  const [privateChecked, setprivateChecked] = useState("false");
+  const [publicChecked, setpublicChecked] = useState(
+    route?.params?.groupDetails?.group_type === 1 ? true : false
+  );
 
-  function renderMembers() {
+  // This "editGroupFormDetails" state is used to store edit form details
+  const [editGroupFormDetails, setEditGroupFormDetails] = useState<any>({
+    title: route?.params?.groupDetails?.title
+      ? route?.params?.groupDetails?.title
+      : "",
+    groupMembers: route?.params?.groupDetails?.users
+      ? route?.params?.groupDetails?.users
+      : [],
+  });
+
+  // This component is used to iterate group members on the screen
+  const renderGroupMembers = (member: any) => {
     return (
       <Pressable style={styles.memberListItem}>
-        <View style={styles.memberListItemImage}>
-          <MaterialCommunityIcons
-            name="numeric-1"
-            size={SIZES.width > 400 ? 25 : 20}
-            color={COLORS.voilet}
-          />
-        </View>
+        {!member?.image ? (
+          <View style={styles.memberListItemImage}>
+            <MaterialCommunityIcons
+              name="numeric-1"
+              size={SIZES.width > 400 ? 25 : 20}
+              color={COLORS.voilet}
+            />
+          </View>
+        ) : (
+          <>
+            <Image
+              source={{ uri: member?.image }}
+              style={{
+                width: SIZES.width > 400 ? 50 : 25,
+                height: SIZES.width > 400 ? 50 : 25,
+                borderRadius: 30,
+                marginRight: "2%",
+              }}
+            />
+          </>
+        )}
+
         <View>
-          <Text style={styles.memberListItemName}>Username</Text>
+          <Text style={styles.memberListItemName}>
+            {member?.name ? member?.name : "N.A"}
+          </Text>
           <Text style={styles.memberListItemCode}>Location</Text>
           <Text style={styles.memberListItemCode}>Location line</Text>
         </View>
@@ -53,7 +84,13 @@ const EditGroup = ({ route, navigation }: any) => {
         </View>
       </Pressable>
     );
-  }
+  };
+
+  // This method is used to group update    // API IS PENDING
+  const handleGroupUpdate = async () => {
+    console.log("editGroupFormDetails::: ", editGroupFormDetails);
+    console.log("publicChecked::: ", publicChecked);
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -64,7 +101,16 @@ const EditGroup = ({ route, navigation }: any) => {
           margin: 10,
         }}
       >
-        <Text style={styles.textInput}>Group Title</Text>
+        <TextInput
+          placeholder="Enter Group Title ..."
+          style={styles.textInput}
+          placeholderTextColor="rgba(0,0,0,0.4)"
+          underlineColor="transparent"
+          value={editGroupFormDetails?.title}
+          onChangeText={(val: any) =>
+            setEditGroupFormDetails({ ...editGroupFormDetails, title: val })
+          }
+        />
         <MaterialIcons name="edit" size={SIZES.width > 400 ? 30 : 25} />
       </View>
       <View style={styles.cardHolder}>
@@ -75,9 +121,7 @@ const EditGroup = ({ route, navigation }: any) => {
               height: "100%",
             }}
             onPress={() => {
-              setState("public");
-              setpublicChecked("true");
-              setprivateChecked("false");
+              setpublicChecked(true);
             }}
           >
             <View
@@ -89,13 +133,13 @@ const EditGroup = ({ route, navigation }: any) => {
               <Text style={styles.cardHeading}>Public</Text>
               <Pressable
                 style={[
-                  publicChecked == "true" ? styles.checked : styles.unchecked,
+                  publicChecked ? styles.checked : styles.unchecked,
                   styles.radio,
                 ]}
               />
             </View>
             <Text style={styles.cardText}>
-              All members can see eachother & their location.
+              All members can see each other & their location.
             </Text>
           </Pressable>
         </View>
@@ -107,9 +151,7 @@ const EditGroup = ({ route, navigation }: any) => {
               height: "100%",
             }}
             onPress={() => {
-              setState("private");
-              setpublicChecked("false");
-              setprivateChecked("true");
+              setpublicChecked(false);
             }}
           >
             <View
@@ -121,7 +163,7 @@ const EditGroup = ({ route, navigation }: any) => {
               <Text style={styles.cardHeading}>Private</Text>
               <Pressable
                 style={[
-                  privateChecked == "true" ? styles.checked : styles.unchecked,
+                  !publicChecked ? styles.checked : styles.unchecked,
                   styles.radio,
                 ]}
               />
@@ -142,7 +184,7 @@ const EditGroup = ({ route, navigation }: any) => {
           borderRadius: 30,
           backgroundColor: "#705ECF",
         }}
-        //   onPress={onPressSubmit}
+        onPress={handleGroupUpdate}
       >
         <Text
           style={{
@@ -158,12 +200,20 @@ const EditGroup = ({ route, navigation }: any) => {
       <View style={styles.memberList}>
         <ScrollView
           style={{
-            backgroundColor: "grey",
+            backgroundColor: "lightgrey",
           }}
         >
-          {renderMembers()}
-          {renderMembers()}
-          {renderMembers()}
+          {editGroupFormDetails?.groupMembers?.length > 0 ? (
+            editGroupFormDetails?.groupMembers.map((member: any, i: number) => (
+              <View key={member?.group_code ? member?.group_code : i}>
+                {renderGroupMembers(member)}
+              </View>
+            ))
+          ) : (
+            <>
+              <Text>No Member Found</Text>
+            </>
+          )}
         </ScrollView>
       </View>
     </KeyboardAvoidingView>
