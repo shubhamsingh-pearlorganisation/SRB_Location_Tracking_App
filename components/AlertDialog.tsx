@@ -30,7 +30,7 @@ export default function AlertDialog({
             style={{
               alignItems: "center",
               backgroundColor: "white",
-              height: SIZES.width * 0.3,
+              height: SIZES.height>700? SIZES.height * 0.2:SIZES.height * 0.35,
               width: "90%",
               borderWidth: 1,
               borderColor: "#fff",
@@ -48,7 +48,7 @@ export default function AlertDialog({
                 {mainDisplayMsg}
               </Text>
               <Text
-                style={{ fontSize: SIZES.width > 400 ? 18 : 12, marginTop: 5 }}
+                style={{ fontSize: SIZES.width > 400 ? 18 : 15, margin: 5 }}
               >
                 {subDisplayMsg}
               </Text>
@@ -62,7 +62,7 @@ export default function AlertDialog({
                 alignItems: "center",
                 position: "absolute",
                 borderBottomWidth: 0,
-                width: SIZES.width * 0.4,
+                width: SIZES.width>400? SIZES.width * 0.4:SIZES.width*.8,
                 height: "auto",
                 justifyContent: "center",
                 borderRadius: 30,
@@ -82,7 +82,7 @@ export default function AlertDialog({
                 alignItems: "center",
                 position: "absolute",
                 borderBottomWidth: 0,
-                width: SIZES.width * 0.4,
+                width: SIZES.width>400? SIZES.width * 0.4:SIZES.width*.8,
                 height: "auto",
                 justifyContent: "center",
                 borderRadius: 30,

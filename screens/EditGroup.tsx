@@ -157,9 +157,6 @@ const EditGroup = ({ route, navigation }: any) => {
       </TouchableOpacity>
       <View style={styles.memberList}>
         <ScrollView
-          style={{
-            backgroundColor: "grey",
-          }}
         >
           {renderMembers()}
           {renderMembers()}
@@ -184,6 +181,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: "2%",
     marginBottom: 2,
+    shadowColor: "black",
+    shadowOpacity: 1,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
   },
   memberListItemImage: {
     backgroundColor: "white",

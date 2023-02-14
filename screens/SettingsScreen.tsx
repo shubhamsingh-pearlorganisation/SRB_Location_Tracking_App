@@ -15,11 +15,10 @@ const Settings = () => {
   return (
     <View style={styles.container}>
       <List.Section title="">
-        {/* <Text style={styles.textHeading}>Select Map Mode</Text> */}
         <List.Accordion
           title="Select Map Mode"
           titleStyle={styles.textHeading}
-          // expanded={expanded}
+  
           onPress={handlePress}
         >
           <View style={styles.item}>
@@ -77,7 +76,7 @@ const Settings = () => {
           title="Privacy Policy, Terms and Conditons"
           titleStyle={styles.textHeading}
           titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-          // expanded={expanded}
+
           onPress={handlePress}
         >
           <List.Item
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.width > 400 ? 30 : 20,
     fontWeight: "600",
     color: "black",
-    // backgroundColor: COLORS.white,
+
     padding: "1%",
     textAlign: "left",
   },

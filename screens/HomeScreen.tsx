@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   const onPressUpBtn = () => {
     setOnUp(!onUp);
-    setDrop(false)
+    setDrop(false);
   };
 
   const customStyle2 = onUp ? styles.expand : styles.collapse;
@@ -196,26 +196,26 @@ const HomeScreen = ({ navigation }: any) => {
 
   function renderMembers() {
     return (
-      <Pressable style={styles.memberListItem}>
-        <View style={styles.memberListItemImage}>
-          <Ionicons name="person-sharp" size={20} color={COLORS.voilet} />
-        </View>
-        <View>
-          <Text style={styles.memberListItemName}>Username</Text>
-          <Text style={styles.memberListItemCode}>Location</Text>
-          <Text style={styles.memberListItemCode}>Location line</Text>
-        </View>
-        <View style={styles.memberListItemType}>
-          <Text
-            style={{
-              color: "black",
-              fontWeight: "700",
-            }}
-          >
-            07th Feb {"\n"}05:16 pm
-          </Text>
-        </View>
-      </Pressable>
+        <Pressable style={styles.memberListItem}>
+          <View style={styles.memberListItemImage}>
+            <Ionicons name="person-sharp" size={20} color={COLORS.voilet} />
+          </View>
+          <View>
+            <Text style={styles.memberListItemName}>Username</Text>
+            <Text style={styles.memberListItemCode}>Location</Text>
+            <Text style={styles.memberListItemCode}>Location line</Text>
+          </View>
+          <View style={styles.memberListItemType}>
+            <Text
+              style={{
+                color: "black",
+                fontWeight: "700",
+              }}
+            >
+              07th Feb {"\n"}05:16 pm
+            </Text>
+          </View>
+        </Pressable>
     );
   }
 
@@ -404,7 +404,7 @@ const HomeScreen = ({ navigation }: any) => {
           style={{
             bottom: "2%",
             position: "absolute",
-            width:SIZES.width > 400 ? "8%" :"12%",
+            width: SIZES.width > 400 ? "8%" : "12%",
             height: "auto",
             backgroundColor: "rgba(0,0,0,.2)",
             alignSelf: "center",
@@ -412,7 +412,10 @@ const HomeScreen = ({ navigation }: any) => {
           }}
           onPress={onPressDropDownBtn}
         >
-          <MaterialIcons name="keyboard-arrow-up" size={SIZES.width > 400 ? 20 : 15} />
+          <MaterialIcons
+            name="keyboard-arrow-up"
+            size={SIZES.width > 400 ? 20 : 15}
+          />
         </TouchableOpacity>
       </View>
 
@@ -447,7 +450,7 @@ const HomeScreen = ({ navigation }: any) => {
           style={{
             top: 5,
             position: "absolute",
-            width: SIZES.width > 400 ? "8%" :"12%",
+            width: SIZES.width > 400 ? "8%" : "12%",
             height: "auto",
             backgroundColor: "rgba(0,0,0,.2)",
             alignSelf: "center",
@@ -464,7 +467,7 @@ const HomeScreen = ({ navigation }: any) => {
           style={{
             height: "70%",
             marginTop: "1%",
-            marginBottom:'2%'
+            marginBottom: "2%",
           }}
         >
           {renderMembers()}
@@ -475,8 +478,8 @@ const HomeScreen = ({ navigation }: any) => {
         </ScrollView>
         <Pressable
           style={{
-            width: 'auto',
-            height: 'auto',
+            width: "auto",
+            height: "auto",
             backgroundColor: "white",
             alignSelf: "center",
             shadowColor: "black",
@@ -490,11 +493,15 @@ const HomeScreen = ({ navigation }: any) => {
             borderRadius: 30,
             alignItems: "center",
             justifyContent: "center",
-            marginBottom:SIZES.width>400?0:'5%'
+            marginBottom: SIZES.width > 400 ? 0 : "5%",
           }}
           onPress={redirectToAddMemberScreen}
         >
-          <Ionicons size={SIZES.width > 400 ? 40 : 25} name="add" color={COLORS.voilet} />
+          <Ionicons
+            size={SIZES.width > 400 ? 40 : 25}
+            name="add"
+            color={COLORS.voilet}
+          />
         </Pressable>
       </View>
     </SafeAreaView>
@@ -513,6 +520,7 @@ const styles = StyleSheet.create({
     height: "auto",
     flexDirection: "row",
     padding: "2%",
+    
   },
   memberListItemImage: {
     backgroundColor: "white",
@@ -530,10 +538,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   memberListItemName: {
-    fontSize: SIZES.width>400?20:18,
+    fontSize: SIZES.width > 400 ? 20 : 18,
   },
   memberListItemCode: {
-    fontSize: SIZES.width>400?18:15,
+    fontSize: SIZES.width > 400 ? 18 : 15,
     color: "grey",
   },
   memberListItemType: {
@@ -544,7 +552,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",
-    fontSize: SIZES.width>400?18:15,
+    fontSize: SIZES.width > 400 ? 18 : 15,
     right: "1%",
     position: "absolute",
   },
@@ -594,10 +602,10 @@ const styles = StyleSheet.create({
     padding: "2%",
   },
   groupListItemName: {
-    fontSize: SIZES.width>400?20:18,
+    fontSize: SIZES.width > 400 ? 20 : 18,
   },
   groupListItemCode: {
-    fontSize: SIZES.width>400?18:15,
+    fontSize: SIZES.width > 400 ? 18 : 15,
     color: "grey",
   },
   groupListItemType: {
@@ -609,7 +617,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",
-    fontSize: SIZES.width>400?18:15,
+    fontSize: SIZES.width > 400 ? 18 : 15,
     right: "1%",
     position: "absolute",
   },
