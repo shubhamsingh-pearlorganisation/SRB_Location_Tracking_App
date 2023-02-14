@@ -19,7 +19,6 @@ import { TextInput } from "react-native-paper";
 // -----------------------------------------------------------------
 
 const EditGroup = ({ route, navigation }: any) => {
-  console.log("groupDetails::: ", route?.params?.groupDetails);
   const toast = useToast();
   const authContextData: any = useContext(AuthContext); //Used for fetching authentication token
 

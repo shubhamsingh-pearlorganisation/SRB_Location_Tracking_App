@@ -44,7 +44,7 @@ const fetchAuthenticationToken = async () => {
       return token;
     } else return "";
   } catch (e: any) {
-    console.log("Getting an error while fetching JWT Token:: ", e.message);
+    // console.log("Getting an error while fetching JWT Token:: ", e.message);
   }
 };
 

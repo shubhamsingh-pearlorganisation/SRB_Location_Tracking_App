@@ -58,7 +58,7 @@ const JoinGroup = () => {
           ></TextInput>
         </View>
         <Text style={styles.subText}>
-          Get The code form the person who created the Group
+          Get The code from the person who created the Group
         </Text>
         <TouchableOpacity
           style={{

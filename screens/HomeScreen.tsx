@@ -220,9 +220,9 @@ const HomeScreen = ({ navigation }: any) => {
   };
 
   const fetchValue = (data: any) => {
-    console.log("***************************");
-    console.log("this is data", data);
-    console.log("***************************");
+    // console.log("***************************");
+    // console.log("this is data", data);
+    // console.log("***************************");
     updateState({
       destinationCords: {
         latitude: data.latitude,

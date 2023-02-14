@@ -54,7 +54,7 @@ const Groups = ({ navigation }: any) => {
       const response = await instance.post("/group_delete", formData);
       if (response.status === 200 && response.data?.status) {
         // setShowLoader(false);
-        console.log("response::SHUBHAM ", response);
+        // console.log("response::SHUBHAM ", response);
         toast.show(
           `Group with id ${groupDetails?.group_id} deleted successfully`,
           {
