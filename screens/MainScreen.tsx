@@ -1,13 +1,11 @@
+import React from "react";
 import { StyleSheet } from "react-native";
-
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./HomeScreen";
 import Groups from "./Groups";
-import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import MenuScreen from "./MenuScreen";
-import EmergencyContactsScreen from "./EmergencyContacts/Home";
 
 const MainScreen = ({ navigation }: any) => {
   const newGroup = () => {
@@ -50,12 +48,11 @@ const MainScreen = ({ navigation }: any) => {
           headerTintColor: COLORS.voilet,
           headerTitleStyle: {
             fontWeight: "bold",
-            fontSize: SIZES.width>400?30:20,
+            fontSize: SIZES.width > 400 ? 30 : 20,
           },
           headerRight: () => (
             <Ionicons
-              // containerStyle={styles.iconContainer}
-              size={SIZES.width>400?40:30}
+              size={SIZES.width > 400 ? 40 : 30}
               name="add"
               color={COLORS.voilet}
               onPress={newGroup}
@@ -71,7 +68,7 @@ const MainScreen = ({ navigation }: any) => {
           headerTintColor: COLORS.voilet,
           headerTitleStyle: {
             fontWeight: "bold",
-            fontSize: SIZES.width>400?30:20,
+            fontSize: SIZES.width > 400 ? 30 : 20,
           },
         }}
       />

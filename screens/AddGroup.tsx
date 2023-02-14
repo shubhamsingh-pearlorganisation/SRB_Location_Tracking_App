@@ -40,6 +40,7 @@ const AddGroup = ({ navigation }: any) => {
       addGroupFormData.title.toString().length < 3
     ) {
       Alert.alert(
+        "Validation Failed",
         "Group title is required and should contain minimum 3 characters"
       );
       return;
@@ -255,4 +256,4 @@ const styles = StyleSheet.create({
 
 export default AddGroup;
 
-// ======================================================= THE END ===============================================================
+// ============================================== THE END ===================================================

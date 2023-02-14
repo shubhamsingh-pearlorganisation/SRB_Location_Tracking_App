@@ -4,16 +4,16 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  Alert,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useToast } from "react-native-toast-notifications";
 import { AuthContext } from "../App";
 import { instance } from "../core/utils/AxiosInterceptor";
-import { COLORS, SIZES } from "../constants";
+import { SIZES } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
-
+// -----------------------------------------------------------------
 const Groups = ({ navigation }: any) => {
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
@@ -24,29 +24,25 @@ const Groups = ({ navigation }: any) => {
   const [showLoader, setShowLoader] = useState<boolean>(false);
 
   useEffect(() => {
-    alert("component mounted");
     fetchGroups(); // Fetching Groups during component mount
   }, []);
 
   // This method is used to fetch Groups from the Api
-  const fetchGroups = async () => {
+  const fetchGroups = async (showToast = true) => {
     try {
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
       setShowLoader(true);
 
       const response = await instance.post("/group_list", formData);
-      console.log(
-        "Groupps fetched Response:: ",
-        response.data,
-        response.status
-      );
+      console.log("Groups fetched Response:: ", response.data, response.status);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
         setGroupsList(response.data?.data ? response.data?.data : []);
-        toast.show("Groups fetched successfully!", {
-          type: "success",
-        });
+        showToast &&
+          toast.show("Groups fetched successfully!", {
+            type: "success",
+          });
       } else {
         setShowLoader(false);
         toast.show(
@@ -64,6 +60,71 @@ const Groups = ({ navigation }: any) => {
         error.message
           ? error.message
           : "Getting an error while fetching groups. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
+
+  // This method is used to show delete confirmation popup
+  const deleteGroupConfirmation = async (groupDetails: any) => {
+    Alert.alert(
+      "Group Delete Confirmation",
+      "Are you sure you want to permanently delete this group?",
+      [
+        {
+          text: "No",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "Confirm",
+          onPress: () => deleteGroup(groupDetails),
+          style: "cancel",
+        },
+      ]
+    );
+  };
+
+  // This method is used to delete the Group
+  const deleteGroup = async (groupDetails: any) => {
+    try {
+      const formData = new FormData();
+      formData.append("token_id", authContextData?.token);
+      formData.append("added_by", groupDetails?.group_type);
+      formData.append("id", groupDetails?.group_id);
+
+      setShowLoader(true);
+
+      const response = await instance.post("/group_delete", formData);
+      console.log("Groups fetched Response:: ", response.data, response.status);
+      if (response.status === 200 && response.data?.status === true) {
+        setShowLoader(false);
+        toast.show(
+          `Group with id: ${groupDetails?.group_id} deleted successfully`,
+          {
+            type: "success",
+          }
+        );
+        fetchGroups(false);
+      } else {
+        setShowLoader(false);
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while deleting group. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowLoader(false);
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while deleting group. Please try again later.",
         {
           type: "error",
         }
@@ -162,9 +223,7 @@ const Groups = ({ navigation }: any) => {
             },
           ]}
         >
-          <Pressable
-          // onPress={onPressSubmit}
-          >
+          <Pressable onPress={() => deleteGroupConfirmation(groupDetails)}>
             <AntDesign name="delete" size={20} />
           </Pressable>
         </View>
@@ -228,7 +287,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     backgroundColor: "green",
     borderRadius: 10,
-    width: 100,
+    width: "auto",
     height: "auto",
     paddingVertical: 5,
     paddingHorizontal: 10,
@@ -245,4 +304,4 @@ const styles = StyleSheet.create({
 });
 
 export default Groups;
-// ======================================================= THE END ===============================================================
+// =============================================== THE END =======================================================

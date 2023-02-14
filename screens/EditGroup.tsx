@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -11,10 +11,17 @@ import {
 import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AuthContext } from "../App";
+import { useToast } from "react-native-toast-notifications";
+// -----------------------------------------------------------------
 
 const EditGroup = ({ route, navigation }: any) => {
   console.log("groupDetails::: ", route?.params?.groupDetails);
+  const toast = useToast();
+  const authContextData: any = useContext(AuthContext);
 
+  // Component's Local States
+  // ========================
   const [state, setState] = useState("public");
   const [publicChecked, setpublicChecked] = useState("true");
   const [privateChecked, setprivateChecked] = useState("false");
@@ -162,7 +169,8 @@ const EditGroup = ({ route, navigation }: any) => {
     </KeyboardAvoidingView>
   );
 };
-
+// =========================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -277,3 +285,4 @@ const styles = StyleSheet.create({
 });
 
 export default EditGroup;
+// =============================================== THE END =======================================================

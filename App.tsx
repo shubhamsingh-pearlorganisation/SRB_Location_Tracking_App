@@ -47,10 +47,9 @@ const App = () => {
     try {
       const token = await AsyncStorage.getItem("authentication-token");
       if (token !== null) {
-        // console.log("Token Found ::::::::: ", token);
+        console.log("Token Found ::::::::: ", token);
         setAuthenticationToken(token);
-      }
-      // else console.log("Token Not Found ::::::::: ", token);
+      } else console.log("Token Not Found");
     } catch (e: any) {
       console.log("Getting an error while fetching JWT Token:: ", e.message);
     }
@@ -103,7 +102,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -116,7 +115,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -129,7 +128,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -142,7 +141,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -155,7 +154,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -168,7 +167,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -182,7 +181,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -196,7 +195,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -210,7 +209,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -223,7 +222,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -236,7 +235,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
@@ -249,7 +248,7 @@ const App = () => {
                     headerTintColor: COLORS.voilet,
                     headerTitleStyle: {
                       fontWeight: "bold",
-                      fontSize: SIZES.width>400?30:20,
+                      fontSize: SIZES.width > 400 ? 30 : 20,
                     },
                     headerBackVisible: false,
                   }}
