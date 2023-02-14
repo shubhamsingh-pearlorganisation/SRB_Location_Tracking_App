@@ -49,6 +49,10 @@ const HomeScreen = ({ navigation }: any) => {
     navigation.navigate("AddMember");
   };
 
+  const redirectToJoinGroupScreen = () => {
+    navigation.navigate("JoinGroupScreen");
+  };
+
   const [onUp, setOnUp] = useState(false);
 
   const onPressUpBtn = () => {
@@ -361,7 +365,7 @@ const HomeScreen = ({ navigation }: any) => {
               backgroundColor: "#705ECF",
               padding: 4,
             }}
-            // onPress={redirectToAddGroupScreen}
+            onPress={redirectToJoinGroupScreen}
           >
             <Text
               style={{
