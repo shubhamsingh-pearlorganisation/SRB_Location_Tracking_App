@@ -1,20 +1,12 @@
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  Platform,
-  Dimensions,
   TouchableOpacity,
-  StatusBar,
   SafeAreaView,
-  Pressable,
-  NativeModules,
-  Animated,
-  ScrollView,
   Share,
 } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+
 import { COLORS, SIZES } from "../constants";
 
 const AddMember = ({ navigation }: any) => {
@@ -57,7 +49,7 @@ const AddMember = ({ navigation }: any) => {
           <Text
             style={{
               fontWeight: "600",
-              fontSize: SIZES.width > 400  ? 25 : 20,
+              fontSize: SIZES.width > 400 ? 25 : 20,
               color: "white",
               alignSelf: "center",
             }}
@@ -89,7 +81,7 @@ const styles = StyleSheet.create({
     margin: "2%",
   },
   subText: {
-    fontSize: SIZES.width > 400  ? 25 : 15,
+    fontSize: SIZES.width > 400 ? 25 : 15,
     fontWeight: "400",
     color: "rgba(0,0,0,0.6)",
     margin: "2%",
@@ -103,7 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   code: {
-    fontSize: SIZES.width>400? 50:30,
+    fontSize: SIZES.width > 400 ? 50 : 30,
     marginBottom: "10%",
     fontWeight: "700",
     color: COLORS.voilet,

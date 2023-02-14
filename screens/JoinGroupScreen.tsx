@@ -1,17 +1,8 @@
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  Platform,
-  Dimensions,
   TouchableOpacity,
-  StatusBar,
-  SafeAreaView,
-  Pressable,
-  NativeModules,
-  Animated,
-  ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
 import { TextInput } from "react-native-paper";
@@ -20,7 +11,12 @@ import { SIZES } from "../constants";
 const JoinGroup = () => {
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <View style={{width:SIZES.width>400?'50%':'80%',alignItems:'center'}}>
+      <View
+        style={{
+          width: SIZES.width > 400 ? "50%" : "80%",
+          alignItems: "center",
+        }}
+      >
         <Text style={styles.headingText}>Enter The Invite Code</Text>
         <View style={styles.codeBoxHolder}>
           <TextInput
@@ -99,33 +95,30 @@ const styles = StyleSheet.create({
     height: SIZES.height,
     alignItems: "center",
     padding: "2%",
-    
   },
   headingText: {
     fontSize: SIZES.width > 400 ? 30 : 25,
     fontWeight: "600",
-    margin:'2%',
-    marginTop:'15%'
+    margin: "2%",
+    marginTop: "15%",
   },
   subText: {
     fontSize: SIZES.width > 400 ? 25 : 20,
-    marginTop:'2%'
-
+    marginTop: "2%",
   },
   codeBoxHolder: {
     flexDirection: "row",
     alignItems: "center",
-    margin:'5%',
-    padding:'5%'
-
+    margin: "5%",
+    padding: "5%",
   },
   codeBox: {
-    width:30,
+    width: 30,
     fontSize: SIZES.width > 400 ? 25 : 20,
     borderRadius: 8,
     margin: "1%",
-    paddingHorizontal:2,
-    textAlign:'center'
+    paddingHorizontal: 2,
+    textAlign: "center",
   },
 });
 

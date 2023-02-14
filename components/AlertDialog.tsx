@@ -1,22 +1,6 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Alert,
-  Image,
-  Pressable,
-  SafeAreaView,
-  ImageBackground,
-  TouchableOpacity,
-  Modal,
-} from "react-native";
+import { View, Text, TouchableOpacity, Modal } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 
 export default function AlertDialog({

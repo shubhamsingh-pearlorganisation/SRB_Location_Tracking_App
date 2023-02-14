@@ -2,8 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  Alert,
   Image,
   Pressable,
 } from "react-native";
