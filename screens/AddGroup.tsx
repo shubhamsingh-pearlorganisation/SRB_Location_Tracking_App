@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -27,6 +27,7 @@ const AddGroup = ({ navigation }: any) => {
   const customStyle = focus ? styles.focusedTextInput : styles.textInput;
 
   const [publicChecked, setPublicChecked] = useState(true);
+
   // This "addGroupFormData" state is used to store form data
   const [addGroupFormData, setAddGroupFormData] = useState<any>({
     title: "",
@@ -53,13 +54,12 @@ const AddGroup = ({ navigation }: any) => {
         setShowLoader(true);
 
         const response = await instance.post("/group_create", formData);
-        console.log("Create Group Response:: ", response.data, response.status);
         if (response.status === 200 && response.data?.status === true) {
           setShowLoader(false);
           toast.show("Group created successfully!", {
             type: "success",
           });
-          navigation.navigate("Groups");
+          navigation.navigate("Groups"); // Redirect back to Groups Listing Screen
         } else {
           setShowLoader(false);
           toast.show(

@@ -15,6 +15,7 @@ import { SIZES } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 // -----------------------------------------------------------------
 const Groups = ({ navigation }: any) => {
+  console.log("rerender");
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
 
@@ -35,11 +36,13 @@ const Groups = ({ navigation }: any) => {
       setShowLoader(true);
 
       const response = await instance.post("/group_list", formData);
-      console.log("Groups fetched Response:: ", response.data, response.status);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
-        setGroupsList(response.data?.data ? response.data?.data : []);
+        setGroupsList(
+          response.data?.data ? response.data?.data?.reverse() : []
+        );
         showToast &&
+          response.data?.data?.length > 0 &&
           toast.show("Groups fetched successfully!", {
             type: "success",
           });
@@ -81,7 +84,7 @@ const Groups = ({ navigation }: any) => {
         {
           text: "Confirm",
           onPress: () => deleteGroup(groupDetails),
-          style: "cancel",
+          style: "default",
         },
       ]
     );
@@ -98,11 +101,10 @@ const Groups = ({ navigation }: any) => {
       setShowLoader(true);
 
       const response = await instance.post("/group_delete", formData);
-      console.log("Groups fetched Response:: ", response.data, response.status);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
         toast.show(
-          `Group with id: ${groupDetails?.group_id} deleted successfully`,
+          `Group with id ${groupDetails?.group_id} deleted successfully`,
           {
             type: "success",
           }
@@ -256,7 +258,7 @@ const Groups = ({ navigation }: any) => {
               marginTop: 20,
             }}
           >
-            No Group Found
+            Groups not Available.
           </Text>
         </>
       )}
