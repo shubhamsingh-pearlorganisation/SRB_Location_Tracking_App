@@ -47,7 +47,10 @@ const MenuScreen = ({ navigation }: any) => {
       const result: any = AsyncStorage.clear();
       // console.log("Logout User Result::: ", result);
       if (result) {
-        Alert.alert("User Logout Successfully!");
+        Alert.alert(
+          "Logout",
+          "You are logout Successfully. Please login to continue."
+        );
         authContextData.setTokenAfterLogin(null); // Sending back token value to app component so that we can redirect to splash screen
       }
     } catch (error: any) {
