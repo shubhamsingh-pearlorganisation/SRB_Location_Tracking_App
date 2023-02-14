@@ -196,26 +196,26 @@ const HomeScreen = ({ navigation }: any) => {
 
   function renderMembers() {
     return (
-      <Pressable style={styles.memberListItem}>
-        <View style={styles.memberListItemImage}>
-          <Ionicons name="person-sharp" size={20} color={COLORS.voilet} />
-        </View>
-        <View>
-          <Text style={styles.memberListItemName}>Username</Text>
-          <Text style={styles.memberListItemCode}>Location</Text>
-          <Text style={styles.memberListItemCode}>Location line</Text>
-        </View>
-        <View style={styles.memberListItemType}>
-          <Text
-            style={{
-              color: "black",
-              fontWeight: "700",
-            }}
-          >
-            07th Feb {"\n"}05:16 pm
-          </Text>
-        </View>
-      </Pressable>
+        <Pressable style={styles.memberListItem}>
+          <View style={styles.memberListItemImage}>
+            <Ionicons name="person-sharp" size={20} color={COLORS.voilet} />
+          </View>
+          <View>
+            <Text style={styles.memberListItemName}>Username</Text>
+            <Text style={styles.memberListItemCode}>Location</Text>
+            <Text style={styles.memberListItemCode}>Location line</Text>
+          </View>
+          <View style={styles.memberListItemType}>
+            <Text
+              style={{
+                color: "black",
+                fontWeight: "700",
+              }}
+            >
+              07th Feb {"\n"}05:16 pm
+            </Text>
+          </View>
+        </Pressable>
     );
   }
 
@@ -520,6 +520,7 @@ const styles = StyleSheet.create({
     height: "auto",
     flexDirection: "row",
     padding: "2%",
+    
   },
   memberListItemImage: {
     backgroundColor: "white",
