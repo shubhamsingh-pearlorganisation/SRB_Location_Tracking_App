@@ -12,7 +12,8 @@ import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const EditGroup = () => {
+const EditGroup = ({ route, navigation }: any) => {
+  console.log("groupDetails::: ", route?.params?.groupDetails);
 
   const [state, setState] = useState("public");
   const [publicChecked, setpublicChecked] = useState("true");
@@ -192,10 +193,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   memberListItemName: {
-    fontSize: SIZES.width>400?20:18,
+    fontSize: SIZES.width > 400 ? 20 : 18,
   },
   memberListItemCode: {
-    fontSize: SIZES.width>400?18:15,
+    fontSize: SIZES.width > 400 ? 18 : 15,
     color: "grey",
   },
   memberListItemType: {
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",
-    fontSize: SIZES.width>400?18:15,
+    fontSize: SIZES.width > 400 ? 18 : 15,
     right: "1%",
     position: "absolute",
   },
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     width: SIZES.width,
     zIndex: 0,
-    padding: SIZES.width>400?"3%":"4%",
+    padding: SIZES.width > 400 ? "3%" : "4%",
     height: "40%",
   },
   textInput: {
@@ -269,7 +270,7 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: SIZES.width > 400 ? 20 : 15,
-    width:  SIZES.width > 400 ? "50%" : "80%",
+    width: SIZES.width > 400 ? "50%" : "80%",
     bottom: 0,
     position: "absolute",
   },

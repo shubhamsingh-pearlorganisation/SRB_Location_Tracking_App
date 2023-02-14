@@ -1,38 +1,103 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  Platform,
-  Dimensions,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Button,
   Pressable,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
-import { TextInput, RadioButton } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
+import { TextInput } from "react-native-paper";
 import { SIZES } from "../constants";
+import { useToast } from "react-native-toast-notifications";
+import { AuthContext } from "../App";
+import { instance } from "../core/utils/AxiosInterceptor";
+// ----------------------------------------------------------------------------
+const AddGroup = ({ navigation }: any) => {
+  const toast = useToast();
 
-const AddGroup = () => {
+  const authContextData: any = useContext(AuthContext);
+
+  // Component's Local States
+  // ========================
+  const [showLoader, setShowLoader] = useState(false);
   const [focus, setFocus] = useState(false);
   const customStyle = focus ? styles.focusedTextInput : styles.textInput;
 
-  const [state, setState] = useState("public");
-  const [publicChecked, setpublicChecked] = useState("true");
-  const [privateChecked, setprivateChecked] = useState("false");
+  const [publicChecked, setPublicChecked] = useState(true);
+  // This "addGroupFormData" state is used to store form data
+  const [addGroupFormData, setAddGroupFormData] = useState<any>({
+    title: "",
+    group_type: 1,
+  });
+
+  // This method is used to create new group
+  const addNewGroup = async () => {
+    if (
+      addGroupFormData.title === "" ||
+      addGroupFormData.title.toString().length < 3
+    ) {
+      Alert.alert(
+        "Group title is required and should contain minimum 3 characters"
+      );
+      return;
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append("token_id", authContextData?.token);
+        formData.append("title", addGroupFormData?.title);
+        formData.append("group_type", addGroupFormData?.group_type);
+        setShowLoader(true);
+
+        const response = await instance.post("/group_create", formData);
+        console.log("Create Group Response:: ", response.data, response.status);
+        if (response.status === 200 && response.data?.status === true) {
+          setShowLoader(false);
+          toast.show("Group created successfully!", {
+            type: "success",
+          });
+          navigation.navigate("Groups");
+        } else {
+          setShowLoader(false);
+          toast.show(
+            response.data?.message
+              ? response.data?.message
+              : "Getting an error while creating a new group. Please try again later.",
+            {
+              type: "error",
+            }
+          );
+        }
+      } catch (error: any) {
+        setShowLoader(false);
+        toast.show(
+          error.message
+            ? error.message
+            : "Getting an error while creating a new group. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View>
         <TextInput
           placeholder="Enter Group Title ..."
-          //   onFocus={setFocus(true)}
           style={customStyle}
           placeholderTextColor="rgba(0,0,0,0.4)"
           underlineColor="transparent"
+          autoFocus
+          onChangeText={(val: any) =>
+            setAddGroupFormData({ ...addGroupFormData, title: val })
+          }
         />
+        {showLoader && <ActivityIndicator size={50} />}
       </View>
       <View style={styles.cardHolder}>
         <View style={styles.card}>
@@ -42,9 +107,8 @@ const AddGroup = () => {
               height: "100%",
             }}
             onPress={() => {
-              setState("public");
-              setpublicChecked("true");
-              setprivateChecked("false");
+              setAddGroupFormData({ ...addGroupFormData, group_type: 1 });
+              setPublicChecked(true);
             }}
           >
             <View
@@ -56,13 +120,13 @@ const AddGroup = () => {
               <Text style={styles.cardHeading}>Public</Text>
               <Pressable
                 style={[
-                  publicChecked == "true" ? styles.checked : styles.unchecked,
+                  publicChecked ? styles.checked : styles.unchecked,
                   styles.radio,
                 ]}
               />
             </View>
             <Text style={styles.cardText}>
-              All members can see eachother & their location.
+              All members can see each other & their location.
             </Text>
           </Pressable>
         </View>
@@ -74,9 +138,8 @@ const AddGroup = () => {
               height: "100%",
             }}
             onPress={() => {
-              setState("private");
-              setpublicChecked("false");
-              setprivateChecked("true");
+              setAddGroupFormData({ ...addGroupFormData, group_type: 2 });
+              setPublicChecked(false);
             }}
           >
             <View
@@ -88,7 +151,7 @@ const AddGroup = () => {
               <Text style={styles.cardHeading}>Private</Text>
               <Pressable
                 style={[
-                  privateChecked == "true" ? styles.checked : styles.unchecked,
+                  !publicChecked ? styles.checked : styles.unchecked,
                   styles.radio,
                 ]}
               />
@@ -110,7 +173,7 @@ const AddGroup = () => {
           borderRadius: 30,
           backgroundColor: "#705ECF",
         }}
-        //   onPress={onPressSubmit}
+        onPress={addNewGroup}
       >
         <Text
           style={{
@@ -126,7 +189,8 @@ const AddGroup = () => {
     </KeyboardAvoidingView>
   );
 };
-
+// =========================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -183,10 +247,12 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: SIZES.width > 400 ? 20 : 15,
-    width:  SIZES.width > 400 ? "50%" : "80%",
+    width: SIZES.width > 400 ? "50%" : "80%",
     bottom: 0,
     position: "absolute",
   },
 });
 
 export default AddGroup;
+
+// ======================================================= THE END ===============================================================

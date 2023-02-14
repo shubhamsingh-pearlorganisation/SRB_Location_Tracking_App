@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Pressable,
-  Button,
   Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -520,18 +519,20 @@ const ProfileScreen = ({ navigation }: any) => {
             )}
           </View>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.imgBtns}
-              onPress={uploadImageFromGallery}>
-                <Text style={styles.imgBtnText}>Gallery</Text>
-              </Pressable>
-              <Pressable style={styles.imgBtns}
-              onPress={uploadImageFromCamera}>
-                <Text  style={styles.imgBtnText}>Camera</Text>
-              </Pressable>
-              <Pressable style={[styles.imgBtns,{backgroundColor:'#FFE5B9'}]}
-              onPress={uploadProfileImage}>
-                <Text  style={[styles.imgBtnText,{fontWeight:'600'}]}>Upload Image</Text>
-              </Pressable>
+            <Pressable style={styles.imgBtns} onPress={uploadImageFromGallery}>
+              <Text style={styles.imgBtnText}>Gallery</Text>
+            </Pressable>
+            <Pressable style={styles.imgBtns} onPress={uploadImageFromCamera}>
+              <Text style={styles.imgBtnText}>Camera</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.imgBtns, { backgroundColor: "#FFE5B9" }]}
+              onPress={uploadProfileImage}
+            >
+              <Text style={[styles.imgBtnText, { fontWeight: "600" }]}>
+                Upload Image
+              </Text>
+            </Pressable>
           </View>
         </View>
 
@@ -593,7 +594,9 @@ const ProfileScreen = ({ navigation }: any) => {
             styles.textInputStyle,
             { backgroundColor: "white" },
           ]}
-        >{userDetails?.contact ? userDetails?.contact : ""}</Text>
+        >
+          {userDetails?.contact ? userDetails?.contact : ""}
+        </Text>
       </View>
     </View>
   );
@@ -613,13 +616,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: "1%",
-    paddingBottom:'5%'
+    paddingBottom: "5%",
   },
   profileImage: {
     width: SIZES.width * 0.3,
     height: SIZES.width * 0.3,
     borderRadius: 40,
-    marginTop:'10%'
+    marginTop: "10%",
   },
   bottomView: {
     margin: "5%",
@@ -657,7 +660,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonContainer: {
-    width: SIZES.width*.8,
+    width: SIZES.width * 0.8,
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: "10%",
@@ -666,20 +669,20 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   image: {
-    width: SIZES.width>400?SIZES.width*.3:SIZES.width*.4,
-    height: SIZES.width>400?SIZES.width*.3:SIZES.width*.4,
+    width: SIZES.width > 400 ? SIZES.width * 0.3 : SIZES.width * 0.4,
+    height: SIZES.width > 400 ? SIZES.width * 0.3 : SIZES.width * 0.4,
     resizeMode: "cover",
   },
   imgBtns: {
-    padding:'2%',
+    padding: "2%",
     backgroundColor: "white",
-    borderRadius:30,
-    marginBottom:"5%"
+    borderRadius: 30,
+    marginBottom: "5%",
   },
-  imgBtnText:{
+  imgBtnText: {
     fontSize: SIZES.width > 400 ? 15 : 20,
     color: COLORS.voilet,
-  }
+  },
 });
 export default ProfileScreen;
 
