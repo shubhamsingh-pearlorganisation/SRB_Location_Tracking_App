@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, createContext } from "react";
 import {
   View,
   Text,
@@ -17,10 +17,11 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SIZES } from "../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "../App";
+import { AuthContext, UserDetailsContext } from "../App";
 
 const MenuScreen = ({ navigation }: any) => {
   const authContextData: any = useContext(AuthContext);
+  const userDetailsContextData: any = useContext(UserDetailsContext);
 
   const redirectToEmergencyScreen = () => {
     navigation.navigate("Emergency");
@@ -74,14 +75,26 @@ const MenuScreen = ({ navigation }: any) => {
             marginLeft: "2%",
           }}
         >
-          User Name
+          {userDetailsContextData?.userDetails?.name
+            ? userDetailsContextData?.userDetails?.name
+            : "N.A"}
         </Text>
-        <FontAwesome5
-          style={[styles.icons, { right: 0, position: "absolute" }]}
-          name="user-circle"
-          size={SIZES.width > 400 ? 30 : 20}
-          color={"black"}
-        />
+
+        {!userDetailsContextData?.userDetails?.image ? (
+          <FontAwesome5
+            style={[styles.icons, { right: 0, position: "absolute" }]}
+            name="user-circle"
+            size={SIZES.width > 400 ? 30 : 20}
+            color={"black"}
+          />
+        ) : (
+          <>
+            <Image
+              source={{ uri: userDetailsContextData?.userDetails?.image }}
+              style={[styles.icons, { right: 0, position: "absolute" }]}
+            />
+          </>
+        )}
       </View>
       <View>
         <Pressable
@@ -309,7 +322,11 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   icons: {
-    margin: 10,
+    // margin: 10,
+    width: SIZES.width > 400 ? 50 : 35,
+    height: SIZES.width > 400 ? 50 : 35,
+    borderRadius: 25,
+    // marginRight: "2%",
   },
 });
 export default MenuScreen;

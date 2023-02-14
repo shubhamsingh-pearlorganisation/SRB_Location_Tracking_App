@@ -17,7 +17,7 @@ import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from "expo-image-picker";
-import { AuthContext } from "../App";
+import { AuthContext, UserDetailsContext } from "../App";
 
 // ============================================================================================
 
@@ -25,13 +25,16 @@ const ProfileScreen = ({ navigation }: any) => {
   const toast = useToast();
 
   const authContextData: any = useContext(AuthContext);
+  const userDetailsContextData: any = useContext(UserDetailsContext);
 
   // Component's Local States
   // ========================
   const [showLoader, setShowLoader] = useState(false);
 
   // "userDetailsPrefilled" state is used to prefilled user's data from the api during view profile
-  const [userDetailsPrefilled, setUserDetailsPrefilled] = useState<any>({});
+  const [userDetailsPrefilled] = useState<any>(
+    userDetailsContextData?.userDetails
+  );
   const [isEditable, setIsEditable] = useState(false);
 
   // "userDetails" state is used to store user's form data during update profile
@@ -42,11 +45,6 @@ const ProfileScreen = ({ navigation }: any) => {
     contact: "",
     image: "",
   });
-
-  // Fetching User's details if token available
-  useEffect(() => {
-    authContextData?.token?.length && !isEditable && fetchUserDetails();
-  }, [authContextData?.token]);
 
   useEffect(() => {
     if (userDetailsPrefilled) {
@@ -218,46 +216,6 @@ const ProfileScreen = ({ navigation }: any) => {
     navigation.navigate("Main");
   };
 
-  // This method is used to fetch user details from the api based on token
-  const fetchUserDetails = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("token_id", authContextData?.token);
-
-      setShowLoader(true);
-
-      const response = await instance.post("/user_details", formData);
-      if (response.status === 200 && response.data?.status === true) {
-        setShowLoader(false);
-        setUserDetailsPrefilled(response.data?.data);
-        toast.show("User's details fetched successfully!", {
-          type: "success",
-          placement: "bottom",
-        });
-      } else {
-        setShowLoader(false);
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while fetching user details. Please try again later.",
-          {
-            type: "error",
-          }
-        );
-      }
-    } catch (error: any) {
-      setShowLoader(false);
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching user details. Please try again later.",
-        {
-          type: "error",
-        }
-      );
-    }
-  };
-
   // --------------------------- Date Picker Handling -- Start -----------------------------------
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -306,6 +264,7 @@ const ProfileScreen = ({ navigation }: any) => {
         toast.show("User's details updated successfully!", {
           type: "success",
         });
+        userDetailsContextData?.updateUserDetails();
         goToBackScreen();
       } else {
         setShowLoader(false);

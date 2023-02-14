@@ -49,11 +49,12 @@ const Groups = ({ navigation }: any) => {
       formData.append("added_by", groupDetails?.group_type);
       formData.append("id", groupDetails?.group_id);
 
-      setShowLoader(true);
+      // setShowLoader(true);
 
       const response = await instance.post("/group_delete", formData);
-      if (response.status === 200 && response.data?.status === true) {
-        setShowLoader(false);
+      if (response.status === 200 && response.data?.status) {
+        // setShowLoader(false);
+        console.log("response::SHUBHAM ", response);
         toast.show(
           `Group with id ${groupDetails?.group_id} deleted successfully`,
           {
@@ -62,7 +63,7 @@ const Groups = ({ navigation }: any) => {
         );
         groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing
       } else {
-        setShowLoader(false);
+        // setShowLoader(false);
         toast.show(
           response.data?.message
             ? response.data?.message
@@ -73,7 +74,7 @@ const Groups = ({ navigation }: any) => {
         );
       }
     } catch (error: any) {
-      setShowLoader(false);
+      // setShowLoader(false);
       toast.show(
         error.message
           ? error.message

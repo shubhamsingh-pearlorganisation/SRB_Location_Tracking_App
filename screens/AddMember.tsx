@@ -9,12 +9,15 @@ import {
 
 import { COLORS, SIZES } from "../constants";
 
-const AddMember = ({ navigation }: any) => {
+const AddMember = ({ route, navigation }: any) => {
   const shareData = async () => {
     try {
       await Share.share({
-        message:
-          'Person has invited you to \nJoin The Group\n\n click the below link \n "https://www.google.com/" \n or manually enter the code \n ABCDEF',
+        message: `Person has invited you to \nJoin The Group\n\n click the below link \n "https://www.google.com/" \n or manually enter the code \n ${
+          route?.params?.groupDetails?.group_code
+            ? route?.params?.groupDetails?.group_code
+            : "N.A"
+        }`,
       });
     } catch (error: any) {
       alert(error.message);
@@ -31,7 +34,11 @@ const AddMember = ({ navigation }: any) => {
       </View>
 
       <View style={styles.codeHolderView}>
-        <Text style={styles.code}>ABCDEF</Text>
+        <Text style={styles.code}>
+          {route?.params?.groupDetails?.group_code
+            ? route?.params?.groupDetails?.group_code
+            : "N.A"}
+        </Text>
         <TouchableOpacity
           style={{
             position: "absolute",

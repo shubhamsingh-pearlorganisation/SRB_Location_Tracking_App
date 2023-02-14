@@ -10,16 +10,17 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { getCurrentLocation } from "../core/utils/helper";
 import imagePath from "../core/utils/constants";
 import { GOOGLE_API_KEY } from "../core/utils/constants";
-
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
+import { GroupsAndMembersContext } from "../App";
+// -----------------------------------------------------------------------------------
 
 type locationTypes = {
   latitude: number;
@@ -31,11 +32,88 @@ const ASPECT_RATIO = screen.width / screen.height;
 const LATITUDE_DELTA = 0.04;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
+// -----------------------------------------------------------------------------------
+
+// This component is used to render Groups
+const RenderGroups = ({
+  groupDetails,
+  setGroupMembersList,
+  index,
+  selectedGroupDetails,
+}: any) => {
+  // const [isActive, setIsActive] = useState(false);
+
+  const handleGroupItemClick = () => {
+    // setIsActive(true);
+    // if (isActive === true) setIsActive(false);
+    setGroupMembersList(groupDetails?.users ? groupDetails?.users : []);
+    selectedGroupDetails(groupDetails);
+  };
+  return (
+    <Pressable
+      style={[
+        styles.groupListItem,
+        // { backgroundColor: isActive ? "#e6eeff" : "" },
+      ]}
+      onPress={handleGroupItemClick}
+    >
+      <View>
+        <Text style={styles.groupListItemName}>
+          {groupDetails?.title ? groupDetails?.title : "N.A"}
+        </Text>
+        <Text style={styles.groupListItemCode}>
+          {groupDetails?.group_code ? groupDetails?.group_code : "N.A"}
+        </Text>
+      </View>
+      <View style={styles.groupListItemType}>
+        <Text
+          style={{
+            color: "white",
+            fontWeight: "700",
+          }}
+        >
+          {groupDetails?.group_type && groupDetails?.group_type === 1
+            ? "PUBLIC"
+            : "PRIVATE"}
+        </Text>
+      </View>
+    </Pressable>
+  );
+};
+
+// ===============================================================================
+
 const HomeScreen = ({ navigation }: any) => {
+  const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
+
+  // Component's Local States
+  // ========================
+
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const mapRef: any = useRef();
   const markerRef: any = useRef();
   const [drop, setDrop] = useState(false);
+
+  const [groupMembersList, setGroupMembersList] = useState<any>([]);
+
+  const [selectedGroupData, setSelectedGroupData] = useState({});
+
+  const selectedGroupDetails = (selGroupDetails: any) => {
+    selGroupDetails && setSelectedGroupData(selGroupDetails);
+  };
+
+  useEffect(() => {
+    if (
+      groupsAndMembersData?.groupsAndMembersDetails &&
+      groupsAndMembersData?.groupsAndMembersDetails?.length > 0
+    ) {
+      setGroupMembersList(
+        groupsAndMembersData?.groupsAndMembersDetails[0]?.users
+      );
+      setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);
+    }
+  }, [groupsAndMembersData?.groupsAndMembersDetails]);
+
   const onPressDropDownBtn = () => {
     setDrop(!drop);
     setOnUp(false);
@@ -46,7 +124,7 @@ const HomeScreen = ({ navigation }: any) => {
   };
 
   const redirectToAddMemberScreen = () => {
-    navigation.navigate("AddMember");
+    navigation.navigate("AddMember", { groupDetails: selectedGroupData });
   };
 
   const redirectToJoinGroupScreen = () => {
@@ -173,49 +251,44 @@ const HomeScreen = ({ navigation }: any) => {
     });
   };
 
-  function renderGroups() {
+  function renderMembers(member: any) {
     return (
-      <Pressable style={styles.groupListItem}>
-        <View>
-          <Text style={styles.groupListItemName}>Group Name</Text>
-          <Text style={styles.groupListItemCode}>Group Code</Text>
-        </View>
-        <View style={styles.groupListItemType}>
-          <Text
-            style={{
-              color: "white",
-              fontWeight: "700",
-            }}
-          >
-            Group Type
-          </Text>
-        </View>
-      </Pressable>
-    );
-  }
-
-  function renderMembers() {
-    return (
-        <Pressable style={styles.memberListItem}>
+      <Pressable style={styles.memberListItem}>
+        {!member?.image ? (
           <View style={styles.memberListItemImage}>
             <Ionicons name="person-sharp" size={20} color={COLORS.voilet} />
           </View>
-          <View>
-            <Text style={styles.memberListItemName}>Username</Text>
-            <Text style={styles.memberListItemCode}>Location</Text>
-            <Text style={styles.memberListItemCode}>Location line</Text>
-          </View>
-          <View style={styles.memberListItemType}>
-            <Text
+        ) : (
+          <>
+            <Image
+              source={{ uri: member?.image }}
               style={{
-                color: "black",
-                fontWeight: "700",
+                width: SIZES.width > 400 ? 50 : 35,
+                height: SIZES.width > 400 ? 50 : 35,
+                borderRadius: 30,
+                marginRight: "2%",
               }}
-            >
-              07th Feb {"\n"}05:16 pm
-            </Text>
-          </View>
-        </Pressable>
+            />
+          </>
+        )}
+        <View>
+          <Text style={styles.memberListItemName}>
+            {member?.name ? member?.name : "N.A"}
+          </Text>
+          <Text style={styles.memberListItemCode}>Location</Text>
+          <Text style={styles.memberListItemCode}>Location line</Text>
+        </View>
+        <View style={styles.memberListItemType}>
+          <Text
+            style={{
+              color: "black",
+              fontWeight: "700",
+            }}
+          >
+            07th Feb {"\n"}05:16 pm
+          </Text>
+        </View>
+      </Pressable>
     );
   }
 
@@ -322,7 +395,34 @@ const HomeScreen = ({ navigation }: any) => {
             marginBottom: SIZES.height > 700 ? "12%" : "17%",
           }}
         >
-          {renderGroups()}
+          {groupsAndMembersData?.groupsAndMembersDetails?.length > 0 ? (
+            groupsAndMembersData?.groupsAndMembersDetails.map(
+              (group: any, i: number) => (
+                <View key={group?.group_code ? group?.group_code : i}>
+                  {/* {renderGroups(group)} */}
+                  <RenderGroups
+                    groupDetails={group}
+                    setGroupMembersList={setGroupMembersList}
+                    index={i}
+                    selectedGroupDetails={selectedGroupDetails}
+                  />
+                </View>
+              )
+            )
+          ) : (
+            <>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontWeight: "600",
+                  fontSize: 20,
+                  marginTop: 40,
+                }}
+              >
+                Groups not Available
+              </Text>
+            </>
+          )}
         </ScrollView>
 
         <View
@@ -470,11 +570,26 @@ const HomeScreen = ({ navigation }: any) => {
             marginBottom: "2%",
           }}
         >
-          {renderMembers()}
-          {renderMembers()}
-          {renderMembers()}
-          {renderMembers()}
-          {renderMembers()}
+          {groupMembersList?.length > 0 ? (
+            groupMembersList.map((member: any, i: number) => (
+              <View key={member?.users_id ? member?.users_id : i}>
+                {renderMembers(member)}
+              </View>
+            ))
+          ) : (
+            <>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontWeight: "600",
+                  fontSize: 20,
+                  marginTop: 40,
+                }}
+              >
+                Members not Available
+              </Text>
+            </>
+          )}
         </ScrollView>
         <Pressable
           style={{
@@ -507,7 +622,8 @@ const HomeScreen = ({ navigation }: any) => {
     </SafeAreaView>
   );
 };
-
+// =========================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   homeWrapper: {
     flex: 1,
@@ -520,7 +636,6 @@ const styles = StyleSheet.create({
     height: "auto",
     flexDirection: "row",
     padding: "2%",
-    
   },
   memberListItemImage: {
     backgroundColor: "white",
@@ -665,3 +780,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+// =============================================== THE END =======================================================

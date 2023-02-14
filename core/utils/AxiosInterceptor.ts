@@ -14,7 +14,7 @@ export const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    console.log("config: ", config);
+    // console.log("config: ", config);
 
     // const jwtToken = "";
     // if (jwtToken) {
@@ -32,7 +32,7 @@ instance.interceptors.request.use(
 // Added a response interceptor
 instance.interceptors.response.use(
   function (response) {
-    console.log("response: ", response);
+    // console.log("response: ", response);
 
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
