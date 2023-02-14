@@ -47,7 +47,7 @@ const App = () => {
     try {
       const token = await AsyncStorage.getItem("authentication-token");
       if (token !== null) {
-        console.log("Token Found ::::::::: ", token);
+        console.log("Token Found : ", token);
         setAuthenticationToken(token);
       } else console.log("Token Not Found");
     } catch (e: any) {

@@ -71,7 +71,10 @@ const ProfileScreen = ({ navigation }: any) => {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("You've refused to allow this app to access your photos!");
+      Alert.alert(
+        "Permission Failed",
+        "You've refused to allow this app to access your photos!"
+      );
       return;
     }
 
@@ -92,7 +95,10 @@ const ProfileScreen = ({ navigation }: any) => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("You've refused to allow this app to access your camera!");
+      Alert.alert(
+        "Permission Failed",
+        "You've refused to allow this app to access your camera!"
+      );
       return;
     }
 

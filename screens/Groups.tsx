@@ -15,7 +15,6 @@ import { SIZES } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 // -----------------------------------------------------------------
 const Groups = ({ navigation }: any) => {
-  console.log("rerender");
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
 

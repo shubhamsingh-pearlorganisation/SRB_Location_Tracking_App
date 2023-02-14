@@ -10,7 +10,6 @@ import {
   Pressable,
   ActivityIndicator,
   Alert,
-  Button,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import * as ImagePicker from "expo-image-picker";
@@ -55,7 +54,10 @@ const Register = ({ route, navigation }: any) => {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("You've refused to allow this app to access your photos!");
+      Alert.alert(
+        "Permission Failed",
+        "You've refused to allow this app to access your photos!"
+      );
       return;
     }
 
@@ -76,7 +78,10 @@ const Register = ({ route, navigation }: any) => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("You've refused to allow this app to access your camera!");
+      Alert.alert(
+        "Permission Failed",
+        "You've refused to allow this app to access your camera!"
+      );
       return;
     }
 
@@ -202,8 +207,6 @@ const Register = ({ route, navigation }: any) => {
       formData.append("email", emailId);
       formData.append("dob", dob);
       setShowLoader(true);
-
-      // console.log("formData::: ", formData);
 
       const response = await instance.post("/users_update", formData);
       if (response.status === 200 && response.data?.status === true) {

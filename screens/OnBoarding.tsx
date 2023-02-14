@@ -2,7 +2,6 @@ import React from "react";
 import {
   Animated,
   Image,
-  SafeAreaView,
   StyleSheet,
   View,
   Text,
