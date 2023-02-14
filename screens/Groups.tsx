@@ -1,21 +1,11 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Platform,
-  Dimensions,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import { COLORS, SIZES } from "../constants";
-import { animated, useSpring } from "@react-spring/native";
+
+import { AntDesign } from "@expo/vector-icons";
 
 const Groups = ({ navigation }: any) => {
   const onPressSubmit = () => {
@@ -34,7 +24,7 @@ const Groups = ({ navigation }: any) => {
           <View style={styles.groupListItemType}>
             <Text
               style={{
-                fontSize: SIZES.width>400?15:12,
+                fontSize: SIZES.width > 400 ? 15 : 12,
                 color: "white",
                 fontWeight: "700",
                 textAlign: "center",
@@ -49,7 +39,7 @@ const Groups = ({ navigation }: any) => {
         <View style={styles.groupListItemMemberCount}>
           <Text
             style={{
-              fontSize: SIZES.width>400?20:18,
+              fontSize: SIZES.width > 400 ? 20 : 18,
               fontWeight: "600",
             }}
           >
@@ -57,7 +47,7 @@ const Groups = ({ navigation }: any) => {
           </Text>
           <Text
             style={{
-              fontSize: SIZES.width>400?20:18,
+              fontSize: SIZES.width > 400 ? 20 : 18,
               fontWeight: "500",
             }}
           >
@@ -68,7 +58,7 @@ const Groups = ({ navigation }: any) => {
           style={[
             styles.groupListItemType,
             {
-              right: "1%",
+              right: SIZES.width>400?"5%":"8%",
               position: "absolute",
               backgroundColor: "transparent",
             },
@@ -80,13 +70,28 @@ const Groups = ({ navigation }: any) => {
           >
             <Text
               style={{
-                fontSize: SIZES.width>400?20:18,
+                fontSize: SIZES.width > 400 ? 20 : 18,
                 fontWeight: "600",
               }}
             >
               Edit
             </Text>
             <MaterialIcons name="keyboard-arrow-right" size={20} />
+          </Pressable>
+          
+        </View>
+        <View style={[
+            styles.groupListItemType,
+            {
+              right: "1%",
+              position: "absolute",
+              backgroundColor: "transparent",
+            },
+          ]}>
+        <Pressable
+          // onPress={onPressSubmit}
+          >
+            <AntDesign name="delete" size={20} />
           </Pressable>
         </View>
       </Pressable>
@@ -104,14 +109,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    padding: SIZES.width>400?"3%":"4%",
+    padding: SIZES.width > 400 ? "3%" : "4%",
     margin: "2%",
   },
   groupListItemName: {
-    fontSize: SIZES.width>400?20:18,
+    fontSize: SIZES.width > 400 ? 20 : 18,
   },
   groupListItemCode: {
-    fontSize: SIZES.width>400?18:15,
+    fontSize: SIZES.width > 400 ? 18 : 15,
     color: "grey",
   },
   groupListItemType: {
@@ -123,12 +128,11 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",
-    
   },
   groupListItemMemberCount: {
     justifyContent: "center",
     alignItems: "center",
-    fontSize: SIZES.width>400?20:18,
+    fontSize: SIZES.width > 400 ? 20 : 18,
     fontWeight: "600",
   },
 });
