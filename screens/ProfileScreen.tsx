@@ -17,7 +17,11 @@ import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as ImagePicker from "expo-image-picker";
-import { AuthContext, UserDetailsContext } from "../App";
+import {
+  AuthContext,
+  GroupsAndMembersContext,
+  UserDetailsContext,
+} from "../App";
 
 // ============================================================================================
 
@@ -26,6 +30,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
   const authContextData: any = useContext(AuthContext);
   const userDetailsContextData: any = useContext(UserDetailsContext);
+  const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   // Component's Local States
   // ========================
@@ -265,6 +270,7 @@ const ProfileScreen = ({ navigation }: any) => {
           type: "success",
         });
         userDetailsContextData?.updateUserDetails();
+        groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing
         goToBackScreen();
       } else {
         setShowLoader(false);
