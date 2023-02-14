@@ -58,6 +58,7 @@ const Groups = ({ navigation }: any) => {
           style={[
             styles.groupListItemType,
             {
+              alignSelf:'center',
               right: SIZES.width>400?"5%":"8%",
               position: "absolute",
               backgroundColor: "transparent",
@@ -83,6 +84,7 @@ const Groups = ({ navigation }: any) => {
         <View style={[
             styles.groupListItemType,
             {
+              alignSelf:'center',
               right: "1%",
               position: "absolute",
               backgroundColor: "transparent",
@@ -120,11 +122,13 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   groupListItemType: {
+    alignSelf:'flex-start',
     backgroundColor: "green",
     borderRadius: 10,
     width: "auto",
     height: "auto",
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal:10,
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",
