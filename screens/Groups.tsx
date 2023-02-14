@@ -8,11 +8,12 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { SIZES } from "../constants";
 import { useToast } from "react-native-toast-notifications";
 import { AuthContext } from "../App";
 import { instance } from "../core/utils/AxiosInterceptor";
-// -----------------------------------------------------------------------------
+import { COLORS, SIZES } from "../constants";
+import { AntDesign } from "@expo/vector-icons";
+
 const Groups = ({ navigation }: any) => {
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
@@ -128,7 +129,8 @@ const Groups = ({ navigation }: any) => {
           style={[
             styles.groupListItemType,
             {
-              right: "1%",
+              alignSelf: "center",
+              right: SIZES.width > 400 ? "5%" : "8%",
               position: "absolute",
               backgroundColor: "transparent",
             },
@@ -147,6 +149,23 @@ const Groups = ({ navigation }: any) => {
               Edit
             </Text>
             <MaterialIcons name="keyboard-arrow-right" size={20} />
+          </Pressable>
+        </View>
+        <View
+          style={[
+            styles.groupListItemType,
+            {
+              alignSelf: "center",
+              right: "1%",
+              position: "absolute",
+              backgroundColor: "transparent",
+            },
+          ]}
+        >
+          <Pressable
+          // onPress={onPressSubmit}
+          >
+            <AntDesign name="delete" size={20} />
           </Pressable>
         </View>
       </Pressable>
@@ -206,11 +225,13 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   groupListItemType: {
+    alignSelf: "flex-start",
     backgroundColor: "green",
     borderRadius: 10,
     width: 100,
     height: "auto",
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     alignContent: "center",
     justifyContent: "center",
     fontWeight: "700",

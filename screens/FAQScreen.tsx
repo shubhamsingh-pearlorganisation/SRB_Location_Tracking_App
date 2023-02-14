@@ -1,20 +1,9 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Alert,
-  Image,
-  Pressable,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, StyleSheet, ScrollView } from "react-native";
+
 import { useState } from "react";
-import { Feather } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+
 import { COLORS, SIZES } from "../constants";
-import { profile } from "../constants/images";
+
 import { List } from "react-native-paper";
 
 const FAQScreen = () => {
@@ -24,42 +13,64 @@ const FAQScreen = () => {
 
   const FAQ = [
     {
-      Question: "Stay close with family in one touch,\nwe can help you.",
+      Question: "Stay close with family in one touch, we can help you.",
       Solution:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
-      Question: "With us you can be calm to your\nfriends and parents.",
+      Question: "With us you can be calm to your friends and parents.",
       Solution:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
-      Question: "We will help you in your\n aspects.",
+      Question: "We will help you in your aspects.",
       Solution:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
     {
-      Question: "We will also help you with\nvehicle tracking.",
+      Question: "We will also help you with vehicle tracking.",
       Solution:
-        "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     },
   ];
 
   return (
     <View>
-      {FAQ.map((item) => (
-        <List.Section>
-          <List.Accordion
-            title={item.Question}
-            left={(props) => <List.Icon {...props} icon="folder" />}
-            onPress={handlePress}
-          >
-            <List.Item title={item.Solution} />
-          </List.Accordion>
-        </List.Section>
-      ))}
+      <List.Section title="Frequently asked Questions">
+        <ScrollView
+          style={{
+            height: "95%",
+          }}
+        >
+          {FAQ.map((item) => (
+            <List.Section>
+              <List.Accordion
+                title={item.Question}
+                titleStyle={styles.answerText}
+                titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
+                left={(props) => <List.Icon {...props} icon="folder" />}
+                onPress={handlePress}
+              >
+                <List.Item
+                  title={item.Solution}
+                  titleNumberOfLines={10}
+                  titleStyle={styles.answerText}
+                />
+              </List.Accordion>
+            </List.Section>
+          ))}
+        </ScrollView>
+      </List.Section>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  answerText: {
+    width: "auto",
+    height: "auto",
+    fontSize: SIZES.width > 400 ? 20 : 15,
+  },
+});
 
 export default FAQScreen;
