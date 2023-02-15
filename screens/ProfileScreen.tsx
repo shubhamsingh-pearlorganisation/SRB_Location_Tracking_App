@@ -628,7 +628,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     paddingHorizontal: 10,
     paddingVertical: 0,
-    padding: 0,
   },
   addImage: {
     justifyContent: "center",
