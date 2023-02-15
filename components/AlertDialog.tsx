@@ -30,7 +30,8 @@ export default function AlertDialog({
             style={{
               alignItems: "center",
               backgroundColor: "white",
-              height: SIZES.height>700? SIZES.height * 0.2:SIZES.height * 0.35,
+              height:
+                SIZES.height > 700 ? SIZES.height * 0.2 : SIZES.height * 0.35,
               width: "90%",
               borderWidth: 1,
               borderColor: "#fff",
@@ -58,11 +59,11 @@ export default function AlertDialog({
               activeOpacity={0.9}
               onPress={() => confirmAction(false)}
               style={{
-                //   borderRadius: 0,
                 alignItems: "center",
                 position: "absolute",
                 borderBottomWidth: 0,
-                width: SIZES.width>400? SIZES.width * 0.4:SIZES.width*.8,
+                width:
+                  SIZES.width > 400 ? SIZES.width * 0.4 : SIZES.width * 0.8,
                 height: "auto",
                 justifyContent: "center",
                 borderRadius: 30,
@@ -82,7 +83,8 @@ export default function AlertDialog({
                 alignItems: "center",
                 position: "absolute",
                 borderBottomWidth: 0,
-                width: SIZES.width>400? SIZES.width * 0.4:SIZES.width*.8,
+                width:
+                  SIZES.width > 400 ? SIZES.width * 0.4 : SIZES.width * 0.8,
                 height: "auto",
                 justifyContent: "center",
                 borderRadius: 30,

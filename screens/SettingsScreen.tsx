@@ -1,8 +1,5 @@
 import { useState } from "react";
-import {
-  View,
-  StyleSheet,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 import { List } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";
 import { COLORS, SIZES } from "../constants";
@@ -18,7 +15,6 @@ const Settings = () => {
         <List.Accordion
           title="Select Map Mode"
           titleStyle={styles.textHeading}
-  
           onPress={handlePress}
         >
           <View style={styles.item}>
@@ -76,7 +72,6 @@ const Settings = () => {
           title="Privacy Policy, Terms and Conditons"
           titleStyle={styles.textHeading}
           titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-
           onPress={handlePress}
         >
           <List.Item

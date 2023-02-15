@@ -1,8 +1,6 @@
-import tw from "twrnc";
 import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
 
 const SplashPartner = ({ navigation }: any) => {
   const onPressSubmit = () => {

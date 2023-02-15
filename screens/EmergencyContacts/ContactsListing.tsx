@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../../constants";
 import CustomAlert from "../../components/AlertDialog";
@@ -19,10 +13,6 @@ const ContactsListing = ({ navigation }: any) => {
   const [showAlert, setShowAlert] = useState(false);
   const [deleteContact, setDeleteContact] = useState(false);
 
-  // {if(deleteContact)
-  //   alert("Successfull!!!")
-  // }
-
   function renderEemergencyContactListItem() {
     return (
       <View
@@ -35,16 +25,8 @@ const ContactsListing = ({ navigation }: any) => {
         }}
       >
         <View>
-          <Text
-            style={styles.contactName}
-          >
-            Full Name
-          </Text>
-          <Text
-            style={styles.contactumber}
-          >
-            Contact Number
-          </Text>
+          <Text style={styles.contactName}>Full Name</Text>
+          <Text style={styles.contactumber}>Contact Number</Text>
         </View>
         <Pressable
           style={{
@@ -157,12 +139,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#FFFFFF",
   },
-  contactName:{
+  contactName: {
     fontSize: SIZES.width > 400 ? 22 : 20,
   },
-  contactumber:{
+  contactumber: {
     fontSize: SIZES.width > 400 ? 18 : 15,
-  }
+  },
 });
 
 export default ContactsListing;

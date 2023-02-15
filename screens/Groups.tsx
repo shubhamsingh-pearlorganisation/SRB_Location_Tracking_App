@@ -55,7 +55,6 @@ const Groups = ({ navigation }: any) => {
       const response = await instance.post("/group_delete", formData);
       if (response.status === 200 && response.data?.status) {
         // setShowLoader(false);
-        // console.log("response::SHUBHAM ", response);
         toast.show(
           `Group with id ${groupDetails?.group_id} deleted successfully`,
           {
@@ -94,14 +93,16 @@ const Groups = ({ navigation }: any) => {
 
   // This renderGroups component is used to render group list
   const renderGroups = (groupDetails: any) => {
-  //condition to handle the height of item according to the length of group title
-    const customStyle =  
+    //condition to handle the height of item according to the length of group title
+    const customStyle =
       groupDetails?.title?.toString().length >= 10 &&
       groupDetails?.title?.toString().length <= 20
         ? styles.bigTitle
         : groupDetails?.title?.toString().length < 10
         ? styles.normalTitle
-        : !groupDetails?.title?styles.normalTitle :styles.largeTitle;
+        : !groupDetails?.title
+        ? styles.normalTitle
+        : styles.largeTitle;
     return (
       <Pressable style={[styles.groupListItem, customStyle]}>
         <View

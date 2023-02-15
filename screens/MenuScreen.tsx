@@ -1,12 +1,5 @@
-import React, { useContext, createContext } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Pressable,
-  Alert,
-} from "react-native";
+import React, { useContext } from "react";
+import { View, Text, Image, StyleSheet, Pressable, Alert } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -190,14 +183,14 @@ const MenuScreen = ({ navigation }: any) => {
       <View>
         <Pressable
           style={{
-            alignItems:'center',
+            alignItems: "center",
             width: "99%",
             flexDirection: "row",
           }}
           onPress={() => redirectToSettingsScreen()}
         >
           <Ionicons
-            style={[styles.icons, { paddingLeft: 5,top:"1%" }]}
+            style={[styles.icons, { paddingLeft: 5, top: "1%" }]}
             name="settings-sharp"
             size={SIZES.width > 400 ? 30 : 20}
             color={"black"}
@@ -213,7 +206,10 @@ const MenuScreen = ({ navigation }: any) => {
             Settings
           </Text>
           <MaterialIcons
-            style={[styles.icons, { right: 0, position: "absolute",top:"5%" }]}
+            style={[
+              styles.icons,
+              { right: 0, position: "absolute", top: "5%" },
+            ]}
             name="keyboard-arrow-right"
             size={SIZES.width > 400 ? 30 : 20}
             color={"black"}
@@ -321,15 +317,11 @@ const styles = StyleSheet.create({
   },
   icons: {
     margin: 10,
-    // width: SIZES.width > 400 ? 50 : 35,
-    // height: SIZES.width > 400 ? 50 : 35,
-    // borderRadius: 25,
-    // marginRight: "2%",
   },
-  profileImage:{
+  profileImage: {
     width: SIZES.width > 400 ? 50 : 35,
     height: SIZES.width > 400 ? 50 : 35,
     borderRadius: 25,
-  }
+  },
 });
 export default MenuScreen;

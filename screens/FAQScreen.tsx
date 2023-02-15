@@ -42,7 +42,7 @@ const FAQScreen = () => {
             height: "95%",
           }}
         >
-          {FAQ.map((item,i) => (
+          {FAQ.map((item, i) => (
             <List.Section key={i}>
               <List.Accordion
                 title={item.Question}

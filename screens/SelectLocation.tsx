@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import SrbButton from "../components/SrbButton";
 import { showError } from "../core/utils/helper";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";

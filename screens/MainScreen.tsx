@@ -18,17 +18,15 @@ const MainScreen = ({ navigation }: any) => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused, size }) => {
           let iconName: any;
           let rn = route.name;
 
-          if (rn === "Home") {
-            iconName = focused ? "home" : "home-outline";
-          } else if (rn === "Groups") {
+          if (rn === "Home") iconName = focused ? "home" : "home-outline";
+          else if (rn === "Groups")
             iconName = focused ? "people" : "people-outline";
-          } else if (rn === "Menu") {
-            iconName = focused ? "menu" : "menu-outline";
-          }
+          else if (rn === "Menu") iconName = focused ? "menu" : "menu-outline";
+          else iconName = "menu";
 
           return <Ionicons name={iconName} size={size} color={"#705ECF"} />;
         },
@@ -76,14 +74,6 @@ const MainScreen = ({ navigation }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  iconContainer: {
-    // borderBottomWidth:1,
-    // borderColor:'black',
-    // flexDirection: "row",
-    // justifyContent: "space-evenly",
-    // width: "50%",
-  },
-});
+const styles = StyleSheet.create({});
 
 export default MainScreen;
