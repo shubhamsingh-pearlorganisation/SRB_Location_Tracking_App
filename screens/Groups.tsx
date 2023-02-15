@@ -6,6 +6,7 @@ import {
   Pressable,
   ActivityIndicator,
   Alert,
+  ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useToast } from "react-native-toast-notifications";
@@ -93,12 +94,21 @@ const Groups = ({ navigation }: any) => {
 
   // This renderGroups component is used to render group list
   const renderGroups = (groupDetails: any) => {
+  //condition to handle the height of item according to the length of group title
+    const customStyle =  
+      groupDetails?.title?.toString().length >= 10 &&
+      groupDetails?.title?.toString().length <= 20
+        ? styles.bigTitle
+        : groupDetails?.title?.toString().length < 10
+        ? styles.normalTitle
+        : !groupDetails?.title?styles.normalTitle :styles.largeTitle;
     return (
-      <Pressable style={styles.groupListItem}>
+      <Pressable style={[styles.groupListItem, customStyle]}>
         <View
           style={{
             left: 0,
             position: "absolute",
+            width: "40%",
           }}
         >
           <View style={styles.groupListItemType}>
@@ -193,7 +203,7 @@ const Groups = ({ navigation }: any) => {
       </Text>
     </>
   ) : (
-    <View>
+    <ScrollView>
       {groupsAndMembersData?.groupsAndMembersDetails.length > 0 ? (
         groupsAndMembersData?.groupsAndMembersDetails.map(
           (group: any, i: number) => (
@@ -216,7 +226,7 @@ const Groups = ({ navigation }: any) => {
           </Text>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };
 // =========================================================================================
@@ -225,7 +235,6 @@ const styles = StyleSheet.create({
   groupListItem: {
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: "auto",
     flexDirection: "row",
     borderBottomWidth: 1,
     borderTopWidth: 1,
@@ -257,6 +266,13 @@ const styles = StyleSheet.create({
     fontSize: SIZES.width > 400 ? 20 : 18,
     fontWeight: "600",
   },
+  largeTitle: {
+    paddingVertical: SIZES.width < 400 ? "18%" : "8%",
+  },
+  bigTitle: {
+    paddingVertical: SIZES.width < 400 ? "10%" : "5%",
+  },
+  normalTitle: {},
 });
 
 export default Groups;

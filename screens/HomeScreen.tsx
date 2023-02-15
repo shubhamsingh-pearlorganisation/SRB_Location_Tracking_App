@@ -57,7 +57,13 @@ const RenderGroups = ({
       ]}
       onPress={handleGroupItemClick}
     >
-      <View>
+      <View
+      style={{
+        // left: 0,
+        // position: "absolute",
+        width:SIZES.width>400?"80%":"70%",
+      }}
+      >
         <Text style={styles.groupListItemName}>
           {groupDetails?.title ? groupDetails?.title : "N.A"}
         </Text>
