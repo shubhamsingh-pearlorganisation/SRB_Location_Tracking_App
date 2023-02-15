@@ -16,13 +16,19 @@ import * as ImagePicker from "expo-image-picker";
 import { instance } from "../core/utils/AxiosInterceptor";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
-import { AuthContext } from "../App";
+import {
+  AuthContext,
+  GroupsAndMembersContext,
+  UserDetailsContext,
+} from "../App";
 
 // -----------------------------------------------------------------------------------
 
 const Register = ({ route, navigation }: any) => {
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
+  const userDetailsContextData: any = useContext(UserDetailsContext);
+  const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   // Component's Local States
   // ========================
@@ -214,6 +220,8 @@ const Register = ({ route, navigation }: any) => {
         toast.show("User's details saved successfully!", {
           type: "success",
         });
+        userDetailsContextData?.updateUserDetails();
+        groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing
         navigation.navigate("Main");
       } else {
         setShowLoader(false);
