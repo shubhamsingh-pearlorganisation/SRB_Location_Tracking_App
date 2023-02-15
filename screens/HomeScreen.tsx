@@ -71,7 +71,7 @@ const RenderGroups = ({
           {groupDetails?.group_code ? groupDetails?.group_code : "N.A"}
         </Text>
       </View>
-      <View style={styles.groupListItemType}>
+      <View style={[styles.groupListItemType]}>
         <Text
           style={{
             color: "white",

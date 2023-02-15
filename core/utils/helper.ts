@@ -35,6 +35,7 @@ const showSuccess = (message: string) => {
   });
 };
 
+
 //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
 const fetchAuthenticationToken = async () => {
   try {
