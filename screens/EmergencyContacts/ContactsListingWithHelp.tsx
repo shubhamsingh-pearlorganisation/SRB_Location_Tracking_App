@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SIZES } from "../../constants";
+import { COLORS, SIZES } from "../../constants";
 import { useState, useContext, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { AuthContext, UserDetailsContext } from "../../App";
@@ -106,8 +106,19 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
   return (
     <SafeAreaView style={styles.container}>
       {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />}
-      <Pressable onPress={() => navigation.navigate("EmergencyTimer")}>
-        <View style={styles.image}>
+      <Pressable
+        onPress={() => navigation.navigate("EmergencyTimer")}
+        disabled={contactsList?.length === 0}
+      >
+        <View
+          style={[
+            styles.image,
+            {
+              backgroundColor:
+                contactsList?.length === 0 ? "darkgrey" : "#FF0000",
+            },
+          ]}
+        >
           <Text style={styles.needHelp}>NEED HELP?</Text>
           <View style={styles.lineStyle} />
           <Text style={styles.pressHere}>PRESS HERE</Text>
@@ -115,9 +126,18 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
       </Pressable>
 
       <Text style={styles.title}>Emergency Contacts</Text>
+      <View>
+        <Pressable onPress={() => navigation.navigate("PhonebookContactList")}>
+          <Text style={styles.addMoreContacts}>
+            {contactsList?.length > 0 ? "Add More Contacts" : "Add Contacts"}
+          </Text>
+        </Pressable>
+      </View>
       <Text style={styles.totalContactsLength}>
         {contactsList?.length > 0 && (
-          <Text>Total Contacts: {contactsList?.length}</Text>
+          <>
+            <Text>Total Contacts: {contactsList?.length}</Text>
+          </>
         )}
       </Text>
 
@@ -188,14 +208,14 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
 // CSS CODE
 const styles = StyleSheet.create({
   container: {
-    marginTop: "20%",
+    marginTop: "10%",
     alignItems: "center",
     height: SIZES.height,
   },
   title: {
     fontStyle: "normal",
     fontWeight: "600",
-    fontSize: SIZES.height > 700 ? 40 : 30,
+    fontSize: SIZES.height > 700 ? 40 : 25,
     height: "auto",
     textAlign: "center",
     color: "#000000",
@@ -207,8 +227,7 @@ const styles = StyleSheet.create({
   image: {
     width: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
     height: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
-    marginBottom: "10%",
-    backgroundColor: "#FF0000",
+    marginBottom: "5%",
     position: "relative",
     borderRadius: 91,
     justifyContent: "center",
@@ -243,10 +262,21 @@ const styles = StyleSheet.create({
     fontSize: SIZES.width > 400 ? 18 : 15,
   },
   totalContactsLength: {
-    margin: 20,
+    margin: 10,
     color: "blue",
     fontWeight: "bold",
     fontSize: SIZES.width > 400 ? 20 : 15,
+  },
+  addMoreContacts: {
+    alignSelf: "flex-start",
+    backgroundColor: COLORS.voilet,
+    padding: "2%",
+    marginTop: "10%",
+    marginLeft: "2%",
+    borderRadius: 10,
+    fontSize: SIZES.width > 400 ? 20 : 15,
+    fontWeight: "bold",
+    color: "white",
   },
 });
 

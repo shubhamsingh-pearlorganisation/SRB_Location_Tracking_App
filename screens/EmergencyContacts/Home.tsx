@@ -11,10 +11,6 @@ const EmergencyContactsScreen = ({ navigation }: any) => {
   const [contactsFound, setContactsFound] = useState(false);
 
   useEffect(() => {
-    console.log("rerendered");
-  }, []);
-
-  useEffect(() => {
     if (userDetailsContextData?.userContactsList?.length > 0)
       setContactsFound(true);
     else setContactsFound(false);
@@ -25,19 +21,23 @@ const EmergencyContactsScreen = ({ navigation }: any) => {
     else navigation.navigate("Emergency");
   }, [contactsFound]);
 
-  return (
-    <View style={styles.container}>
-      <Image source={emergencyContactHome} style={styles.image} />
-      <Text style={styles.noContact}>No Contacts Added</Text>
-      <Text style={styles.message}>Add emergency contact to your circle</Text>
+  return !contactsFound ? (
+    <>
+      <View style={styles.container}>
+        <Image source={emergencyContactHome} style={styles.image} />
+        <Text style={styles.noContact}>No Contacts Added</Text>
+        <Text style={styles.message}>Add emergency contact to your circle</Text>
 
-      <Pressable
-        style={styles.addContactBtn}
-        onPress={() => navigation.navigate("PhonebookContactList")}
-      >
-        <Text style={styles.addContactBtnText}>Add Contact</Text>
-      </Pressable>
-    </View>
+        <Pressable
+          style={styles.addContactBtn}
+          onPress={() => navigation.navigate("PhonebookContactList")}
+        >
+          <Text style={styles.addContactBtnText}>Add Contact</Text>
+        </Pressable>
+      </View>
+    </>
+  ) : (
+    <>{navigation.navigate("Main")}</>
   );
 };
 

@@ -63,7 +63,10 @@ const PhonebookContactList = ({ navigation }: any) => {
               contact.name !== null &&
               contact.name !== "" &&
               contact.name.length !== 0 &&
-              !contact.name.includes("null")
+              !contact.name.includes("null") &&
+              Array.isArray(contact?.phoneNumbers) &&
+              contact?.phoneNumbers?.length > 0 &&
+              contact?.phoneNumbers[0]?.number
             );
           });
           setContacts({
@@ -235,35 +238,38 @@ const PhonebookContactList = ({ navigation }: any) => {
         <>
           {!contacts.isContactListEmpty && contacts.contactList.length > 0 && (
             <>
-              <Text style={styles.selectedContactsCount}>
-                Selected: {selectedContacts?.length}
-              </Text>
               <TouchableOpacity
                 onPress={submitContacts}
-                style={{
-                  alignSelf: "flex-end",
-                  backgroundColor:
-                    selectedContacts?.length > 0 ? COLORS.voilet : "darkgrey",
-                  padding: "2%",
-                  marginTop: "2%",
-                  marginRight: "2%",
-                  borderRadius: 10,
-                }}
                 disabled={!selectedContacts?.length}
               >
-                <Text
+                <View
                   style={{
-                    fontSize: 25,
-                    color: COLORS.white,
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
-                  Done
-                  {showDoneLoader ? (
-                    <ActivityIndicator size={SIZES.width > 400 ? 30 : 20} />
-                  ) : (
-                    <></>
-                  )}
-                </Text>
+                  <Text style={styles.selectedAndAddContactBtns}>
+                    Selected: {selectedContacts?.length}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.selectedAndAddContactBtns,
+                      {
+                        backgroundColor: !selectedContacts?.length
+                          ? "darkgrey"
+                          : COLORS.voilet,
+                      },
+                    ]}
+                  >
+                    Add Contacts
+                    {showDoneLoader ? (
+                      <ActivityIndicator size={SIZES.width > 400 ? 30 : 20} />
+                    ) : (
+                      <></>
+                    )}
+                  </Text>
+                </View>
               </TouchableOpacity>
             </>
           )}
@@ -284,14 +290,12 @@ const PhonebookContactList = ({ navigation }: any) => {
 // CSS CODE
 const styles = StyleSheet.create({
   list: {
-    flex: 1,
+    // flex: 1,
   },
-  selectedContactsCount: {
-    alignSelf: "flex-start",
+  selectedAndAddContactBtns: {
     backgroundColor: COLORS.voilet,
     padding: "2%",
-    marginTop: "2%",
-    marginLeft: "2%",
+    margin: "5%",
     borderRadius: 10,
     fontSize: SIZES.width > 400 ? 20 : 15,
     fontWeight: "bold",
