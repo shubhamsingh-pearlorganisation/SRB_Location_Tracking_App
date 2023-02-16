@@ -196,7 +196,7 @@ const HomeScreen = ({ navigation }: any) => {
     getCurrentLocation()
       .then((success: locationTypes | any) => {
         const { latitude, longitude } = success;
-        console.log("get live location after 6 second");
+        // console.log("get live location after 6 second");
         animate(latitude, longitude);
         updateState({
           heading: heading,
