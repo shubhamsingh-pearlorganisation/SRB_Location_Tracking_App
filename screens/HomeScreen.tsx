@@ -38,29 +38,16 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const RenderGroups = ({
   groupDetails,
   setGroupMembersList,
-  index,
   selectedGroupDetails,
 }: any) => {
-  // const [isActive, setIsActive] = useState(false);
-
   const handleGroupItemClick = () => {
-    // setIsActive(true);
-    // if (isActive === true) setIsActive(false);
     setGroupMembersList(groupDetails?.users ? groupDetails?.users : []);
     selectedGroupDetails(groupDetails);
   };
   return (
-    <Pressable
-      style={[
-        styles.groupListItem,
-        // { backgroundColor: isActive ? "#e6eeff" : "" },
-      ]}
-      onPress={handleGroupItemClick}
-    >
+    <Pressable style={[styles.groupListItem]} onPress={handleGroupItemClick}>
       <View
         style={{
-          // left: 0,
-          // position: "absolute",
           width: SIZES.width > 400 ? "80%" : "70%",
         }}
       >
@@ -412,13 +399,13 @@ const HomeScreen = ({ navigation }: any) => {
             groupsAndMembersData?.groupsAndMembersDetails.map(
               (group: any, i: number) => (
                 <View key={group?.group_code ? group?.group_code : i}>
-                  {/* {renderGroups(group)} */}
-                  <RenderGroups
-                    groupDetails={group}
-                    setGroupMembersList={setGroupMembersList}
-                    index={i}
-                    selectedGroupDetails={selectedGroupDetails}
-                  />
+                  {group?.title && group?.group_code && (
+                    <RenderGroups
+                      groupDetails={group}
+                      setGroupMembersList={setGroupMembersList}
+                      selectedGroupDetails={selectedGroupDetails}
+                    />
+                  )}
                 </View>
               )
             )

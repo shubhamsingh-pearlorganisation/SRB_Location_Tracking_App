@@ -367,7 +367,11 @@ const ProfileScreen = ({ navigation }: any) => {
         <Text
           style={[
             styles.textView,
-            { fontWeight: "600", color: COLORS.white, padding: 0 },
+            {
+              fontWeight: "600",
+              color: COLORS.white,
+              padding: 0,
+            },
           ]}
         >
           {userDetailsPrefilled?.name
@@ -377,10 +381,14 @@ const ProfileScreen = ({ navigation }: any) => {
       </View>
 
       <View style={styles.bottomView}>
-        <Text style={styles.textView}>
+        <Text
+          style={[styles.textView, { fontSize: SIZES.width > 400 ? 25 : 20 }]}
+        >
           {userDetailsPrefilled?.email ? userDetailsPrefilled?.email : "Email"}
         </Text>
-        <Text style={styles.textView}>
+        <Text
+          style={[styles.textView, { fontSize: SIZES.width > 400 ? 25 : 20 }]}
+        >
           {userDetailsPrefilled?.dob
             ? userDetailsPrefilled?.dob.toString().split("-")[2] +
               "-" +
@@ -389,7 +397,9 @@ const ProfileScreen = ({ navigation }: any) => {
               userDetailsPrefilled?.dob.toString().split("-")[0]
             : "Date of Birth"}
         </Text>
-        <Text style={styles.textView}>
+        <Text
+          style={[styles.textView, { fontSize: SIZES.width > 400 ? 25 : 20 }]}
+        >
           {userDetailsPrefilled?.contact
             ? userDetailsPrefilled?.contact
             : "Contact Number"}
@@ -543,7 +553,7 @@ const ProfileScreen = ({ navigation }: any) => {
             styles.textInputStyle,
             {
               backgroundColor: "white",
-              paddingHorizontal: 0,
+              paddingHorizontal: 5,
               paddingVertical: 0,
             },
           ]}
@@ -561,6 +571,7 @@ const ProfileScreen = ({ navigation }: any) => {
             onCancel={hideDatePicker}
             maximumDate={new Date()}
             minimumDate={new Date("1920-01-01")}
+            date={new Date(userDetails?.dob)}
           />
           <Text style={styles.textView}>
             {userDetails?.dob
@@ -611,7 +622,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   textView: {
-    fontSize: SIZES.width > 400 ? 25 : 20,
+    fontSize: SIZES.width > 400 ? 27 : 24,
     fontWeight: "600",
     color: COLORS.voilet,
     borderColor: COLORS.voilet,

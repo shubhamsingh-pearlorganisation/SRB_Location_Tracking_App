@@ -158,7 +158,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
                       flexDirection: "row",
                       borderColor: "black",
                       marginBottom: ".5%",
-                      padding: "1%",
+                      padding: "2%",
                       backgroundColor: "white",
                     }}
                   >
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     borderColor: "#FFFFFF",
   },
   contactName: {
-    fontSize: SIZES.width > 400 ? 22 : 20,
+    fontSize: SIZES.width > 400 ? 22 : 17,
   },
   contactumber: {
     fontSize: SIZES.width > 400 ? 18 : 15,

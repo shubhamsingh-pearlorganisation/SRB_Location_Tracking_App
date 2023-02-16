@@ -198,17 +198,15 @@ const Groups = ({ navigation }: any) => {
     );
   };
 
-  return showLoader ? (
-    <>
-      <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
-    </>
-  ) : (
+  return (
     <ScrollView>
+      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+
       {groupsAndMembersData?.groupsAndMembersDetails.length > 0 ? (
         groupsAndMembersData?.groupsAndMembersDetails.map(
           (group: any, i: number) => (
             <View key={group?.group_code ? group?.group_code : i}>
-              {renderGroups(group)}
+              {group?.title && group?.group_code && renderGroups(group)}
             </View>
           )
         )
