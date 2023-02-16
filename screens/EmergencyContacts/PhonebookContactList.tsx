@@ -13,13 +13,14 @@ import { COLORS, SIZES } from "../../constants";
 import IndividualContact from "./IndividualContact";
 import { useToast } from "react-native-toast-notifications";
 import { instance } from "../../core/utils/AxiosInterceptor";
-import { AuthContext } from "../../App";
+import { AuthContext, UserDetailsContext } from "../../App";
 
 // -------------------------------------------------------------------------------
 
 const PhonebookContactList = ({ navigation }: any) => {
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
+  const userDetailsContextData: any = useContext(UserDetailsContext);
 
   // Component's Local States
   // ========================
@@ -163,7 +164,7 @@ const PhonebookContactList = ({ navigation }: any) => {
           "Your all selected contacts were successfully added in database.",
           { type: "success" }
         );
-
+        userDetailsContextData?.updateContactList(true); //Updating Contact List Globally
         navigation.navigate("ContactsListingWithHelp");
       } else {
         setShowDoneLoader(false);
@@ -271,8 +272,8 @@ const PhonebookContactList = ({ navigation }: any) => {
             data={contacts.contactList}
             renderItem={renderItem}
             style={styles.list}
-            initialNumToRender={100}
-            maxToRenderPerBatch={200}
+            initialNumToRender={20}
+            maxToRenderPerBatch={50}
           />
         </>
       )}

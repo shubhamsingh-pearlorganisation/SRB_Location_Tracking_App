@@ -52,6 +52,18 @@ const App = () => {
     userData: {},
   });
 
+  // Used to store contacts list
+  const [contactsList, setContactsList] = useState<any>({
+    update: false,
+    contacts: [],
+  });
+
+  useEffect(() => {
+    console.log(
+      `User's Total ${contactsList?.contacts.length} contacts found.`
+    );
+  }, [contactsList]);
+
   // This method is used to receive authentication token from login screen after successful login
   const receiveAuthenticationToken = (jwtToken: any) => {
     if (jwtToken !== null) setAuthenticationToken(jwtToken);
@@ -64,8 +76,9 @@ const App = () => {
 
   useEffect(() => {
     if (authenticationToken) {
-      fetchGroups(false); //Fetching Groups and Members Details API
-      fetchUserDetails(); //Fetching User Details API
+      fetchGroups(false); //Fetching Groups and Members Details from API
+      fetchUserDetails(); //Fetching User Details from API
+      fetchContacts(); // Fetching Contacts List from API
     }
   }, [authenticationToken]);
 
@@ -150,6 +163,38 @@ const App = () => {
     }
   };
 
+  // This method is used to fetch complete contacts list from the database.
+  const fetchContacts = async (isUpdateRequired: boolean = false) => {
+    try {
+      const formData = new FormData();
+      formData.append("token_id", authenticationToken);
+      const response = await instance.post("/emergency_contact_get", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        setContactsList({
+          update: isUpdateRequired,
+          contacts: response.data?.data?.reverse(),
+        });
+      } else {
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while fetching contacts. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching contacts. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
   // =============================================================================================
 
   return (
@@ -170,7 +215,9 @@ const App = () => {
             <UserDetailsContext.Provider
               value={{
                 userDetails: userDetails?.userData,
+                userContactsList: contactsList?.contacts,
                 updateUserDetails: fetchUserDetails,
+                updateContactList: fetchContacts,
               }}
             >
               <Stack.Navigator>

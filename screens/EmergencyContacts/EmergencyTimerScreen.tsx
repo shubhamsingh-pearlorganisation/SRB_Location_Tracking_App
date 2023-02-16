@@ -6,32 +6,81 @@ import {
   SafeAreaView,
   ImageBackground,
   TouchableOpacity,
-  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { COLORS, SIZES } from "../../constants";
 import { emergencyCallImage } from "../../constants/images";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useToast } from "react-native-toast-notifications";
+import { instance } from "../../core/utils/AxiosInterceptor";
+import { AuthContext } from "../../App";
 // -----------------------------------------------------------------
 
 const EmergencyTimerScreen = ({ navigation }: any) => {
+  const toast = useToast();
   const [counter, setCounter] = useState(10);
+  const [showLoader, setShowLoader] = useState(false);
+  const authContextData: any = useContext(AuthContext);
 
   useEffect(() => {
     const timer: any =
       counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
     if (counter === 0) {
-      Alert.alert("Alert", "Emergency Alert Sent Successfully");
-      redirectBack();
+      sendEmergencyAlert();
     }
     return () => clearInterval(timer);
   }, [counter]);
 
+  // This method is used to redirect user to Dashboard Screen
   const redirectBack = () => {
     navigation.navigate("Main");
   };
 
+  // This method is used to send emergency alert to all the contacts which are saved in database.
+  const sendEmergencyAlert = async () => {
+    try {
+      setShowLoader(true);
+      const formData = new FormData();
+      formData.append("token_id", authContextData?.token);
+      const response = await instance.post("/emergency_alert", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        toast.show("Emergency alert sent Successfully to all the contacts", {
+          type: "success",
+        });
+        setShowLoader(false);
+        setTimeout(() => {
+          redirectBack();
+        }, 2000);
+      } else {
+        setShowLoader(false);
+
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while sending emergency alert to your contacts. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowLoader(false);
+
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while sending emergency alert to your contacts. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />}
+
       <ImageBackground
         source={emergencyCallImage}
         resizeMode="contain"

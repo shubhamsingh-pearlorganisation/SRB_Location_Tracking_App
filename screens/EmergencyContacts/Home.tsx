@@ -1,9 +1,30 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { images, SIZES } from "../../constants";
 const { emergencyContactHome } = images;
+import { useState, useEffect, useContext } from "react";
+import { UserDetailsContext } from "../../App";
 // -----------------------------------------------------------------
 
 const EmergencyContactsScreen = ({ navigation }: any) => {
+  const userDetailsContextData: any = useContext(UserDetailsContext);
+
+  const [contactsFound, setContactsFound] = useState(false);
+
+  useEffect(() => {
+    console.log("rerendered");
+  }, []);
+
+  useEffect(() => {
+    if (userDetailsContextData?.userContactsList?.length > 0)
+      setContactsFound(true);
+    else setContactsFound(false);
+  }, [userDetailsContextData?.userContactsList]);
+
+  useEffect(() => {
+    if (contactsFound) navigation.navigate("ContactsListingWithHelp");
+    else navigation.navigate("Emergency");
+  }, [contactsFound]);
+
   return (
     <View style={styles.container}>
       <Image source={emergencyContactHome} style={styles.image} />

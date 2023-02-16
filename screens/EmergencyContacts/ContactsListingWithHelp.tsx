@@ -9,10 +9,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../../constants";
-import CustomAlert from "../../components/AlertDialog";
 import { useState, useContext, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
-import { AuthContext } from "../../App";
+import { AuthContext, UserDetailsContext } from "../../App";
 import { useToast } from "react-native-toast-notifications";
 import { instance } from "../../core/utils/AxiosInterceptor";
 // -----------------------------------------------------------------
@@ -20,16 +19,24 @@ import { instance } from "../../core/utils/AxiosInterceptor";
 const ContactsListingWithHelp = ({ navigation }: any) => {
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
+  const userDetailsContextData: any = useContext(UserDetailsContext);
 
   // Component's Local States
   // ========================
-  const [contactsList, setContactsList] = useState<any>([]);
+  const [contactsList, setContactsList] = useState<any>(
+    userDetailsContextData?.userContactsList?.length > 0
+      ? userDetailsContextData?.userContactsList
+      : []
+  );
   const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
-    fetchContactsFromDatabase(true);
-    return () => setContactsList([]);
-  }, []);
+    setContactsList(
+      userDetailsContextData?.userContactsList?.length > 0
+        ? userDetailsContextData?.userContactsList
+        : []
+    );
+  }, [userDetailsContextData?.userContactsList]);
 
   // This method is used to show delete contact confirmation popup
   const deleteContactConfirmation = async (contactId: any) => {
@@ -51,63 +58,28 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
     );
   };
 
-  // This method is used to fetch complete contacts list from the database.
-  const fetchContactsFromDatabase = async (showToast = false) => {
+  // This method is used to delete the contact based on id from the database.
+  const deleteContactFromDatabase = async (contactId: any) => {
     try {
       setShowLoader(true);
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
-      const response = await instance.post("/emergency_contact_get", formData);
-      if (response.status === 200 && response.data?.status === true) {
-        setContactsList(response.data?.data?.reverse());
-        setShowLoader(false);
-        showToast &&
-          toast.show("Contacts Fetched Successfully", { type: "success" });
-      } else {
-        setShowLoader(false);
-
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while fetching contacts. Please try again later.",
-          {
-            type: "error",
-          }
-        );
-      }
-    } catch (error: any) {
-      setShowLoader(false);
-
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching contacts. Please try again later.",
-        {
-          type: "error",
-        }
-      );
-    }
-  };
-
-  // This method is used to delete the contact based on id from the database.
-  const deleteContactFromDatabase = async (contactId: any) => {
-    try {
-      const formData = new FormData();
-      formData.append("token_id", authContextData?.token);
       formData.append("id", contactId);
-
-      // setShowLoader(true);
 
       const response = await instance.post(
         "/emergency_contact_delete",
         formData
       );
       if (response.status === 200 && response.data?.status) {
+        setShowLoader(false);
+
         toast.show(`Contact having id ${contactId} deleted successfully`, {
           type: "success",
         });
-        fetchContactsFromDatabase(false);
+        userDetailsContextData?.updateContactList(true); //Updating Contact List Globally
       } else {
+        setShowLoader(false);
+
         toast.show(
           response.data?.message
             ? response.data?.message
@@ -118,6 +90,8 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
         );
       }
     } catch (error: any) {
+      setShowLoader(false);
+
       toast.show(
         error.message
           ? error.message
