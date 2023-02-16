@@ -4,16 +4,31 @@ import { SIZES } from "../../constants";
 import CustomAlert from "../../components/AlertDialog";
 import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
+// -----------------------------------------------------------------
 
-const ContactsListing = ({ navigation }: any) => {
+const ContactsListing = ({ navigation, route }: any) => {
+  console.log(
+    "route.params.selectedContacts",
+    route?.params?.selectedContacts,
+    route?.params?.selectedContacts?.length
+  );
+
+  const [contactsList, setContactsList] = useState<any>(
+    route?.params?.selectedContacts?.length > 0
+      ? route?.params?.selectedContacts
+      : []
+  );
+
+  // Component's Local States
+  // ========================
+  const [showAlert, setShowAlert] = useState(false);
+  const [deleteContact, setDeleteContact] = useState(false);
+
   const redirectToTimerScreen = () => {
     navigation.navigate("EmergencyTimer");
   };
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [deleteContact, setDeleteContact] = useState(false);
-
-  function renderEemergencyContactListItem() {
+  function renderEmergencyContactListItem(contact: any) {
     return (
       <View
         style={{
@@ -25,8 +40,12 @@ const ContactsListing = ({ navigation }: any) => {
         }}
       >
         <View>
-          <Text style={styles.contactName}>Full Name</Text>
-          <Text style={styles.contactumber}>Contact Number</Text>
+          <Text style={styles.contactName}>
+            {contact?.contactName ? contact?.contactName : "N.A"}
+          </Text>
+          <Text style={styles.contactumber}>
+            {contact?.phoneNumber ? contact?.phoneNumber : "N.A"}
+          </Text>
         </View>
         <Pressable
           style={{
@@ -70,24 +89,25 @@ const ContactsListing = ({ navigation }: any) => {
 
       <View
         style={{
-          height: "40%",
+          height: "50%",
           width: "100%",
           padding: "2%",
         }}
       >
         <ScrollView style={styles.listContainer}>
-          {renderEemergencyContactListItem()}
-          {renderEemergencyContactListItem()}
-          {renderEemergencyContactListItem()}
-          {renderEemergencyContactListItem()}
-          {renderEemergencyContactListItem()}
-          {renderEemergencyContactListItem()}
+          {contactsList?.length > 0 &&
+            contactsList.map((contact: any, i: number) => (
+              <View key={contact?.id ? contact?.id : i}>
+                {renderEmergencyContactListItem(contact)}
+              </View>
+            ))}
         </ScrollView>
       </View>
     </SafeAreaView>
   );
 };
-
+// ====================================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     marginTop: "20%",
@@ -105,7 +125,7 @@ const styles = StyleSheet.create({
   listContainer: {
     height: "100%",
     width: "100%",
-    backgroundColor: "rgba(0,0,0,0.1)",
+    // backgroundColor: "rgba(0,0,0,0.1)",
   },
   image: {
     width: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
@@ -148,3 +168,4 @@ const styles = StyleSheet.create({
 });
 
 export default ContactsListing;
+// =============================================== THE END =====================================================

@@ -214,12 +214,12 @@ const HomeScreen = ({ navigation }: any) => {
       });
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      getLiveLocation();
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     getLiveLocation();
+  //   }, 6000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const onPressLocation = () => {
     navigation.navigate("SelectLocation", { getCordinates: fetchValue });
@@ -397,8 +397,9 @@ const HomeScreen = ({ navigation }: any) => {
         <ScrollView
           style={{
             width: "100%",
-            marginTop: SIZES.width>400 && SIZES.height > 700 ? "4%" : "2%",
-            marginBottom: SIZES.width>400 && SIZES.height > 700 ? "15%" : "17%",
+            marginTop: SIZES.width > 400 && SIZES.height > 700 ? "4%" : "2%",
+            marginBottom:
+              SIZES.width > 400 && SIZES.height > 700 ? "15%" : "17%",
           }}
         >
           {groupsAndMembersData?.groupsAndMembersDetails?.length > 0 ? (
@@ -683,7 +684,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: SIZES.width,
     zIndex: 0,
-    padding: SIZES.width>400?30:10,
+    padding: SIZES.width > 400 ? 30 : 10,
     borderTopLeftRadius: SIZES.width > 350 ? 40 : 20,
     borderTopRightRadius: SIZES.width > 350 ? 40 : 20,
     shadowColor: "black",

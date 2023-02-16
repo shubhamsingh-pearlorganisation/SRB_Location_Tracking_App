@@ -25,6 +25,8 @@ import MemberHistory from "./screens/MemberHistoryScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { instance } from "./core/utils/AxiosInterceptor";
 import { useToast } from "react-native-toast-notifications";
+import ContactsList from "./screens/EmergencyContacts/ContactList";
+import IndividualContact from "./screens/EmergencyContacts/IndividualContact";
 
 // ----------------------------------------------------------------------------------
 export const AuthContext: any = createContext(null);
@@ -228,6 +230,7 @@ const App = () => {
                         headerBackVisible: false,
                       }}
                     />
+
                     <Stack.Screen
                       name="EmergencyContactsListing"
                       component={ContactsListing}
@@ -353,6 +356,32 @@ const App = () => {
                       component={MemberHistory}
                       options={{
                         title: "History",
+                        headerTintColor: COLORS.voilet,
+                        headerTitleStyle: {
+                          fontWeight: "bold",
+                          fontSize: SIZES.width > 400 ? 30 : 20,
+                        },
+                        headerBackVisible: false,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="ContactsList"
+                      component={ContactsList}
+                      options={{
+                        title: "ContactsList",
+                        headerTintColor: COLORS.voilet,
+                        headerTitleStyle: {
+                          fontWeight: "bold",
+                          fontSize: SIZES.width > 400 ? 30 : 20,
+                        },
+                        headerBackVisible: false,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="IndividualContact"
+                      component={IndividualContact}
+                      options={{
+                        title: "IndividualContact",
                         headerTintColor: COLORS.voilet,
                         headerTitleStyle: {
                           fontWeight: "bold",

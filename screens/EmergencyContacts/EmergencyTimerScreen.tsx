@@ -6,28 +6,30 @@ import {
   SafeAreaView,
   ImageBackground,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { COLORS, SIZES } from "../../constants";
 import { emergencyCallImage } from "../../constants/images";
 import { useEffect, useState } from "react";
+// -----------------------------------------------------------------
 
 const EmergencyTimerScreen = ({ navigation }: any) => {
   const [counter, setCounter] = useState(10);
 
-  // Third Attempts
   useEffect(() => {
     const timer: any =
       counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
     if (counter === 0) {
-      alert("Emergency Alert Sent Successfully");
+      Alert.alert("Alert", "Emergency Alert Sent Successfully");
       redirectBack();
     }
     return () => clearInterval(timer);
   }, [counter]);
 
   const redirectBack = () => {
-    navigation.navigate("EmergencyContactsListing");
+    navigation.navigate("Main");
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -85,7 +87,8 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
     </SafeAreaView>
   );
 };
-
+// ====================================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     marginTop: "20%",
@@ -135,3 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 export default EmergencyTimerScreen;
+// =============================================== THE END =====================================================
