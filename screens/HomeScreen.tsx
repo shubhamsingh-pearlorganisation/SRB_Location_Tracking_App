@@ -102,7 +102,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   const [groupMembersList, setGroupMembersList] = useState<any>([]);
 
-  const [selectedGroupData, setSelectedGroupData] = useState({});
+  const [selectedGroupData, setSelectedGroupData] = useState<any>({});
 
   const selectedGroupDetails = (selGroupDetails: any) => {
     selGroupDetails && setSelectedGroupData(selGroupDetails);
@@ -383,7 +383,13 @@ const HomeScreen = ({ navigation }: any) => {
         style={styles.groupListDropDownBtn}
         onPress={onPressDropDownBtn}
       >
-        <Text>Group Name</Text>
+        <Text>
+          {selectedGroupData?.title
+            ? selectedGroupData?.title?.toString().slice(0, 15) +
+              "-" +
+              selectedGroupData?.group_code
+            : "Group Name"}
+        </Text>
         <MaterialIcons name="keyboard-arrow-down" size={20} />
       </Pressable>
       {/* Drop Down Group List */}

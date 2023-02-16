@@ -39,31 +39,36 @@ const AddMember = ({ route, navigation }: any) => {
             ? route?.params?.groupDetails?.group_code
             : "N.A"}
         </Text>
-        <TouchableOpacity
-          style={{
-            position: "absolute",
-            // left: "40%",
-            alignSelf: "center",
-            bottom: "15%",
-            width: SIZES.width * 0.6,
-            height: SIZES.width > 400 ? 60 : 40,
-            justifyContent: "center",
-            borderRadius: 30,
-            backgroundColor: COLORS.voilet,
-          }}
-          onPress={shareData}
-        >
-          <Text
-            style={{
-              fontWeight: "600",
-              fontSize: SIZES.width > 400 ? 25 : 20,
-              color: "white",
-              alignSelf: "center",
-            }}
-          >
-            Send Code
-          </Text>
-        </TouchableOpacity>
+        {route?.params?.groupDetails?.group_code?.toString().length > 0 &&
+          !route?.params?.groupDetails?.group_code
+            ?.toString()
+            .includes("N.A") && (
+            <TouchableOpacity
+              style={{
+                position: "absolute",
+                // left: "40%",
+                alignSelf: "center",
+                bottom: "15%",
+                width: SIZES.width * 0.6,
+                height: SIZES.width > 400 ? 60 : 40,
+                justifyContent: "center",
+                borderRadius: 30,
+                backgroundColor: COLORS.voilet,
+              }}
+              onPress={shareData}
+            >
+              <Text
+                style={{
+                  fontWeight: "600",
+                  fontSize: SIZES.width > 400 ? 25 : 20,
+                  color: "white",
+                  alignSelf: "center",
+                }}
+              >
+                Send Code
+              </Text>
+            </TouchableOpacity>
+          )}
       </View>
     </SafeAreaView>
   );

@@ -108,7 +108,7 @@ const JoinGroup = ({ navigation }: any) => {
           alignItems: "center",
         }}
       >
-        {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />}
+        {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
         <Text style={styles.headingText}>Enter The Invite Code</Text>
         <View style={styles.codeBoxHolder}>
           <TextInput
@@ -174,7 +174,7 @@ const JoinGroup = ({ navigation }: any) => {
           ></TextInput>
         </View>
         <Text style={styles.subText}>
-          Get The code from the person who created the Group
+          Get the code from the person who created the Group
         </Text>
         <TouchableOpacity
           style={{
@@ -197,7 +197,7 @@ const JoinGroup = ({ navigation }: any) => {
               alignSelf: "center",
             }}
           >
-            Join
+            Join Group
           </Text>
         </TouchableOpacity>
       </View>
@@ -229,8 +229,8 @@ const styles = StyleSheet.create({
     padding: "5%",
   },
   codeBox: {
-    width: 30,
-    fontSize: SIZES.width > 400 ? 25 : 20,
+    width: SIZES.width > 400 ? 30 : 35,
+    fontSize: SIZES.width > 400 ? 25 : 25,
     borderRadius: 8,
     margin: "1%",
     paddingHorizontal: 2,

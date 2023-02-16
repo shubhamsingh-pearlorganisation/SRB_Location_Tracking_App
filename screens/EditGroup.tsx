@@ -193,7 +193,7 @@ const EditGroup = ({ route, navigation }: any) => {
             alignSelf: "center",
           }}
         >
-          Update
+          Update Group Details
         </Text>
       </TouchableOpacity>
       <View style={styles.memberList}>
@@ -336,6 +336,7 @@ const styles = StyleSheet.create({
     width: SIZES.width > 400 ? "70%" : "90%",
     bottom: "20%",
     position: "absolute",
+    paddingLeft: 10,
   },
 });
 

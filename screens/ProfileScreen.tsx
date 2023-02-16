@@ -351,7 +351,7 @@ const ProfileScreen = ({ navigation }: any) => {
           >
             <MaterialIcons name="edit" size={30} color={COLORS.white} />
             {showLoader && (
-              <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />
+              <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
             )}
           </TouchableOpacity>
         </View>
@@ -472,7 +472,7 @@ const ProfileScreen = ({ navigation }: any) => {
             }}
           >
             {showLoader && (
-              <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />
+              <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
             )}
           </View>
         </View>

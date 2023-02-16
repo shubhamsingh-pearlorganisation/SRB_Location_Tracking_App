@@ -214,9 +214,9 @@ const Login = ({ navigation }: any) => {
           firebaseConfig={firebaseConfig}
         />
         <Text style={styles.otpText}>
-          Let’s start.{"\n"} Sign up with number.
+          Let’s start{"\n"} Sign up with number
         </Text>
-        {showLoader && <ActivityIndicator />}
+        {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
 
         <View
           style={{

@@ -97,8 +97,9 @@ const AddGroup = ({ navigation }: any) => {
           onChangeText={(val: any) =>
             setAddGroupFormData({ ...addGroupFormData, title: val })
           }
+          maxLength={15}
         />
-        {showLoader && <ActivityIndicator size={50} />}
+        {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
       </View>
       <View style={styles.cardHolder}>
         <View style={styles.card}>
@@ -184,7 +185,7 @@ const AddGroup = ({ navigation }: any) => {
             alignSelf: "center",
           }}
         >
-          Create
+          Create Group
         </Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
@@ -251,6 +252,7 @@ const styles = StyleSheet.create({
     width: SIZES.width > 400 ? "70%" : "90%",
     bottom: "20%",
     position: "absolute",
+    paddingLeft: 10,
   },
 });
 

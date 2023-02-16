@@ -280,7 +280,7 @@ const Register = ({ route, navigation }: any) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
-        {showLoader && <ActivityIndicator size={50} />}
+        {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
 
         <Text style={styles.otpText}>
           You haven’t got account?{"\n"} Let's Create...

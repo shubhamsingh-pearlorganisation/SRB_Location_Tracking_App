@@ -105,7 +105,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />}
+      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
       <Pressable
         onPress={() => navigation.navigate("EmergencyTimer")}
         disabled={contactsList?.length === 0}

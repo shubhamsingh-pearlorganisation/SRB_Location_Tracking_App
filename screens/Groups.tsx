@@ -50,11 +50,11 @@ const Groups = ({ navigation }: any) => {
       formData.append("added_by", groupDetails?.group_type);
       formData.append("id", groupDetails?.group_id);
 
-      // setShowLoader(true);
+      setShowLoader(true);
 
       const response = await instance.post("/group_delete", formData);
       if (response.status === 200 && response.data?.status) {
-        // setShowLoader(false);
+        setShowLoader(false);
         toast.show(
           `Group having id ${groupDetails?.group_id} deleted successfully`,
           {
@@ -63,7 +63,7 @@ const Groups = ({ navigation }: any) => {
         );
         groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing
       } else {
-        // setShowLoader(false);
+        setShowLoader(false);
         toast.show(
           response.data?.message
             ? response.data?.message
@@ -74,7 +74,7 @@ const Groups = ({ navigation }: any) => {
         );
       }
     } catch (error: any) {
-      // setShowLoader(false);
+      setShowLoader(false);
       toast.show(
         error.message
           ? error.message
@@ -177,31 +177,30 @@ const Groups = ({ navigation }: any) => {
             <MaterialIcons name="keyboard-arrow-right" size={20} />
           </Pressable>
         </View>
-        <View
-          style={[
-            styles.groupListItemType,
-            {
-              alignSelf: "center",
-              right: "1%",
-              position: "absolute",
-              backgroundColor: "transparent",
-            },
-          ]}
-        >
-          <Pressable onPress={() => deleteGroupConfirmation(groupDetails)}>
-            <AntDesign name="delete" size={20} />
-          </Pressable>
-        </View>
+        {groupDetails?.is_delete === 1 && (
+          <View
+            style={[
+              styles.groupListItemType,
+              {
+                alignSelf: "center",
+                right: "1%",
+                position: "absolute",
+                backgroundColor: "transparent",
+              },
+            ]}
+          >
+            <Pressable onPress={() => deleteGroupConfirmation(groupDetails)}>
+              <AntDesign name="delete" size={20} />
+            </Pressable>
+          </View>
+        )}
       </Pressable>
     );
   };
 
   return showLoader ? (
     <>
-      <ActivityIndicator size={50} />
-      <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 22 }}>
-        Please wait. We are fetching Groups.
-      </Text>
+      <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
     </>
   ) : (
     <ScrollView>

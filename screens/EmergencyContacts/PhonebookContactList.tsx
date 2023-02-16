@@ -209,7 +209,7 @@ const PhonebookContactList = ({ navigation }: any) => {
       {showLoader && (
         <>
           <View>
-            <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />
+            <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
             <Text
               style={{
                 textAlign: "center",
@@ -264,7 +264,7 @@ const PhonebookContactList = ({ navigation }: any) => {
                   >
                     Add Contacts
                     {showDoneLoader ? (
-                      <ActivityIndicator size={SIZES.width > 400 ? 30 : 20} />
+                      <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
                     ) : (
                       <></>
                     )}
