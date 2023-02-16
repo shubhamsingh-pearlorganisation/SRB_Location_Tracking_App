@@ -368,7 +368,7 @@ const App = () => {
                       name="PhonebookContactList"
                       component={PhonebookContactList}
                       options={{
-                        title: "PhonebookContactList",
+                        title: "Emergency Service",
                         headerTintColor: COLORS.voilet,
                         headerTitleStyle: {
                           fontWeight: "bold",

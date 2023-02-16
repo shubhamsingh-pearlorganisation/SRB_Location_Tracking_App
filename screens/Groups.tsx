@@ -22,7 +22,7 @@ const Groups = ({ navigation }: any) => {
 
   const [showLoader, setShowLoader] = useState<boolean>(false);
 
-  // This method is used to show delete confirmation popup
+  // This method is used to show delete group confirmation popup
   const deleteGroupConfirmation = async (groupDetails: any) => {
     Alert.alert(
       "Group Delete Confirmation",
@@ -56,7 +56,7 @@ const Groups = ({ navigation }: any) => {
       if (response.status === 200 && response.data?.status) {
         // setShowLoader(false);
         toast.show(
-          `Group with id ${groupDetails?.group_id} deleted successfully`,
+          `Group having id ${groupDetails?.group_id} deleted successfully`,
           {
             type: "success",
           }

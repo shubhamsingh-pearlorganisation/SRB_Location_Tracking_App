@@ -1,91 +1,151 @@
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../../constants";
 import CustomAlert from "../../components/AlertDialog";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
+import { AuthContext } from "../../App";
+import { useToast } from "react-native-toast-notifications";
+import { instance } from "../../core/utils/AxiosInterceptor";
 // -----------------------------------------------------------------
 
-const ContactsListingWithHelp = ({ navigation, route }: any) => {
-  console.log(
-    "route.params.selectedContacts",
-    route?.params?.selectedContacts,
-    route?.params?.selectedContacts?.length
-  );
-
-  const [contactsList, setContactsList] = useState<any>(
-    route?.params?.selectedContacts?.length > 0
-      ? route?.params?.selectedContacts
-      : []
-  );
+const ContactsListingWithHelp = ({ navigation }: any) => {
+  const toast = useToast();
+  const authContextData: any = useContext(AuthContext);
 
   // Component's Local States
   // ========================
-  const [showAlert, setShowAlert] = useState(false);
-  const [deleteContact, setDeleteContact] = useState(false);
+  const [contactsList, setContactsList] = useState<any>([]);
+  const [showLoader, setShowLoader] = useState(false);
 
-  const redirectToTimerScreen = () => {
-    navigation.navigate("EmergencyTimer");
+  useEffect(() => {
+    fetchContactsFromDatabase(true);
+    return () => setContactsList([]);
+  }, []);
+
+  // This method is used to show delete contact confirmation popup
+  const deleteContactConfirmation = async (contactId: any) => {
+    Alert.alert(
+      "Contact Delete Confirmation",
+      "Are you sure you want to permanently delete this contact?",
+      [
+        {
+          text: "No",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "Confirm",
+          onPress: () => deleteContactFromDatabase(contactId),
+          style: "default",
+        },
+      ]
+    );
   };
 
-  function renderEmergencyContactListItem(contact: any) {
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          borderColor: "black",
-          marginBottom: ".5%",
-          padding: "1%",
-          backgroundColor: "white",
-        }}
-      >
-        <View>
-          <Text style={styles.contactName}>
-            {contact?.contactName ? contact?.contactName : "N.A"}
-          </Text>
-          <Text style={styles.contactumber}>
-            {contact?.phoneNumber ? contact?.phoneNumber : "N.A"}
-          </Text>
-        </View>
-        <Pressable
-          style={{
-            right: "2%",
-            position: "absolute",
-            alignSelf: "center",
-          }}
-          onPress={() => setShowAlert(true)}
-        >
-          <Feather name="minus-circle" size={SIZES.width > 400 ? 30 : 25} />
-        </Pressable>
-      </View>
-    );
-  }
+  // This method is used to fetch complete contacts list from the database.
+  const fetchContactsFromDatabase = async (showToast = false) => {
+    try {
+      setShowLoader(true);
+      const formData = new FormData();
+      formData.append("token_id", authContextData?.token);
+      const response = await instance.post("/emergency_contact_get", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        setContactsList(response.data?.data?.reverse());
+        setShowLoader(false);
+        showToast &&
+          toast.show("Contacts Fetched Successfully", { type: "success" });
+      } else {
+        setShowLoader(false);
+
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while fetching contacts. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowLoader(false);
+
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching contacts. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
+
+  // This method is used to delete the contact based on id from the database.
+  const deleteContactFromDatabase = async (contactId: any) => {
+    try {
+      const formData = new FormData();
+      formData.append("token_id", authContextData?.token);
+      formData.append("id", contactId);
+
+      // setShowLoader(true);
+
+      const response = await instance.post(
+        "/emergency_contact_delete",
+        formData
+      );
+      if (response.status === 200 && response.data?.status) {
+        toast.show(`Contact having id ${contactId} deleted successfully`, {
+          type: "success",
+        });
+        fetchContactsFromDatabase(false);
+      } else {
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while deleting contact. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while deleting contact. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Pressable onPress={() => redirectToTimerScreen()}>
+      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />}
+      <Pressable onPress={() => navigation.navigate("EmergencyTimer")}>
         <View style={styles.image}>
           <Text style={styles.needHelp}>NEED HELP?</Text>
           <View style={styles.lineStyle} />
           <Text style={styles.pressHere}>PRESS HERE</Text>
         </View>
       </Pressable>
-      <CustomAlert
-        mainDisplayMsg={"Sure you want to delete this contact"}
-        subDisplayMsg={
-          "If you change your mind, you’ll have to resend an invite."
-        }
-        visibility={showAlert}
-        dismissAlert={() => {
-          setShowAlert(false);
-          setDeleteContact(false);
-        }}
-        confirmAction={() => {
-          setDeleteContact(true);
-          setShowAlert(false);
-        }}
-      />
+
       <Text style={styles.title}>Emergency Contacts</Text>
+      <Text style={styles.totalContactsLength}>
+        {contactsList?.length > 0 && (
+          <Text>Total Contacts: {contactsList?.length}</Text>
+        )}
+      </Text>
 
       <View
         style={{
@@ -95,12 +155,56 @@ const ContactsListingWithHelp = ({ navigation, route }: any) => {
         }}
       >
         <ScrollView style={styles.listContainer}>
-          {contactsList?.length > 0 &&
-            contactsList.map((contact: any, i: number) => (
-              <View key={contact?.id ? contact?.id : i}>
-                {renderEmergencyContactListItem(contact)}
-              </View>
-            ))}
+          {contactsList?.length > 0 ? (
+            contactsList.map((contact: any, i: number) => {
+              return (
+                <View key={contact?.id ? contact?.id : i}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      borderColor: "black",
+                      marginBottom: ".5%",
+                      padding: "1%",
+                      backgroundColor: "white",
+                    }}
+                  >
+                    <View>
+                      <Text style={styles.contactName}>
+                        {contact?.name ? contact?.name : "N.A"}
+                      </Text>
+                      <Text style={styles.contactumber}>
+                        {contact?.contact ? contact?.contact : "N.A"}
+                      </Text>
+                    </View>
+                    <Pressable
+                      style={{
+                        right: "2%",
+                        position: "absolute",
+                        alignSelf: "center",
+                      }}
+                      onPress={() => deleteContactConfirmation(contact?.id)}
+                    >
+                      <Feather
+                        name="minus-circle"
+                        size={SIZES.width > 400 ? 30 : 25}
+                      />
+                    </Pressable>
+                  </View>
+                </View>
+              );
+            })
+          ) : (
+            <Text
+              style={{
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: 22,
+                marginTop: 20,
+              }}
+            >
+              No Contacts Found
+            </Text>
+          )}
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -125,12 +229,11 @@ const styles = StyleSheet.create({
   listContainer: {
     height: "100%",
     width: "100%",
-    // backgroundColor: "rgba(0,0,0,0.1)",
   },
   image: {
     width: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
     height: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
-    marginBottom: "20%",
+    marginBottom: "10%",
     backgroundColor: "#FF0000",
     position: "relative",
     borderRadius: 91,
@@ -164,6 +267,12 @@ const styles = StyleSheet.create({
   },
   contactumber: {
     fontSize: SIZES.width > 400 ? 18 : 15,
+  },
+  totalContactsLength: {
+    margin: 20,
+    color: "blue",
+    fontWeight: "bold",
+    fontSize: SIZES.width > 400 ? 20 : 15,
   },
 });
 

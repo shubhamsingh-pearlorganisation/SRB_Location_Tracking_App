@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   FlatList,
   Text,
@@ -11,9 +11,16 @@ import {
 import * as Contacts from "expo-contacts";
 import { COLORS, SIZES } from "../../constants";
 import IndividualContact from "./IndividualContact";
+import { useToast } from "react-native-toast-notifications";
+import { instance } from "../../core/utils/AxiosInterceptor";
+import { AuthContext } from "../../App";
+
 // -------------------------------------------------------------------------------
 
 const PhonebookContactList = ({ navigation }: any) => {
+  const toast = useToast();
+  const authContextData: any = useContext(AuthContext);
+
   // Component's Local States
   // ========================
   const [contacts, setContacts] = useState<any>({
@@ -22,6 +29,7 @@ const PhonebookContactList = ({ navigation }: any) => {
   });
   const [showLoader, setShowLoader] = useState(false);
   const [selectedContacts, setSelectedContacts] = useState<any>([]);
+  const [showDoneLoader, setShowDoneLoader] = useState(false);
 
   // Fetch Contacts on component mount stage
   useEffect(() => {
@@ -33,6 +41,7 @@ const PhonebookContactList = ({ navigation }: any) => {
         contactList: [],
         isContactListEmpty: true,
       });
+      setSelectedContacts([]);
     };
   }, []);
 
@@ -48,8 +57,16 @@ const PhonebookContactList = ({ navigation }: any) => {
         setShowLoader(false);
 
         if (data.length > 0) {
+          const contactsWithName = data.filter((contact) => {
+            return (
+              contact.name !== null &&
+              contact.name !== "" &&
+              contact.name.length !== 0 &&
+              !contact.name.includes("null")
+            );
+          });
           setContacts({
-            contactList: data,
+            contactList: contactsWithName,
             isContactListEmpty: false,
           });
         } else
@@ -83,7 +100,9 @@ const PhonebookContactList = ({ navigation }: any) => {
     }
   };
 
-  const onDonePressed = () => {
+  // This method is used to collect data and send to api calling method
+  const submitContacts = () => {
+    setShowDoneLoader(true);
     const requestData = selectedContacts.map((contact: any) => {
       return {
         id: contact?.id,
@@ -94,12 +113,10 @@ const PhonebookContactList = ({ navigation }: any) => {
           contact?.phoneNumbers[0]?.number,
       };
     });
-    console.log("Request Data::: ", requestData);
-    navigation.navigate("ContactsListingWithHelp", {
-      selectedContacts: requestData,
-    });
+    saveContactsToDatabase(requestData);
   };
 
+  // This method is used to add and remove contacts during checkbox change
   const receiveSelectedContact = (contact: any) => {
     const index = selectedContacts.findIndex((e: any) => e.id === contact.id);
     if (index === -1) setSelectedContacts([...selectedContacts, contact]);
@@ -110,10 +127,69 @@ const PhonebookContactList = ({ navigation }: any) => {
     }
   };
 
-  useEffect(() => {
-    console.log("Selected Contacts ::: ", selectedContacts);
-    console.log("Selected Contacts ::: ", selectedContacts?.length);
-  }, [selectedContacts]);
+  // This method is used to save contacts list in database
+  const saveContactsToDatabase = async (contactsData: any) => {
+    let contactNames = "";
+    let contactPhoneNumbers = "";
+
+    if (contactsData.length > 0) {
+      contactNames = contactsData
+        .map(
+          (contact: any) =>
+            contact.contactName !== "" &&
+            contact.contactName !== null &&
+            contact.contactName
+        )
+        .toString();
+      contactPhoneNumbers = contactsData
+        .map(
+          (contact: any) =>
+            contact.phoneNumber !== "" &&
+            contact.phoneNumber !== null &&
+            contact.phoneNumber
+        )
+        .toString();
+    } else return;
+    try {
+      const formData = new FormData();
+      formData.append("token_id", authContextData?.token);
+      formData.append("name", contactNames);
+      formData.append("contact", contactPhoneNumbers);
+      const response = await instance.post("/emergency_contact_add", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        setShowDoneLoader(false);
+
+        toast.show(
+          "Your all selected contacts were successfully added in database.",
+          { type: "success" }
+        );
+
+        navigation.navigate("ContactsListingWithHelp");
+      } else {
+        setShowDoneLoader(false);
+
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while adding contacts. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowDoneLoader(false);
+
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while adding contacts. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
 
   // Send Contact Data to Contact Screen
   const renderItem = ({ item }: any) => {
@@ -128,7 +204,7 @@ const PhonebookContactList = ({ navigation }: any) => {
     <>
       {showLoader && (
         <>
-          <View style={{ marginTop: 30 }}>
+          <View>
             <ActivityIndicator size={SIZES.width > 400 ? 50 : 30} />
             <Text
               style={{
@@ -149,7 +225,6 @@ const PhonebookContactList = ({ navigation }: any) => {
               textAlign: "center",
               fontWeight: "bold",
               fontSize: 22,
-              marginTop: 20,
             }}
           >
             Contacts not Available
@@ -158,28 +233,38 @@ const PhonebookContactList = ({ navigation }: any) => {
       ) : (
         <>
           {!contacts.isContactListEmpty && contacts.contactList.length > 0 && (
-            <TouchableOpacity
-              onPress={onDonePressed}
-              style={{
-                alignSelf: "flex-end",
-                backgroundColor:
-                  selectedContacts?.length > 0 ? COLORS.voilet : "darkgrey",
-                padding: "2%",
-                marginTop: "2%",
-                marginRight: "2%",
-                borderRadius: 10,
-              }}
-              disabled={!selectedContacts?.length}
-            >
-              <Text
-                style={{
-                  fontSize: 25,
-                  color: COLORS.white,
-                }}
-              >
-                Done
+            <>
+              <Text style={styles.selectedContactsCount}>
+                Selected: {selectedContacts?.length}
               </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={submitContacts}
+                style={{
+                  alignSelf: "flex-end",
+                  backgroundColor:
+                    selectedContacts?.length > 0 ? COLORS.voilet : "darkgrey",
+                  padding: "2%",
+                  marginTop: "2%",
+                  marginRight: "2%",
+                  borderRadius: 10,
+                }}
+                disabled={!selectedContacts?.length}
+              >
+                <Text
+                  style={{
+                    fontSize: 25,
+                    color: COLORS.white,
+                  }}
+                >
+                  Done
+                  {showDoneLoader ? (
+                    <ActivityIndicator size={SIZES.width > 400 ? 30 : 20} />
+                  ) : (
+                    <></>
+                  )}
+                </Text>
+              </TouchableOpacity>
+            </>
           )}
 
           <FlatList
@@ -199,6 +284,17 @@ const PhonebookContactList = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   list: {
     flex: 1,
+  },
+  selectedContactsCount: {
+    alignSelf: "flex-start",
+    backgroundColor: COLORS.voilet,
+    padding: "2%",
+    marginTop: "2%",
+    marginLeft: "2%",
+    borderRadius: 10,
+    fontSize: SIZES.width > 400 ? 20 : 15,
+    fontWeight: "bold",
+    color: "white",
   },
 });
 export default PhonebookContactList;
