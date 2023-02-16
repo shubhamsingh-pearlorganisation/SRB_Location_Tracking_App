@@ -12,7 +12,7 @@ const EmergencyContactsScreen = ({ navigation }: any) => {
 
       <Pressable
         style={styles.addContactBtn}
-        onPress={() => navigation.navigate("ContactsList")}
+        onPress={() => navigation.navigate("PhonebookContactList")}
       >
         <Text style={styles.addContactBtnText}>Add Contact</Text>
       </Pressable>

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 // -----------------------------------------------------------------
 
-const ContactsListing = ({ navigation, route }: any) => {
+const ContactsListingWithHelp = ({ navigation, route }: any) => {
   console.log(
     "route.params.selectedContacts",
     route?.params?.selectedContacts,
@@ -167,5 +167,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ContactsListing;
+export default ContactsListingWithHelp;
 // =============================================== THE END =====================================================

@@ -11,7 +11,6 @@ import Register from "./screens/Register";
 import { COLORS, SIZES } from "./constants";
 import AddGroup from "./screens/AddGroup";
 import EditGroup from "./screens/EditGroup";
-import ContactsListing from "./screens/EmergencyContacts/ContactsListing";
 import EmergencyContactsScreen from "./screens/EmergencyContacts/Home";
 import EmergencyTimerScreen from "./screens/EmergencyContacts/EmergencyTimerScreen";
 import SelectLocation from "./screens/SelectLocation";
@@ -25,8 +24,9 @@ import MemberHistory from "./screens/MemberHistoryScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { instance } from "./core/utils/AxiosInterceptor";
 import { useToast } from "react-native-toast-notifications";
-import ContactsList from "./screens/EmergencyContacts/ContactList";
 import IndividualContact from "./screens/EmergencyContacts/IndividualContact";
+import PhonebookContactList from "./screens/EmergencyContacts/PhonebookContactList";
+import ContactsListingWithHelp from "./screens/EmergencyContacts/ContactsListingWithHelp";
 
 // ----------------------------------------------------------------------------------
 export const AuthContext: any = createContext(null);
@@ -232,8 +232,8 @@ const App = () => {
                     />
 
                     <Stack.Screen
-                      name="EmergencyContactsListing"
-                      component={ContactsListing}
+                      name="ContactsListingWithHelp"
+                      component={ContactsListingWithHelp}
                       options={{
                         title: "Emergency Service",
                         headerTintColor: COLORS.voilet,
@@ -365,10 +365,10 @@ const App = () => {
                       }}
                     />
                     <Stack.Screen
-                      name="ContactsList"
-                      component={ContactsList}
+                      name="PhonebookContactList"
+                      component={PhonebookContactList}
                       options={{
-                        title: "ContactsList",
+                        title: "PhonebookContactList",
                         headerTintColor: COLORS.voilet,
                         headerTitleStyle: {
                           fontWeight: "bold",

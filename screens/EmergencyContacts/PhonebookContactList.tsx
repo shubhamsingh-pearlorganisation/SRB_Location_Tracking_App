@@ -13,7 +13,7 @@ import { COLORS, SIZES } from "../../constants";
 import IndividualContact from "./IndividualContact";
 // -------------------------------------------------------------------------------
 
-const ContactsList = ({ navigation }: any) => {
+const PhonebookContactList = ({ navigation }: any) => {
   // Component's Local States
   // ========================
   const [contacts, setContacts] = useState<any>({
@@ -95,7 +95,7 @@ const ContactsList = ({ navigation }: any) => {
       };
     });
     console.log("Request Data::: ", requestData);
-    navigation.navigate("EmergencyContactsListing", {
+    navigation.navigate("ContactsListingWithHelp", {
       selectedContacts: requestData,
     });
   };
@@ -201,5 +201,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-export default ContactsList;
+export default PhonebookContactList;
 // =============================================== THE END =====================================================
