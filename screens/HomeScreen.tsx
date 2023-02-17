@@ -65,7 +65,7 @@ const RenderGroups = ({
           styles.groupListItemType,
           {
             backgroundColor:
-              selectedGroupDetails?.group_code === groupDetails?.group_code
+              selectedGroupData?.group_code === groupDetails?.group_code
                 ? COLORS.voilet
                 : "green",
           },

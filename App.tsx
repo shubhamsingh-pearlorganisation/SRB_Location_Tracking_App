@@ -212,6 +212,7 @@ const App = () => {
             value={{
               groupsAndMembersDetails: groupsAndMembersDetails.groupsData,
               fetchGroupsAndMembersList: fetchGroups,
+              isDetailsLoaded: groupsAndMembersDetails?.isDetailsLoaded,
             }}
           >
             <UserDetailsContext.Provider
