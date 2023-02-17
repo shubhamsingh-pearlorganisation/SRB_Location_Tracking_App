@@ -69,7 +69,7 @@ const App = () => {
   }, [contactsList]);
 
   useEffect(() => {
-    console.log("Available FAQS: ", faqList);
+    console.log("Total Available FAQS: ", faqList.length);
   }, [faqList]);
 
   // This method is used to receive authentication token from login screen after successful login
