@@ -303,7 +303,7 @@ const Login = ({ navigation }: any) => {
                   fontSize: SIZES.width > 400 ? 22 : 18,
                 }}
               >
-                Resend OTP in 00:{counter < 10 ? "0" + counter : counter}
+                Resend OTP in 00:{counter < 10 ? "0" + counter : counter} sec.
               </Text>
             </View>
             <TextInput
