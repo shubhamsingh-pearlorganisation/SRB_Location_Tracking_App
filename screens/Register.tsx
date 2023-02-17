@@ -212,15 +212,17 @@ const Register = ({ route, navigation }: any) => {
     } else if (userDetails?.name?.toString().length < 2) {
       toast.show("Name should contain minimum 2 characters", { type: "error" });
       return;
-    } else if (userDetails?.email?.toString().length === 0) {
+    } else if (userDetails?.emailId?.toString().length === 0) {
       toast.show("Email Id is required", { type: "error" });
       return;
     } else if (
-      userDetails?.email?.toString().length > 0 &&
-      !regexes.validEmailRegex.test(userDetails?.email?.toString())
+      userDetails?.emailId?.toString().length > 0 &&
+      !regexes.validEmailRegex.test(userDetails?.emailId?.toString())
     ) {
       toast.show("Please enter a valid email id.", { type: "error" });
       return;
+    } else if (userDetails?.dob?.toString().length === 0) {
+      toast.show("Please enter your date of birth", { type: "error" });
     }
     try {
       const { name, emailId, dob } = userDetails;
@@ -235,12 +237,15 @@ const Register = ({ route, navigation }: any) => {
       const response = await instance.post("/users_update", formData);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
-        toast.show("User's details saved successfully!", {
-          type: "success",
-        });
+        toast.show(
+          "Account created successfully. Now you can login to continue.",
+          {
+            type: "success",
+          }
+        );
         userDetailsContextData?.updateUserDetails();
         groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing
-        navigation.navigate("Main");
+        authContextData.setTokenAfterLogin(null);
       } else {
         setShowLoader(false);
         toast.show(
@@ -298,7 +303,12 @@ const Register = ({ route, navigation }: any) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
-        {showLoader && <Loader />}
+        {showLoader && (
+          <Loader
+            message="Please wait.. we are creating your account."
+            msgTextColor="white"
+          />
+        )}
 
         <Text style={styles.otpText}>
           You haven’t got account?{"\n"} Let's Create...
@@ -405,7 +415,7 @@ const Register = ({ route, navigation }: any) => {
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
             maximumDate={new Date()}
-            minimumDate={new Date("1920-01-01")}
+            minimumDate={new Date("1930-01-01")}
           />
           <View
             style={{

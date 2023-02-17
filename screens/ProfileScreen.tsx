@@ -598,7 +598,7 @@ const ProfileScreen = ({ navigation }: any) => {
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
             maximumDate={new Date()}
-            minimumDate={new Date("1920-01-01")}
+            minimumDate={new Date("1930-01-01")}
             date={new Date(userDetails?.dob)}
           />
           <Text style={styles.textView}>
@@ -612,7 +612,7 @@ const ProfileScreen = ({ navigation }: any) => {
           </Text>
         </Pressable>
 
-        <Text style={[styles.textView, { backgroundColor: "white" }]}>
+        <Text style={[styles.textView, { backgroundColor: "#e6e6e6" }]}>
           {userDetails?.contact ? userDetails?.contact : ""}
         </Text>
       </View>

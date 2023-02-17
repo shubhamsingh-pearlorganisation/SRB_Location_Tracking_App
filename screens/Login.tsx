@@ -20,7 +20,7 @@ import { regexes } from "../core/utils/constants";
 import Loader from "../components/Loader";
 // ---------------------------------------------------------------------------------------------
 
-const Login = ({ navigation }: any) => {
+const Login = ({ navigation, route }: any) => {
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
 
@@ -242,7 +242,9 @@ const Login = ({ navigation }: any) => {
           firebaseConfig={firebaseConfig}
         />
         <Text style={styles.otpText}>
-          Let’s start{"\n"} Sign up with number
+          Let’s start{"\n"}{" "}
+          {route?.params?.comingFrom === "login" ? "Login" : "Sign up"} with
+          number
         </Text>
         {showLoader && <Loader msgTextColor="white" />}
 

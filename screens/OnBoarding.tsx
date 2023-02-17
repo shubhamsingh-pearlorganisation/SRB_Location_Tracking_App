@@ -40,8 +40,8 @@ const onBoardings = [
 
 const OnBoarding = ({ navigation }: any) => {
   // This method is used to redirect user to login screen
-  const redirectToLogin = () => {
-    navigation.navigate("Login");
+  const redirectToLogin = (comingFrom: string) => {
+    navigation.navigate("Login", { comingFrom });
   };
 
   const [completed, setCompleted] = React.useState(false);
@@ -141,7 +141,7 @@ const OnBoarding = ({ navigation }: any) => {
             borderTopRightRadius: 30,
             backgroundColor: "white",
           }}
-          onPress={redirectToLogin}
+          onPress={() => redirectToLogin("signup")}
         >
           <Text
             style={{
@@ -172,7 +172,7 @@ const OnBoarding = ({ navigation }: any) => {
           >
             You already have an account?
           </Text>
-          <TouchableOpacity onPress={redirectToLogin}>
+          <TouchableOpacity onPress={() => redirectToLogin("login")}>
             <Text
               style={{
                 color: "white",

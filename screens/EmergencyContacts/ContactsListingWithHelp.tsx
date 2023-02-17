@@ -136,7 +136,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
       <Text style={styles.totalContactsLength}>
         {contactsList?.length > 0 && (
           <>
-            <Text>Total Contacts: {contactsList?.length}</Text>
+            <Text>{contactsList?.length} Contacts Found </Text>
           </>
         )}
       </Text>
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   },
   totalContactsLength: {
     margin: 10,
-    color: "blue",
+    color: COLORS.voilet,
     fontWeight: "bold",
     fontSize: SIZES.width > 400 ? 20 : 15,
   },
