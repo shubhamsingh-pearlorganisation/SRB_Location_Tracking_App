@@ -70,8 +70,19 @@ const PhonebookContactList = ({ navigation }: any) => {
               contact?.phoneNumbers[0]?.number
             );
           });
+
+          // Finding those contacts which are not available in database but available in
+          // complete phone book list.
+          // const uniqueContacts = contactsWithName.filter(function (con: any) {
+          //   return !userDetailsContextData?.userContactsList.some(function (
+          //     cont: any
+          //   ) {
+          //     return con.name.includes(cont.name);
+          //   });
+          // });
+
           setContacts({
-            contactList: contactsWithName,
+            contactList: contactsWithName, // uniqueContacts?.length > 0 ? uniqueContacts : [],
             isContactListEmpty: false,
           });
         } else
@@ -236,7 +247,8 @@ const PhonebookContactList = ({ navigation }: any) => {
                 }}
               >
                 <Text style={styles.selectedAndAddContactBtns}>
-                  Selected: {selectedContacts?.length}
+                  Selected: {selectedContacts?.length} out of{" "}
+                  {contacts?.contactList?.length}
                 </Text>
                 <TouchableOpacity
                   onPress={submitContacts}
