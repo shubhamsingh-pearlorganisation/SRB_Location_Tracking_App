@@ -333,13 +333,13 @@ const ProfileScreen = ({ navigation }: any) => {
               left: 0,
               position: "absolute",
               flexDirection: "row",
-              width: SIZES.width * 0.2,
+              width: SIZES.width * 0.25,
             }}
             onPress={() => goToBackScreen()}
           >
             <MaterialIcons
               name="keyboard-arrow-left"
-              size={40}
+              size={SIZES.width>400?40:30}
               color={COLORS.white}
             />
             <Text
@@ -453,13 +453,17 @@ const ProfileScreen = ({ navigation }: any) => {
               left: 0,
               position: "absolute",
               flexDirection: "row",
-              width: SIZES.width * 0.2,
+              width: SIZES.width * 0.25,
             }}
             onPress={() => goToBackScreen()}
           >
             <MaterialIcons
               name="keyboard-arrow-left"
+<<<<<<< Updated upstream
               size={40}
+=======
+              size={SIZES.width>400?40:30}
+>>>>>>> Stashed changes
               color={COLORS.white}
             />
             <Text
