@@ -57,6 +57,7 @@ const Login = ({ navigation }: any) => {
       mobileNumberWithoutCode.length > 10
     )
       setDisableVerificationBtn(true);
+    else if (completePhoneNumber?.length === 0) setDisableVerificationBtn(true);
     else setDisableVerificationBtn(false);
   }, [mobileNumberWithoutCode, completePhoneNumber]);
 
