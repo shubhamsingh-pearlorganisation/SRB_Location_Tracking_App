@@ -107,7 +107,10 @@ const EditGroup = ({ route, navigation }: any) => {
           underlineColor="transparent"
           value={editGroupFormDetails?.title}
           onChangeText={(val: any) =>
-            setEditGroupFormDetails({ ...editGroupFormDetails, title: val })
+            setEditGroupFormDetails({
+              ...editGroupFormDetails,
+              title: val?.toString().trim(),
+            })
           }
         />
         <MaterialIcons name="edit" size={SIZES.width > 400 ? 30 : 25} />

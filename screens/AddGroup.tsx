@@ -95,7 +95,10 @@ const AddGroup = ({ navigation }: any) => {
           underlineColor="transparent"
           autoFocus
           onChangeText={(val: any) =>
-            setAddGroupFormData({ ...addGroupFormData, title: val })
+            setAddGroupFormData({
+              ...addGroupFormData,
+              title: val?.toString().trim(),
+            })
           }
           maxLength={15}
         />

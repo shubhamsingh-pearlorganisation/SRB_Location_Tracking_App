@@ -22,6 +22,7 @@ import {
   GroupsAndMembersContext,
   UserDetailsContext,
 } from "../App";
+import { regexes } from "../core/utils/constants";
 
 // ============================================================================================
 
@@ -253,6 +254,26 @@ const ProfileScreen = ({ navigation }: any) => {
 
   // This method is used to update User details
   const updateUserDetails = async () => {
+    // Form Validation
+    if (userDetails?.name?.toString().length === 0) {
+      toast.show("User Name is required", { type: "error" });
+      return;
+    } else if (userDetails?.name?.toString().length < 2) {
+      toast.show("Name should contain minimum 2 characters", { type: "error" });
+      return;
+    } else if (!regexes.validFullNameRegex.test(userDetails?.name)) {
+      toast.show("Name is invalid", { type: "error" });
+      return;
+    } else if (userDetails?.email?.toString().length === 0) {
+      toast.show("Email Id is required", { type: "error" });
+      return;
+    } else if (
+      userDetails?.email?.toString().length > 0 &&
+      !regexes.validEmailRegex.test(userDetails?.email?.toString())
+    ) {
+      toast.show("Please enter a valid email id.", { type: "error" });
+      return;
+    }
     try {
       const { name, email, dob } = userDetails;
 
@@ -315,7 +336,7 @@ const ProfileScreen = ({ navigation }: any) => {
               left: 0,
               position: "absolute",
               flexDirection: "row",
-              width:SIZES.width*.2,
+              width: SIZES.width * 0.2,
             }}
             onPress={() => goToBackScreen()}
           >
@@ -335,7 +356,7 @@ const ProfileScreen = ({ navigation }: any) => {
                   padding: 0,
                   borderWidth: 0,
                   fontSize: SIZES.width > 400 ? 30 : 20,
-                  width:'auto'
+                  width: "auto",
                 },
               ]}
             >
@@ -411,9 +432,14 @@ const ProfileScreen = ({ navigation }: any) => {
   ) : (
     // ---------------------------------Editable View----------------------------------------
     <View style={styles.container}>
-      <View style={[styles.topView,{
-        height:SIZES.height*.5
-      }]}>
+      <View
+        style={[
+          styles.topView,
+          {
+            height: SIZES.height * 0.5,
+          },
+        ]}
+      >
         <View
           style={{
             top: "2%",
@@ -430,7 +456,7 @@ const ProfileScreen = ({ navigation }: any) => {
               left: 0,
               position: "absolute",
               flexDirection: "row",
-              width:SIZES.width*.2,
+              width: SIZES.width * 0.2,
             }}
             onPress={() => goToBackScreen()}
           >
@@ -547,7 +573,7 @@ const ProfileScreen = ({ navigation }: any) => {
           underlineColor="transparent"
           value={userDetails?.name ? userDetails?.name : ""}
           onChangeText={(val: any) =>
-            setUserDetails({ ...userDetails, name: val })
+            setUserDetails({ ...userDetails, name: val.toString().trim() })
           }
         ></TextInput>
       </View>
@@ -566,7 +592,7 @@ const ProfileScreen = ({ navigation }: any) => {
           underlineColor="transparent"
           value={userDetails?.email ? userDetails?.email : ""}
           onChangeText={(val: any) =>
-            setUserDetails({ ...userDetails, email: val })
+            setUserDetails({ ...userDetails, email: val.toString().trim() })
           }
         ></TextInput>
         <Pressable onPress={showDatePicker}>
@@ -666,7 +692,7 @@ const styles = StyleSheet.create({
     marginBottom: "10%",
   },
   imageContainer: {
-    marginTop:'10%'
+    marginTop: "10%",
   },
 
   imgBtns: {

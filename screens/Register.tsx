@@ -21,6 +21,7 @@ import {
   GroupsAndMembersContext,
   UserDetailsContext,
 } from "../App";
+import { regexes } from "../core/utils/constants";
 
 // -----------------------------------------------------------------------------------
 
@@ -204,6 +205,26 @@ const Register = ({ route, navigation }: any) => {
 
   // This method is used to update User Details
   const updateUserDetails = async () => {
+    // Form Validation
+    if (userDetails?.name?.toString().length === 0) {
+      toast.show("User Name is required", { type: "error" });
+      return;
+    } else if (userDetails?.name?.toString().length < 2) {
+      toast.show("Name should contain minimum 2 characters", { type: "error" });
+      return;
+    } else if (!regexes.validFullNameRegex.test(userDetails?.name)) {
+      toast.show("Name is invalid", { type: "error" });
+      return;
+    } else if (userDetails?.email?.toString().length === 0) {
+      toast.show("Email Id is required", { type: "error" });
+      return;
+    } else if (
+      userDetails?.email?.toString().length > 0 &&
+      !regexes.validEmailRegex.test(userDetails?.email?.toString())
+    ) {
+      toast.show("Please enter a valid email id.", { type: "error" });
+      return;
+    }
     try {
       const { name, emailId, dob } = userDetails;
 
