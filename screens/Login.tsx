@@ -40,6 +40,7 @@ const Login = ({ navigation }: any) => {
   const [disableConfirmVerificationBtn, setDisableConfirmVerificationBtn] =
     useState(true);
   const [showLoader, setShowLoader] = useState(false);
+  const [counter, setCounter] = useState(30);
 
   // Enabling or Disabling Send Verification Code Button
   useEffect(() => {
@@ -90,7 +91,6 @@ const Login = ({ navigation }: any) => {
     }
     try {
       setShowLoader(true);
-      // console.log("completePhoneNumber::: ", completePhoneNumber);
       const phoneProvider = new fireb.auth.PhoneAuthProvider();
       const verCode: any = await phoneProvider.verifyPhoneNumber(
         completePhoneNumber,
@@ -98,6 +98,7 @@ const Login = ({ navigation }: any) => {
       );
       // If Verification code received
       if (verCode) {
+        setCounter(30);
         setShowLoader(false);
         setVerificationId(verCode);
         toast.show("Verification code sent successfully!", {
@@ -132,6 +133,7 @@ const Login = ({ navigation }: any) => {
           setVerificationCode(""); // Clear Verification Code Input box
           setVerificationId(null);
           setShowLoader(false);
+
           generateAuthenticationToken(); //Generating Authentication Token to proceed further
         }
       }
@@ -224,25 +226,10 @@ const Login = ({ navigation }: any) => {
     mobileNumberWithCountryCode: string,
     mobileNumberWithoutCountryCode: string
   ) => {
-    // console.log(
-    //   "mobileNumberWithCountryCode::45: ",
-    //   mobileNumberWithCountryCode
-    // );
-    // console.log(
-    //   "mobileNumberWithoutCountryCode:46:: ",
-    //   mobileNumberWithoutCountryCode
-    // );
-
     if (mobileNumberWithCountryCode)
       setCompletePhoneNumber(mobileNumberWithCountryCode);
     if (mobileNumberWithoutCountryCode)
       setMobileNumberWithoutCode(mobileNumberWithoutCountryCode);
-  };
-
-  const [counter, setCounter] = useState(30);
-
-  const resendOTP = () => {
-    setDisableVerificationBtn(false);
   };
 
   useEffect(() => {
@@ -251,7 +238,7 @@ const Login = ({ navigation }: any) => {
       const timer: any =
         counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
       if (counter === 0) {
-        resendOTP();
+        setDisableVerificationBtn(false);
       }
       return () => clearInterval(timer);
     }
@@ -316,7 +303,7 @@ const Login = ({ navigation }: any) => {
                   fontSize: SIZES.width > 400 ? 22 : 18,
                 }}
               >
-                Resend OTP in 0.{counter}
+                Resend OTP in 00:{counter < 10 ? "0" + counter : counter}
               </Text>
             </View>
             <TextInput

@@ -1,4 +1,10 @@
-import { View, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+  Text,
+} from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { SIZES } from "../constants";
 import { List } from "react-native-paper";
@@ -57,34 +63,54 @@ const FAQScreen = () => {
 
   return (
     <View>
-      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+      {showLoader && (
+        <>
+          <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
+          <Text
+            style={{
+              textAlign: "center",
+              color: "blue",
+              fontWeight: "bold",
+              fontSize: SIZES.width > 400 ? 25 : 18,
+            }}
+          >
+            Please wait we are fetching FAQs
+          </Text>
+        </>
+      )}
 
-      <List.Section title="Frequently asked Questions">
-        <ScrollView
-          style={{
-            height: "95%",
-          }}
-        >
-          {faqList?.length > 0 &&
-            faqList.map((faq: any, i: number) => (
-              <List.Section key={i}>
-                <List.Accordion
-                  title={faq.title}
-                  titleStyle={styles.answerText}
-                  titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-                  left={(props) => <List.Icon icon="folder" />}
-                  onPress={handlePress}
-                >
-                  <List.Item
-                    title={faq.description}
-                    titleNumberOfLines={10}
-                    titleStyle={styles.answerText}
-                  />
-                </List.Accordion>
-              </List.Section>
-            ))}
-        </ScrollView>
-      </List.Section>
+      {faqList?.length > 0 ? (
+        <>
+          <List.Section title="Frequently asked Questions">
+            <ScrollView
+              style={{
+                height: "95%",
+              }}
+            >
+              {faqList?.length > 0 &&
+                faqList.map((faq: any, i: number) => (
+                  <List.Section key={i}>
+                    <List.Accordion
+                      title={faq.title}
+                      titleStyle={styles.answerText}
+                      titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
+                      left={(props) => <List.Icon icon="folder" />}
+                      onPress={handlePress}
+                    >
+                      <List.Item
+                        title={faq.description}
+                        titleNumberOfLines={10}
+                        titleStyle={styles.answerText}
+                      />
+                    </List.Accordion>
+                  </List.Section>
+                ))}
+            </ScrollView>
+          </List.Section>
+        </>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };

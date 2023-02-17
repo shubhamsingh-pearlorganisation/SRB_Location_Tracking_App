@@ -9,8 +9,8 @@ export default {
 export const GOOGLE_API_KEY = "AIzaSyAlx8qGhesdmQOyprqMV3Wzppo4Ih4kFso";
 
 export const regexes = {
-  indianMobileNumberRegex: /^((\+91?)|\+)?[7-9][0-9]{9}$/,
-  indianMobileWithPlus91Regex: /^[0]?[6789]\d{9}$/,
+  indianMobileWithPlus91Regex: /^((\+91?)|\+)?[7-9][0-9]{9}$/,
+  indianMobileNumberRegex: /^[0]?[6789]\d{9}$/,
   tenDigitMobileNumber: /^[0-9]{10}$/,
   validEmailRegex:
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
