@@ -306,6 +306,7 @@ const Register = ({ route, navigation }: any) => {
               />
             )}
           </View>
+
           <View style={styles.buttonContainer}>
             <Pressable style={styles.imgBtns} onPress={uploadImageFromGallery}>
               <Text style={styles.imgBtnText}>Gallery</Text>
@@ -314,10 +315,15 @@ const Register = ({ route, navigation }: any) => {
               <Text style={styles.imgBtnText}>Camera</Text>
             </Pressable>
             <Pressable
-              style={[styles.imgBtns, { backgroundColor: "#FFE5B9" }]}
+              style={[styles.imgBtns, { backgroundColor: "#452FFF" }]}
               onPress={uploadProfileImage}
             >
-              <Text style={[styles.imgBtnText, { fontWeight: "600" }]}>
+              <Text
+                style={[
+                  styles.imgBtnText,
+                  { fontWeight: "600", color: "white" },
+                ]}
+              >
                 Upload Image
               </Text>
             </Pressable>
@@ -547,11 +553,11 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginBottom: "5%",
   },
-  buttonContainer: {
-    width: "80%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
+  // buttonContainer: {
+  //   width: "80%",
+  //   flexDirection: "row",
+  //   justifyContent: "space-around",
+  // },
   imageContainer: {
     alignItems: "center",
   },
@@ -560,15 +566,36 @@ const styles = StyleSheet.create({
     height: SIZES.width > 400 ? SIZES.width * 0.3 : SIZES.width * 0.5,
     resizeMode: "contain",
   },
+  // imgBtns: {
+  //   padding: "2%",
+  //   fontSize: SIZES.width > 400 ? 18 : 25,
+  //   backgroundColor: "white",
+  //   color: COLORS.voilet,
+  //   borderRadius: 30,
+  // },
+  // imgBtnText: {
+  //   fontSize: SIZES.width > 400 ? 18 : 25,
+  //   color: COLORS.voilet,
+  // },
+
+  buttonContainer: {
+    width: SIZES.width * 0.8,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginBottom: "10%",
+  },
+  // imageContainer: {},
+
   imgBtns: {
     padding: "2%",
-    fontSize: SIZES.width > 400 ? 18 : 25,
     backgroundColor: "white",
-    color: COLORS.voilet,
-    borderRadius: 30,
+    borderRadius: 10,
+    marginBottom: "5%",
+    marginLeft: "2%",
+    marginRight: "2%",
   },
   imgBtnText: {
-    fontSize: SIZES.width > 400 ? 18 : 25,
+    fontSize: SIZES.width > 400 ? 20 : 15,
     color: COLORS.voilet,
   },
 });
