@@ -139,7 +139,7 @@ const FeedBackScreen = () => {
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Text style={[styles.textStyle, {color:'white'}]}>SEND</Text>
             </Pressable>
           </View>
         </View>
@@ -184,10 +184,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(52, 52, 52, 0.8)",
   },
   modalView: {
-    margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: '5%',
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -203,7 +202,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     margin: "5%",
-    fontSize: 30,
+    fontSize: SIZES.width>400?30:20,
   },
   textStyle: {
     color: "black",
@@ -212,18 +211,16 @@ const styles = StyleSheet.create({
     marginTop:'2%',
     marginBottom:'2%',
     alignSelf:'flex-start',
-    fontSize: 30,
+    fontSize: SIZES.width>400?25:18,
   },
   button: {
     borderRadius: 20,
-    padding: 10,
+    paddingVertical: 0,
     elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
+    marginTop:'2%'
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: COLORS.voilet,
   },
 });
 
