@@ -315,7 +315,7 @@ const ProfileScreen = ({ navigation }: any) => {
               left: 0,
               position: "absolute",
               flexDirection: "row",
-              width: "100%",
+              width:SIZES.width*.2,
             }}
             onPress={() => goToBackScreen()}
           >
@@ -335,6 +335,7 @@ const ProfileScreen = ({ navigation }: any) => {
                   padding: 0,
                   borderWidth: 0,
                   fontSize: SIZES.width > 400 ? 30 : 20,
+                  width:'auto'
                 },
               ]}
             >
@@ -410,7 +411,9 @@ const ProfileScreen = ({ navigation }: any) => {
   ) : (
     // ---------------------------------Editable View----------------------------------------
     <View style={styles.container}>
-      <View style={styles.topView}>
+      <View style={[styles.topView,{
+        height:SIZES.height*.5
+      }]}>
         <View
           style={{
             top: "2%",
@@ -427,7 +430,7 @@ const ProfileScreen = ({ navigation }: any) => {
               left: 0,
               position: "absolute",
               flexDirection: "row",
-              width: "100%",
+              width:SIZES.width*.2,
             }}
             onPress={() => goToBackScreen()}
           >
@@ -662,7 +665,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginBottom: "10%",
   },
-  imageContainer: {},
+  imageContainer: {
+    marginTop:'10%'
+  },
 
   imgBtns: {
     padding: "2%",
