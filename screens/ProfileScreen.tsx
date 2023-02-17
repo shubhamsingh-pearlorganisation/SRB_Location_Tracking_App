@@ -261,9 +261,6 @@ const ProfileScreen = ({ navigation }: any) => {
     } else if (userDetails?.name?.toString().length < 2) {
       toast.show("Name should contain minimum 2 characters", { type: "error" });
       return;
-    } else if (!regexes.validFullNameRegex.test(userDetails?.name)) {
-      toast.show("Name is invalid", { type: "error" });
-      return;
     } else if (userDetails?.email?.toString().length === 0) {
       toast.show("Email Id is required", { type: "error" });
       return;
@@ -462,7 +459,7 @@ const ProfileScreen = ({ navigation }: any) => {
           >
             <MaterialIcons
               name="keyboard-arrow-left"
-              size={30}
+              size={40}
               color={COLORS.white}
             />
             <Text
@@ -471,11 +468,12 @@ const ProfileScreen = ({ navigation }: any) => {
                 {
                   fontWeight: "600",
                   color: COLORS.white,
-                  // alignSelf: "center",
+                  alignSelf: "center",
                   textAlign: "left",
                   padding: 0,
                   borderWidth: 0,
                   fontSize: SIZES.width > 400 ? 30 : 20,
+                  width: "auto",
                 },
               ]}
             >
@@ -488,7 +486,7 @@ const ProfileScreen = ({ navigation }: any) => {
               right: 0,
               top: 0,
               position: "absolute",
-              width:"10%"
+              width: "10%",
             }}
             onPress={updateUserDetails}
           >
@@ -573,6 +571,7 @@ const ProfileScreen = ({ navigation }: any) => {
           ]}
           underlineColor="transparent"
           value={userDetails?.name ? userDetails?.name : ""}
+          maxLength={30}
           onChangeText={(val: any) =>
             setUserDetails({ ...userDetails, name: val.toString().trim() })
           }
