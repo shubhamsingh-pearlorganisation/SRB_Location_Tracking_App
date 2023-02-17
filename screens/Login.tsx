@@ -17,6 +17,7 @@ import { instance } from "../core/utils/AxiosInterceptor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CountryDropdown from "../components/CountryDropdownComponent";
 import { SIZES } from "../constants";
+import { regexes } from "../core/utils/constants";
 // ---------------------------------------------------------------------------------------------
 
 const Login = ({ navigation }: any) => {
@@ -48,13 +49,19 @@ const Login = ({ navigation }: any) => {
       !completePhoneNumber?.toString().includes("+91") &&
       (mobileNumberWithoutCode.length < 7 ||
         mobileNumberWithoutCode.length > 15)
-    )
+    ) {
+      // console.log("completePhoneNumber::: ", completePhoneNumber);
+      // console.log(
+      //   "!completePhoneNumber?.toString().includes('+91')::: ",
+      //   !completePhoneNumber?.toString().includes("+91")
+      // );
+      // console.log("mobileNumberWithoutCode::: ", mobileNumberWithoutCode);
+
       setDisableVerificationBtn(true);
-    // For INDIA specific phone numbers
+    } // For INDIA specific phone numbers
     else if (
-      (completePhoneNumber?.toString().includes("+91") &&
-        mobileNumberWithoutCode.length < 10) ||
-      mobileNumberWithoutCode.length > 10
+      completePhoneNumber?.toString().includes("+91") &&
+      mobileNumberWithoutCode.length != 10
     )
       setDisableVerificationBtn(true);
     else if (completePhoneNumber?.length === 0) setDisableVerificationBtn(true);
@@ -73,6 +80,14 @@ const Login = ({ navigation }: any) => {
 
   // This method is used to send verification code from firebase.
   const sendVerification = async () => {
+    if (
+      mobileNumberWithoutCode?.length > 0 &&
+      completePhoneNumber.toString().includes("+91") &&
+      !regexes.indianMobileNumberRegex.test(mobileNumberWithoutCode)
+    ) {
+      toast.show("Please Enter Valid Indian Mobile Number", { type: "error" });
+      return;
+    }
     try {
       setShowLoader(true);
       // console.log("completePhoneNumber::: ", completePhoneNumber);
@@ -209,6 +224,15 @@ const Login = ({ navigation }: any) => {
     mobileNumberWithCountryCode: string,
     mobileNumberWithoutCountryCode: string
   ) => {
+    // console.log(
+    //   "mobileNumberWithCountryCode::45: ",
+    //   mobileNumberWithCountryCode
+    // );
+    // console.log(
+    //   "mobileNumberWithoutCountryCode:46:: ",
+    //   mobileNumberWithoutCountryCode
+    // );
+
     if (mobileNumberWithCountryCode)
       setCompletePhoneNumber(mobileNumberWithCountryCode);
     if (mobileNumberWithoutCountryCode)
