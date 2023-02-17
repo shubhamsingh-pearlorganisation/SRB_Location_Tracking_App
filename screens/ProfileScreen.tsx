@@ -334,6 +334,7 @@ const ProfileScreen = ({ navigation }: any) => {
                   textAlign: "left",
                   padding: 0,
                   borderWidth: 0,
+                  fontSize: SIZES.width > 400 ? 30 : 20,
                 },
               ]}
             >
@@ -432,7 +433,7 @@ const ProfileScreen = ({ navigation }: any) => {
           >
             <MaterialIcons
               name="keyboard-arrow-left"
-              size={40}
+              size={30}
               color={COLORS.white}
             />
             <Text
@@ -441,10 +442,11 @@ const ProfileScreen = ({ navigation }: any) => {
                 {
                   fontWeight: "600",
                   color: COLORS.white,
-                  alignSelf: "center",
+                  // alignSelf: "center",
                   textAlign: "left",
                   padding: 0,
                   borderWidth: 0,
+                  fontSize: SIZES.width > 400 ? 30 : 20,
                 },
               ]}
             >
@@ -468,6 +470,7 @@ const ProfileScreen = ({ navigation }: any) => {
                   textAlign: "right",
                   padding: 0,
                   borderWidth: 0,
+                  fontSize: SIZES.width > 400 ? 30 : 20,
                 },
               ]}
             >

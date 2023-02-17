@@ -16,7 +16,7 @@ const CountryDropdown = (props: any) => {
   return (
     <View>
       <PhoneInput
-        placeholder="Enter number"
+        placeholder="Enter phone number"
         value={value}
         defaultCode="IN"
         containerStyle={styles.countryCodeContainer}

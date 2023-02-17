@@ -20,6 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import { GroupsAndMembersContext } from "../App";
+import { ActivityIndicator } from "react-native-paper";
 // -----------------------------------------------------------------------------------
 
 type locationTypes = {
@@ -39,6 +40,7 @@ const RenderGroups = ({
   groupDetails,
   setGroupMembersList,
   selectedGroupDetails,
+  selectedGroupData,
 }: any) => {
   const handleGroupItemClick = () => {
     setGroupMembersList(groupDetails?.users ? groupDetails?.users : []);
@@ -58,12 +60,24 @@ const RenderGroups = ({
           {groupDetails?.group_code ? groupDetails?.group_code : "N.A"}
         </Text>
       </View>
-      <View style={[styles.groupListItemType]}>
+      <View
+        style={[
+          styles.groupListItemType,
+          {
+            backgroundColor:
+              selectedGroupDetails?.group_code === groupDetails?.group_code
+                ? COLORS.voilet
+                : "green",
+          },
+        ]}
+      >
         <Text
-          style={{
-            color: "white",
-            fontWeight: "700",
-          }}
+          style={[
+            {
+              color: "white",
+              fontWeight: "700",
+            },
+          ]}
         >
           {groupDetails?.group_type && groupDetails?.group_type === 1
             ? "PUBLIC"
@@ -370,7 +384,7 @@ const HomeScreen = ({ navigation }: any) => {
         style={styles.groupListDropDownBtn}
         onPress={onPressDropDownBtn}
       >
-        <Text>
+        <Text style={{ fontWeight: "bold", color: "blue" }}>
           {selectedGroupData?.title
             ? selectedGroupData?.title?.toString().slice(0, 15) +
               "-" +
@@ -404,6 +418,7 @@ const HomeScreen = ({ navigation }: any) => {
                       groupDetails={group}
                       setGroupMembersList={setGroupMembersList}
                       selectedGroupDetails={selectedGroupDetails}
+                      selectedGroupData={selectedGroupData}
                     />
                   )}
                 </View>
@@ -578,16 +593,35 @@ const HomeScreen = ({ navigation }: any) => {
             ))
           ) : (
             <>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontWeight: "600",
-                  fontSize: 20,
-                  marginTop: 40,
-                }}
-              >
-                Members not Available
-              </Text>
+              {groupsAndMembersData.isDetailsLoaded &&
+              groupMembersList?.length === 0 ? (
+                <>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontWeight: "600",
+                      fontSize: 20,
+                      marginTop: 40,
+                    }}
+                  >
+                    Members not Available
+                  </Text>
+                </>
+              ) : (
+                <View style={{ margin: "10%" }}>
+                  <ActivityIndicator size={SIZES.width > 400 ? 40 : 30} />
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "blue",
+                      fontWeight: "bold",
+                      fontSize: SIZES.width > 400 ? 25 : 18,
+                    }}
+                  >
+                    Please wait we are fetching available Members
+                  </Text>
+                </View>
+              )}
             </>
           )}
         </ScrollView>

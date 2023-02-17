@@ -44,6 +44,7 @@ const App = () => {
   const [groupsAndMembersDetails, setGroupAndMembersDetails] = useState<any>({
     update: false, //Used for Groups List Refreshing
     groupsData: [],
+    isDetailsLoaded: false,
   });
 
   //Used to store user details
@@ -106,6 +107,7 @@ const App = () => {
         setGroupAndMembersDetails({
           update: isUpdateRequired,
           groupsData: response.data?.data?.reverse(),
+          isDetailsLoaded: true,
         });
       } else {
         toast.show(
