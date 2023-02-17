@@ -239,6 +239,24 @@ const Login = ({ navigation }: any) => {
       setMobileNumberWithoutCode(mobileNumberWithoutCountryCode);
   };
 
+  const [counter, setCounter] = useState(30);
+
+  const resendOTP = () => {
+    setDisableVerificationBtn(false);
+  };
+
+  useEffect(() => {
+    if (verificationId) {
+      setDisableVerificationBtn(true);
+      const timer: any =
+        counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+      if (counter === 0) {
+        resendOTP();
+      }
+      return () => clearInterval(timer);
+    }
+  }, [counter, disableVerificationBtn, verificationId]);
+
   // -------------------------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -284,8 +302,23 @@ const Login = ({ navigation }: any) => {
             Send Verification
           </Text>
         </TouchableOpacity>
+
         {verificationId && (
           <>
+            <View
+              style={{
+                margin: "5%",
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: SIZES.width > 400 ? 22 : 18,
+                }}
+              >
+                Resend OTP in 0.{counter}
+              </Text>
+            </View>
             <TextInput
               placeholder="Confirm code"
               onChangeText={setVerificationCode}
