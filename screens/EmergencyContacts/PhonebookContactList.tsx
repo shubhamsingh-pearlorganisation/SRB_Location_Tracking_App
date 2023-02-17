@@ -238,24 +238,32 @@ const PhonebookContactList = ({ navigation }: any) => {
         <>
           {!contacts.isContactListEmpty && contacts.contactList.length > 0 && (
             <>
-              <TouchableOpacity
-                onPress={submitContacts}
-                disabled={!selectedContacts?.length}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                }}
               >
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
+                <Text style={styles.selectedAndAddContactBtns}>
+                  Selected: {selectedContacts?.length}
+                </Text>
+                <TouchableOpacity
+                  onPress={submitContacts}
+                  disabled={!selectedContacts?.length}
                 >
-                  <Text style={styles.selectedAndAddContactBtns}>
-                    Selected: {selectedContacts?.length}
-                  </Text>
                   <Text
                     style={[
-                      styles.selectedAndAddContactBtns,
                       {
+                        alignSelf: "flex-start",
+                        padding: "2%",
+                        marginTop: "10%",
+                        marginRight: "5%",
+                        borderRadius: 10,
+                        fontSize: SIZES.width > 400 ? 20 : 15,
+                        fontWeight: "bold",
+                        color: "white",
                         backgroundColor: !selectedContacts?.length
                           ? "darkgrey"
                           : COLORS.voilet,
@@ -269,8 +277,8 @@ const PhonebookContactList = ({ navigation }: any) => {
                       <></>
                     )}
                   </Text>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
             </>
           )}
 
