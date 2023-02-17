@@ -8,15 +8,11 @@ const IndividualContact = ({ contact, sendSelectedContact }: any) => {
   // ========================
   const [isChecked, setChecked] = useState(false);
 
-  const manageSelection = () => {
-    sendSelectedContact(contact);
-  };
-
   return (
     <Pressable
       onPress={() => {
         setChecked(!isChecked);
-        manageSelection();
+        sendSelectedContact(contact);
       }}
     >
       <View style={styles.contactCon}>

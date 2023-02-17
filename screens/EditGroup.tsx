@@ -11,7 +11,6 @@ import {
   Alert,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
-import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AuthContext, GroupsAndMembersContext } from "../App";
 import { useToast } from "react-native-toast-notifications";
@@ -169,7 +168,6 @@ const EditGroup = ({ route, navigation }: any) => {
             })
           }
         />
-        {/* <MaterialIcons name="edit" size={SIZES.width > 400 ? 30 : 25} /> */}
       </View>
       <View style={styles.cardHolder}>
         <View style={styles.card}>

@@ -100,54 +100,9 @@ const HomeScreen = ({ navigation }: any) => {
   const mapRef: any = useRef();
   const markerRef: any = useRef();
   const [drop, setDrop] = useState(false);
-
   const [groupMembersList, setGroupMembersList] = useState<any>([]);
-
   const [selectedGroupData, setSelectedGroupData] = useState<any>({});
-
-  const selectedGroupDetails = (selGroupDetails: any) => {
-    selGroupDetails && setSelectedGroupData(selGroupDetails);
-  };
-
-  useEffect(() => {
-    if (
-      groupsAndMembersData?.groupsAndMembersDetails &&
-      groupsAndMembersData?.groupsAndMembersDetails?.length > 0
-    ) {
-      setGroupMembersList(
-        groupsAndMembersData?.groupsAndMembersDetails[0]?.users
-      );
-      setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);
-    }
-  }, [groupsAndMembersData?.groupsAndMembersDetails]);
-
-  const onPressDropDownBtn = () => {
-    setDrop(!drop);
-    setOnUp(false);
-  };
-
-  const redirectToAddGroupScreen = () => {
-    navigation.navigate("AddGroup");
-  };
-
-  const redirectToAddMemberScreen = () => {
-    navigation.navigate("AddMember", { groupDetails: selectedGroupData });
-  };
-
-  const redirectToJoinGroupScreen = () => {
-    navigation.navigate("JoinGroupScreen");
-  };
-
   const [onUp, setOnUp] = useState(false);
-
-  const onPressUpBtn = () => {
-    setOnUp(!onUp);
-    setDrop(false);
-  };
-
-  const customStyle2 = onUp ? styles.expand : styles.collapse;
-  const customStyle = drop ? styles.dropDownEnabled : styles.dropDownDisabled;
-
   const [state, setState] = useState<any>({
     curLoc: {
       latitude: 30.7333,
@@ -165,6 +120,42 @@ const HomeScreen = ({ navigation }: any) => {
     distance: 0,
     heading: 0,
   });
+
+  const customStyle2 = onUp ? styles.expand : styles.collapse;
+  const customStyle = drop ? styles.dropDownEnabled : styles.dropDownDisabled;
+
+  useEffect(() => {
+    if (
+      groupsAndMembersData?.groupsAndMembersDetails &&
+      groupsAndMembersData?.groupsAndMembersDetails?.length > 0
+    ) {
+      setGroupMembersList(
+        groupsAndMembersData?.groupsAndMembersDetails[0]?.users
+      );
+      setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);
+    }
+  }, [groupsAndMembersData?.groupsAndMembersDetails]);
+
+  const selectedGroupDetails = (selGroupDetails: any) =>
+    selGroupDetails && setSelectedGroupData(selGroupDetails);
+
+  const onPressDropDownBtn = () => {
+    setDrop(!drop);
+    setOnUp(false);
+  };
+
+  const redirectToAddGroupScreen = () => navigation.navigate("AddGroup");
+
+  const redirectToAddMemberScreen = () =>
+    navigation.navigate("AddMember", { groupDetails: selectedGroupData });
+
+  const redirectToJoinGroupScreen = () =>
+    navigation.navigate("JoinGroupScreen");
+
+  const onPressUpBtn = () => {
+    setOnUp(!onUp);
+    setDrop(false);
+  };
 
   const {
     curLoc,

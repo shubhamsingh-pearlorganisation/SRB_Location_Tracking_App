@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PhoneInput from "react-native-phone-number-input";
 import { View, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../constants";
+// ----------------------------------------------------------------------------
 
 const CountryDropdown = (props: any) => {
   // Component's Local States
@@ -69,3 +70,4 @@ const styles = StyleSheet.create({
 });
 
 export default CountryDropdown;
+// ===================================== THE END =======================================

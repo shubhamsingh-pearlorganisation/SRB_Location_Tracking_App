@@ -119,27 +119,23 @@ const FeedBackScreen = () => {
             </Text>
             <Text style={styles.textStyle}>Title</Text>
             <TextInput
-             style={styles.textStyle}
-            placeholder="Feedback Heading"
-            multiline={true}
-            numberOfLines={2}
-            >
-
-            </TextInput>
+              style={styles.textStyle}
+              placeholder="Feedback Heading"
+              multiline={true}
+              numberOfLines={2}
+            ></TextInput>
             <Text style={styles.textStyle}>Description</Text>
             <TextInput
-             style={styles.textStyle}
-            placeholder="Feedback Description"
-            multiline={true}
-            numberOfLines={5}
-            >
-
-            </TextInput>
+              style={styles.textStyle}
+              placeholder="Feedback Description"
+              multiline={true}
+              numberOfLines={5}
+            ></TextInput>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text style={[styles.textStyle, {color:'white'}]}>SEND</Text>
+              <Text style={[styles.textStyle, { color: "white" }]}>SEND</Text>
             </Pressable>
           </View>
         </View>
@@ -186,7 +182,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: "white",
     borderRadius: 20,
-    padding: '5%',
+    padding: "5%",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -202,22 +198,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     margin: "5%",
-    fontSize: SIZES.width>400?30:20,
+    fontSize: SIZES.width > 400 ? 30 : 20,
   },
   textStyle: {
     color: "black",
     fontWeight: "600",
     margin: "5%",
-    marginTop:'2%',
-    marginBottom:'2%',
-    alignSelf:'flex-start',
-    fontSize: SIZES.width>400?25:18,
+    marginTop: "2%",
+    marginBottom: "2%",
+    alignSelf: "flex-start",
+    fontSize: SIZES.width > 400 ? 25 : 18,
   },
   button: {
     borderRadius: 20,
     paddingVertical: 0,
     elevation: 2,
-    marginTop:'2%'
+    marginTop: "2%",
   },
   buttonClose: {
     backgroundColor: COLORS.voilet,

@@ -38,6 +38,8 @@ const onBoardings = [
   },
 ];
 
+// ---------------------------------------------------------------------------------------------
+
 const OnBoarding = ({ navigation }: any) => {
   // This method is used to redirect user to login screen
   const redirectToLogin = (comingFrom: string) => {
@@ -82,7 +84,6 @@ const OnBoarding = ({ navigation }: any) => {
             >
               <View
                 style={{
-                  // flex: 2,
                   alignItems: "center",
                   justifyContent: "center",
                   backgroundColor: "white",

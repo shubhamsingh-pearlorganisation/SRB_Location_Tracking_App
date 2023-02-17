@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
-
 import { COLORS, SIZES } from "../constants";
+// ----------------------------------------------------------------------------
 
 export default function AlertDialog({
   mainDisplayMsg,
@@ -109,3 +109,5 @@ export default function AlertDialog({
     </View>
   );
 }
+
+// ===================================== THE END =======================================

@@ -1,6 +1,6 @@
-import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
-
 import React from "react";
+import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+// ---------------------------------------------------------------------------------------------
 
 const SplashPartner = ({ navigation }: any) => {
   const onPressSubmit = () => {
@@ -24,6 +24,9 @@ const SplashPartner = ({ navigation }: any) => {
   );
 };
 export default SplashPartner;
+// ---------------------------------------------------------------------------------------------
+// CSS CODE
+// =========
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -61,3 +64,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+// ------------------------------------------- THE END --------------------------------------------------

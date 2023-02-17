@@ -2,24 +2,17 @@ import { View, StyleSheet, ScrollView, Text } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { SIZES } from "../constants";
 import { List } from "react-native-paper";
-import { instance } from "../core/utils/AxiosInterceptor";
-import { useToast } from "react-native-toast-notifications";
-import Loader from "../components/Loader";
 import { UserDetailsContext } from "../App";
 // ------------------------------------------------------------------
 const FAQScreen = () => {
-  const toast = useToast();
   const userDetailsContextData: any = useContext(UserDetailsContext);
 
-  const [showLoader, setShowLoader] = useState<boolean>(false);
   const [expanded, setExpanded] = useState(false);
   const [faqList, setFaqList] = useState<any>(
     userDetailsContextData?.faqData?.length > 0
       ? userDetailsContextData?.faqData
       : []
   );
-
-  const handlePress = () => setExpanded(!expanded); //Used for Expanding and Collapsing accordion item
 
   useEffect(() => {
     userDetailsContextData?.faqData &&
@@ -28,8 +21,6 @@ const FAQScreen = () => {
 
   return (
     <View>
-      {showLoader && <Loader message="Please wait.. we are fetching FAQs" />}
-
       {faqList?.length > 0 ? (
         <>
           <List.Section title="Frequently asked Questions">
@@ -46,7 +37,7 @@ const FAQScreen = () => {
                       titleStyle={styles.answerText}
                       titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
                       left={(props) => <List.Icon icon="folder" />}
-                      onPress={handlePress}
+                      onPress={() => setExpanded(!expanded)}
                     >
                       <List.Item
                         title={faq.description}

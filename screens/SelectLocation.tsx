@@ -5,6 +5,7 @@ import SrbButton from "../components/SrbButton";
 import { showError } from "../core/utils/helper";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { GOOGLE_API_KEY } from "../core/utils/constants";
+// ---------------------------------------------------------------------------------------------
 
 const SelectLocation = (props: any) => {
   const navigation = useNavigation();
@@ -96,3 +97,5 @@ const styles = StyleSheet.create({
   },
 });
 export default SelectLocation;
+
+// ------------------------------------------ THE END ---------------------------------------------------

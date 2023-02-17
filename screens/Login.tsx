@@ -14,7 +14,7 @@ import fireb from "firebase/compat";
 import { useToast } from "react-native-toast-notifications";
 import { instance } from "../core/utils/AxiosInterceptor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CountryDropdown from "../components/CountryDropdownComponent";
+import CountryDropdown from "../components/CountryDropdown";
 import { SIZES } from "../constants";
 import { regexes } from "../core/utils/constants";
 import Loader from "../components/Loader";
@@ -52,7 +52,7 @@ const Login = ({ navigation, route }: any) => {
         mobileNumberWithoutCode.length > 15)
     ) {
       setDisableVerificationBtn(true);
-    } // For INDIA specific phone numbers
+    } // Validation check for INDIA specific mobile numbers
     else if (
       completePhoneNumber?.toString().includes("+91") &&
       mobileNumberWithoutCode.length != 10

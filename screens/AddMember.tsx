@@ -46,7 +46,6 @@ const AddMember = ({ route, navigation }: any) => {
             <TouchableOpacity
               style={{
                 position: "absolute",
-                // left: "40%",
                 alignSelf: "center",
                 bottom: "15%",
                 width: SIZES.width * 0.6,

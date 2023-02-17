@@ -3,8 +3,11 @@ import { View, StyleSheet } from "react-native";
 import { List } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";
 import { COLORS, SIZES } from "../constants";
+// ---------------------------------------------------------------------------------------------
 
 const Settings = () => {
+  // Component's Local States
+  // ========================
   const [mapType, setMapType] = useState("Default");
   const [expanded, setExpanded] = useState(false);
   const handlePress = () => setExpanded(!expanded);

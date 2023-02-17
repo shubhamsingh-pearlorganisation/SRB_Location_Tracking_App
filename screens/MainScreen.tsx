@@ -6,6 +6,7 @@ import Groups from "./Groups";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import MenuScreen from "./MenuScreen";
+// ---------------------------------------------------------------------------------------------
 
 const MainScreen = ({ navigation }: any) => {
   const newGroup = () => {
@@ -77,3 +78,5 @@ const MainScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({});
 
 export default MainScreen;
+
+// --------------------------------------- THE END ------------------------------------------------------

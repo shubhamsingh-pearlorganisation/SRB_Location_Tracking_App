@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { View, Text, Image, StyleSheet, Pressable, Alert } from "react-native";
-
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -8,30 +7,22 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SIZES } from "../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext, UserDetailsContext } from "../App";
+// ---------------------------------------------------------------------------------------------
 
 const MenuScreen = ({ navigation }: any) => {
   const authContextData: any = useContext(AuthContext);
   const userDetailsContextData: any = useContext(UserDetailsContext);
 
-  const redirectToEmergencyScreen = () => {
-    navigation.navigate("Emergency");
-  };
+  const redirectToEmergencyScreen = () => navigation.navigate("Emergency");
 
-  const redirectProfilePage = () => {
-    navigation.navigate("ProfileScreen");
-  };
+  const redirectProfilePage = () => navigation.navigate("ProfileScreen");
 
-  const redirectFAQScreen = () => {
-    navigation.navigate("FAQScreen");
-  };
+  const redirectFAQScreen = () => navigation.navigate("FAQScreen");
 
-  const redirectFeedBackScreen = () => {
-    navigation.navigate("FeedBackScreen");
-  };
+  const redirectFeedBackScreen = () => navigation.navigate("FeedBackScreen");
 
-  const redirectToSettingsScreen = () => {
-    navigation.navigate("SettingsScreen");
-  };
+  const redirectToSettingsScreen = () => navigation.navigate("SettingsScreen");
+
   // This method is used to logout the user
   const handleLogout = () => {
     try {
@@ -309,7 +300,8 @@ const MenuScreen = ({ navigation }: any) => {
     </View>
   );
 };
-
+// ---------------------------------------------------------------------------------------------
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     padding: 10,
@@ -325,3 +317,4 @@ const styles = StyleSheet.create({
   },
 });
 export default MenuScreen;
+// ------------------------------------------- THE END --------------------------------------------------

@@ -25,7 +25,7 @@ import Loader from "../components/Loader";
 
 // -----------------------------------------------------------------------------------
 
-const Register = ({ route, navigation }: any) => {
+const Register = ({ route }: any) => {
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
   const userDetailsContextData: any = useContext(UserDetailsContext);

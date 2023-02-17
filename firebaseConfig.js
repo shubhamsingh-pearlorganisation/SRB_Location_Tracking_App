@@ -1,6 +1,7 @@
 import * as firebase from "firebase/compat";
 import "@firebase/auth";
 import "@firebase/firestore";
+// ---------------------------------------------------------------------------------------------
 
 // Initialize Firebase
 export const firebaseConfig = {
@@ -12,6 +13,7 @@ export const firebaseConfig = {
   appId: "1:771423723462:web:f3a4f165e1184d97921cc7",
   measurementId: "G-C4WZ7DHHWZ",
 };
-if (!firebase.apps.length > 0) {
-  firebase.initializeApp(firebaseConfig);
-}
+
+if (!firebase.apps.length > 0) firebase.initializeApp(firebaseConfig);
+
+// ---------------------------------------------------------------------------------------------
