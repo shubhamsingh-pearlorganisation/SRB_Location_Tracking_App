@@ -44,12 +44,21 @@ const Login = ({ navigation }: any) => {
   useEffect(() => {
     // According to Google Global Mobile Numbers must lies between 7 to 15 digits
     if (
-      mobileNumberWithoutCode.length < 7 ||
-      mobileNumberWithoutCode.length > 15
+      completePhoneNumber?.length > 0 &&
+      !completePhoneNumber?.toString().includes("+91") &&
+      (mobileNumberWithoutCode.length < 7 ||
+        mobileNumberWithoutCode.length > 15)
+    )
+      setDisableVerificationBtn(true);
+    // For INDIA specific phone numbers
+    else if (
+      (completePhoneNumber?.toString().includes("+91") &&
+        mobileNumberWithoutCode.length < 10) ||
+      mobileNumberWithoutCode.length > 10
     )
       setDisableVerificationBtn(true);
     else setDisableVerificationBtn(false);
-  }, [mobileNumberWithoutCode]);
+  }, [mobileNumberWithoutCode, completePhoneNumber]);
 
   // Enabling or Disabling Confirm Verification Code Button
   useEffect(() => {
