@@ -73,16 +73,22 @@ const PhonebookContactList = ({ navigation }: any) => {
 
           // Finding those contacts which are not available in database but available in
           // complete phone book list.
-          // const uniqueContacts = contactsWithName.filter(function (con: any) {
-          //   return !userDetailsContextData?.userContactsList.some(function (
-          //     cont: any
-          //   ) {
-          //     return con.name.includes(cont.name);
-          //   });
-          // });
+
+          const uniqueContacts = contactsWithName.filter((indContact: any) => {
+            return !userDetailsContextData?.userContactsList.some(
+              (selContact: any) => {
+                return (
+                  Array.isArray(indContact.phoneNumbers) &&
+                  indContact.phoneNumbers.length > 0 &&
+                  selContact.contact &&
+                  selContact.contact === indContact.phoneNumbers[0].number
+                );
+              }
+            );
+          });
 
           setContacts({
-            contactList: contactsWithName, // uniqueContacts?.length > 0 ? uniqueContacts : [],
+            contactList: uniqueContacts, // uniqueContacts?.length > 0 ? uniqueContacts : [],
             isContactListEmpty: false,
           });
         } else
