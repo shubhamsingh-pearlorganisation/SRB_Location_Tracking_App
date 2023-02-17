@@ -488,6 +488,7 @@ const ProfileScreen = ({ navigation }: any) => {
               right: 0,
               top: 0,
               position: "absolute",
+              width:"10%"
             }}
             onPress={updateUserDetails}
           >
@@ -496,7 +497,7 @@ const ProfileScreen = ({ navigation }: any) => {
                 styles.textView,
                 {
                   color: COLORS.white,
-                  textAlign: "right",
+                  textAlign: "left",
                   padding: 0,
                   borderWidth: 0,
                   fontSize: SIZES.width > 400 ? 30 : 20,
