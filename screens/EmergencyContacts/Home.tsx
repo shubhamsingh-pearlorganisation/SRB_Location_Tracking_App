@@ -1,5 +1,12 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import { images, SIZES } from "../../constants";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
+import { COLORS, images, SIZES } from "../../constants";
 const { emergencyContactHome } = images;
 import { useState, useEffect, useContext } from "react";
 import { UserDetailsContext } from "../../App";
