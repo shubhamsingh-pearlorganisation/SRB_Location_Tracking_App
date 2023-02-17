@@ -36,7 +36,6 @@ const MenuScreen = ({ navigation }: any) => {
   const handleLogout = () => {
     try {
       const result: any = AsyncStorage.clear();
-      // console.log("Logout User Result::: ", result);
       if (result) {
         Alert.alert(
           "Logout",

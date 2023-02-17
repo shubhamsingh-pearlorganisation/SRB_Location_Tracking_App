@@ -110,8 +110,6 @@ const EditGroup = ({ route, navigation }: any) => {
         formData.append("group_type", publicChecked ? "1" : "2");
         setShowLoader(true);
 
-        console.log("formDataformData:: ", formData);
-
         const response = await instance.post("/group_update", formData);
         if (response.status === 200 && response.data?.status === true) {
           setShowLoader(false);

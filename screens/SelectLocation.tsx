@@ -57,7 +57,6 @@ const SelectLocation = (props: any) => {
           nearbyPlacesAPI={"GooglePlacesSearch"}
           debounce={400}
           onPress={(data, details: any) => {
-            console.log(details, ":checkkk");
             fetchDestinationCords(
               details.geometry.location.lat,
               details.geometry.location.lng
