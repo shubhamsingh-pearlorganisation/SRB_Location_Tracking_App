@@ -5,7 +5,6 @@ import {
   Pressable,
   ScrollView,
   Alert,
-  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../../constants";
@@ -14,6 +13,7 @@ import { Feather } from "@expo/vector-icons";
 import { AuthContext, UserDetailsContext } from "../../App";
 import { useToast } from "react-native-toast-notifications";
 import { instance } from "../../core/utils/AxiosInterceptor";
+import Loader from "../../components/Loader";
 // -----------------------------------------------------------------
 
 const ContactsListingWithHelp = ({ navigation }: any) => {
@@ -105,7 +105,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+      {showLoader && <Loader />}
       <Pressable
         onPress={() => navigation.navigate("EmergencyTimer")}
         disabled={contactsList?.length === 0}
@@ -119,7 +119,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
             },
           ]}
         >
-          <Text style={styles.needHelp}>NEED HELP?</Text>
+          <Text style={styles.needHelp}>NEED HELP ?</Text>
           <View style={styles.lineStyle} />
           <Text style={styles.pressHere}>PRESS HERE</Text>
         </View>
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   needHelp: {
     fontStyle: "normal",
     fontWeight: "600",
-    fontSize: 20,
+    fontSize: 19,
     lineHeight: 25,
     textAlign: "center",
     color: "#FFFFFF",
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     marginLeft: "2%",
     borderRadius: 10,
-    fontSize: SIZES.width > 400 ? 20 : 15,
+    fontSize: SIZES.width > 400 ? 17 : 14,
     fontWeight: "bold",
     color: "white",
   },

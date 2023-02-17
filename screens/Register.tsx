@@ -8,7 +8,6 @@ import {
   Image,
   KeyboardAvoidingView,
   Pressable,
-  ActivityIndicator,
   Alert,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
@@ -22,6 +21,7 @@ import {
   UserDetailsContext,
 } from "../App";
 import { regexes } from "../core/utils/constants";
+import Loader from "../components/Loader";
 
 // -----------------------------------------------------------------------------------
 
@@ -298,7 +298,7 @@ const Register = ({ route, navigation }: any) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
-        {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+        {showLoader && <Loader />}
 
         <Text style={styles.otpText}>
           You haven’t got account?{"\n"} Let's Create...

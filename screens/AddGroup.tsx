@@ -7,13 +7,13 @@ import {
   KeyboardAvoidingView,
   Pressable,
   Alert,
-  ActivityIndicator,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { SIZES } from "../constants";
 import { useToast } from "react-native-toast-notifications";
 import { AuthContext, GroupsAndMembersContext } from "../App";
 import { instance } from "../core/utils/AxiosInterceptor";
+import Loader from "../components/Loader";
 // ----------------------------------------------------------------------------
 const AddGroup = ({ navigation }: any) => {
   const toast = useToast();
@@ -87,7 +87,7 @@ const AddGroup = ({ navigation }: any) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+      {showLoader && <Loader />}
 
       <View>
         <TextInput
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   textInput: {
-    fontSize: SIZES.width > 400 ? 50 : 30,
+    fontSize: SIZES.width > 400 ? 40 : 30,
     backgroundColor: "transparent",
     textAlign: "center",
     borderBottomWidth: 0,

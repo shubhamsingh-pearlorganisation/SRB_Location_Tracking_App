@@ -9,7 +9,6 @@ import {
   ScrollView,
   Image,
   Alert,
-  ActivityIndicator,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -18,6 +17,7 @@ import { AuthContext, GroupsAndMembersContext } from "../App";
 import { useToast } from "react-native-toast-notifications";
 import { TextInput } from "react-native-paper";
 import { instance } from "../core/utils/AxiosInterceptor";
+import Loader from "../components/Loader";
 
 // -----------------------------------------------------------------
 
@@ -146,7 +146,7 @@ const EditGroup = ({ route, navigation }: any) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+      {showLoader && <Loader />}
 
       <View
         style={{
@@ -162,7 +162,6 @@ const EditGroup = ({ route, navigation }: any) => {
           underlineColor="transparent"
           value={editGroupFormDetails?.title}
           maxLength={15}
-          multiline={false}
           onChangeText={(val: any) =>
             setEditGroupFormDetails({
               ...editGroupFormDetails,
@@ -170,7 +169,7 @@ const EditGroup = ({ route, navigation }: any) => {
             })
           }
         />
-        <MaterialIcons name="edit" size={SIZES.width > 400 ? 30 : 25} />
+        {/* <MaterialIcons name="edit" size={SIZES.width > 400 ? 30 : 25} /> */}
       </View>
       <View style={styles.cardHolder}>
         <View style={styles.card}>
@@ -344,7 +343,7 @@ const styles = StyleSheet.create({
     height: "40%",
   },
   textInput: {
-    fontSize: SIZES.width > 400 ? 50 : 40,
+    fontSize: SIZES.width > 400 ? 40 : 30,
     backgroundColor: "transparent",
     textAlign: "center",
     borderBottomWidth: 0,

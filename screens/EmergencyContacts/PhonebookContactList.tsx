@@ -4,9 +4,9 @@ import {
   Text,
   StyleSheet,
   Alert,
-  ActivityIndicator,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
 import * as Contacts from "expo-contacts";
 import { COLORS, SIZES } from "../../constants";
@@ -14,6 +14,7 @@ import IndividualContact from "./IndividualContact";
 import { useToast } from "react-native-toast-notifications";
 import { instance } from "../../core/utils/AxiosInterceptor";
 import { AuthContext, UserDetailsContext } from "../../App";
+import Loader from "../../components/Loader";
 
 // -------------------------------------------------------------------------------
 
@@ -207,21 +208,9 @@ const PhonebookContactList = ({ navigation }: any) => {
   return (
     <>
       {showLoader && (
-        <>
-          <View>
-            <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
-            <Text
-              style={{
-                textAlign: "center",
-                fontWeight: "bold",
-                fontSize: 22,
-              }}
-            >
-              Please wait. We are fetching contacts
-            </Text>
-          </View>
-        </>
+        <Loader message=" Please wait. We are fetching contacts" />
       )}
+
       {contacts.isContactListEmpty && contacts.contactList.length === 0 ? (
         <>
           <Text
@@ -271,10 +260,10 @@ const PhonebookContactList = ({ navigation }: any) => {
                     ]}
                   >
                     Add Contacts
-                    {showDoneLoader ? (
-                      <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
-                    ) : (
-                      <></>
+                    {showDoneLoader && (
+                      <View>
+                        <ActivityIndicator size={19} />
+                      </View>
                     )}
                   </Text>
                 </TouchableOpacity>

@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
   Pressable,
   Alert,
 } from "react-native";
@@ -23,6 +22,7 @@ import {
   UserDetailsContext,
 } from "../App";
 import { regexes } from "../core/utils/constants";
+import Loader from "../components/Loader";
 
 // ============================================================================================
 
@@ -370,9 +370,7 @@ const ProfileScreen = ({ navigation }: any) => {
             onPress={() => setIsEditable(true)}
           >
             <MaterialIcons name="edit" size={30} color={COLORS.white} />
-            {showLoader && (
-              <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
-            )}
+            {showLoader && <Loader message="" />}
           </TouchableOpacity>
         </View>
 
@@ -512,9 +510,7 @@ const ProfileScreen = ({ navigation }: any) => {
               position: "absolute",
             }}
           >
-            {showLoader && (
-              <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
-            )}
+            {showLoader && <Loader message="" />}
           </View>
         </View>
 

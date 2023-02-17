@@ -20,7 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import { GroupsAndMembersContext } from "../App";
-import { ActivityIndicator } from "react-native-paper";
+import Loader from "../components/Loader";
 // -----------------------------------------------------------------------------------
 
 type locationTypes = {
@@ -576,6 +576,10 @@ const HomeScreen = ({ navigation }: any) => {
           <MaterialIcons
             name={onUp ? "keyboard-arrow-down" : "keyboard-arrow-up"}
             size={SIZES.width > 400 ? 20 : 15}
+            style={{
+              textAlign: "center",
+              fontSize: 30,
+            }}
           />
         </TouchableOpacity>
         <ScrollView
@@ -608,19 +612,7 @@ const HomeScreen = ({ navigation }: any) => {
                   </Text>
                 </>
               ) : (
-                <View style={{ margin: "10%" }}>
-                  <ActivityIndicator size={SIZES.width > 400 ? 40 : 30} />
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      color: "blue",
-                      fontWeight: "bold",
-                      fontSize: SIZES.width > 400 ? 25 : 18,
-                    }}
-                  >
-                    Please wait we are fetching available Members
-                  </Text>
-                </View>
+                <Loader message="Please wait we are fetching available group members" />
               )}
             </>
           )}

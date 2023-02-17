@@ -1,83 +1,34 @@
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-  Text,
-} from "react-native";
+import { View, StyleSheet, ScrollView, Text } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { SIZES } from "../constants";
 import { List } from "react-native-paper";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { useToast } from "react-native-toast-notifications";
+import Loader from "../components/Loader";
+import { UserDetailsContext } from "../App";
 // ------------------------------------------------------------------
 const FAQScreen = () => {
   const toast = useToast();
+  const userDetailsContextData: any = useContext(UserDetailsContext);
 
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const [expanded, setExpanded] = useState(false);
-  const [faqList, setFaqList] = useState<any>([]);
+  const [faqList, setFaqList] = useState<any>(
+    userDetailsContextData?.faqData?.length > 0
+      ? userDetailsContextData?.faqData
+      : []
+  );
 
   const handlePress = () => setExpanded(!expanded); //Used for Expanding and Collapsing accordion item
 
   useEffect(() => {
-    fetchFAQList();
-  }, []);
-
-  useEffect(() => {
-    if (faqList) console.log("faqList::: ", faqList);
-  }, [faqList]);
-
-  // This method is used to fetch FAQs list from the database.
-  const fetchFAQList = async () => {
-    try {
-      setShowLoader(true);
-      const response = await instance.get("/faqs_get");
-      if (response.status === 200 && response.data?.status === true) {
-        setFaqList(response.data?.data);
-        toast.show("FAQs Fetched Successfully", { type: "success" });
-        setShowLoader(false);
-      } else {
-        setShowLoader(false);
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while fetching faqs. Please try again later.",
-          {
-            type: "error",
-          }
-        );
-      }
-    } catch (error: any) {
-      setShowLoader(false);
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching faqs. Please try again later.",
-        {
-          type: "error",
-        }
-      );
-    }
-  };
+    userDetailsContextData?.faqData &&
+      setFaqList(userDetailsContextData?.faqData);
+  }, [userDetailsContextData?.faqData]);
 
   return (
     <View>
-      {showLoader && (
-        <>
-          <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
-          <Text
-            style={{
-              textAlign: "center",
-              color: "blue",
-              fontWeight: "bold",
-              fontSize: SIZES.width > 400 ? 25 : 18,
-            }}
-          >
-            Please wait we are fetching FAQs
-          </Text>
-        </>
-      )}
+      {showLoader && <Loader message="Please wait.. we are fetching FAQs" />}
 
       {faqList?.length > 0 ? (
         <>

@@ -41,7 +41,8 @@ const MenuScreen = ({ navigation }: any) => {
           "Logout",
           "You are logout Successfully. Please login to continue."
         );
-        authContextData.setTokenAfterLogin(null); // Sending back token value to app component so that we can redirect to splash screen
+        // Sending back token value to app component so that we can redirect to splash screen
+        authContextData.setTokenAfterLogin(null);
       }
     } catch (error: any) {
       Alert.alert("Getting an error during logout: ", error?.message);

@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  ActivityIndicator,
   Alert,
   ScrollView,
 } from "react-native";
@@ -14,6 +13,7 @@ import { AuthContext, GroupsAndMembersContext } from "../App";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { SIZES } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
+import Loader from "../components/Loader";
 // -----------------------------------------------------------------
 const Groups = ({ navigation }: any) => {
   const toast = useToast();
@@ -200,8 +200,7 @@ const Groups = ({ navigation }: any) => {
 
   return (
     <ScrollView>
-      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
-
+      {showLoader && <Loader />}
       {groupsAndMembersData?.groupsAndMembersDetails.length > 0 ? (
         groupsAndMembersData?.groupsAndMembersDetails.map(
           (group: any, i: number) => (

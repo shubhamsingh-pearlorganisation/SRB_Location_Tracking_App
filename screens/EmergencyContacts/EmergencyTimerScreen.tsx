@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   ImageBackground,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import { COLORS, SIZES } from "../../constants";
 import { emergencyCallImage } from "../../constants/images";
@@ -14,6 +13,7 @@ import { useEffect, useState, useContext } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { instance } from "../../core/utils/AxiosInterceptor";
 import { AuthContext } from "../../App";
+import Loader from "../../components/Loader";
 // -----------------------------------------------------------------
 
 const EmergencyTimerScreen = ({ navigation }: any) => {
@@ -79,7 +79,7 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+      {showLoader && <Loader />}
 
       <ImageBackground
         source={emergencyCallImage}

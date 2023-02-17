@@ -5,13 +5,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ActivityIndicator,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { AuthContext, GroupsAndMembersContext } from "../App";
 import { SIZES } from "../constants";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { useToast } from "react-native-toast-notifications";
+import Loader from "../components/Loader";
 
 // -------------------------------------------------------------------------------------
 
@@ -108,7 +108,7 @@ const JoinGroup = ({ navigation }: any) => {
           alignItems: "center",
         }}
       >
-        {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+        {showLoader && <Loader />}
         <Text style={styles.headingText}>Enter The Invite Code</Text>
         <View style={styles.codeBoxHolder}>
           <TextInput
@@ -229,8 +229,8 @@ const styles = StyleSheet.create({
     padding: "5%",
   },
   codeBox: {
-    width: SIZES.width > 400 ? 30 : 35,
-    fontSize: SIZES.width > 400 ? 25 : 25,
+    width: SIZES.width > 400 ? 40 : 30,
+    fontSize: SIZES.width > 400 ? 40 : 30,
     borderRadius: 8,
     margin: "1%",
     paddingHorizontal: 2,

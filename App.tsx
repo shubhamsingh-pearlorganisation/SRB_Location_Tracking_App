@@ -59,11 +59,18 @@ const App = () => {
     contacts: [],
   });
 
+  //Used to store FAQs List
+  const [faqList, setFaqList] = useState<any>([]);
+
   useEffect(() => {
     console.log(
       `User's Total ${contactsList?.contacts.length} contacts found.`
     );
   }, [contactsList]);
+
+  useEffect(() => {
+    console.log("Available FAQS: ", faqList);
+  }, [faqList]);
 
   // This method is used to receive authentication token from login screen after successful login
   const receiveAuthenticationToken = (jwtToken: any) => {
@@ -80,6 +87,7 @@ const App = () => {
       fetchGroups(false); //Fetching Groups and Members Details from API
       fetchUserDetails(); //Fetching User Details from API
       fetchContacts(); // Fetching Contacts List from API
+      fetchFAQList(); //Fetching FAQs List from API
     }
   }, [authenticationToken]);
 
@@ -197,6 +205,34 @@ const App = () => {
       );
     }
   };
+
+  // This method is used to fetch FAQs list from the database.
+  const fetchFAQList = async () => {
+    try {
+      const response = await instance.get("/faqs_get");
+      if (response.status === 200 && response.data?.status === true) {
+        setFaqList(response.data?.data);
+      } else {
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while fetching faqs. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching faqs. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
   // =============================================================================================
 
   return (
@@ -221,6 +257,7 @@ const App = () => {
                 userContactsList: contactsList?.contacts,
                 updateUserDetails: fetchUserDetails,
                 updateContactList: fetchContacts,
+                faqData: faqList,
               }}
             >
               <Stack.Navigator>

@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  ActivityIndicator,
   KeyboardAvoidingView,
 } from "react-native";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
@@ -18,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CountryDropdown from "../components/CountryDropdownComponent";
 import { SIZES } from "../constants";
 import { regexes } from "../core/utils/constants";
+import Loader from "../components/Loader";
 // ---------------------------------------------------------------------------------------------
 
 const Login = ({ navigation }: any) => {
@@ -51,13 +51,6 @@ const Login = ({ navigation }: any) => {
       (mobileNumberWithoutCode.length < 7 ||
         mobileNumberWithoutCode.length > 15)
     ) {
-      // console.log("completePhoneNumber::: ", completePhoneNumber);
-      // console.log(
-      //   "!completePhoneNumber?.toString().includes('+91')::: ",
-      //   !completePhoneNumber?.toString().includes("+91")
-      // );
-      // console.log("mobileNumberWithoutCode::: ", mobileNumberWithoutCode);
-
       setDisableVerificationBtn(true);
     } // For INDIA specific phone numbers
     else if (
@@ -166,10 +159,6 @@ const Login = ({ navigation }: any) => {
         const jwtToken = response.data?.token_id;
         const userDetails = response?.data.data;
 
-        // console.log("isNewUser: ", isNewUser);
-        // console.log("authentication-token: ", jwtToken);
-        // console.log("userDetails: ", userDetails);
-
         //This method is used to save JWT Token in @react-native-async-storage/async-storage
         if (jwtToken) {
           await AsyncStorage.setItem("authentication-token", jwtToken);
@@ -255,7 +244,7 @@ const Login = ({ navigation }: any) => {
         <Text style={styles.otpText}>
           Let’s start{"\n"} Sign up with number
         </Text>
-        {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+        {showLoader && <Loader msgTextColor="white" />}
 
         <View
           style={{
@@ -286,7 +275,9 @@ const Login = ({ navigation }: any) => {
               },
             ]}
           >
-            Send Verification
+            {counter > 0
+              ? "Send Verification code"
+              : "Re-send Verification code"}
           </Text>
         </TouchableOpacity>
 
@@ -297,14 +288,16 @@ const Login = ({ navigation }: any) => {
                 margin: "5%",
               }}
             >
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: SIZES.width > 400 ? 22 : 18,
-                }}
-              >
-                Resend OTP in 00:{counter < 10 ? "0" + counter : counter} sec.
-              </Text>
+              {verificationId && counter > 0 && (
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: SIZES.width > 400 ? 22 : 18,
+                  }}
+                >
+                  Resend OTP in 00:{counter < 10 ? "0" + counter : counter} sec.
+                </Text>
+              )}
             </View>
             <TextInput
               placeholder="Confirm code"
