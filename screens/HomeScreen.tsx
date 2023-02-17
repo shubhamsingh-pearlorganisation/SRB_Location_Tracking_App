@@ -382,7 +382,14 @@ const HomeScreen = ({ navigation }: any) => {
               selectedGroupData?.group_code
             : "Group Name"}
         </Text>
-        <MaterialIcons name="keyboard-arrow-down" size={20} />
+        <MaterialIcons
+          name="keyboard-arrow-down"
+          size={20}
+          style={{
+            textAlign: "center",
+            fontSize: 20,
+          }}
+        />
       </Pressable>
       {/* Drop Down Group List */}
       <View
@@ -521,6 +528,10 @@ const HomeScreen = ({ navigation }: any) => {
           <MaterialIcons
             name="keyboard-arrow-up"
             size={SIZES.width > 400 ? 20 : 15}
+            style={{
+              textAlign: "center",
+              fontSize: 20,
+            }}
           />
         </TouchableOpacity>
       </View>
@@ -569,7 +580,7 @@ const HomeScreen = ({ navigation }: any) => {
             size={SIZES.width > 400 ? 20 : 15}
             style={{
               textAlign: "center",
-              fontSize: 30,
+              fontSize: 20,
             }}
           />
         </TouchableOpacity>

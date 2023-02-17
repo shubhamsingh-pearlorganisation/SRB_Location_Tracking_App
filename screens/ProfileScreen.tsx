@@ -484,7 +484,7 @@ const ProfileScreen = ({ navigation }: any) => {
               right: 0,
               top: 0,
               position: "absolute",
-              width: "10%",
+              width: "15%",
             }}
             onPress={updateUserDetails}
           >
