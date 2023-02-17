@@ -339,7 +339,7 @@ const ProfileScreen = ({ navigation }: any) => {
           >
             <MaterialIcons
               name="keyboard-arrow-left"
-              size={SIZES.width>400?40:30}
+              size={SIZES.width > 400 ? 40 : 30}
               color={COLORS.white}
             />
             <Text
@@ -459,11 +459,7 @@ const ProfileScreen = ({ navigation }: any) => {
           >
             <MaterialIcons
               name="keyboard-arrow-left"
-<<<<<<< Updated upstream
-              size={40}
-=======
-              size={SIZES.width>400?40:30}
->>>>>>> Stashed changes
+              size={SIZES.width > 400 ? 40 : 30}
               color={COLORS.white}
             />
             <Text
