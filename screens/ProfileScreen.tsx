@@ -23,6 +23,7 @@ import {
 } from "../App";
 import { regexes } from "../core/utils/constants";
 import Loader from "../components/Loader";
+import * as FileSystem from "expo-file-system";
 
 // ============================================================================================
 
@@ -68,6 +69,20 @@ const ProfileScreen = ({ navigation }: any) => {
   // The data of the picked image
   const [pickedImagePath, setPickedImagePath] = useState<any>({});
 
+  // This method is used to find selected image file size.
+  const getFileInfo = async (fileURI: string) => {
+    const fileInfo = await FileSystem.getInfoAsync(fileURI);
+    return fileInfo;
+  };
+
+  // This method is used to check file size length with 5 MB
+  const isLessThanTheMB = (fileSize: number, smallerThanSizeMB: number) => {
+    // By default fileSize is in bytes format
+    // Convert in MB - fileSize / 1024 / 1024
+    const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB;
+    return isOk;
+  };
+
   // This function is triggered when the "Select from Gallery" button pressed
   const uploadImageFromGallery = async () => {
     // Ask the user for the permission to access the media library
@@ -86,6 +101,21 @@ const ProfileScreen = ({ navigation }: any) => {
       allowsEditing: true,
       quality: 1,
     });
+
+    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+
+    if (!fileInfo?.size) {
+      alert("Can't select this file as the size is unknown.");
+      return;
+    }
+
+    if (result?.assets[0]?.type === "image") {
+      const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+      if (!isLt5MB) {
+        alert(`Image size must be smaller than 5 MB!`);
+        return;
+      }
+    }
 
     if (!result.canceled) {
       setPickedImagePath(result.assets[0]);
@@ -110,6 +140,21 @@ const ProfileScreen = ({ navigation }: any) => {
       allowsEditing: true,
       quality: 1,
     });
+
+    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+
+    if (!fileInfo?.size) {
+      alert("Can't select this file as the size is unknown.");
+      return;
+    }
+
+    if (result?.assets[0]?.type === "image") {
+      const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+      if (!isLt5MB) {
+        alert(`Image size must be smaller than 5 MB!`);
+        return;
+      }
+    }
 
     if (!result.canceled) {
       setPickedImagePath(result.assets[0]);
