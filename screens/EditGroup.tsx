@@ -8,23 +8,28 @@ import {
   Pressable,
   ScrollView,
   Image,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { AuthContext } from "../App";
+import { AuthContext, GroupsAndMembersContext } from "../App";
 import { useToast } from "react-native-toast-notifications";
 import { TextInput } from "react-native-paper";
+import { instance } from "../core/utils/AxiosInterceptor";
 
 // -----------------------------------------------------------------
 
 const EditGroup = ({ route, navigation }: any) => {
   const toast = useToast();
   const authContextData: any = useContext(AuthContext); //Used for fetching authentication token
+  const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   // Component's Local States
   // ========================
-  const [publicChecked, setpublicChecked] = useState(
+  const [showLoader, setShowLoader] = useState(false);
+  const [publicChecked, setpublicChecked] = useState<any>(
     route?.params?.groupDetails?.group_type === 1 ? true : false
   );
 
@@ -85,14 +90,66 @@ const EditGroup = ({ route, navigation }: any) => {
     );
   };
 
-  // This method is used to group update    // API IS PENDING
+  // This method is used to group update
   const handleGroupUpdate = async () => {
-    console.log("editGroupFormDetails::: ", editGroupFormDetails);
-    console.log("publicChecked::: ", publicChecked);
+    if (
+      editGroupFormDetails.title === "" ||
+      editGroupFormDetails.title.toString().length < 3
+    ) {
+      Alert.alert(
+        "Validation Failed",
+        "Group title is required and should contain minimum 3 characters"
+      );
+      return;
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append("token_id", authContextData?.token);
+        formData.append("id", route?.params?.groupDetails?.group_id);
+        formData.append("title", editGroupFormDetails?.title);
+        formData.append("group_type", publicChecked ? "1" : "2");
+        setShowLoader(true);
+
+        console.log("formDataformData:: ", formData);
+
+        const response = await instance.post("/group_update", formData);
+        if (response.status === 200 && response.data?.status === true) {
+          setShowLoader(false);
+          toast.show("Group details updated successfully!", {
+            type: "success",
+          });
+
+          groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing
+          navigation.navigate("Groups"); // Redirect back to Groups Listing Screen
+        } else {
+          setShowLoader(false);
+          toast.show(
+            response.data?.message
+              ? response.data?.message
+              : "Getting an error while updating a group details. Please try again later.",
+            {
+              type: "error",
+            }
+          );
+        }
+      } catch (error: any) {
+        setShowLoader(false);
+        toast.show(
+          error.message
+            ? error.message
+            : "Getting an error while updating a group details. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    }
   };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
+      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+
       <View
         style={{
           flexDirection: "row",
@@ -106,6 +163,8 @@ const EditGroup = ({ route, navigation }: any) => {
           placeholderTextColor="rgba(0,0,0,0.4)"
           underlineColor="transparent"
           value={editGroupFormDetails?.title}
+          maxLength={15}
+          multiline={false}
           onChangeText={(val: any) =>
             setEditGroupFormDetails({
               ...editGroupFormDetails,

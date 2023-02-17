@@ -572,11 +572,6 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginBottom: "5%",
   },
-  // buttonContainer: {
-  //   width: "80%",
-  //   flexDirection: "row",
-  //   justifyContent: "space-around",
-  // },
   imageContainer: {
     alignItems: "center",
   },
@@ -585,17 +580,6 @@ const styles = StyleSheet.create({
     height: SIZES.width > 400 ? SIZES.width * 0.3 : SIZES.width * 0.5,
     resizeMode: "contain",
   },
-  // imgBtns: {
-  //   padding: "2%",
-  //   fontSize: SIZES.width > 400 ? 18 : 25,
-  //   backgroundColor: "white",
-  //   color: COLORS.voilet,
-  //   borderRadius: 30,
-  // },
-  // imgBtnText: {
-  //   fontSize: SIZES.width > 400 ? 18 : 25,
-  //   color: COLORS.voilet,
-  // },
 
   buttonContainer: {
     width: SIZES.width * 0.8,
@@ -603,8 +587,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginBottom: "10%",
   },
-  // imageContainer: {},
-
   imgBtns: {
     padding: "2%",
     backgroundColor: "white",

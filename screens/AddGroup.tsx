@@ -87,6 +87,8 @@ const AddGroup = ({ navigation }: any) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
+      {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
+
       <View>
         <TextInput
           placeholder="Enter Group Title ..."
@@ -102,7 +104,6 @@ const AddGroup = ({ navigation }: any) => {
           }
           maxLength={15}
         />
-        {showLoader && <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />}
       </View>
       <View style={styles.cardHolder}>
         <View style={styles.card}>
