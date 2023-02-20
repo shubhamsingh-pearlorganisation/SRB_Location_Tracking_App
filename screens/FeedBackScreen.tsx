@@ -142,34 +142,47 @@ const FeedbackScreen = () => {
     <View>
       {showLoader && !addFeedbackData.title ? (
         <Loader message="Please wait.. We are Fetching Feedbacks" />
-      ) : (
-        <List.Section title="Feedbacks">
-          <ScrollView
-            style={{
-              height: "95%",
-            }}
-          >
-            {feedbacksList?.length > 0 &&
-              feedbacksList.map((feedback: any, i: number) => {
-                return (
-                  <List.Accordion
-                    key={feedback?.id ? feedback?.id : i}
-                    title={feedback?.title}
-                    titleStyle={styles.answerText}
-                    titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-                    left={(props) => <List.Icon {...props} icon="account" />}
-                    onPress={() => setExpanded(!expanded)}
-                  >
-                    <List.Item
-                      title={feedback?.description}
-                      titleNumberOfLines={10}
+      ) : feedbacksList?.length > 0 ? (
+        <>
+          <List.Section title="Feedbacks">
+            <ScrollView
+              style={{
+                height: "95%",
+              }}
+            >
+              {feedbacksList?.length > 0 &&
+                feedbacksList.map((feedback: any, i: number) => {
+                  return (
+                    <List.Accordion
+                      key={feedback?.id ? feedback?.id : i}
+                      title={feedback?.title}
                       titleStyle={styles.answerText}
-                    />
-                  </List.Accordion>
-                );
-              })}
-          </ScrollView>
-        </List.Section>
+                      titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
+                      left={(props) => <List.Icon {...props} icon="account" />}
+                      onPress={() => setExpanded(!expanded)}
+                    >
+                      <List.Item
+                        title={feedback?.description}
+                        titleNumberOfLines={10}
+                        titleStyle={styles.answerText}
+                      />
+                    </List.Accordion>
+                  );
+                })}
+            </ScrollView>
+          </List.Section>
+        </>
+      ) : (
+        <Text
+          style={{
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: 22,
+            marginTop: 20,
+          }}
+        >
+          No Feedback Found
+        </Text>
       )}
 
       {/* ------------------------ Add Feeback Section ------------------------ */}
