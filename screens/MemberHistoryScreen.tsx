@@ -84,7 +84,10 @@ const MemberHistory = () => {
             color={"black"}
           />
         </Pressable>
-        <Pressable onPress={showDatePicker} style={{ flexDirection: "row",marginHorizontal:'1%' }}>
+        <Pressable
+          onPress={showDatePicker}
+          style={{ flexDirection: "row", marginHorizontal: "1%" }}
+        >
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
@@ -96,16 +99,14 @@ const MemberHistory = () => {
           />
           <AntDesign name="calendar" size={24} color="black" />
           <Text style={styles.subHeading}>
-
-20 Feb
-
+            20 Feb
             {/* {Object.keys(historyDate).length} */}
             {/* {new Date(historyDate)} */}
             {/* {typeof historyDate} */}
           </Text>
         </Pressable>
         <Pressable
-          // onPress={() => nextDate()}
+        // onPress={() => nextDate()}
         >
           <MaterialIcons
             name={"keyboard-arrow-right"}

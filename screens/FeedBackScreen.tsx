@@ -331,7 +331,6 @@ const styles = StyleSheet.create({
   },
   textInputStyle: {
     color: "black",
-    fontWeight: "600",
     margin: "5%",
     marginTop: "1%",
     marginBottom: "1%",
@@ -342,7 +341,6 @@ const styles = StyleSheet.create({
     padding: "2%",
     borderRadius: 5,
     width:"80%",
-    justifyContent:'center'
   },
   button: {
     borderRadius: 20,
