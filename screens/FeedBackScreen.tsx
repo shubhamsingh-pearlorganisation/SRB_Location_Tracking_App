@@ -270,16 +270,18 @@ const FeedbackScreen = () => {
         </View>
       </Modal>
 
-      <TouchableOpacity
-        style={styles.createFeedbackIcon}
-        onPress={() => setModalVisible(true)}
-      >
-        <Entypo
-          name="new-message"
-          size={SIZES.width > 400 ? 35 : 25}
-          color="white"
-        />
-      </TouchableOpacity>
+      {!showLoader && (
+        <TouchableOpacity
+          style={styles.createFeedbackIcon}
+          onPress={() => setModalVisible(true)}
+        >
+          <Entypo
+            name="new-message"
+            size={SIZES.width > 400 ? 35 : 25}
+            color="white"
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

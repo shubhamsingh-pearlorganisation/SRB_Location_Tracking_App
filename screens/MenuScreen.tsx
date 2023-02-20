@@ -17,7 +17,7 @@ const MenuScreen = ({ navigation }: any) => {
   const logoutConfirmation = () => {
     Alert.alert(
       "Logout Confirmation",
-      "Are you sure you want to from the app?",
+      "Are you sure you want to logout from the app?",
       [
         {
           text: "No",
@@ -188,7 +188,7 @@ const MenuScreen = ({ navigation }: any) => {
             width: "99%",
             flexDirection: "row",
           }}
-          onPress={navigation.navigate("SettingsScreen")}
+          onPress={() => navigation.navigate("SettingsScreen")}
         >
           <Ionicons
             style={[styles.icons, { paddingLeft: 5, top: "1%" }]}
@@ -260,7 +260,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
-            onPress={() => navigation.navigate("FeedBackScreen")}
+            onPress={() => navigation.navigate("FeedbackScreen")}
           >
             <MaterialCommunityIcons
               style={[styles.icons, { paddingLeft: 5 }]}
