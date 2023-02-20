@@ -14,6 +14,7 @@ import { instance } from "../core/utils/AxiosInterceptor";
 import { SIZES } from "../constants";
 import { AntDesign } from "@expo/vector-icons";
 import Loader from "../components/Loader";
+import NoDataFound from "../components/NoDataFound";
 // -----------------------------------------------------------------
 const Groups = ({ navigation }: any) => {
   const toast = useToast();
@@ -210,18 +211,7 @@ const Groups = ({ navigation }: any) => {
           )
         )
       ) : (
-        <>
-          <Text
-            style={{
-              textAlign: "center",
-              fontWeight: "bold",
-              fontSize: 22,
-              marginTop: 20,
-            }}
-          >
-            Groups not Available
-          </Text>
-        </>
+        <NoDataFound message="No Groups Found" />
       )}
     </ScrollView>
   );

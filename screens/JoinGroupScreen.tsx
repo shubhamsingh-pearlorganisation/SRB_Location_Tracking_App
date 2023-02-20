@@ -21,6 +21,7 @@ const JoinGroup = ({ navigation }: any) => {
   const authContextData: any = useContext(AuthContext);
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
+  // Used for Input Fields Autofocusing
   const codeFirstCharacter: any = useRef(null);
   const codeSecondCharacter: any = useRef(null);
   const codeThirdCharacter: any = useRef(null);
@@ -50,42 +51,6 @@ const JoinGroup = ({ navigation }: any) => {
   } = groupCode;
 
   const [disableCreate, setDisableCreate] = useState(true);
-
-  useEffect(() => {
-    const emptyData: any = Object.keys(groupCode).filter((k) => !groupCode[k]);
-    // const filledData: any = Object.keys(groupCode).filter((k) => groupCode[k]);
-    if (emptyData?.length > 0) {
-      const val =
-        "code" + emptyData[0].slice(0, 1).toUpperCase() + emptyData[0].slice(1);
-
-      if (val === "codeFirstCharacter") codeFirstCharacter.current.focus();
-      if (val === "codeSecondCharacter") codeSecondCharacter.current.focus();
-      if (val === "codeThirdCharacter") codeThirdCharacter.current.focus();
-      if (val === "codeFourthCharacter") codeFourthCharacter.current.focus();
-      if (val === "codeFifthCharacter") codeFifthCharacter.current.focus();
-      if (val === "codeSixthCharacter") codeSixthCharacter.current.focus();
-    } else;
-
-    // if (
-    //   filledData?.length > 0 &&
-    //   !emptyData.includes(filledData[filledData.length - 1])
-    // ) {
-    //   const val =
-    //     "code" +
-    //     filledData[filledData.length].slice(0, 1).toUpperCase() +
-    //     filledData[filledData.length].slice(1);
-
-    //   console.log("val::: ", val);
-    //   if (val === "codeFirstCharacter") codeFirstCharacter.current.focus();
-    //   if (val === "codeSecondCharacter") codeSecondCharacter.current.focus();
-    //   if (val === "codeThirdCharacter") codeThirdCharacter.current.focus();
-    //   if (val === "codeFourthCharacter") codeFourthCharacter.current.focus();
-    //   if (val === "codeFifthCharacter") codeFifthCharacter.current.focus();
-    //   if (val === "codeSixthCharacter") codeSixthCharacter.current.focus();
-    // }
-    // console.log("emptyData::: ", emptyData);
-    // console.log("filledData::: ", filledData);
-  }, [groupCode]);
 
   // This method is used to call group join API
   const handleGroupJoin = async () => {
@@ -159,10 +124,15 @@ const JoinGroup = ({ navigation }: any) => {
             theme={{ roundness: 8 }}
             placeholder=" "
             underlineColor="transparent"
-            onChangeText={(val: any) =>
-              setGroupCode({ ...groupCode, firstCharacter: val })
-            }
+            onChangeText={(val: any) => {
+              if (val?.toString().length > 0)
+                codeSecondCharacter.current.focus();
+              else codeFirstCharacter.current.focus();
+
+              setGroupCode({ ...groupCode, firstCharacter: val });
+            }}
             maxLength={1}
+            autoFocus
             ref={codeFirstCharacter}
           ></TextInput>
           <TextInput
@@ -170,9 +140,13 @@ const JoinGroup = ({ navigation }: any) => {
             theme={{ roundness: 8 }}
             placeholder=" "
             underlineColor="transparent"
-            onChangeText={(val: any) =>
-              setGroupCode({ ...groupCode, secondCharacter: val })
-            }
+            onChangeText={(val: any) => {
+              if (val?.toString().length > 0)
+                codeThirdCharacter.current.focus();
+              else codeFirstCharacter.current.focus();
+
+              setGroupCode({ ...groupCode, secondCharacter: val });
+            }}
             maxLength={1}
             ref={codeSecondCharacter}
           ></TextInput>
@@ -181,9 +155,13 @@ const JoinGroup = ({ navigation }: any) => {
             theme={{ roundness: 5 }}
             placeholder=" "
             underlineColor="transparent"
-            onChangeText={(val: any) =>
-              setGroupCode({ ...groupCode, thirdCharacter: val })
-            }
+            onChangeText={(val: any) => {
+              if (val?.toString().length > 0)
+                codeFourthCharacter.current.focus();
+              else codeSecondCharacter.current.focus();
+
+              setGroupCode({ ...groupCode, thirdCharacter: val });
+            }}
             maxLength={1}
             ref={codeThirdCharacter}
           ></TextInput>
@@ -193,9 +171,12 @@ const JoinGroup = ({ navigation }: any) => {
             theme={{ roundness: 8 }}
             placeholder=" "
             underlineColor="transparent"
-            onChangeText={(val: any) =>
-              setGroupCode({ ...groupCode, fourthCharacter: val })
-            }
+            onChangeText={(val: any) => {
+              if (val?.toString().length > 0)
+                codeFifthCharacter.current.focus();
+              else codeThirdCharacter.current.focus();
+              setGroupCode({ ...groupCode, fourthCharacter: val });
+            }}
             maxLength={1}
             ref={codeFourthCharacter}
           ></TextInput>
@@ -204,9 +185,12 @@ const JoinGroup = ({ navigation }: any) => {
             theme={{ roundness: 8 }}
             placeholder=" "
             underlineColor="transparent"
-            onChangeText={(val: any) =>
-              setGroupCode({ ...groupCode, fifthCharacter: val })
-            }
+            onChangeText={(val: any) => {
+              if (val?.toString().length > 0)
+                codeSixthCharacter.current.focus();
+              else codeFourthCharacter.current.focus();
+              setGroupCode({ ...groupCode, fifthCharacter: val });
+            }}
             maxLength={1}
             ref={codeFifthCharacter}
           ></TextInput>
@@ -215,15 +199,18 @@ const JoinGroup = ({ navigation }: any) => {
             theme={{ roundness: 8 }}
             placeholder=" "
             underlineColor="transparent"
-            onChangeText={(val: any) =>
-              setGroupCode({ ...groupCode, sixthCharacter: val })
-            }
+            onChangeText={(val: any) => {
+              if (val?.toString().length > 0)
+                codeSixthCharacter.current.focus();
+              else codeFifthCharacter.current.focus();
+              setGroupCode({ ...groupCode, sixthCharacter: val });
+            }}
             maxLength={1}
             ref={codeSixthCharacter}
           ></TextInput>
         </View>
         <Text style={styles.subText}>
-          Get the code from the person who created the Group
+          Get the code from the person who created the Group.
         </Text>
         <TouchableOpacity
           style={{
@@ -278,7 +265,8 @@ const styles = StyleSheet.create({
     padding: "5%",
   },
   codeBox: {
-    width: SIZES.width > 400 ? 40 : 30,
+    width: SIZES.width > 400 ? 40 : 35,
+    height: SIZES.width > 400 ? 45 : 40,
     fontSize: SIZES.width > 400 ? 40 : 30,
     borderRadius: 8,
     margin: "1%",

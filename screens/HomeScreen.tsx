@@ -21,6 +21,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import { GroupsAndMembersContext } from "../App";
 import Loader from "../components/Loader";
+import NoDataFound from "../components/NoDataFound";
 // -----------------------------------------------------------------------------------
 
 type locationTypes = {
@@ -427,18 +428,9 @@ const HomeScreen = ({ navigation }: any) => {
               )
             )
           ) : (
-            <>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontWeight: "600",
-                  fontSize: 20,
-                  marginTop: 40,
-                }}
-              >
-                Groups not Available
-              </Text>
-            </>
+            <View style={{ marginTop: 15 }}>
+              <NoDataFound message="No Groups Found" />
+            </View>
           )}
         </ScrollView>
 
@@ -495,27 +487,30 @@ const HomeScreen = ({ navigation }: any) => {
               Join Group
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: SIZES.width * 0.25,
-              height: "auto",
-              borderRadius: 30,
-              backgroundColor: "#705ECF",
-              padding: 4,
-            }}
-            onPress={redirectToAddMemberScreen}
-          >
-            <Text
+
+          {groupsAndMembersData?.groupsAndMembersDetails?.length > 0 && (
+            <TouchableOpacity
               style={{
-                fontWeight: "400",
-                fontSize: SIZES.width > 400 ? 20 : 12,
-                color: "white",
-                alignSelf: "center",
+                width: SIZES.width * 0.25,
+                height: "auto",
+                borderRadius: 30,
+                backgroundColor: "#705ECF",
+                padding: 4,
               }}
+              onPress={redirectToAddMemberScreen}
             >
-              Invite Group
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontWeight: "400",
+                  fontSize: SIZES.width > 400 ? 20 : 12,
+                  color: "white",
+                  alignSelf: "center",
+                }}
+              >
+                Invite Group
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
         <TouchableOpacity
           style={{
@@ -605,51 +600,44 @@ const HomeScreen = ({ navigation }: any) => {
             <>
               {groupsAndMembersData.isDetailsLoaded &&
               groupMembersList?.length === 0 ? (
-                <>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      fontWeight: "600",
-                      fontSize: 20,
-                      marginTop: 40,
-                    }}
-                  >
-                    Members not Available
-                  </Text>
-                </>
+                <View style={{ marginTop: 15 }}>
+                  <NoDataFound message="No Members Found" />
+                </View>
               ) : (
                 <Loader message="Please wait we are fetching available group members" />
               )}
             </>
           )}
         </ScrollView>
-        <Pressable
-          style={{
-            width: "auto",
-            height: "auto",
-            backgroundColor: "white",
-            alignSelf: "center",
-            shadowColor: "black",
-            shadowOpacity: 0.4,
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            elevation: 5,
-            shadowRadius: 5,
-            borderRadius: 30,
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: SIZES.width > 400 ? 0 : "5%",
-          }}
-          onPress={redirectToAddMemberScreen}
-        >
-          <Ionicons
-            size={SIZES.width > 400 ? 40 : 25}
-            name="add"
-            color={COLORS.voilet}
-          />
-        </Pressable>
+        {groupsAndMembersData?.groupsAndMembersDetails?.length > 0 && (
+          <Pressable
+            style={{
+              width: "auto",
+              height: "auto",
+              backgroundColor: "white",
+              alignSelf: "center",
+              shadowColor: "black",
+              shadowOpacity: 0.4,
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              elevation: 5,
+              shadowRadius: 5,
+              borderRadius: 30,
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: SIZES.width > 400 ? 0 : "5%",
+            }}
+            onPress={redirectToAddMemberScreen}
+          >
+            <Ionicons
+              size={SIZES.width > 400 ? 40 : 25}
+              name="add"
+              color={COLORS.voilet}
+            />
+          </Pressable>
+        )}
       </View>
     </SafeAreaView>
   );

@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { SIZES } from "../constants";
 import { List } from "react-native-paper";
 import { UserDetailsContext } from "../App";
+import NoDataFound from "../components/NoDataFound";
 // ------------------------------------------------------------------
 const FAQScreen = () => {
   const userDetailsContextData: any = useContext(UserDetailsContext);
@@ -29,7 +30,7 @@ const FAQScreen = () => {
                 height: "95%",
               }}
             >
-              {faqList?.length > 0 &&
+              {faqList?.length > 0 ? (
                 faqList.map((faq: any, i: number) => (
                   <List.Section key={i}>
                     <List.Accordion
@@ -46,7 +47,10 @@ const FAQScreen = () => {
                       />
                     </List.Accordion>
                   </List.Section>
-                ))}
+                ))
+              ) : (
+                <NoDataFound message="No FAQ Found" />
+              )}
             </ScrollView>
           </List.Section>
         </>

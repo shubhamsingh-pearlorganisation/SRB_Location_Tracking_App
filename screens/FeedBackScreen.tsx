@@ -17,6 +17,7 @@ import { instance } from "../core/utils/AxiosInterceptor";
 import { useToast } from "react-native-toast-notifications";
 import { AuthContext } from "../App";
 import Loader from "../components/Loader";
+import NoDataFound from "../components/NoDataFound";
 
 // ================================================================================================
 
@@ -173,16 +174,7 @@ const FeedbackScreen = () => {
           </List.Section>
         </>
       ) : (
-        <Text
-          style={{
-            textAlign: "center",
-            fontWeight: "bold",
-            fontSize: 22,
-            marginTop: 20,
-          }}
-        >
-          No Feedback Found
-        </Text>
+        <NoDataFound message="No Feedback Found" />
       )}
 
       {/* ------------------------ Add Feeback Section ------------------------ */}
@@ -360,11 +352,11 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0,0,0,0.2)",
     alignItems: "center",
     justifyContent: "center",
-    width: SIZES.width * 0.08,
+    width: SIZES.width * 0.15,
     position: "absolute",
     bottom: "2%",
     right: "2%",
-    height: SIZES.width * 0.08,
+    height: SIZES.width * 0.15,
     backgroundColor: COLORS.voilet,
     borderRadius: 100,
   },

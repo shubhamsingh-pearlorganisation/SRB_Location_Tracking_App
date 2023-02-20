@@ -14,6 +14,7 @@ import { AuthContext, UserDetailsContext } from "../../App";
 import { useToast } from "react-native-toast-notifications";
 import { instance } from "../../core/utils/AxiosInterceptor";
 import Loader from "../../components/Loader";
+import NoDataFound from "../../components/NoDataFound";
 // -----------------------------------------------------------------
 
 const ContactsListingWithHelp = ({ navigation }: any) => {
@@ -188,16 +189,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
               );
             })
           ) : (
-            <Text
-              style={{
-                textAlign: "center",
-                fontWeight: "bold",
-                fontSize: 22,
-                marginTop: 20,
-              }}
-            >
-              No Contacts Found
-            </Text>
+            <NoDataFound message="No Contacts Found" />
           )}
         </ScrollView>
       </View>

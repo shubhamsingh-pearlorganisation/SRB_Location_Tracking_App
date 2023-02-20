@@ -15,6 +15,7 @@ import { useToast } from "react-native-toast-notifications";
 import { instance } from "../../core/utils/AxiosInterceptor";
 import { AuthContext, UserDetailsContext } from "../../App";
 import Loader from "../../components/Loader";
+import NoDataFound from "../../components/NoDataFound";
 
 // -------------------------------------------------------------------------------
 
@@ -227,17 +228,7 @@ const PhonebookContactList = ({ navigation }: any) => {
       )}
 
       {contacts.isContactListEmpty && contacts.contactList.length === 0 ? (
-        <>
-          <Text
-            style={{
-              textAlign: "center",
-              fontWeight: "bold",
-              fontSize: 22,
-            }}
-          >
-            Contacts not Available
-          </Text>
-        </>
+        <NoDataFound message="No Contacts found in your Phonebook. Please add some contacts first." />
       ) : (
         <>
           {!contacts.isContactListEmpty && contacts.contactList.length > 0 && (
