@@ -9,7 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 // ---------------------------------------------------------------------------------------------
 
-const Settings = () => {
+const Settings = ({ navigation }: any) => {
   // Component's Local States
   // ========================
   const [mapType, setMapType] = useState("Default");
@@ -45,6 +45,10 @@ const Settings = () => {
   };
 
   // --------------------------- Time Picker Handling -- Finished -----------------------------------
+
+  const redirectToMemberShipScreen = () =>{
+    navigation.navigate("MemberShipScreen")
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -193,7 +197,7 @@ const Settings = () => {
 
       <View style={styles.subscriptionView}>
         <Text style={styles.textHeading}>Subscription Plan:-</Text>
-        <Pressable style={styles.memberShipCard}>
+        <Pressable style={styles.memberShipCard} onPress={redirectToMemberShipScreen}>
           <Text style={styles.subContent}>Not Subscribed</Text>
           <MaterialIcons
             name={"keyboard-arrow-right"}
@@ -202,6 +206,10 @@ const Settings = () => {
           />
         </Pressable>
       </View>
+
+
+
+
       <List.Section title="">
         <List.Accordion
           title="Select Map Mode"

@@ -1,18 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Platform,
-  Dimensions,
-  TouchableOpacity,
-  StatusBar,
-  SafeAreaView,
-  Pressable,
-  NativeModules,
-  Animated,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { SIZES } from "../constants";

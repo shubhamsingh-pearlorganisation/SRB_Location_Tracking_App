@@ -27,6 +27,7 @@ import { useToast } from "react-native-toast-notifications";
 import IndividualContact from "./screens/EmergencyContacts/IndividualContact";
 import PhonebookContactList from "./screens/EmergencyContacts/PhonebookContactList";
 import ContactsListingWithHelp from "./screens/EmergencyContacts/ContactsListingWithHelp";
+import MemberShipScreen from "./screens/MemberShipScreen";
 
 // ----------------------------------------------------------------------------------
 export const AuthContext: any = createContext(null);
@@ -417,6 +418,19 @@ const App = () => {
                       component={SettingsScreen}
                       options={{
                         title: "Settings",
+                        headerTintColor: COLORS.voilet,
+                        headerTitleStyle: {
+                          fontWeight: "bold",
+                          fontSize: SIZES.width > 400 ? 30 : 20,
+                        },
+                        headerBackVisible: false,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="MemberShipScreen"
+                      component={MemberShipScreen}
+                      options={{
+                        title: "Membership Plans",
                         headerTintColor: COLORS.voilet,
                         headerTitleStyle: {
                           fontWeight: "bold",
