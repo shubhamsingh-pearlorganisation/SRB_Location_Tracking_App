@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { List } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";
 import { COLORS, SIZES } from "../constants";
@@ -10,10 +10,36 @@ const Settings = () => {
   // ========================
   const [mapType, setMapType] = useState("Default");
   const [expanded, setExpanded] = useState(false);
+  const [shareLocation, setShareLocation] = useState(true)
   const handlePress = () => setExpanded(!expanded);
 
   return (
     <View style={styles.container}>
+       <View
+      style={{
+        width:SIZES.width*.9,
+        flexDirection:'row',
+        margin:'5%',
+        padding:'2%'
+      }}
+      >
+        <Text
+        style={{
+          fontSize:30,
+          fontWeight:'600',
+          width:"80%"
+        }}
+        >
+          Share My Location
+        </Text>
+        <ToggleSwitch
+                isOn={shareLocation}
+                onColor={COLORS.voilet}
+                offColor="rgba(52,52,52,0.2)"
+                size="medium"
+                onToggle={() => setShareLocation(!shareLocation)}
+              />
+      </View>
       <List.Section title="">
         <List.Accordion
           title="Select Map Mode"
@@ -87,6 +113,7 @@ const Settings = () => {
           />
         </List.Accordion>
       </List.Section>
+     
     </View>
   );
 };
