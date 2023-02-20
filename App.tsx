@@ -17,7 +17,7 @@ import SelectLocation from "./screens/SelectLocation";
 import AddMember from "./screens/AddMember";
 import ProfileScreen from "./screens/ProfileScreen";
 import FAQScreen from "./screens/FAQScreen";
-import FeedBackScreen from "./screens/FeedBackScreen";
+import FeedbackScreen from "./screens/FeedbackScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import JoinGroup from "./screens/JoinGroupScreen";
 import MemberHistory from "./screens/MemberHistoryScreen";
@@ -400,10 +400,10 @@ const App = () => {
                     />
 
                     <Stack.Screen
-                      name="FeedBackScreen"
-                      component={FeedBackScreen}
+                      name="FeedbackScreen"
+                      component={FeedbackScreen}
                       options={{
-                        title: "FeedBackScreen",
+                        title: "Feedback Screen",
                         headerTintColor: COLORS.voilet,
                         headerTitleStyle: {
                           fontWeight: "bold",

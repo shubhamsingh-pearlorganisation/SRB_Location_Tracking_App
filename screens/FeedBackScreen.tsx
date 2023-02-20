@@ -9,111 +9,182 @@ import {
   Pressable,
   TextInput,
 } from "react-native";
-
-import React, { useState } from "react";
-
+import React, { useState, useContext, useEffect } from "react";
 import { COLORS, SIZES } from "../constants";
-
 import { List } from "react-native-paper";
 import { Entypo } from "@expo/vector-icons";
+import { instance } from "../core/utils/AxiosInterceptor";
+import { useToast } from "react-native-toast-notifications";
+import { AuthContext } from "../App";
+import Loader from "../components/Loader";
 
-const FeedBackScreen = () => {
+// ================================================================================================
+
+const FeedbackScreen = () => {
+  const toast = useToast();
+  const authContextData: any = useContext(AuthContext);
+
+  // Local Component's State
+  // =======================
   const [expanded, setExpanded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [feedbacksList, setFeedbacksList] = useState<any>([]); //Used to store FAQs List
+  const [addFeedbackData, setAddFeedbackData] = useState<any>({
+    title: "",
+    description: "",
+  });
+  const [showLoader, setShowLoader] = useState(false);
 
-  const handlePress = () => setExpanded(!expanded);
+  useEffect(() => {
+    fetchFeedbacksList();
+  }, []);
+
+  // This method is used to add Feedback on the database.
+  const addNewFeedback = async () => {
+    // Add Feedback Form Validations Handling
+    if (!addFeedbackData.title || !addFeedbackData.description) {
+      Alert.alert("Validation Failed", "Title and Description is required");
+      return;
+    }
+    if (addFeedbackData.title?.length < 5) {
+      Alert.alert(
+        "Validation Failed",
+        "Feedback title should contain minimum 5 characters."
+      );
+      return;
+    }
+    if (addFeedbackData.description?.length < 10) {
+      Alert.alert(
+        "Validation Failed",
+        "Feedback description should contain minimum 10 characters."
+      );
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("token_id", authContextData?.token);
+      formData.append("title", authContextData?.token);
+      formData.append("description", addFeedbackData.description);
+      formData.append("type", "1");
+      setShowLoader(true);
+
+      const response = await instance.post("/feedback_add", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        toast.show("Feedback Added Successfully", {
+          type: "success",
+        });
+        setModalVisible(false);
+        fetchFeedbacksList();
+        setShowLoader(false);
+      } else {
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while adding a new feedback. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+        setModalVisible(false);
+        setShowLoader(false);
+      }
+    } catch (error: any) {
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while adding a new feedback. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+      setModalVisible(false);
+      setShowLoader(false);
+    }
+  };
+
+  // This method is used to fetch Feedback list from the database.
+  const fetchFeedbacksList = async () => {
+    try {
+      setShowLoader(true);
+      const formData = new FormData();
+      formData.append("token_id", authContextData?.token);
+
+      const response = await instance.post("/feedback_get", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        setFeedbacksList(response.data?.data);
+        setShowLoader(false);
+      } else {
+        setShowLoader(false);
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while fetching Feedback List. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      setShowLoader(false);
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching Feedback List. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
 
   return (
     <View>
-      <List.Section title="Feedbacks">
-        <ScrollView
-          style={{
-            height: "95%",
-          }}
-        >
-          <List.Accordion
-            title="First Feedback"
-            titleStyle={styles.answerText}
-            titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-            left={(props) => <List.Icon {...props} icon="account" />}
-            // expanded={expanded}
-            onPress={handlePress}
+      {showLoader && !addFeedbackData.title ? (
+        <Loader message="Please wait.. We are Fetching Feedbacks" />
+      ) : (
+        <List.Section title="Feedbacks">
+          <ScrollView
+            style={{
+              height: "95%",
+            }}
           >
-            <List.Item
-              title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-              titleNumberOfLines={10}
-              titleStyle={styles.answerText}
-            />
-          </List.Accordion>
-          <List.Accordion
-            title="Second Feedback"
-            titleStyle={styles.answerText}
-            titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-            left={(props) => <List.Icon {...props} icon="account" />}
-            // expanded={expanded}
-            onPress={handlePress}
-          >
-            <List.Item
-              title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-              titleNumberOfLines={10}
-              titleStyle={styles.answerText}
-            />
-          </List.Accordion>
-          <List.Accordion
-            title="Third Feedback"
-            titleStyle={styles.answerText}
-            titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-            left={(props) => <List.Icon {...props} icon="account" />}
-            // expanded={expanded}
-            onPress={handlePress}
-          >
-            <List.Item
-              title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-              titleNumberOfLines={10}
-              titleStyle={styles.answerText}
-            />
-          </List.Accordion>
-          <List.Accordion
-            title="Fourth Feedback"
-            titleStyle={styles.answerText}
-            titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-            left={(props) => <List.Icon {...props} icon="account" />}
-            // expanded={expanded}
-            onPress={handlePress}
-          >
-            <List.Item
-              title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-              titleNumberOfLines={10}
-              titleStyle={styles.answerText}
-            />
-          </List.Accordion>
-          <List.Accordion
-            title="Fifth Feedback"
-            titleStyle={styles.answerText}
-            titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-            left={(props) => <List.Icon {...props} icon="account" />}
-            // expanded={expanded}
-            onPress={handlePress}
-          >
-            <List.Item
-              title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-              titleNumberOfLines={10}
-              titleStyle={styles.answerText}
-            />
-          </List.Accordion>
-        </ScrollView>
-      </List.Section>
+            {feedbacksList?.length > 0 &&
+              feedbacksList.map((feedback: any, i: number) => {
+                return (
+                  <List.Accordion
+                    key={feedback?.id ? feedback?.id : i}
+                    title={feedback?.title}
+                    titleStyle={styles.answerText}
+                    titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
+                    left={(props) => <List.Icon {...props} icon="account" />}
+                    onPress={() => setExpanded(!expanded)}
+                  >
+                    <List.Item
+                      title={feedback?.description}
+                      titleNumberOfLines={10}
+                      titleStyle={styles.answerText}
+                    />
+                  </List.Accordion>
+                );
+              })}
+          </ScrollView>
+        </List.Section>
+      )}
+
+      {/* ------------------------ Add Feeback Section ------------------------ */}
       <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            {showLoader ? <Loader /> : null}
+
             <Text style={styles.textStyleHeading}>
               Your Feedback is Valuable To us
             </Text>
@@ -123,6 +194,9 @@ const FeedBackScreen = () => {
               placeholder="Feedback Heading"
               multiline={true}
               numberOfLines={2}
+              onChangeText={(val: any) =>
+                setAddFeedbackData({ ...addFeedbackData, title: val })
+              }
             ></TextInput>
             <Text style={styles.textStyle}>Description</Text>
             <TextInput
@@ -130,30 +204,61 @@ const FeedBackScreen = () => {
               placeholder="Feedback Description"
               multiline={true}
               numberOfLines={5}
+              onChangeText={(val: any) =>
+                setAddFeedbackData({ ...addFeedbackData, description: val })
+              }
             ></TextInput>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
             >
-              <Text style={[styles.textStyle, { color: "white" }]}>SEND</Text>
-            </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text
+                  style={[
+                    {
+                      color: "white",
+                      textAlign: "center",
+                      width: 120,
+                      padding: 20,
+                      fontSize: 20,
+                    },
+                  ]}
+                >
+                  Cancel
+                </Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  addNewFeedback();
+                }}
+              >
+                <Text
+                  style={[
+                    {
+                      color: "white",
+                      textAlign: "center",
+                      width: 100,
+                      padding: 20,
+                      fontSize: 20,
+                    },
+                  ]}
+                >
+                  Send
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </Modal>
+
       <TouchableOpacity
-        style={{
-          borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.2)",
-          alignItems: "center",
-          justifyContent: "center",
-          width: SIZES.width * 0.08,
-          position: "absolute",
-          bottom: "2%",
-          right: "2%",
-          height: SIZES.width * 0.08,
-          backgroundColor: COLORS.voilet,
-          borderRadius: 100,
-        }}
+        style={styles.createFeedbackIcon}
         onPress={() => setModalVisible(true)}
       >
         <Entypo
@@ -165,7 +270,8 @@ const FeedBackScreen = () => {
     </View>
   );
 };
-
+// ================================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   answerText: {
     width: "auto",
@@ -207,17 +313,32 @@ const styles = StyleSheet.create({
     marginTop: "2%",
     marginBottom: "2%",
     alignSelf: "flex-start",
-    fontSize: SIZES.width > 400 ? 25 : 18,
+    fontSize: SIZES.width > 400 ? 20 : 15,
   },
   button: {
     borderRadius: 20,
     paddingVertical: 0,
     elevation: 2,
     marginTop: "2%",
+    marginHorizontal: 15,
   },
   buttonClose: {
     backgroundColor: COLORS.voilet,
   },
+  createFeedbackIcon: {
+    borderWidth: 1,
+    borderColor: "rgba(0,0,0,0.2)",
+    alignItems: "center",
+    justifyContent: "center",
+    width: SIZES.width * 0.08,
+    position: "absolute",
+    bottom: "2%",
+    right: "2%",
+    height: SIZES.width * 0.08,
+    backgroundColor: COLORS.voilet,
+    borderRadius: 100,
+  },
 });
 
-export default FeedBackScreen;
+export default FeedbackScreen;
+// ========================================== THE END ======================================================

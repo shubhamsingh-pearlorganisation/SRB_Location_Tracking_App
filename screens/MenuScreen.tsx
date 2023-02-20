@@ -19,7 +19,7 @@ const MenuScreen = ({ navigation }: any) => {
 
   const redirectFAQScreen = () => navigation.navigate("FAQScreen");
 
-  const redirectFeedBackScreen = () => navigation.navigate("FeedBackScreen");
+  const redirectFeedBackScreen = () => navigation.navigate("FeedbackScreen");
 
   const redirectToSettingsScreen = () => navigation.navigate("SettingsScreen");
 

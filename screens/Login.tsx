@@ -26,7 +26,6 @@ const Login = ({ navigation, route }: any) => {
 
   // Component's Local States
   // ========================
-
   // completePhoneNumber state - Used to send mobile number to firebase's generate verification code api
   const [completePhoneNumber, setCompletePhoneNumber] = useState("");
 
