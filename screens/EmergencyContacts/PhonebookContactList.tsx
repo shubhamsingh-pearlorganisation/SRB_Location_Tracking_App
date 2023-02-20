@@ -73,7 +73,6 @@ const PhonebookContactList = ({ navigation }: any) => {
 
           // Finding those contacts which are not available in database but available in
           // complete phone book list.
-
           const uniqueContacts = contactsWithName.filter((indContact: any) => {
             return !userDetailsContextData?.userContactsList.some(
               (selContact: any) => {
@@ -86,9 +85,8 @@ const PhonebookContactList = ({ navigation }: any) => {
               }
             );
           });
-
           setContacts({
-            contactList: uniqueContacts, // uniqueContacts?.length > 0 ? uniqueContacts : [],
+            contactList: uniqueContacts,
             isContactListEmpty: false,
           });
         } else
@@ -304,9 +302,7 @@ const PhonebookContactList = ({ navigation }: any) => {
 // ====================================================================================================
 // CSS CODE
 const styles = StyleSheet.create({
-  list: {
-    // flex: 1,
-  },
+  list: {},
   selectedAndAddContactBtns: {
     backgroundColor: COLORS.voilet,
     padding: "2%",

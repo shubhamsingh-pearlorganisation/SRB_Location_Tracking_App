@@ -82,7 +82,7 @@ const EditGroup = ({ route, navigation }: any) => {
               fontWeight: "700",
             }}
           >
-            07th Feb {"\n"}05:16 pm
+            07th Feb {"\n"} 05:16 pm
           </Text>
         </View>
       </Pressable>

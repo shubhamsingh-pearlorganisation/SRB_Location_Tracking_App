@@ -32,9 +32,7 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
   }, [counter]);
 
   // This method is used to redirect user to Dashboard Screen
-  const redirectBack = () => {
-    navigation.navigate("Main");
-  };
+  const redirectBack = () => navigation.navigate("Main");
 
   // This method is used to send emergency alert to all the contacts which are saved in database.
   const sendEmergencyAlert = async () => {

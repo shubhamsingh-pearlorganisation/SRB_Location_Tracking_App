@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import tw from "twrnc";
+// ----------------------------------------------------------------------------
 
 const SrbButton = ({ onPress = () => {}, btnStyle = {}, btnText }: any) => {
   return (
@@ -12,7 +13,8 @@ const SrbButton = ({ onPress = () => {}, btnStyle = {}, btnText }: any) => {
     </TouchableOpacity>
   );
 };
-
+// ============================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   btnStyle: {
     height: 48,

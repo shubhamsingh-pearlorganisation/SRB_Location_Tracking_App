@@ -9,7 +9,7 @@ import {
 
 import { COLORS, SIZES } from "../constants";
 
-const AddMember = ({ route, navigation }: any) => {
+const AddMember = ({ route }: any) => {
   const shareData = async () => {
     try {
       await Share.share({

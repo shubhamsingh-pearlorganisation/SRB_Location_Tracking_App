@@ -249,15 +249,13 @@ const HomeScreen = ({ navigation }: any) => {
     });
   };
 
-  const openProfile= ()=>{
-    navigation.navigate("MemberHistoryScreen")
-  }
+  const openProfile = () => {
+    navigation.navigate("MemberHistoryScreen");
+  };
 
   function renderMembers(member: any) {
     return (
-      <Pressable style={styles.memberListItem}
-      onPress={()=>openProfile()}
-      >
+      <Pressable style={styles.memberListItem} onPress={() => openProfile()}>
         {!member?.image ? (
           <View style={styles.memberListItemImage}>
             <Ionicons name="person-sharp" size={20} color={COLORS.voilet} />

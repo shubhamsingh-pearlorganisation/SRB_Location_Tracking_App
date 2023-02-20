@@ -15,8 +15,9 @@ const Settings = () => {
   const [mapType, setMapType] = useState("Default");
   const [expanded, setExpanded] = useState(false);
   const [shareLocation, setShareLocation] = useState(true);
-  const handlePress = () => setExpanded(!expanded);
   const [milesChecked, setmilesChecked] = useState(false);
+
+  const handlePress = () => setExpanded(!expanded);
 
   // --------------------------- Time Picker Handling -- Start -----------------------------------
   const [startTime, setStartTime] = useState(new Date());
@@ -25,26 +26,18 @@ const Settings = () => {
   const [startTimePickerVisible, setStartTimePickerVisible] = useState(false);
   const [endTimePickerVisible, setEndTimePickerVisible] = useState(false);
 
-  const showstartTimePicker = () => {
-    setStartTimePickerVisible(true);
-  };
+  const showstartTimePicker = () => setStartTimePickerVisible(true);
 
-  const hideStartTimePicker = () => {
-    setStartTimePickerVisible(false);
-  };
+  const hideStartTimePicker = () => setStartTimePickerVisible(false);
 
   const handleStartConfirm = (date: any) => {
     setStartTime(date);
     hideStartTimePicker();
   };
 
-  const showEndTimePicker = () => {
-    setEndTimePickerVisible(true);
-  };
+  const showEndTimePicker = () => setEndTimePickerVisible(true);
 
-  const hideEndTimePicker = () => {
-    setEndTimePickerVisible(false);
-  };
+  const hideEndTimePicker = () => setEndTimePickerVisible(false);
 
   const handleEndConfirm = (date: any) => {
     setEndTime(date);
@@ -285,8 +278,6 @@ const Settings = () => {
     </ScrollView>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {

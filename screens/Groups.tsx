@@ -23,7 +23,7 @@ const Groups = ({ navigation }: any) => {
   const [showLoader, setShowLoader] = useState<boolean>(false);
 
   // This method is used to show delete group confirmation popup
-  const deleteGroupConfirmation = async (groupDetails: any) => {
+  const deleteGroupConfirmation = (groupDetails: any) => {
     Alert.alert(
       "Group Delete Confirmation",
       "Are you sure you want to permanently delete this group?",

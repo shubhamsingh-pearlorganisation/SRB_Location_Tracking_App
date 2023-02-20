@@ -13,15 +13,25 @@ const MenuScreen = ({ navigation }: any) => {
   const authContextData: any = useContext(AuthContext);
   const userDetailsContextData: any = useContext(UserDetailsContext);
 
-  const redirectToEmergencyScreen = () => navigation.navigate("Emergency");
-
-  const redirectProfilePage = () => navigation.navigate("ProfileScreen");
-
-  const redirectFAQScreen = () => navigation.navigate("FAQScreen");
-
-  const redirectFeedBackScreen = () => navigation.navigate("FeedbackScreen");
-
-  const redirectToSettingsScreen = () => navigation.navigate("SettingsScreen");
+  // This method is used to show Logout confirmation popup
+  const logoutConfirmation = () => {
+    Alert.alert(
+      "Logout Confirmation",
+      "Are you sure you want to from the app?",
+      [
+        {
+          text: "No",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "Confirm",
+          onPress: () => handleLogout(),
+          style: "default",
+        },
+      ]
+    );
+  };
 
   // This method is used to logout the user
   const handleLogout = () => {
@@ -87,7 +97,7 @@ const MenuScreen = ({ navigation }: any) => {
             borderBottomWidth: 2,
             margin: 10,
           }}
-          onPress={() => redirectProfilePage()}
+          onPress={() => navigation.navigate("ProfileScreen")}
         >
           <FontAwesome5
             style={[styles.icons, { left: 0 }]}
@@ -150,7 +160,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
-            onPress={redirectToEmergencyScreen}
+            onPress={() => navigation.navigate("Emergency")}
           >
             <MaterialCommunityIcons
               style={[styles.icons]}
@@ -178,7 +188,7 @@ const MenuScreen = ({ navigation }: any) => {
             width: "99%",
             flexDirection: "row",
           }}
-          onPress={() => redirectToSettingsScreen()}
+          onPress={navigation.navigate("SettingsScreen")}
         >
           <Ionicons
             style={[styles.icons, { paddingLeft: 5, top: "1%" }]}
@@ -224,7 +234,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
-            onPress={() => redirectFAQScreen()}
+            onPress={() => navigation.navigate("FAQScreen")}
           >
             <MaterialCommunityIcons
               style={[styles.icons, { paddingLeft: 5 }]}
@@ -250,7 +260,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
-            onPress={() => redirectFeedBackScreen()}
+            onPress={() => navigation.navigate("FeedBackScreen")}
           >
             <MaterialCommunityIcons
               style={[styles.icons, { paddingLeft: 5 }]}
@@ -276,7 +286,7 @@ const MenuScreen = ({ navigation }: any) => {
               width: "99%",
               flexDirection: "row",
             }}
-            onPress={handleLogout}
+            onPress={() => logoutConfirmation()}
           >
             <MaterialIcons
               style={[styles.icons, { paddingLeft: 5 }]}

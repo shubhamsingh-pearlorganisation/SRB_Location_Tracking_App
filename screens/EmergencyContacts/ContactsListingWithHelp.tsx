@@ -39,7 +39,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
   }, [userDetailsContextData?.userContactsList]);
 
   // This method is used to show delete contact confirmation popup
-  const deleteContactConfirmation = async (contactId: any) => {
+  const deleteContactConfirmation = (contactId: any) => {
     Alert.alert(
       "Contact Delete Confirmation",
       "Are you sure you want to permanently delete this contact?",
