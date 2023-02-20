@@ -407,7 +407,7 @@ const App = () => {
                         headerTintColor: COLORS.voilet,
                         headerTitleStyle: {
                           fontWeight: "bold",
-                          fontSize: SIZES.width > 400 ? 30 : 20,
+                          fontSize: SIZES.width > 400 ? 30 : 19,
                         },
                         headerBackVisible: false,
                       }}
