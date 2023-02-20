@@ -139,7 +139,7 @@ const FeedbackScreen = () => {
   };
 
   return (
-    <View>
+    <View style={{height:SIZES.height*.9}}>
       {showLoader && !addFeedbackData.title ? (
         <Loader message="Please wait.. We are Fetching Feedbacks" />
       ) : feedbacksList?.length > 0 ? (
