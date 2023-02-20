@@ -213,7 +213,7 @@ const FeedbackScreen = () => {
             ></TextInput>
             <Text style={styles.textStyle}>Description</Text>
             <TextInput
-              style={[styles.textInputStyle,{height:'30%'}]}
+              style={[styles.textInputStyle, { height: "30%" }]}
               placeholder="Feedback Description"
               multiline={true}
               numberOfLines={5}
@@ -340,7 +340,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: "2%",
     borderRadius: 5,
-    width:"80%",
+    width: "80%",
+    justifyContent: "center",
   },
   button: {
     borderRadius: 20,

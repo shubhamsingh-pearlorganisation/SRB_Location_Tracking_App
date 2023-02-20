@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -20,6 +20,13 @@ const JoinGroup = ({ navigation }: any) => {
 
   const authContextData: any = useContext(AuthContext);
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
+
+  const codeFirstCharacter: any = useRef(null);
+  const codeSecondCharacter: any = useRef(null);
+  const codeThirdCharacter: any = useRef(null);
+  const codeFourthCharacter: any = useRef(null);
+  const codeFifthCharacter: any = useRef(null);
+  const codeSixthCharacter: any = useRef(null);
 
   // Component's Local States
   // =========================
@@ -43,6 +50,42 @@ const JoinGroup = ({ navigation }: any) => {
   } = groupCode;
 
   const [disableCreate, setDisableCreate] = useState(true);
+
+  useEffect(() => {
+    const emptyData: any = Object.keys(groupCode).filter((k) => !groupCode[k]);
+    // const filledData: any = Object.keys(groupCode).filter((k) => groupCode[k]);
+    if (emptyData?.length > 0) {
+      const val =
+        "code" + emptyData[0].slice(0, 1).toUpperCase() + emptyData[0].slice(1);
+
+      if (val === "codeFirstCharacter") codeFirstCharacter.current.focus();
+      if (val === "codeSecondCharacter") codeSecondCharacter.current.focus();
+      if (val === "codeThirdCharacter") codeThirdCharacter.current.focus();
+      if (val === "codeFourthCharacter") codeFourthCharacter.current.focus();
+      if (val === "codeFifthCharacter") codeFifthCharacter.current.focus();
+      if (val === "codeSixthCharacter") codeSixthCharacter.current.focus();
+    } else;
+
+    // if (
+    //   filledData?.length > 0 &&
+    //   !emptyData.includes(filledData[filledData.length - 1])
+    // ) {
+    //   const val =
+    //     "code" +
+    //     filledData[filledData.length].slice(0, 1).toUpperCase() +
+    //     filledData[filledData.length].slice(1);
+
+    //   console.log("val::: ", val);
+    //   if (val === "codeFirstCharacter") codeFirstCharacter.current.focus();
+    //   if (val === "codeSecondCharacter") codeSecondCharacter.current.focus();
+    //   if (val === "codeThirdCharacter") codeThirdCharacter.current.focus();
+    //   if (val === "codeFourthCharacter") codeFourthCharacter.current.focus();
+    //   if (val === "codeFifthCharacter") codeFifthCharacter.current.focus();
+    //   if (val === "codeSixthCharacter") codeSixthCharacter.current.focus();
+    // }
+    // console.log("emptyData::: ", emptyData);
+    // console.log("filledData::: ", filledData);
+  }, [groupCode]);
 
   // This method is used to call group join API
   const handleGroupJoin = async () => {
@@ -120,6 +163,7 @@ const JoinGroup = ({ navigation }: any) => {
               setGroupCode({ ...groupCode, firstCharacter: val })
             }
             maxLength={1}
+            ref={codeFirstCharacter}
           ></TextInput>
           <TextInput
             style={styles.codeBox}
@@ -130,6 +174,7 @@ const JoinGroup = ({ navigation }: any) => {
               setGroupCode({ ...groupCode, secondCharacter: val })
             }
             maxLength={1}
+            ref={codeSecondCharacter}
           ></TextInput>
           <TextInput
             style={styles.codeBox}
@@ -140,6 +185,7 @@ const JoinGroup = ({ navigation }: any) => {
               setGroupCode({ ...groupCode, thirdCharacter: val })
             }
             maxLength={1}
+            ref={codeThirdCharacter}
           ></TextInput>
           <Text style={{ fontSize: 30 }}>-</Text>
           <TextInput
@@ -151,6 +197,7 @@ const JoinGroup = ({ navigation }: any) => {
               setGroupCode({ ...groupCode, fourthCharacter: val })
             }
             maxLength={1}
+            ref={codeFourthCharacter}
           ></TextInput>
           <TextInput
             style={styles.codeBox}
@@ -161,6 +208,7 @@ const JoinGroup = ({ navigation }: any) => {
               setGroupCode({ ...groupCode, fifthCharacter: val })
             }
             maxLength={1}
+            ref={codeFifthCharacter}
           ></TextInput>
           <TextInput
             style={styles.codeBox}
@@ -171,6 +219,7 @@ const JoinGroup = ({ navigation }: any) => {
               setGroupCode({ ...groupCode, sixthCharacter: val })
             }
             maxLength={1}
+            ref={codeSixthCharacter}
           ></TextInput>
         </View>
         <Text style={styles.subText}>
