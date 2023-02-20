@@ -139,7 +139,7 @@ const FeedbackScreen = () => {
   };
 
   return (
-    <View style={{height:SIZES.height*.9}}>
+    <View style={{ height: SIZES.height * 0.9 }}>
       {showLoader && !addFeedbackData.title ? (
         <Loader message="Please wait.. We are Fetching Feedbacks" />
       ) : feedbacksList?.length > 0 ? (
@@ -203,7 +203,7 @@ const FeedbackScreen = () => {
             </Text>
             <Text style={styles.textStyle}>Title</Text>
             <TextInput
-              style={styles.textStyle}
+              style={styles.textInputStyle}
               placeholder="Feedback Heading"
               multiline={true}
               numberOfLines={2}
@@ -213,7 +213,7 @@ const FeedbackScreen = () => {
             ></TextInput>
             <Text style={styles.textStyle}>Description</Text>
             <TextInput
-              style={styles.textStyle}
+              style={[styles.textInputStyle,{height:'30%'}]}
               placeholder="Feedback Description"
               multiline={true}
               numberOfLines={5}
@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(52, 52, 52, 0.8)",
   },
   modalView: {
+    width: SIZES.width * 0.8,
     backgroundColor: "white",
     borderRadius: 20,
     padding: "5%",
@@ -327,6 +328,21 @@ const styles = StyleSheet.create({
     marginBottom: "2%",
     alignSelf: "flex-start",
     fontSize: SIZES.width > 400 ? 20 : 15,
+  },
+  textInputStyle: {
+    color: "black",
+    fontWeight: "600",
+    margin: "5%",
+    marginTop: "1%",
+    marginBottom: "1%",
+    alignSelf: "flex-start",
+    fontSize: SIZES.width > 400 ? 20 : 15,
+    borderColor: "black",
+    borderWidth: 1,
+    padding: "2%",
+    borderRadius: 5,
+    width:"80%",
+    justifyContent:'center'
   },
   button: {
     borderRadius: 20,
