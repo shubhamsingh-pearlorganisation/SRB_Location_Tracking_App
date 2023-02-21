@@ -301,6 +301,35 @@ const EditGroup = ({ route, navigation }: any) => {
           <AntDesign name="delete" size={20} />
         </Pressable>
       </View>
+
+      {/* -----------------------------leave group Option-------------------------------- */}
+      {/* <View
+        style={{
+          bottom: "1%",
+          width: SIZES.width,
+          alignItems: "center",
+          position: "absolute",
+          
+        }}
+      >
+        
+        <Pressable
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems:'center'
+        }}
+        // onPress={() => deleteGroupConfirmation(groupDetails)}
+        >
+          <Text
+        style={{
+          fontSize:SIZES.width>400? 25:18,
+          fontWeight:'600',
+          marginHorizontal:'2%'
+        }}
+        >Leave Group</Text>
+        </Pressable>
+      </View> */}
     </KeyboardAvoidingView>
   );
 };

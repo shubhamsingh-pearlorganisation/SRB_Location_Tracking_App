@@ -157,7 +157,7 @@ const Groups = ({ navigation }: any) => {
             styles.groupListItemType,
             {
               alignSelf: "center",
-              right: SIZES.width > 400 ? "5%" : "8%",
+              right:"2%",
               position: "absolute",
               backgroundColor: "transparent",
             },
@@ -178,7 +178,7 @@ const Groups = ({ navigation }: any) => {
             <MaterialIcons name="keyboard-arrow-right" size={20} />
           </Pressable>
         </View>
-        {groupDetails?.is_delete === 1 && (
+        {/* {groupDetails?.is_delete === 1 && (
           <View
             style={[
               styles.groupListItemType,
@@ -194,7 +194,7 @@ const Groups = ({ navigation }: any) => {
               <AntDesign name="delete" size={20} />
             </Pressable>
           </View>
-        )}
+        )} */}
       </Pressable>
     );
   };
