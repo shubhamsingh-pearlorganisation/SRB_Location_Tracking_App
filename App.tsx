@@ -10,6 +10,7 @@ import MainScreen from "./screens/MainScreen";
 import Register from "./screens/Register";
 import { COLORS, SIZES } from "./constants";
 import AddGroup from "./screens/AddGroup";
+import EditViewGroup from "./screens/EditViewGroup";
 import EmergencyContactsScreen from "./screens/EmergencyContacts/Home";
 import EmergencyTimerScreen from "./screens/EmergencyContacts/EmergencyTimerScreen";
 import SelectLocation from "./screens/SelectLocation";
@@ -27,7 +28,6 @@ import IndividualContact from "./screens/EmergencyContacts/IndividualContact";
 import PhonebookContactList from "./screens/EmergencyContacts/PhonebookContactList";
 import ContactsListingWithHelp from "./screens/EmergencyContacts/ContactsListingWithHelp";
 import MemberShipScreen from "./screens/MemberShipScreen";
-import EditViewGroup from "./screens/EditViewGroup";
 
 // ----------------------------------------------------------------------------------
 export const AuthContext: any = createContext(null);

@@ -529,7 +529,6 @@ const HomeScreen = ({ navigation }: any) => {
             size={SIZES.width > 400 ? 20 : 15}
             style={{
               textAlign: "center",
-              fontSize: 20,
             }}
           />
         </TouchableOpacity>
@@ -579,7 +578,6 @@ const HomeScreen = ({ navigation }: any) => {
             size={SIZES.width > 400 ? 20 : 15}
             style={{
               textAlign: "center",
-              fontSize: 20,
             }}
           />
         </TouchableOpacity>
@@ -697,7 +695,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: SIZES.width,
     zIndex: 0,
-    padding: SIZES.width > 400 ? 30 : 10,
+    
+    padding: SIZES.width > 400 ? "3%" : "1%",
+    paddingTop:SIZES.width > 400 ? "4%" : "6%",
     borderTopLeftRadius: SIZES.width > 350 ? 40 : 20,
     borderTopRightRadius: SIZES.width > 350 ? 40 : 20,
     shadowColor: "black",
