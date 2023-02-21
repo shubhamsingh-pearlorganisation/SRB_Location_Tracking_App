@@ -15,6 +15,7 @@ import { useToast } from "react-native-toast-notifications";
 import { instance } from "../../core/utils/AxiosInterceptor";
 import Loader from "../../components/Loader";
 import NoDataFound from "../../components/NoDataFound";
+import AlertDialog from "../../components/AlertDialog";
 // -----------------------------------------------------------------
 
 const ContactsListingWithHelp = ({ navigation }: any) => {
@@ -39,30 +40,17 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
     );
   }, [userDetailsContextData?.userContactsList]);
 
-  // This method is used to show delete contact confirmation popup
-  const deleteContactConfirmation = (contactId: any) => {
-    Alert.alert(
-      "Contact Delete Confirmation",
-      "Are you sure you want to permanently delete this contact?",
-      [
-        {
-          text: "No",
-          onPress: () => {},
-          style: "cancel",
-        },
-        {
-          text: "Confirm",
-          onPress: () => deleteContactFromDatabase(contactId),
-          style: "default",
-        },
-      ]
-    );
-  };
+  const [showDeleteConfirmationPopup, setShowDeleteConfirmationPopup] =
+    useState<any>({ contactId: "", visibility: false });
+
+  const [showLoaderForDeleteContact, setShowLoaderForDeleteContact] =
+    useState(false);
 
   // This method is used to delete the contact based on id from the database.
   const deleteContactFromDatabase = async (contactId: any) => {
+    if (!contactId) return;
     try {
-      setShowLoader(true);
+      setShowLoaderForDeleteContact(true);
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
       formData.append("id", contactId);
@@ -72,14 +60,14 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
         formData
       );
       if (response.status === 200 && response.data?.status) {
-        setShowLoader(false);
+        setShowLoaderForDeleteContact(false);
 
         toast.show(`Contact having id ${contactId} deleted successfully`, {
           type: "success",
         });
         userDetailsContextData?.updateContactList(true); //Updating Contact List Globally
       } else {
-        setShowLoader(false);
+        setShowLoaderForDeleteContact(false);
 
         toast.show(
           response.data?.message
@@ -91,7 +79,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
         );
       }
     } catch (error: any) {
-      setShowLoader(false);
+      setShowLoaderForDeleteContact(false);
 
       toast.show(
         error.message
@@ -101,6 +89,11 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
           type: "error",
         }
       );
+    } finally {
+      setShowDeleteConfirmationPopup({
+        ...setShowDeleteConfirmationPopup,
+        visibility: false,
+      });
     }
   };
 
@@ -177,7 +170,12 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
                         position: "absolute",
                         alignSelf: "center",
                       }}
-                      onPress={() => deleteContactConfirmation(contact?.id)}
+                      onPress={() => {
+                        setShowDeleteConfirmationPopup({
+                          contactId: contact?.id,
+                          visibility: true,
+                        });
+                      }}
                     >
                       <Feather
                         name="minus-circle"
@@ -193,6 +191,31 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
           )}
         </ScrollView>
       </View>
+      {showDeleteConfirmationPopup?.visibility ? (
+        <>
+          <AlertDialog
+            mainDisplayMsg="Contact Delete Confirmation"
+            subDisplayMsg="Are you sure you want to permanently delete this contact?"
+            visibility={showDeleteConfirmationPopup?.visibility}
+            dismissAlert={(value: any) =>
+              setShowDeleteConfirmationPopup({
+                ...setShowDeleteConfirmationPopup,
+                visibility: value,
+              })
+            }
+            confirmAction={() =>
+              deleteContactFromDatabase(
+                showDeleteConfirmationPopup?.contactId
+                  ? showDeleteConfirmationPopup?.contactId
+                  : ""
+              )
+            }
+            messageForSuccess=" Yes, remove This Contact"
+            messageForSkip="No Keep This Contact"
+            showLoader={showLoaderForDeleteContact}
+          />
+        </>
+      ) : null}
     </SafeAreaView>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import { COLORS, SIZES } from "../constants";
 // ----------------------------------------------------------------------------
 
@@ -9,15 +10,13 @@ export default function AlertDialog({
   visibility,
   dismissAlert,
   confirmAction,
+  messageForSuccess = "Yes, I confirm",
+  messageForSkip = "Skip for now",
+  showLoader,
 }: any) {
   return (
     <View>
-      <Modal
-        visible={visibility}
-        animationType={"fade"}
-        transparent={true}
-        //   animationType="slide"
-      >
+      <Modal visible={visibility} animationType={"fade"} transparent={true}>
         <View
           style={{
             flex: 1,
@@ -57,23 +56,29 @@ export default function AlertDialog({
 
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => confirmAction(false)}
+              onPress={() => confirmAction()}
               style={{
                 alignItems: "center",
                 position: "absolute",
                 borderBottomWidth: 0,
-                width:
-                  SIZES.width > 400 ? SIZES.width * 0.4 : SIZES.width * 0.8,
-                height: "auto",
-                justifyContent: "center",
+                width: SIZES.width > 400 ? SIZES.width * 0.4 : SIZES.width * 1,
+                height: "20%",
+                justifyContent: showLoader ? "space-around" : "center",
                 borderRadius: 30,
                 backgroundColor: COLORS.voilet,
                 bottom: "25%",
+                flexDirection: "row",
               }}
             >
               <Text style={{ color: "white", margin: 15 }}>
-                Yes Remove This Contact
+                {messageForSuccess}
               </Text>
+              {showLoader && (
+                <ActivityIndicator
+                  size={SIZES.width > 400 ? 30 : 20}
+                  color="white"
+                />
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -100,7 +105,7 @@ export default function AlertDialog({
                   textDecorationLine: "underline",
                 }}
               >
-                No Keep This Contact
+                {messageForSkip}
               </Text>
             </TouchableOpacity>
           </View>

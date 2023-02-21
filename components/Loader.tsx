@@ -21,7 +21,7 @@ const Loader = ({
 // CSS CODE
 const styles = StyleSheet.create({
   loadingContainer: {
-    margin: 20,
+    margin: "5%",
   },
   loadingDescriptionMsg: {
     textAlign: "center",
