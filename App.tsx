@@ -10,7 +10,6 @@ import MainScreen from "./screens/MainScreen";
 import Register from "./screens/Register";
 import { COLORS, SIZES } from "./constants";
 import AddGroup from "./screens/AddGroup";
-import EditGroup from "./screens/EditGroup";
 import EmergencyContactsScreen from "./screens/EmergencyContacts/Home";
 import EmergencyTimerScreen from "./screens/EmergencyContacts/EmergencyTimerScreen";
 import SelectLocation from "./screens/SelectLocation";
@@ -28,6 +27,7 @@ import IndividualContact from "./screens/EmergencyContacts/IndividualContact";
 import PhonebookContactList from "./screens/EmergencyContacts/PhonebookContactList";
 import ContactsListingWithHelp from "./screens/EmergencyContacts/ContactsListingWithHelp";
 import MemberShipScreen from "./screens/MemberShipScreen";
+import EditViewGroup from "./screens/EditViewGroup";
 
 // ----------------------------------------------------------------------------------
 export const AuthContext: any = createContext(null);
@@ -346,8 +346,8 @@ const App = () => {
                       }}
                     />
                     <Stack.Screen
-                      name="EditGroup"
-                      component={EditGroup}
+                      name="EditViewGroup"
+                      component={EditViewGroup}
                       options={{
                         title: "Edit Group",
                         headerTintColor: COLORS.voilet,
