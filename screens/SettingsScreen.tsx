@@ -54,18 +54,15 @@ const Settings = ({ navigation }: any) => {
     <ScrollView style={styles.container}>
       <View
         style={{
-          width: SIZES.width * 0.9,
+          width: SIZES.width * 0.95,
           flexDirection: "row",
-          margin: "5%",
+          margin: "2%",
           padding: "2%",
+          justifyContent:'space-between'
         }}
       >
         <Text
-          style={{
-            fontSize: 30,
-            fontWeight: "600",
-            width: "80%",
-          }}
+          style={styles.textHeading}
         >
           Share My Location
         </Text>
@@ -73,7 +70,7 @@ const Settings = ({ navigation }: any) => {
           isOn={shareLocation}
           onColor={COLORS.voilet}
           offColor="rgba(52,52,52,0.2)"
-          size="medium"
+          size={SIZES.width>400?"medium":"small"}
           onToggle={() => setShareLocation(!shareLocation)}
         />
       </View>
@@ -83,7 +80,7 @@ const Settings = ({ navigation }: any) => {
       <View style={styles.distanceUnitHolder}>
         <View
           style={{
-            width: "60%",
+            width: "40%",
           }}
         >
           <Text style={styles.textHeading}>Distance Unit</Text>
@@ -104,7 +101,7 @@ const Settings = ({ navigation }: any) => {
             isOn={milesChecked}
             onColor={COLORS.voilet}
             offColor={COLORS.voilet}
-            size="medium"
+            size={SIZES.width>400?"medium":"small"}
             onToggle={() => setmilesChecked(!milesChecked)}
           />
           <View style={styles.card}>
@@ -128,7 +125,7 @@ const Settings = ({ navigation }: any) => {
           <View>
             <Pressable
               onPress={showstartTimePicker}
-              style={{ flexDirection: "row", marginHorizontal: "1%" }}
+              style={{ flexDirection: "row", marginHorizontal: "1%", alignItems:'center',justifyContent:'center' }}
             >
               <DateTimePickerModal
                 date={startTime}
@@ -139,13 +136,13 @@ const Settings = ({ navigation }: any) => {
               />
               <Ionicons
                 name="timer-outline"
-                size={24}
+                size={SIZES.width>400?25:20}
                 color="black"
                 style={{ marginBottom: "2%", marginTop: "2%" }}
               />
               <Text
                 style={{
-                  fontSize: 24,
+                  fontSize: SIZES.width>400?24:18,
                   fontWeight: "bold",
                   marginBottom: "2%",
                   marginTop: "2%",
@@ -163,7 +160,7 @@ const Settings = ({ navigation }: any) => {
           <View>
             <Pressable
               onPress={showEndTimePicker}
-              style={{ flexDirection: "row", marginHorizontal: "1%" }}
+              style={{ flexDirection: "row", marginHorizontal: "1%", alignItems:'center',justifyContent:'center' }}
             >
               <DateTimePickerModal
                 date={endTime}
@@ -174,13 +171,13 @@ const Settings = ({ navigation }: any) => {
               />
               <Ionicons
                 name="timer-outline"
-                size={24}
+                size={SIZES.width>400?25:20}
                 color="black"
                 style={{ marginBottom: "2%", marginTop: "2%" }}
               />
               <Text
                 style={{
-                  fontSize: 24,
+                  fontSize: SIZES.width>400?24:18,
                   fontWeight: "bold",
                   marginBottom: "2%",
                   marginTop: "2%",
@@ -220,7 +217,7 @@ const Settings = ({ navigation }: any) => {
             <List.Item
               title="Default"
               style={{ width: "40%" }}
-              titleStyle={{ fontSize: 20, color: "black" }}
+              titleStyle={{ fontSize: SIZES.width>400?20:18, color: "black" }}
             />
 
             <View style={styles.itemButtonContainer}>
@@ -228,7 +225,7 @@ const Settings = ({ navigation }: any) => {
                 isOn={mapType == "Default" ? true : false}
                 onColor={COLORS.voilet}
                 offColor="rgba(52,52,52,0.2)"
-                size="medium"
+                size={SIZES.width>400?"medium":"small"}
                 onToggle={() => setMapType("Default")}
               />
             </View>
@@ -237,7 +234,7 @@ const Settings = ({ navigation }: any) => {
             <List.Item
               title="Satellite"
               style={{ width: "40%" }}
-              titleStyle={{ fontSize: 20, color: "black" }}
+              titleStyle={{ fontSize: SIZES.width>400?20:18, color: "black" }}
             />
 
             <View style={styles.itemButtonContainer}>
@@ -245,7 +242,7 @@ const Settings = ({ navigation }: any) => {
                 isOn={mapType == "Satellite" ? true : false}
                 onColor={COLORS.voilet}
                 offColor="rgba(52,52,52,0.2)"
-                size="medium"
+                size={SIZES.width>400?"medium":"small"}
                 onToggle={() => setMapType("Satellite")}
               />
             </View>
@@ -254,14 +251,14 @@ const Settings = ({ navigation }: any) => {
             <List.Item
               title="Terrain"
               style={{ width: "40%" }}
-              titleStyle={{ fontSize: 20, color: "black" }}
+              titleStyle={{ fontSize: SIZES.width>400?20:18, color: "black" }}
             />
             <View style={styles.itemButtonContainer}>
               <ToggleSwitch
                 isOn={mapType == "Terrain" ? true : false}
                 onColor={COLORS.voilet}
                 offColor="rgba(52,52,52,0.2)"
-                size="medium"
+                size={SIZES.width>400?"medium":"small"}
                 onToggle={() => setMapType("Terrain")}
               />
             </View>
@@ -290,10 +287,10 @@ const Settings = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: "2%",
+    padding: "1%",
   },
   textHeading: {
-    fontSize: SIZES.width > 400 ? 30 : 20,
+    fontSize: SIZES.width > 400 ? 25 : 18,
     fontWeight: "600",
     color: "black",
     padding: "1%",
@@ -329,17 +326,19 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   distanceUnitHolder: {
-    width: SIZES.width * 0.9,
-    margin: "5%",
+    width: SIZES.width * 0.95,
+    margin: "2%",
     padding: "2%",
     flexDirection: "row",
     justifyContent: "space-between",
   },
   distanceCardHolder: {
-    width: "40%",
+    width: "60%",
     marginTop: "2%",
     flexDirection: "row",
     justifyContent: "space-evenly",
+    alignItems:'center',
+    alignSelf:'center'
   },
   card: {
     alignItems: "center",
@@ -355,11 +354,12 @@ const styles = StyleSheet.create({
     color: "rgba(0,0,0,0.2)",
   },
   trackingTimeView: {
-    width: SIZES.width * 0.9,
+    width: SIZES.width,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center",
+    alignSelf:'center',
+    margin:'2%',
   },
   trackingFromTimeHolder: {
     width: "45%",
@@ -370,10 +370,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   subscriptionView: {
-    width: SIZES.width * 0.9,
+    width: SIZES.width * 0.95,
     flexDirection: "row",
     justifyContent: "space-between",
-    margin: "5%",
+    margin: "2%",
     padding: "2%",
   },
   memberShipCard: {
