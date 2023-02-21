@@ -12,9 +12,7 @@ const SplashPartner = ({ navigation }: any) => {
         style={styles.top}
         source={require("../assets/partnerSplash.png")}
       />
-
       <View style={styles.inputWrapper}></View>
-
       <View style={styles.footer}>
         <TouchableOpacity style={styles.sendCode} onPress={onPressSubmit}>
           <Text style={styles.buttonText}>Next</Text>

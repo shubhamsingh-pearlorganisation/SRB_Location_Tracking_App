@@ -46,9 +46,9 @@ const Settings = ({ navigation }: any) => {
 
   // --------------------------- Time Picker Handling -- Finished -----------------------------------
 
-  const redirectToMemberShipScreen = () =>{
-    navigation.navigate("MemberShipScreen")
-  }
+  const redirectToMemberShipScreen = () => {
+    navigation.navigate("MemberShipScreen");
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -58,19 +58,15 @@ const Settings = ({ navigation }: any) => {
           flexDirection: "row",
           margin: "2%",
           padding: "2%",
-          justifyContent:'space-between'
+          justifyContent: "space-between",
         }}
       >
-        <Text
-          style={styles.textHeading}
-        >
-          Share My Location
-        </Text>
+        <Text style={styles.textHeading}>Share My Location</Text>
         <ToggleSwitch
           isOn={shareLocation}
           onColor={COLORS.voilet}
           offColor="rgba(52,52,52,0.2)"
-          size={SIZES.width>400?"medium":"small"}
+          size={SIZES.width > 400 ? "medium" : "small"}
           onToggle={() => setShareLocation(!shareLocation)}
         />
       </View>
@@ -101,7 +97,7 @@ const Settings = ({ navigation }: any) => {
             isOn={milesChecked}
             onColor={COLORS.voilet}
             offColor={COLORS.voilet}
-            size={SIZES.width>400?"medium":"small"}
+            size={SIZES.width > 400 ? "medium" : "small"}
             onToggle={() => setmilesChecked(!milesChecked)}
           />
           <View style={styles.card}>
@@ -125,7 +121,12 @@ const Settings = ({ navigation }: any) => {
           <View>
             <Pressable
               onPress={showstartTimePicker}
-              style={{ flexDirection: "row", marginHorizontal: "1%", alignItems:'center',justifyContent:'center' }}
+              style={{
+                flexDirection: "row",
+                marginHorizontal: "1%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
               <DateTimePickerModal
                 date={startTime}
@@ -136,13 +137,13 @@ const Settings = ({ navigation }: any) => {
               />
               <Ionicons
                 name="timer-outline"
-                size={SIZES.width>400?25:20}
+                size={SIZES.width > 400 ? 25 : 20}
                 color="black"
                 style={{ marginBottom: "2%", marginTop: "2%" }}
               />
               <Text
                 style={{
-                  fontSize: SIZES.width>400?24:18,
+                  fontSize: SIZES.width > 400 ? 24 : 18,
                   fontWeight: "bold",
                   marginBottom: "2%",
                   marginTop: "2%",
@@ -160,7 +161,12 @@ const Settings = ({ navigation }: any) => {
           <View>
             <Pressable
               onPress={showEndTimePicker}
-              style={{ flexDirection: "row", marginHorizontal: "1%", alignItems:'center',justifyContent:'center' }}
+              style={{
+                flexDirection: "row",
+                marginHorizontal: "1%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
               <DateTimePickerModal
                 date={endTime}
@@ -171,13 +177,13 @@ const Settings = ({ navigation }: any) => {
               />
               <Ionicons
                 name="timer-outline"
-                size={SIZES.width>400?25:20}
+                size={SIZES.width > 400 ? 25 : 20}
                 color="black"
                 style={{ marginBottom: "2%", marginTop: "2%" }}
               />
               <Text
                 style={{
-                  fontSize: SIZES.width>400?24:18,
+                  fontSize: SIZES.width > 400 ? 24 : 18,
                   fontWeight: "bold",
                   marginBottom: "2%",
                   marginTop: "2%",
@@ -194,7 +200,10 @@ const Settings = ({ navigation }: any) => {
 
       <View style={styles.subscriptionView}>
         <Text style={styles.textHeading}>Subscription Plan:-</Text>
-        <Pressable style={styles.memberShipCard} onPress={redirectToMemberShipScreen}>
+        <Pressable
+          style={styles.memberShipCard}
+          onPress={redirectToMemberShipScreen}
+        >
           <Text style={styles.subContent}>Not Subscribed</Text>
           <MaterialIcons
             name={"keyboard-arrow-right"}
@@ -203,9 +212,6 @@ const Settings = ({ navigation }: any) => {
           />
         </Pressable>
       </View>
-
-
-
 
       <List.Section title="">
         <List.Accordion
@@ -217,7 +223,10 @@ const Settings = ({ navigation }: any) => {
             <List.Item
               title="Default"
               style={{ width: "40%" }}
-              titleStyle={{ fontSize: SIZES.width>400?20:18, color: "black" }}
+              titleStyle={{
+                fontSize: SIZES.width > 400 ? 20 : 18,
+                color: "black",
+              }}
             />
 
             <View style={styles.itemButtonContainer}>
@@ -225,7 +234,7 @@ const Settings = ({ navigation }: any) => {
                 isOn={mapType == "Default" ? true : false}
                 onColor={COLORS.voilet}
                 offColor="rgba(52,52,52,0.2)"
-                size={SIZES.width>400?"medium":"small"}
+                size={SIZES.width > 400 ? "medium" : "small"}
                 onToggle={() => setMapType("Default")}
               />
             </View>
@@ -234,7 +243,10 @@ const Settings = ({ navigation }: any) => {
             <List.Item
               title="Satellite"
               style={{ width: "40%" }}
-              titleStyle={{ fontSize: SIZES.width>400?20:18, color: "black" }}
+              titleStyle={{
+                fontSize: SIZES.width > 400 ? 20 : 18,
+                color: "black",
+              }}
             />
 
             <View style={styles.itemButtonContainer}>
@@ -242,7 +254,7 @@ const Settings = ({ navigation }: any) => {
                 isOn={mapType == "Satellite" ? true : false}
                 onColor={COLORS.voilet}
                 offColor="rgba(52,52,52,0.2)"
-                size={SIZES.width>400?"medium":"small"}
+                size={SIZES.width > 400 ? "medium" : "small"}
                 onToggle={() => setMapType("Satellite")}
               />
             </View>
@@ -251,14 +263,17 @@ const Settings = ({ navigation }: any) => {
             <List.Item
               title="Terrain"
               style={{ width: "40%" }}
-              titleStyle={{ fontSize: SIZES.width>400?20:18, color: "black" }}
+              titleStyle={{
+                fontSize: SIZES.width > 400 ? 20 : 18,
+                color: "black",
+              }}
             />
             <View style={styles.itemButtonContainer}>
               <ToggleSwitch
                 isOn={mapType == "Terrain" ? true : false}
                 onColor={COLORS.voilet}
                 offColor="rgba(52,52,52,0.2)"
-                size={SIZES.width>400?"medium":"small"}
+                size={SIZES.width > 400 ? "medium" : "small"}
                 onToggle={() => setMapType("Terrain")}
               />
             </View>
@@ -283,7 +298,9 @@ const Settings = ({ navigation }: any) => {
     </ScrollView>
   );
 };
-
+// ---------------------------------------------------------------------------------------------
+// CSS CODE
+// =========
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -337,8 +354,8 @@ const styles = StyleSheet.create({
     marginTop: "2%",
     flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems:'center',
-    alignSelf:'center'
+    alignItems: "center",
+    alignSelf: "center",
   },
   card: {
     alignItems: "center",
@@ -358,8 +375,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    alignSelf:'center',
-    margin:'2%',
+    alignSelf: "center",
+    margin: "2%",
   },
   trackingFromTimeHolder: {
     width: "45%",
@@ -401,3 +418,4 @@ const styles = StyleSheet.create({
 });
 
 export default Settings;
+// ------------------------------------------- THE END --------------------------------------------------

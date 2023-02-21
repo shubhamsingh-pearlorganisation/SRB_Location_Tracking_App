@@ -279,25 +279,25 @@ const EditGroup = ({ route, navigation }: any) => {
           width: SIZES.width,
           alignItems: "center",
           position: "absolute",
-          
         }}
       >
-        
         <Pressable
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems:'center'
-        }}
-        // onPress={() => deleteGroupConfirmation(groupDetails)}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          // onPress={() => deleteGroupConfirmation(groupDetails)}
         >
           <Text
-        style={{
-          fontSize:SIZES.width>400? 25:18,
-          fontWeight:'600',
-          marginHorizontal:'2%'
-        }}
-        >Delete</Text>
+            style={{
+              fontSize: SIZES.width > 400 ? 25 : 18,
+              fontWeight: "600",
+              marginHorizontal: "2%",
+            }}
+          >
+            Delete
+          </Text>
           <AntDesign name="delete" size={20} />
         </Pressable>
       </View>
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     width: SIZES.width * 0.4,
     height: SIZES.height * 0.2,
     margin: SIZES.width * 0.05,
-    marginBottom:'2%',
+    marginBottom: "2%",
     backgroundColor: "white",
     shadowColor: "black",
     shadowOpacity: 0.7,

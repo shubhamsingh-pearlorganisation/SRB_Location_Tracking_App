@@ -157,7 +157,7 @@ const Groups = ({ navigation }: any) => {
             styles.groupListItemType,
             {
               alignSelf: "center",
-              right:"2%",
+              right: "2%",
               position: "absolute",
               backgroundColor: "transparent",
             },

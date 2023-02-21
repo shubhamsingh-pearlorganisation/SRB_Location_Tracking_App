@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 import { COLORS, SIZES } from "../constants";
+// ---------------------------------------------------------------------------------------------
 
 const AddMember = ({ route }: any) => {
   const shareData = async () => {
@@ -72,7 +73,8 @@ const AddMember = ({ route }: any) => {
     </SafeAreaView>
   );
 };
-
+// ---------------------------------------------------------------------------------------------
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     width: SIZES.width,
@@ -113,3 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 export default AddMember;
+// ------------------------------------------ THE END ---------------------------------------------------
