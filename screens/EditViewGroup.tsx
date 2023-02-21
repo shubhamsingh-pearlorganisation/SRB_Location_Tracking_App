@@ -198,7 +198,6 @@ const EditViewGroup = ({ route, navigation }: any) => {
 
   // This method is used to delete the group member
   const deleteMemberFromGroup = async (memberDetails: any) => {
-    console.log("memberDetails:: ", memberDetails);
     try {
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
