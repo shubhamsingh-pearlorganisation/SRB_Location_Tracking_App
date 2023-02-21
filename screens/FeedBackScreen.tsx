@@ -269,7 +269,7 @@ const FeedbackScreen = () => {
         >
           <Entypo
             name="new-message"
-            size={SIZES.width > 400 ? 35 : 25}
+            size={SIZES.width > 400 ? 35 : 20}
             color="white"
           />
         </TouchableOpacity>
