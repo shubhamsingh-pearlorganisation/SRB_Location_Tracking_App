@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Text, Pressable, ScrollView } from "react-native";
 import { List } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";
@@ -6,16 +6,69 @@ import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from "@expo/vector-icons";
+import { AppSettingsContext } from "../App";
 
 // ---------------------------------------------------------------------------------------------
 
 const Settings = ({ navigation }: any) => {
+  const userSettings: any = useContext(AppSettingsContext);
+
   // Component's Local States
   // ========================
-  const [mapType, setMapType] = useState("Default");
+  const [userSettingsData, setUserSettingsData] = useState<any>([]);
+  const [userGlobalSettingsData, setUserGlobalSettingsData] = useState<any>([]);
   const [expanded, setExpanded] = useState(false);
-  const [shareLocation, setShareLocation] = useState(true);
-  const [milesChecked, setmilesChecked] = useState(false);
+
+  const [shareLocation, setShareLocation] = useState(
+    userSettingsData[0]?.allow_location == 1 ? true : false
+  );
+  const [milesChecked, setmilesChecked] = useState(
+    userSettingsData[0]?.distance_unit?.toString().includes("kilometer")
+      ? true
+      : false
+  );
+
+  // This "updatedSettingsData" state is used to prefilled settings data and also use to update settings data
+  const [updatedSettingsData, setUpdatedSettingsData] = useState<any>({
+    allowLocation: userSettingsData[0]?.allow_location == 1 ? 1 : 0,
+    distanceUnit: userSettingsData[0]?.distance_unit,
+    trackingFromTime: userSettingsData[0]?.tracking_from_time?.toString()
+      ? new Date(userSettingsData[0]?.tracking_from_time)
+      : new Date(),
+    trackingToTime: userSettingsData[0]?.tracking_to_time?.toString()
+      ? new Date(userSettingsData[0]?.tracking_to_time)
+      : new Date(),
+    mapMode: userSettingsData[0]?.map_mode?.toString()
+      ? userSettingsData[0]?.map_mode?.toString()
+      : "default",
+  });
+
+  useEffect(() => {
+    shareLocation &&
+      setUpdatedSettingsData({
+        ...updatedSettingsData,
+        allowLocation: shareLocation ? 1 : 0,
+      });
+  }, [shareLocation]);
+
+  useEffect(() => {
+    milesChecked &&
+      setUpdatedSettingsData({
+        ...updatedSettingsData,
+        distanceUnit: milesChecked ? "kilometer" : "miles",
+      });
+  }, [milesChecked]);
+
+  useEffect(() => {
+    setUserSettingsData(userSettings?.appSettings?.userSettings[0]);
+    setUserGlobalSettingsData(userSettings?.appSettings?.userGlobalSettings);
+  }, [userSettings]);
+
+  const [mapType, setMapType] = useState(
+    userSettings?.appSettings?.userSettings[0]?.map_mode
+      ? userSettings?.appSettings?.userSettings[0]?.map_mode
+      : "default"
+  );
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -27,16 +80,13 @@ const Settings = ({ navigation }: any) => {
   const [endTimePickerVisible, setEndTimePickerVisible] = useState(false);
 
   const showstartTimePicker = () => setStartTimePickerVisible(true);
-
   const hideStartTimePicker = () => setStartTimePickerVisible(false);
-
   const handleStartConfirm = (date: any) => {
     setStartTime(date);
     hideStartTimePicker();
   };
 
   const showEndTimePicker = () => setEndTimePickerVisible(true);
-
   const hideEndTimePicker = () => setEndTimePickerVisible(false);
 
   const handleEndConfirm = (date: any) => {
@@ -46,8 +96,11 @@ const Settings = ({ navigation }: any) => {
 
   // --------------------------- Time Picker Handling -- Finished -----------------------------------
 
-  const redirectToMemberShipScreen = () => {
+  const redirectToMemberShipScreen = () =>
     navigation.navigate("MemberShipScreen");
+
+  const handleSettingsUpdate = () => {
+    console.log("updatedSettingsData::: ", updatedSettingsData);
   };
 
   return (
@@ -70,9 +123,6 @@ const Settings = ({ navigation }: any) => {
           onToggle={() => setShareLocation(!shareLocation)}
         />
       </View>
-
-      {/* --------------------------------Distance Cards------------------------------------- */}
-
       <View style={styles.distanceUnitHolder}>
         <View
           style={{
@@ -112,9 +162,7 @@ const Settings = ({ navigation }: any) => {
           </View>
         </View>
       </View>
-
       {/* -----------------------------------------Tracking Time Cards----------------------------------------- */}
-
       <View style={styles.trackingTimeView}>
         <View style={styles.trackingFromTimeHolder}>
           <Text style={styles.textHeading}>Tracking from Time</Text>
@@ -129,7 +177,7 @@ const Settings = ({ navigation }: any) => {
               }}
             >
               <DateTimePickerModal
-                date={startTime}
+                date={updatedSettingsData?.trackingFromTime}
                 isVisible={startTimePickerVisible}
                 mode="time"
                 onConfirm={handleStartConfirm}
@@ -169,7 +217,7 @@ const Settings = ({ navigation }: any) => {
               }}
             >
               <DateTimePickerModal
-                date={endTime}
+                date={updatedSettingsData?.trackingToTime}
                 isVisible={endTimePickerVisible}
                 mode="time"
                 onConfirm={handleEndConfirm}
@@ -195,16 +243,17 @@ const Settings = ({ navigation }: any) => {
           </View>
         </View>
       </View>
-
-      {/* --------------------------------------------Subscribed or not card----------------------------------- */}
-
       <View style={styles.subscriptionView}>
-        <Text style={styles.textHeading}>Subscription Plan:-</Text>
+        <Text style={styles.textHeading}>Subscription Plan</Text>
         <Pressable
           style={styles.memberShipCard}
           onPress={redirectToMemberShipScreen}
         >
-          <Text style={styles.subContent}>Not Subscribed</Text>
+          <Text style={styles.subContent}>
+            {userSettingsData?.is_subscription == 1
+              ? "Subscribed"
+              : "Not Subscribed"}
+          </Text>
           <MaterialIcons
             name={"keyboard-arrow-right"}
             size={24}
@@ -212,12 +261,12 @@ const Settings = ({ navigation }: any) => {
           />
         </Pressable>
       </View>
-
       <List.Section title="">
         <List.Accordion
           title="Select Map Mode"
           titleStyle={styles.textHeading}
           onPress={handlePress}
+          expanded={true}
         >
           <View style={styles.item}>
             <List.Item
@@ -231,11 +280,11 @@ const Settings = ({ navigation }: any) => {
 
             <View style={styles.itemButtonContainer}>
               <ToggleSwitch
-                isOn={mapType == "Default" ? true : false}
+                isOn={mapType.includes("default") ? true : false}
                 onColor={COLORS.voilet}
                 offColor="rgba(52,52,52,0.2)"
                 size={SIZES.width > 400 ? "medium" : "small"}
-                onToggle={() => setMapType("Default")}
+                onToggle={() => setMapType("default")}
               />
             </View>
           </View>
@@ -251,11 +300,11 @@ const Settings = ({ navigation }: any) => {
 
             <View style={styles.itemButtonContainer}>
               <ToggleSwitch
-                isOn={mapType == "Satellite" ? true : false}
+                isOn={mapType.includes("satellite") ? true : false}
                 onColor={COLORS.voilet}
                 offColor="rgba(52,52,52,0.2)"
                 size={SIZES.width > 400 ? "medium" : "small"}
-                onToggle={() => setMapType("Satellite")}
+                onToggle={() => setMapType("satellite")}
               />
             </View>
           </View>
@@ -270,11 +319,11 @@ const Settings = ({ navigation }: any) => {
             />
             <View style={styles.itemButtonContainer}>
               <ToggleSwitch
-                isOn={mapType == "Terrain" ? true : false}
+                isOn={mapType.includes("terrain") ? true : false}
                 onColor={COLORS.voilet}
                 offColor="rgba(52,52,52,0.2)"
                 size={SIZES.width > 400 ? "medium" : "small"}
-                onToggle={() => setMapType("Terrain")}
+                onToggle={() => setMapType("terrain")}
               />
             </View>
           </View>
@@ -295,6 +344,12 @@ const Settings = ({ navigation }: any) => {
           />
         </List.Accordion>
       </List.Section>
+      <Pressable
+        style={styles.memberShipCard}
+        onPress={() => handleSettingsUpdate()}
+      >
+        <Text style={styles.subContent}>Save Settings</Text>
+      </Pressable>
     </ScrollView>
   );
 };
