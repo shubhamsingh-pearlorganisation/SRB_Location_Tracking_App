@@ -17,6 +17,8 @@ import { useToast } from "react-native-toast-notifications";
 import { TextInput } from "react-native-paper";
 import { instance } from "../core/utils/AxiosInterceptor";
 import Loader from "../components/Loader";
+import { Feather } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 // -----------------------------------------------------------------
 
@@ -72,19 +74,18 @@ const EditGroup = ({ route, navigation }: any) => {
           <Text style={styles.memberListItemName}>
             {member?.name ? member?.name : "N.A"}
           </Text>
-          <Text style={styles.memberListItemCode}>Location</Text>
-          <Text style={styles.memberListItemCode}>Location line</Text>
         </View>
-        <View style={styles.memberListItemType}>
-          <Text
-            style={{
-              color: "black",
-              fontWeight: "700",
-            }}
-          >
-            07th Feb {"\n"} 05:16 pm
-          </Text>
-        </View>
+
+        <Pressable
+          style={{
+            right: "2%",
+            position: "absolute",
+            alignSelf: "center",
+          }}
+          // onPress={() => deleteContactConfirmation(contact?.id)}
+        >
+          <Feather name="minus-circle" size={SIZES.width > 400 ? 30 : 25} />
+        </Pressable>
       </Pressable>
     );
   };
@@ -272,6 +273,34 @@ const EditGroup = ({ route, navigation }: any) => {
           )}
         </ScrollView>
       </View>
+      <View
+        style={{
+          bottom: "1%",
+          width: SIZES.width,
+          alignItems: "center",
+          position: "absolute",
+          
+        }}
+      >
+        
+        <Pressable
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems:'center'
+        }}
+        // onPress={() => deleteGroupConfirmation(groupDetails)}
+        >
+          <Text
+        style={{
+          fontSize:SIZES.width>400? 25:18,
+          fontWeight:'600',
+          marginHorizontal:'2%'
+        }}
+        >Delete</Text>
+          <AntDesign name="delete" size={20} />
+        </Pressable>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -332,7 +361,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   memberList: {
-    bottom: 0,
+    bottom: "5%",
     position: "absolute",
     backgroundColor: "transparent",
     width: SIZES.width,
@@ -354,6 +383,7 @@ const styles = StyleSheet.create({
     width: SIZES.width * 0.4,
     height: SIZES.height * 0.2,
     margin: SIZES.width * 0.05,
+    marginBottom:'2%',
     backgroundColor: "white",
     shadowColor: "black",
     shadowOpacity: 0.7,
