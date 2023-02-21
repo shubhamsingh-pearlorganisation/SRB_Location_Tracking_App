@@ -61,7 +61,7 @@ export default function AlertDialog({
                 alignItems: "center",
                 position: "absolute",
                 borderBottomWidth: 0,
-                width: SIZES.width > 400 ? SIZES.width * 0.4 : SIZES.width * .8,
+                width: SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * .8,
                 height: "20%",
                 justifyContent: showLoader ? "space-around" : "center",
                 borderRadius: 30,
