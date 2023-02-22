@@ -23,6 +23,11 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
     sendGroupDetails(selectedGroupData);
   }, [selectedGroupData]);
 
+  useEffect(() => {
+    groupsAndMembersData?.groupsAndMembersDetails?.length > 0 &&
+      setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);
+  }, [groupsAndMembersData?.groupsAndMembersDetails]);
+
   return (
     <View style={{ width: "100%", justifyContent: "center" }}>
       <ScrollView

@@ -82,6 +82,7 @@ const SelectLocation = (props: any) => {
     </View>
   );
 };
+// -------------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
     flex: 1,
