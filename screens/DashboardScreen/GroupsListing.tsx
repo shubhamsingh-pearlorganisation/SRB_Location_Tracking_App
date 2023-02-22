@@ -8,7 +8,8 @@ import GroupIndividualItem from "./GroupIndividualItem";
 import Loader from "../../components/Loader";
 // -------------------------------------------------------------------------------------
 
-const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
+const 
+GroupsListing = ({ navigation, sendGroupDetails }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   const [groupMembersList, setGroupMembersList] = useState<any>([]);
@@ -24,7 +25,16 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
   }, [selectedGroupData]);
 
   return (
+<<<<<<< Updated upstream
     <View style={{ width: "100%", justifyContent: "center" }}>
+=======
+    <View
+    style={{
+      width:'100%',
+      justifyContent:'center'
+    }}
+    >
+>>>>>>> Stashed changes
       <ScrollView
         style={{
           width: "100%",
@@ -66,7 +76,11 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
           width: "100%",
           flexDirection: "row",
           bottom: "5%",
+<<<<<<< Updated upstream
           justifyContent: "space-evenly",
+=======
+          justifyContent:'space-evenly',
+>>>>>>> Stashed changes
         }}
       >
         {/* ---------------------------------------------------- */}
