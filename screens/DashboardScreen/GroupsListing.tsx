@@ -1,7 +1,6 @@
-import { View, Text, Pressable, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
-import { styles } from "./style";
-import { COLORS, SIZES } from "../../constants";
+import { SIZES } from "../../constants";
 import NoDataFound from "../../components/NoDataFound";
 import { GroupsAndMembersContext } from "../../App";
 import GroupAvailableOptions from "./GroupAvailableOptions";
@@ -9,7 +8,6 @@ import GroupIndividualItem from "./GroupIndividualItem";
 // -------------------------------------------------------------------------------------
 
 const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
-  console.log("navigation:shubham:: ", navigation);
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   const [groupMembersList, setGroupMembersList] = useState<any>([]);
@@ -36,6 +34,7 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
             (group: any, i: number) => (
               <View key={group?.group_code ? group?.group_code : i}>
                 {group?.title && group?.group_code && (
+                  // Calling Individual Group Icon Screen
                   <GroupIndividualItem
                     groupDetails={group}
                     setGroupMembersList={setGroupMembersList}
@@ -61,7 +60,6 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
       >
         {/* ---------------------------------------------------- */}
         {/* Group Screen Available Options Section */}
-
         <GroupAvailableOptions
           navigation={navigation}
           selectedGroupDetails={selectedGroupData}
