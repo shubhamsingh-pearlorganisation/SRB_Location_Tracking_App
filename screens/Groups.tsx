@@ -128,10 +128,7 @@ const Groups = ({ navigation }: any) => {
         groupsAndMembersData?.groupsAndMembersDetails.map(
           (group: any, i: number) => (
             <View key={group?.group_code ? group?.group_code : i}>
-              {group?.title &&
-                group?.group_code &&
-                // renderGroups({ ...group, amIParent: true })}
-                renderGroups(group)}
+              {group?.title && group?.group_code && renderGroups(group)}
             </View>
           )
         )

@@ -32,20 +32,11 @@ const EditViewGroup = ({ route, navigation }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
   const userSettings: any = useContext(AppSettingsContext);
 
-  // console.log(
-  //   "userSettings::: ",
-  //   userSettings?.appSettings?.userSettings[0]?.id
-  // );
-
   const [userId, setUserId] = useState<any>(null);
 
   useEffect(() => {
     if (userSettings?.loggedInUserId) setUserId(userSettings?.loggedInUserId);
   }, [userSettings?.loggedInUserId]);
-
-  // useEffect(() => {
-  //   userId && console.log("userId::: ", userId);
-  // }, [userId]);
 
   // Component's Local States
   // ========================

@@ -215,9 +215,9 @@ const FeedbackScreen = () => {
             ></TextInput>
             <View
               style={{
-                width:'100%',
+                width: "100%",
                 flexDirection: "row",
-                justifyContent:'center'
+                justifyContent: "center",
               }}
             >
               <Pressable
@@ -339,14 +339,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    width:"20%",
+    width: "20%",
     borderRadius: 20,
     paddingVertical: 10,
     elevation: 2,
     marginTop: "2%",
-    alignItems:'center',
+    alignItems: "center",
     marginHorizontal: 15,
-    // paddingHorizontal:0
   },
   buttonClose: {
     backgroundColor: COLORS.voilet,
