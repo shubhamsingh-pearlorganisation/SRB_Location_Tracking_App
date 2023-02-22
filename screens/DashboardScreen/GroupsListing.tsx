@@ -5,13 +5,16 @@ import NoDataFound from "../../components/NoDataFound";
 import { GroupsAndMembersContext } from "../../App";
 import GroupAvailableOptions from "./GroupAvailableOptions";
 import GroupIndividualItem from "./GroupIndividualItem";
+import Loader from "../../components/Loader";
 // -------------------------------------------------------------------------------------
 
 const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   const [groupMembersList, setGroupMembersList] = useState<any>([]);
-  const [selectedGroupData, setSelectedGroupData] = useState<any>({});
+  const [selectedGroupData, setSelectedGroupData] = useState<any>(
+    groupsAndMembersData?.groupsAndMembersDetails[0]
+  );
 
   const selectedGroupDetails = (selGroupDetails: any) =>
     selGroupDetails && setSelectedGroupData(selGroupDetails);
@@ -21,7 +24,7 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
   }, [selectedGroupData]);
 
   return (
-    <View>
+    <View style={{ width: "100%", justifyContent: "center" }}>
       <ScrollView
         style={{
           width: "100%",
@@ -46,16 +49,24 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
             )
           )
         ) : (
-          <View style={{ marginTop: 15 }}>
-            <NoDataFound message="No Groups Found" />
-          </View>
+          <>
+            {groupsAndMembersData.isDetailsLoaded &&
+            groupsAndMembersData.groupsAndMembersDetails?.length === 0 ? (
+              <View style={{ marginTop: 15 }}>
+                <NoDataFound message="No Groups Found" />
+              </View>
+            ) : (
+              <Loader message="Please wait we are fetching available groups" />
+            )}
+          </>
         )}
       </ScrollView>
       <View
         style={{
           width: "100%",
           flexDirection: "row",
-          bottom: "10%",
+          bottom: "5%",
+          justifyContent: "space-evenly",
         }}
       >
         {/* ---------------------------------------------------- */}

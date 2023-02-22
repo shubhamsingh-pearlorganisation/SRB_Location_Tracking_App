@@ -12,7 +12,7 @@ const getCurrentLocation = () => {
     else {
       try {
         const location: any = await Location.getCurrentPositionAsync({});
-        console.log("My Location Details:: ", location);
+        // console.log("My Location Details:: ", location);
         const { latitude, longitude } = location.coords;
         resolve({ latitude, longitude });
       } catch (err) {

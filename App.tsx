@@ -79,6 +79,10 @@ const App = () => {
     },
   });
 
+  useEffect(() => {
+    console.log("groupsAndMembersDetails:: ", groupsAndMembersDetails);
+  }, [groupsAndMembersDetails]);
+
   // This method is used to receive authentication token from login screen after successful login
   const receiveAuthenticationToken = (jwtToken: any) => {
     if (jwtToken !== null) setAuthenticationToken(jwtToken);

@@ -78,7 +78,7 @@ const ManageMap = ({ navigation }: any) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getLiveLocation();
+      // getLiveLocation();
     }, 6000);
     return () => clearInterval(interval);
   }, []);
