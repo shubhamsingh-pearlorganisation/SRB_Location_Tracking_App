@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,11 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { AuthContext, GroupsAndMembersContext } from "../App";
+import {
+  AppSettingsContext,
+  AuthContext,
+  GroupsAndMembersContext,
+} from "../App";
 import { useToast } from "react-native-toast-notifications";
 import { TextInput } from "react-native-paper";
 import { instance } from "../core/utils/AxiosInterceptor";
@@ -26,6 +30,22 @@ const EditViewGroup = ({ route, navigation }: any) => {
   const toast = useToast();
   const authContextData: any = useContext(AuthContext); //Used for fetching authentication token
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
+  const userSettings: any = useContext(AppSettingsContext);
+
+  // console.log(
+  //   "userSettings::: ",
+  //   userSettings?.appSettings?.userSettings[0]?.id
+  // );
+
+  const [userId, setUserId] = useState<any>(null);
+
+  useEffect(() => {
+    if (userSettings?.loggedInUserId) setUserId(userSettings?.loggedInUserId);
+  }, [userSettings?.loggedInUserId]);
+
+  // useEffect(() => {
+  //   userId && console.log("userId::: ", userId);
+  // }, [userId]);
 
   // Component's Local States
   // ========================
@@ -272,7 +292,7 @@ const EditViewGroup = ({ route, navigation }: any) => {
           </Text>
         </View>
 
-        {isModificationAllowed ? (
+        {isModificationAllowed && member?.users_id !== userId ? (
           <Pressable
             style={{
               right: "2%",
