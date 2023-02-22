@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     elevation: 2,
     marginTop: "2%",
-
+    alignItems:'center',
     marginHorizontal: 15,
     // paddingHorizontal:0
   },
