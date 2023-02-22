@@ -20,6 +20,7 @@ const EmergencyContactsScreen = ({ navigation }: any) => {
     if (contactsFound) navigation.navigate("ContactsListingWithHelp");
     else navigation.navigate("Emergency");
   }, [contactsFound]);
+  // ----------------------------------------------------------------------------------------
 
   return !contactsFound ? (
     <>

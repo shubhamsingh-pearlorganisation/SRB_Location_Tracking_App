@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { COLORS, SIZES } from "../constants";
 // ----------------------------------------------------------------------------
-
+// This is the common Alert Dialog Component through which we can display an alert box to user.
 export default function AlertDialog({
   mainDisplayMsg,
   subDisplayMsg,
@@ -61,7 +61,8 @@ export default function AlertDialog({
                 alignItems: "center",
                 position: "absolute",
                 borderBottomWidth: 0,
-                width: SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * .8,
+                width:
+                  SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
                 height: "20%",
                 justifyContent: showLoader ? "space-around" : "center",
                 borderRadius: 30,

@@ -138,7 +138,7 @@ const FeedbackScreen = () => {
       );
     }
   };
-
+  // ------------------------------------------------------------------------------
   return (
     <View style={{ height: SIZES.height * 0.9 }}>
       {showLoader && !addFeedbackData.title ? (
@@ -352,11 +352,11 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0,0,0,0.2)",
     alignItems: "center",
     justifyContent: "center",
-    width: SIZES.width>400? SIZES.width*.1:SIZES.width * 0.15,
+    width: SIZES.width > 400 ? SIZES.width * 0.1 : SIZES.width * 0.15,
     position: "absolute",
     bottom: "2%",
     right: "2%",
-    height: SIZES.width>400? SIZES.width*.1:SIZES.width * 0.15,
+    height: SIZES.width > 400 ? SIZES.width * 0.1 : SIZES.width * 0.15,
     backgroundColor: COLORS.voilet,
     borderRadius: 100,
   },

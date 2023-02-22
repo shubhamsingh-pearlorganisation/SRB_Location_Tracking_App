@@ -7,14 +7,14 @@ import NoDataFound from "../components/NoDataFound";
 // ------------------------------------------------------------------
 const FAQScreen = () => {
   const userDetailsContextData: any = useContext(UserDetailsContext);
-
+  // Component's Local States
+  // ========================
   const [expanded, setExpanded] = useState(false);
   const [faqList, setFaqList] = useState<any>(
     userDetailsContextData?.faqData?.length > 0
       ? userDetailsContextData?.faqData
       : []
   );
-
   useEffect(() => {
     userDetailsContextData?.faqData &&
       setFaqList(userDetailsContextData?.faqData);
@@ -60,7 +60,8 @@ const FAQScreen = () => {
     </View>
   );
 };
-
+// =========================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   answerText: {
     width: "auto",
@@ -70,3 +71,4 @@ const styles = StyleSheet.create({
 });
 
 export default FAQScreen;
+// =============================================== THE END =======================================================

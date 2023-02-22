@@ -84,7 +84,7 @@ const AddGroup = ({ navigation }: any) => {
       }
     }
   };
-
+  // ----------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView style={styles.container}>
       {showLoader && <Loader />}

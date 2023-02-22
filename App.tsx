@@ -30,14 +30,19 @@ import ContactsListingWithHelp from "./screens/EmergencyContacts/ContactsListing
 import MemberShipScreen from "./screens/MemberShipScreen";
 
 // ----------------------------------------------------------------------------------
+// CONTEXTS
 export const AuthContext: any = createContext(null);
 export const GroupsAndMembersContext: any = createContext(null);
 export const UserDetailsContext: any = createContext(null);
 export const AppSettingsContext: any = createContext(null);
+// ----------------------------------------------------------------------------------
 
 const App = () => {
   const Stack = createNativeStackNavigator();
   const toast = useToast();
+
+  // Component's Local States
+  // ========================
 
   // Used to store authentication token
   const [authenticationToken, setAuthenticationToken] = useState<any>("");

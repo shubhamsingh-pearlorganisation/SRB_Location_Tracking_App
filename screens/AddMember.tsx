@@ -24,6 +24,7 @@ const AddMember = ({ route }: any) => {
       alert(error.message);
     }
   };
+  // ---------------------------------------------------------------------------------------------
 
   return (
     <SafeAreaView style={styles.container}>

@@ -4,6 +4,7 @@ import { View, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../constants";
 // ----------------------------------------------------------------------------
 
+// This is the common component through which we can list country name with their flag and country code
 const CountryDropdown = (props: any) => {
   // Component's Local States
   const [value, setValue] = useState(""); // Mobile Number without country code

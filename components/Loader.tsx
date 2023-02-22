@@ -1,6 +1,7 @@
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../constants";
 // ----------------------------------------------------------------------------
+// This is the common component for Showing Loader.
 const Loader = ({
   message = "Please wait ...",
   msgTextColor = COLORS.voilet,

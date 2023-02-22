@@ -49,7 +49,7 @@ const MenuScreen = ({ navigation }: any) => {
       Alert.alert("Getting an error during logout: ", error?.message);
     }
   };
-
+  // ---------------------------------------------------------------------------------------
   return (
     <View style={styles.container}>
       <View
