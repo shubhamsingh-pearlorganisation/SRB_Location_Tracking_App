@@ -6,9 +6,12 @@ import { Ionicons } from "@expo/vector-icons";
 // -------------------------------------------------------------------------------------
 
 // This component is used to render Groups individual Member
-const GroupIndividualMember = ({ member }: any) => {
+const GroupIndividualMember = ({ navigation, member }: any) => {
   return (
-    <Pressable style={styles.memberListItem}>
+    <Pressable
+      style={styles.memberListItem}
+      onPress={() => navigation.navigate("MemberHistoryScreen")}
+    >
       {!member?.image ? (
         <View style={styles.memberListItemImage}>
           <Ionicons name="person-sharp" size={20} color={COLORS.voilet} />

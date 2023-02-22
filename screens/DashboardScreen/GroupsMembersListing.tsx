@@ -82,7 +82,10 @@ const GroupsMembersListing = ({ navigation, selectedGroupData }: any) => {
             return (
               <View key={groupMember?.users_id ? groupMember?.users_id : i}>
                 {/* Calling Individual Group's Member Screen */}
-                <GroupIndividualMember member={groupMember} />
+                <GroupIndividualMember
+                  navigation={navigation}
+                  member={groupMember}
+                />
               </View>
             );
           })
