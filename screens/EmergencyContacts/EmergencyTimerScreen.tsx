@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  StyleSheet,
   Pressable,
   SafeAreaView,
   ImageBackground,
@@ -14,10 +13,14 @@ import { useToast } from "react-native-toast-notifications";
 import { instance } from "../../core/utils/AxiosInterceptor";
 import { AuthContext } from "../../App";
 import Loader from "../../components/Loader";
+import { styles } from "./style";
 // -----------------------------------------------------------------
 
 const EmergencyTimerScreen = ({ navigation }: any) => {
   const toast = useToast();
+
+  // Component's Local States
+  // ========================
   const [counter, setCounter] = useState(10);
   const [showLoader, setShowLoader] = useState(false);
   const authContextData: any = useContext(AuthContext);
@@ -77,7 +80,7 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
   // ----------------------------------------------------------------------------------------
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.emergencyScreenContainer}>
       {showLoader && <Loader />}
 
       <ImageBackground
@@ -92,8 +95,8 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
         }}
       >
         <Pressable>
-          <View style={styles.image}>
-            <Text style={styles.needHelp}>{counter}</Text>
+          <View style={styles.emergencyScreenImage}>
+            <Text style={styles.emergencyScreenNeedHelp}>{counter}</Text>
           </View>
         </Pressable>
       </ImageBackground>
@@ -135,55 +138,6 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
     </SafeAreaView>
   );
 };
-// ====================================================================================================
-// CSS CODE
-const styles = StyleSheet.create({
-  container: {
-    marginTop: "20%",
-    alignItems: "center",
-    flexDirection: "column",
-    height: SIZES.height,
-  },
-  title: {
-    fontStyle: "normal",
-    fontWeight: "600",
-    fontSize: SIZES.height > 700 ? 40 : 30,
-    textAlign: "center",
-    color: "#000000",
-  },
-  image: {
-    width: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
-    height: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
 
-    backgroundColor: "#FF0000",
-    position: "relative",
-    borderRadius: 91,
-    justifyContent: "center",
-    alignContent: "center",
-    padding: "2%",
-    alignSelf: "center",
-  },
-  needHelp: {
-    fontStyle: "normal",
-    fontWeight: "600",
-    fontSize: 20,
-    lineHeight: 25,
-    textAlign: "center",
-    color: "#FFFFFF",
-  },
-  pressHere: {
-    fontStyle: "normal",
-    fontWeight: "600",
-    fontSize: 20,
-    lineHeight: 25,
-    textAlign: "center",
-    color: "#FFFFFF",
-  },
-
-  lineStyle: {
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
-  },
-});
 export default EmergencyTimerScreen;
 // =============================================== THE END =====================================================

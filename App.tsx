@@ -11,7 +11,7 @@ import Register from "./screens/Register";
 import { COLORS, SIZES } from "./constants";
 import AddGroup from "./screens/AddGroup";
 import EditViewGroup from "./screens/EditViewGroup";
-import EmergencyContactsScreen from "./screens/EmergencyContacts/Home";
+import EmergencyContactsScreen from "./screens/EmergencyContacts";
 import EmergencyTimerScreen from "./screens/EmergencyContacts/EmergencyTimerScreen";
 import SelectLocation from "./screens/SelectLocation";
 import AddMember from "./screens/AddMember";

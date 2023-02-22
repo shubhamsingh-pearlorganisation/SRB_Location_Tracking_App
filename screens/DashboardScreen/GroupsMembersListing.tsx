@@ -1,101 +1,69 @@
-import { View, Text, Pressable,Image } from "react-native";
-import { COLORS, SIZES } from "../../constants";
+import { View } from "react-native";
+import { SIZES } from "../../constants";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated,{useAnimatedStyle,useSharedValue, withSpring, withTiming} from "react-native-reanimated";
-import {useEffect} from 'react';
-import { styles } from "./style";
-import { Ionicons } from "@expo/vector-icons";
-
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import { useEffect, useContext } from "react";
+import GroupIndividualMember from "./GroupIndividualMember";
+import { GroupsAndMembersContext } from "../../App";
+import NoDataFound from "../../components/NoDataFound";
+import Loader from "../../components/Loader";
 
 // -------------------------------------------------------------------------------------
 
-const GroupsMembersListing = ({ navigation }: any) => {
+const GroupsMembersListing = ({ navigation, selectedGroupData }: any) => {
+  const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
-  const translateY = useSharedValue(0)
+  const translateY = useSharedValue(0);
+  const context = useSharedValue({ y: 0 });
+  const gesture = Gesture.Pan()
+    .onStart(() => {
+      context.value = { y: translateY.value };
+    })
+    .onUpdate((event) => {
+      translateY.value = event.translationY + context.value.y;
+      translateY.value = Math.max(
+        translateY.value,
+        -SIZES.height + SIZES.height * 0.1
+      );
+    })
+    .onEnd(() => {
+      if (translateY.value > -SIZES.height / 2.5)
+        translateY.value = withSpring(-SIZES.height / 2.5, { damping: 50 });
+      else if (translateY.value < -SIZES.height / 4)
+        translateY.value = withSpring(-SIZES.height + SIZES.height * 0.1, {
+          damping: 50,
+        });
+    });
 
-  const context = useSharedValue({y:0})
-  const gesture = Gesture.Pan().onStart(()=>{
-    context.value = {y:translateY.value}
-  }) .onUpdate((event)=>{
-    // if(translateY.value > -SIZES.height*.6 && translateY.value < SIZES.height*.2)
-    translateY.value = event.translationY + context.value.y
-    translateY.value = Math.max(translateY.value, -SIZES.height+SIZES.height*.1)
-    // else
+  const BottomSheetStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  });
 
-  })
-  .onEnd(()=>{
-    if(translateY.value > -SIZES.height/2.5)
-    translateY.value = withSpring(-SIZES.height/2.5,{damping:50})
-    else if(translateY.value < -SIZES.height/4)
-    translateY.value = withSpring(-SIZES.height+SIZES.height*.1,{damping:50})
-  })
-  
-  ;
+  useEffect(() => {
+    translateY.value = withSpring(-SIZES.height / 2.5, { damping: 50 });
+  });
 
-  const BottomSheetStyle= useAnimatedStyle(()=>{
-    return{
-      transform:[{translateY: translateY.value}]
-    }
-  })
-
-  useEffect(()=>{
-    translateY.value = withSpring(-SIZES.height/2.5,{damping:50})
-  })
-
-  function renderMembers(member: any) {
-    return (
-      <Pressable style={styles.memberListItem} 
-      // onPress={() => openProfile()}
-      >
-        {!member?.image ? (
-          <View style={styles.memberListItemImage}>
-            <Ionicons name="person-sharp" size={20} color={COLORS.voilet} />
-          </View>
-        ) : (
-          <>
-            <Image
-              source={{ uri: member?.image }}
-              style={{
-                width: SIZES.width > 400 ? 50 : 35,
-                height: SIZES.width > 400 ? 50 : 35,
-                borderRadius: 30,
-                marginRight: "2%",
-              }}
-            />
-          </>
-        )}
-        <View>
-          <Text style={styles.memberListItemName}>
-            {member?.name ? member?.name : "N.A"}
-          </Text>
-          <Text style={styles.memberListItemCode}>Location</Text>
-          <Text style={styles.memberListItemCode}>Location line</Text>
-        </View>
-        <View style={styles.memberListItemType}>
-          <Text
-            style={{
-              color: "black",
-              fontWeight: "700",
-            }}
-          >
-            07th Feb {"\n"}05:16 pm
-          </Text>
-        </View>
-      </Pressable>
-    );
-  }
-
+  // ------------------------------------------------------------------------------------
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View
-        style={[BottomSheetStyle,{
-          height: SIZES.height,
-          width: SIZES.width,
-          backgroundColor: "white",
-          position: "absolute",
-          top: SIZES.height / 1,
-          borderRadius: 30,
-        }]}
+        style={[
+          BottomSheetStyle,
+          {
+            height: SIZES.height,
+            width: SIZES.width,
+            backgroundColor: "white",
+            position: "absolute",
+            top: SIZES.height / 1,
+            borderRadius: 30,
+          },
+        ]}
       >
         <View
           style={{
@@ -108,8 +76,28 @@ const GroupsMembersListing = ({ navigation }: any) => {
           }}
         />
 
-        {/* {renderMembers()} */}
-        
+        {Array.isArray(selectedGroupData?.users) &&
+        selectedGroupData?.users?.length > 0 ? (
+          selectedGroupData?.users.map((groupMember: any, i: number) => {
+            return (
+              <View key={groupMember?.users_id ? groupMember?.users_id : i}>
+                {/* Calling Individual Group's Member Screen */}
+                <GroupIndividualMember member={groupMember} />
+              </View>
+            );
+          })
+        ) : (
+          <>
+            {groupsAndMembersData.isDetailsLoaded &&
+            groupsAndMembersData.groupsAndMembersDetails?.length === 0 ? (
+              <View style={{ marginTop: 15 }}>
+                <NoDataFound message="No Group Member Found" />
+              </View>
+            ) : (
+              <Loader message="Please wait we are fetching selected group member" />
+            )}
+          </>
+        )}
       </Animated.View>
     </GestureDetector>
   );

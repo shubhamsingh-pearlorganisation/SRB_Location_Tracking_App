@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 import { SIZES } from "../../constants";
 // ------------------------------------------------------------
 // Global Stylesheet for Dashboard Screen Module
-
 export const styles = StyleSheet.create({
   homeWrapper: {
     flex: 1,
@@ -10,67 +9,66 @@ export const styles = StyleSheet.create({
   mapBox: {
     flex: 1,
   },
+  memberListItem: {
+    alignItems: "center",
+    height: "auto",
+    flexDirection: "row",
+    padding: "2%",
+  },
+  memberListItemImage: {
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOpacity: 0.4,
+    shadowOffset: {
+      width: 0,
+      height: -1,
+    },
+    elevation: 5,
+    shadowRadius: 5,
+    padding: "1%",
+    marginRight: 10,
+    marginLeft: 0,
+    borderRadius: 20,
+  },
+  memberListItemName: {
+    fontSize: SIZES.width > 400 ? 20 : 18,
+  },
+  memberListItemCode: {
+    fontSize: SIZES.width > 400 ? 18 : 15,
+    color: "grey",
+  },
+  memberListItemType: {
+    borderRadius: 10,
+    width: "auto",
+    height: "auto",
+    padding: 5,
+    alignContent: "center",
+    justifyContent: "center",
+    fontWeight: "700",
+    fontSize: SIZES.width > 400 ? 18 : 15,
+    right: "1%",
+    position: "absolute",
+  },
+  memberList: {
+    bottom: 0,
+    position: "absolute",
+    backgroundColor: "white",
+    width: SIZES.width,
+    zIndex: 0,
 
-    memberListItem: {
-      alignItems: "center",
-      height: "auto",
-      flexDirection: "row",
-      padding: "2%",
+    padding: SIZES.width > 400 ? "3%" : "1%",
+    paddingTop: SIZES.width > 400 ? "4%" : "6%",
+    borderTopLeftRadius: SIZES.width > 350 ? 40 : 20,
+    borderTopRightRadius: SIZES.width > 350 ? 40 : 20,
+    shadowColor: "black",
+    shadowOpacity: 0.4,
+    shadowOffset: {
+      width: 0,
+      height: -1,
     },
-    memberListItemImage: {
-      backgroundColor: "white",
-      shadowColor: "black",
-      shadowOpacity: 0.4,
-      shadowOffset: {
-        width: 0,
-        height: -1,
-      },
-      elevation: 5,
-      shadowRadius: 5,
-      padding: "1%",
-      marginRight: 10,
-      marginLeft: 0,
-      borderRadius: 20,
-    },
-    memberListItemName: {
-      fontSize: SIZES.width > 400 ? 20 : 18,
-    },
-    memberListItemCode: {
-      fontSize: SIZES.width > 400 ? 18 : 15,
-      color: "grey",
-    },
-    memberListItemType: {
-      borderRadius: 10,
-      width: "auto",
-      height: "auto",
-      padding: 5,
-      alignContent: "center",
-      justifyContent: "center",
-      fontWeight: "700",
-      fontSize: SIZES.width > 400 ? 18 : 15,
-      right: "1%",
-      position: "absolute",
-    },
-    memberList: {
-      bottom: 0,
-      position: "absolute",
-      backgroundColor: "white",
-      width: SIZES.width,
-      zIndex: 0,
-
-      padding: SIZES.width > 400 ? "3%" : "1%",
-      paddingTop: SIZES.width > 400 ? "4%" : "6%",
-      borderTopLeftRadius: SIZES.width > 350 ? 40 : 20,
-      borderTopRightRadius: SIZES.width > 350 ? 40 : 20,
-      shadowColor: "black",
-      shadowOpacity: 0.4,
-      shadowOffset: {
-        width: 0,
-        height: -1,
-      },
-      elevation: 5,
-      shadowRadius: 5,
-    },
+    elevation: 5,
+    shadowRadius: 5,
+  },
 
   groupScreenDownIcon: {
     bottom: "2%",

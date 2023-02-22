@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  SafeAreaView,
-  Pressable,
-} from "react-native";
+import { View, Text, TouchableOpacity, Pressable } from "react-native";
 import GroupsListing from "./GroupsListing";
 import ManageMap from "./ManageMap";
 import { styles } from "./style";
@@ -40,6 +34,7 @@ const Dashboard = ({ navigation }: any) => {
     groupsAndMembersData?.groupsAndMembersDetails?.length > 0 &&
       setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);
   }, [groupsAndMembersData?.groupsAndMembersDetails]);
+  // ---------------------------------------------------------------------------------------------
 
   return (
     <GestureHandlerRootView style={styles.homeWrapper}>
@@ -49,7 +44,6 @@ const Dashboard = ({ navigation }: any) => {
       {/* ---------------------------------------------------- */}
 
       {/* Group Screen Up Icon Section  */}
-      {/* {selectedGroupData && Object.keys(selectedGroupData).length > 0 ? ( */}
       <>
         <Pressable
           style={styles.groupListDropDownBtn}
@@ -72,7 +66,6 @@ const Dashboard = ({ navigation }: any) => {
           />
         </Pressable>
       </>
-      {/* ) : null} */}
 
       {/* ---------------------------------------------------- */}
 
@@ -106,9 +99,11 @@ const Dashboard = ({ navigation }: any) => {
       </View>
       {/* ---------------------------------------------------- */}
 
-      {/* Member Section will come here  */}
-
-      <GroupsMembersListing />
+      {/* Group's members Listing screen section  */}
+      <GroupsMembersListing
+        navigation={navigation}
+        selectedGroupData={selectedGroupData}
+      />
     </GestureHandlerRootView>
   );
 };

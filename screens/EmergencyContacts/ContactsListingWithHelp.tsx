@@ -1,13 +1,6 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ScrollView,
-  Alert,
-} from "react-native";
+import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { COLORS, SIZES } from "../../constants";
+import { SIZES } from "../../constants";
 import { useState, useContext, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { AuthContext, UserDetailsContext } from "../../App";
@@ -16,6 +9,7 @@ import { instance } from "../../core/utils/AxiosInterceptor";
 import Loader from "../../components/Loader";
 import NoDataFound from "../../components/NoDataFound";
 import AlertDialog from "../../components/AlertDialog";
+import { styles } from "./style";
 // -----------------------------------------------------------------
 
 const ContactsListingWithHelp = ({ navigation }: any) => {
@@ -98,7 +92,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
   };
   // ----------------------------------------------------------------------------------------
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.listingHelpContainer}>
       {showLoader && <Loader />}
       <Pressable
         onPress={() => navigation.navigate("EmergencyTimer")}
@@ -106,7 +100,7 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
       >
         <View
           style={[
-            styles.image,
+            styles.listingHelpScreenImage,
             {
               backgroundColor:
                 contactsList?.length === 0 ? "darkgrey" : "#FF0000",
@@ -219,81 +213,6 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
     </SafeAreaView>
   );
 };
-// ====================================================================================================
-// CSS CODE
-const styles = StyleSheet.create({
-  container: {
-    marginTop: "10%",
-    alignItems: "center",
-    height: SIZES.height,
-  },
-  title: {
-    fontStyle: "normal",
-    fontWeight: "600",
-    fontSize: SIZES.height > 700 ? 40 : 25,
-    height: "auto",
-    textAlign: "center",
-    color: "#000000",
-  },
-  listContainer: {
-    height: "100%",
-    width: "100%",
-  },
-  image: {
-    width: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
-    height: SIZES.width > 400 ? SIZES.width * 0.2 : SIZES.width * 0.4,
-    marginBottom: "5%",
-    position: "relative",
-    borderRadius: 91,
-    justifyContent: "center",
-    alignContent: "center",
-    padding: "2%",
-  },
-  needHelp: {
-    fontStyle: "normal",
-    fontWeight: "600",
-    fontSize: 19,
-    lineHeight: 25,
-    textAlign: "center",
-    color: "#FFFFFF",
-  },
-  pressHere: {
-    fontStyle: "normal",
-    fontWeight: "600",
-    fontSize: 20,
-    lineHeight: 25,
-    textAlign: "center",
-    color: "#FFFFFF",
-  },
-
-  lineStyle: {
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
-  },
-  contactName: {
-    fontSize: SIZES.width > 400 ? 22 : 17,
-  },
-  contactumber: {
-    fontSize: SIZES.width > 400 ? 18 : 15,
-  },
-  totalContactsLength: {
-    margin: 10,
-    color: COLORS.voilet,
-    fontWeight: "bold",
-    fontSize: SIZES.width > 400 ? 20 : 15,
-  },
-  addMoreContacts: {
-    alignSelf: "flex-start",
-    backgroundColor: COLORS.voilet,
-    padding: "2%",
-    marginTop: "10%",
-    marginLeft: "2%",
-    borderRadius: 10,
-    fontSize: SIZES.width > 400 ? 17 : 14,
-    fontWeight: "bold",
-    color: "white",
-  },
-});
 
 export default ContactsListingWithHelp;
 // =============================================== THE END =====================================================

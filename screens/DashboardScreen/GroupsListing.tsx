@@ -11,7 +11,6 @@ import Loader from "../../components/Loader";
 const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
-  const [groupMembersList, setGroupMembersList] = useState<any>([]);
   const [selectedGroupData, setSelectedGroupData] = useState<any>(
     groupsAndMembersData?.groupsAndMembersDetails[0]
   );
@@ -28,6 +27,7 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
       setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);
   }, [groupsAndMembersData?.groupsAndMembersDetails]);
 
+  // -----------------------------------------------------------------------------------------
   return (
     <View
       style={{
@@ -50,7 +50,6 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
                   // Calling Individual Group Icon Screen
                   <GroupIndividualItem
                     groupDetails={group}
-                    setGroupMembersList={setGroupMembersList}
                     selectedGroupDetails={selectedGroupDetails}
                     selectedGroupData={selectedGroupData}
                   />

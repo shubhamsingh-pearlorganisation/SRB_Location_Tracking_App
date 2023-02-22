@@ -7,14 +7,13 @@ import { COLORS, SIZES } from "../../constants";
 // This component is used to render Groups Individual Item
 const GroupIndividualItem = ({
   groupDetails,
-  setGroupMembersList,
   selectedGroupDetails,
   selectedGroupData,
 }: any) => {
   const handleGroupItemClick = () => {
-    setGroupMembersList(groupDetails?.users ? groupDetails?.users : []);
     selectedGroupDetails(groupDetails);
   };
+
   return (
     <Pressable style={[styles.groupListItem]} onPress={handleGroupItemClick}>
       <View

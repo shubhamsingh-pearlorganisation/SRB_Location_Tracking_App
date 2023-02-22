@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import {
   FlatList,
   Text,
-  StyleSheet,
   Alert,
   TouchableOpacity,
   View,
@@ -16,6 +15,7 @@ import { instance } from "../../core/utils/AxiosInterceptor";
 import { AuthContext, UserDetailsContext } from "../../App";
 import Loader from "../../components/Loader";
 import NoDataFound from "../../components/NoDataFound";
+import { styles } from "./style";
 
 // -------------------------------------------------------------------------------
 
@@ -282,7 +282,6 @@ const PhonebookContactList = ({ navigation }: any) => {
           <FlatList
             data={contacts.contactList}
             renderItem={renderItem}
-            style={styles.list}
             initialNumToRender={20}
             maxToRenderPerBatch={50}
           />
@@ -291,19 +290,6 @@ const PhonebookContactList = ({ navigation }: any) => {
     </>
   );
 };
-// ====================================================================================================
-// CSS CODE
-const styles = StyleSheet.create({
-  list: {},
-  selectedAndAddContactBtns: {
-    backgroundColor: COLORS.voilet,
-    padding: "2%",
-    margin: "5%",
-    borderRadius: 10,
-    fontSize: SIZES.width > 400 ? 20 : 15,
-    fontWeight: "bold",
-    color: "white",
-  },
-});
+
 export default PhonebookContactList;
 // =============================================== THE END =====================================================
