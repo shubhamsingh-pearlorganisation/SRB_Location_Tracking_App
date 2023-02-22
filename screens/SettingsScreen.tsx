@@ -65,9 +65,7 @@ const Settings = ({ navigation }: any) => {
   }, [userSettings]);
 
   const [mapType, setMapType] = useState(
-    userSettings?.appSettings?.userSettings[0]?.map_mode
-      ? userSettings?.appSettings?.userSettings[0]?.map_mode
-      : "default"
+    userSettings[0]?.map_mode ? userSettings[0]?.map_mode : "default"
   );
 
   const handlePress = () => setExpanded(!expanded);

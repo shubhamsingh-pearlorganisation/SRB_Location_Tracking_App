@@ -6,6 +6,7 @@ import Groups from "./Groups";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import MenuScreen from "./MenuScreen";
+import Dashboard from "./DashboardScreen";
 // ---------------------------------------------------------------------------------------------
 
 const MainScreen = ({ navigation }: any) => {
@@ -36,7 +37,7 @@ const MainScreen = ({ navigation }: any) => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={Dashboard}
         options={{ headerShown: false }}
       />
       <Tab.Screen

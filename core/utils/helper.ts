@@ -1,15 +1,18 @@
 import * as Location from "expo-location";
 import { showMessage } from "react-native-flash-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// --------------------------------------------------------------------------------------
 
+// This method is used to fetch user's current location
 const getCurrentLocation = () => {
   return new Promise(async (resolve, reject) => {
     let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
+    if (status !== "granted")
       reject("Permission to access location was denied");
-    } else {
+    else {
       try {
         const location: any = await Location.getCurrentPositionAsync({});
+        console.log("My Location Details:: ", location);
         const { latitude, longitude } = location.coords;
         resolve({ latitude, longitude });
       } catch (err) {
@@ -19,6 +22,7 @@ const getCurrentLocation = () => {
     }
   });
 };
+
 const showError = (message: string) => {
   showMessage({
     message,

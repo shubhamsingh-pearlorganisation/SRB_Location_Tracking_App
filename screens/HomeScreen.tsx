@@ -97,9 +97,10 @@ const HomeScreen = ({ navigation }: any) => {
   // Component's Local States
   // ========================
 
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const mapRef: any = useRef();
   const markerRef: any = useRef();
+
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [drop, setDrop] = useState(false);
   const [groupMembersList, setGroupMembersList] = useState<any>([]);
   const [selectedGroupData, setSelectedGroupData] = useState<any>({});
@@ -124,6 +125,88 @@ const HomeScreen = ({ navigation }: any) => {
 
   const customStyle2 = onUp ? styles.expand : styles.collapse;
   const customStyle = drop ? styles.dropDownEnabled : styles.dropDownDisabled;
+
+  // =========================================================================================
+  let locationTrackingUsersData = [
+    {
+      trackingTime: "10:00:00 AM",
+      trackingData: [
+        // Total 100 objects will be there
+        // 10:00:00 , 10:00:06 ------ , 10:00:54, 10:01:00 , ----- 10:09:00 ---- , 10:09:54
+        {
+          startingSeconds: "10:00:00 AM",
+          location: "",
+          latitude: "",
+          longitude: "",
+        },
+        {
+          startingSeconds: "10:00:06 AM",
+          location: "",
+          latitude: "",
+          longitude: "",
+        },
+        {
+          startingSeconds: "10:00:12 AM",
+          location: "",
+          latitude: "",
+          longitude: "",
+        },
+      ],
+    },
+
+    {
+      trackingTime: "10:10:00 AM",
+      trackingData: [
+        // Total 100 objects will be there
+        // 10:10:00 , 10:10:06 ------ , 10:10:54, 10:11:00 , ----- 10:19:00 ---- , 10:19:54
+        {
+          startingSeconds: "10:00:00 AM",
+          location: "",
+          latitude: "",
+          longitude: "",
+        },
+        {
+          startingSeconds: "10:00:06 AM",
+          location: "",
+          latitude: "",
+          longitude: "",
+        },
+        {
+          startingSeconds: "10:00:12 AM",
+          location: "",
+          latitude: "",
+          longitude: "",
+        },
+      ],
+    },
+
+    {
+      trackingTime: "10:20:00 AM",
+      trackingData: [
+        // Total 100 objects will be there
+        // 10:10:00 , 10:10:06 ------ , 10:10:54, 10:11:00 , ----- 10:19:00 ---- , 10:19:54
+        {
+          startingSeconds: "10:00:00 AM",
+          location: "",
+          latitude: "",
+          longitude: "",
+        },
+        {
+          startingSeconds: "10:00:06 AM",
+          location: "",
+          latitude: "",
+          longitude: "",
+        },
+        {
+          startingSeconds: "10:00:12 AM",
+          location: "",
+          latitude: "",
+          longitude: "",
+        },
+      ],
+    },
+  ];
+  // =========================================================================================
 
   useEffect(() => {
     if (
@@ -170,6 +253,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   const updateState = (data: any) =>
     setState((state: any) => ({ ...state, ...data }));
+
   useEffect(() => {
     if (!curLoc && !destinationCords) return;
     handleZoomOut();
@@ -207,12 +291,12 @@ const HomeScreen = ({ navigation }: any) => {
       });
   };
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     getLiveLocation();
-  //   }, 6000);
-  //   return () => clearInterval(interval);
-  // }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getLiveLocation();
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
 
   const onPressLocation = () => {
     navigation.navigate("SelectLocation", { getCordinates: fetchValue });
@@ -376,6 +460,7 @@ const HomeScreen = ({ navigation }: any) => {
         </TouchableOpacity> */}
       </View>
       {/* Top group list drop down button */}
+
       <Pressable
         style={styles.groupListDropDownBtn}
         onPress={onPressDropDownBtn}
@@ -512,6 +597,7 @@ const HomeScreen = ({ navigation }: any) => {
             </TouchableOpacity>
           )}
         </View>
+
         <TouchableOpacity
           style={{
             bottom: "2%",
@@ -640,6 +726,7 @@ const HomeScreen = ({ navigation }: any) => {
     </SafeAreaView>
   );
 };
+
 // =========================================================================================
 // CSS CODE
 const styles = StyleSheet.create({
