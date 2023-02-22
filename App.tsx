@@ -247,7 +247,7 @@ const App = () => {
     try {
       const formData = new FormData();
       formData.append("token_id", authenticationToken);
-      const response = await instance.post("/user_setting_get", formData);
+      const response = await instance.post("/user_setting_ghhet", formData);
       if (response.status === 200 && response.data?.status === true) {
         setSettingsData({
           update: isUpdateRequired,
@@ -269,14 +269,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching app settings. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching app settings. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
   // =============================================================================================

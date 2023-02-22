@@ -1,4 +1,5 @@
 import axios from "axios";
+import { showError } from "./helper";
 
 export const instance = axios.create({
   baseURL: "https://lms.srbitsolution.com/api", //Will replace this baseURL to process.env.REACT_APP_API_BASE_URL
@@ -39,8 +40,17 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
+    let errorMessage = "Sorry, something went wrong. Please try again later.";
+
+    switch (error?.response?.status) {
+      case 404:
+        errorMessage =
+          "The requested url is not found. Please check the url again.";
+        showError(errorMessage);
+      default:
+        errorMessage;
+        showError(errorMessage);
+    }
     return Promise.reject(error);
   }
 );
