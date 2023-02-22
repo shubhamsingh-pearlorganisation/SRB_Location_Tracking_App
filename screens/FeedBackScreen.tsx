@@ -65,8 +65,8 @@ const FeedbackScreen = () => {
     try {
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
-      formData.append("title", authContextData?.token);
-      formData.append("description", addFeedbackData.description);
+      formData.append("title", addFeedbackData?.title);
+      formData.append("description", addFeedbackData?.description);
       formData.append("type", "1");
       setShowLoader(true);
 

@@ -43,9 +43,9 @@ const EditViewGroup = ({ route, navigation }: any) => {
     if (userSettings?.loggedInUserId) setUserId(userSettings?.loggedInUserId);
   }, [userSettings?.loggedInUserId]);
 
-  useEffect(() => {
-    userId && console.log("userId::: ", userId);
-  }, [userId]);
+  // useEffect(() => {
+  //   userId && console.log("userId::: ", userId);
+  // }, [userId]);
 
   // Component's Local States
   // ========================
