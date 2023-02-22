@@ -215,8 +215,9 @@ const FeedbackScreen = () => {
             ></TextInput>
             <View
               style={{
-                display: "flex",
+                width:'100%',
                 flexDirection: "row",
+                justifyContent:'center'
               }}
             >
               <Pressable
@@ -229,7 +230,7 @@ const FeedbackScreen = () => {
                       color: "white",
                       textAlign: "center",
                       width: 120,
-                      padding: 20,
+                      padding: 0,
                       fontSize: 20,
                     },
                   ]}
@@ -249,7 +250,7 @@ const FeedbackScreen = () => {
                       color: "white",
                       textAlign: "center",
                       width: 100,
-                      padding: 20,
+                      padding: 0,
                       fontSize: 20,
                     },
                   ]}
@@ -328,21 +329,24 @@ const styles = StyleSheet.create({
     margin: "5%",
     marginTop: "1%",
     marginBottom: "1%",
-    alignSelf: "flex-start",
+    alignSelf: "center",
     fontSize: SIZES.width > 400 ? 20 : 15,
     borderColor: "black",
     borderWidth: 1,
     padding: "2%",
     borderRadius: 5,
-    width: "80%",
+    width: "90%",
     justifyContent: "center",
   },
   button: {
+    width:"20%",
     borderRadius: 20,
-    paddingVertical: 0,
+    paddingVertical: 10,
     elevation: 2,
     marginTop: "2%",
+
     marginHorizontal: 15,
+    // paddingHorizontal:0
   },
   buttonClose: {
     backgroundColor: COLORS.voilet,
