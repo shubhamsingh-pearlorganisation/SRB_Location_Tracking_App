@@ -71,7 +71,7 @@ const App = () => {
   const [faqList, setFaqList] = useState<any>([]);
 
   //Used to store settings and global settings data
-  const [settingsData, setSettingsData] = useState({
+  const [settingsData, setSettingsData] = useState<any>({
     update: false,
     data: {
       userSettings: [],
@@ -310,6 +310,7 @@ const App = () => {
                 value={{
                   appSettings: settingsData?.data,
                   updateSettingsData: fetchSettings,
+                  loggedInUserId: settingsData?.data?.userSettings[0]?.users_id,
                 }}
               >
                 <Stack.Navigator>
