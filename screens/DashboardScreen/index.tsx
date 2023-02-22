@@ -47,30 +47,30 @@ const Dashboard = ({ navigation }: any) => {
       {/* ---------------------------------------------------- */}
 
       {/* Group Screen Up Icon Section  */}
-      {selectedGroupData && Object.keys(selectedGroupData).length > 0 ? (
-        <>
-          <Pressable
-            style={styles.groupListDropDownBtn}
-            onPress={() => setGroupListing(!showGroupsListing)}
-          >
-            <Text style={{ fontWeight: "bold", color: "blue" }}>
-              {selectedGroupData?.title
-                ? selectedGroupData?.title?.toString().slice(0, 15) +
-                  "-" +
-                  selectedGroupData?.group_code
-                : "Group Name"}
-            </Text>
-            <MaterialIcons
-              name="keyboard-arrow-down"
-              size={20}
-              style={{
-                textAlign: "center",
-                fontSize: 20,
-              }}
-            />
-          </Pressable>
-        </>
-      ) : null}
+      {/* {selectedGroupData && Object.keys(selectedGroupData).length > 0 ? ( */}
+      <>
+        <Pressable
+          style={styles.groupListDropDownBtn}
+          onPress={() => setGroupListing(!showGroupsListing)}
+        >
+          <Text style={{ fontWeight: "bold", color: "blue" }}>
+            {selectedGroupData?.title
+              ? selectedGroupData?.title?.toString().slice(0, 15) +
+                "-" +
+                selectedGroupData?.group_code
+              : "Group Name"}
+          </Text>
+          <MaterialIcons
+            name="keyboard-arrow-down"
+            size={20}
+            style={{
+              textAlign: "center",
+              fontSize: 20,
+            }}
+          />
+        </Pressable>
+      </>
+      {/* ) : null} */}
 
       {/* ---------------------------------------------------- */}
 

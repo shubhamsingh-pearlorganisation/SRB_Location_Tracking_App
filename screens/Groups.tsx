@@ -101,7 +101,7 @@ const Groups = ({ navigation }: any) => {
             onPress={() =>
               redirectToEditViewGroupScreen(
                 groupDetails,
-                groupDetails?.amIParent ? true : false
+                groupDetails?.is_delete == 1 ? true : false
               )
             }
             style={{ flexDirection: "row", alignItems: "center" }}
@@ -112,7 +112,7 @@ const Groups = ({ navigation }: any) => {
                 fontWeight: "600",
               }}
             >
-              {groupDetails?.amIParent ? "Edit" : "View"}
+              {groupDetails?.is_delete == 1 ? "Edit" : "View"}
             </Text>
             <MaterialIcons name="keyboard-arrow-right" size={20} />
           </Pressable>
@@ -130,7 +130,8 @@ const Groups = ({ navigation }: any) => {
             <View key={group?.group_code ? group?.group_code : i}>
               {group?.title &&
                 group?.group_code &&
-                renderGroups({ ...group, amIParent: true })}
+                // renderGroups({ ...group, amIParent: true })}
+                renderGroups(group)}
             </View>
           )
         )

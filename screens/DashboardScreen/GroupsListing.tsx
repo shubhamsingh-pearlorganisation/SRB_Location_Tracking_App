@@ -24,6 +24,11 @@ GroupsListing = ({ navigation, sendGroupDetails }: any) => {
     sendGroupDetails(selectedGroupData);
   }, [selectedGroupData]);
 
+  useEffect(() => {
+    groupsAndMembersData?.groupsAndMembersDetails?.length > 0 &&
+      setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);
+  }, [groupsAndMembersData?.groupsAndMembersDetails]);
+
   return (
 <<<<<<< Updated upstream
     <View style={{ width: "100%", justifyContent: "center" }}>
