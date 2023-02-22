@@ -266,12 +266,14 @@ const styles = StyleSheet.create({
   },
   codeBox: {
     width: SIZES.width > 400 ? 40 : 35,
-    height: SIZES.width > 400 ? 45 : 40,
+    height: SIZES.width > 400 ? 50 : 45,
     fontSize: SIZES.width > 400 ? 40 : 30,
     borderRadius: 8,
     margin: "1%",
-    paddingHorizontal: 2,
+    paddingHorizontal: 0,
+    paddingVertical:0,
     textAlign: "center",
+    alignContent:'center'
   },
 });
 

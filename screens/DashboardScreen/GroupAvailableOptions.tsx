@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, Pressable } from "react-native";
 import { useContext } from "react";
 import { SIZES } from "../../constants";
 import { GroupsAndMembersContext } from "../../App";
@@ -10,7 +10,7 @@ const GroupAvailableOptions = ({ navigation, selectedGroupDetails }: any) => {
 
   return (
     <>
-      <TouchableOpacity
+      <Pressable
         style={styles.groupScreenOptionsForNavigate}
         onPress={() => navigation.navigate("AddGroup")}
       >
@@ -24,8 +24,8 @@ const GroupAvailableOptions = ({ navigation, selectedGroupDetails }: any) => {
         >
           New Group
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </Pressable>
+      <Pressable
         style={styles.groupScreenOptionsForNavigate}
         onPress={() => navigation.navigate("JoinGroupScreen")}
       >
@@ -39,10 +39,10 @@ const GroupAvailableOptions = ({ navigation, selectedGroupDetails }: any) => {
         >
           Join Group
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
       {groupsAndMembersData?.groupsAndMembersDetails?.length > 0 && (
-        <TouchableOpacity
+        <Pressable
           style={{
             width: SIZES.width * 0.25,
             height: "auto",
@@ -67,7 +67,7 @@ const GroupAvailableOptions = ({ navigation, selectedGroupDetails }: any) => {
           >
             Invite Group
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       )}
     </>
   );
