@@ -12,6 +12,8 @@ import { useState, useEffect, useContext } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SIZES } from "../../constants";
 import { GroupsAndMembersContext } from "../../App";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import GroupsMembersListing from "./GroupsMembersListing";
 // --------------------------------------------------------------------------------------
 const Dashboard = ({ navigation }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
@@ -40,7 +42,7 @@ const Dashboard = ({ navigation }: any) => {
   }, [groupsAndMembersData?.groupsAndMembersDetails]);
 
   return (
-    <SafeAreaView style={styles.homeWrapper}>
+    <GestureHandlerRootView style={styles.homeWrapper}>
       {/* ---------------------------------------------------- */}
       {/* Map Section  */}
       <ManageMap navigation={navigation} />
@@ -101,11 +103,13 @@ const Dashboard = ({ navigation }: any) => {
             }}
           />
         </TouchableOpacity>
-        {/* ---------------------------------------------------- */}
-
-        {/* Member Section will come here  */}
       </View>
-    </SafeAreaView>
+      {/* ---------------------------------------------------- */}
+
+      {/* Member Section will come here  */}
+
+      <GroupsMembersListing />
+    </GestureHandlerRootView>
   );
 };
 export default Dashboard;
