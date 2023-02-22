@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: SIZES.width>400?24:18,
+    fontSize: SIZES.width > 400 ? 24 : 18,
     fontWeight: "bold",
     marginBottom: "2%",
   },
@@ -84,18 +84,18 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   planTitle: {
-    fontSize: SIZES.width>400?20:15,
+    fontSize: SIZES.width > 400 ? 20 : 15,
     fontWeight: "bold",
     marginBottom: "2%",
   },
   planPrice: {
-    fontSize: SIZES.width>400?16:12,
+    fontSize: SIZES.width > 400 ? 16 : 12,
     fontWeight: "bold",
     color: COLORS.voilet,
     marginBottom: "1%",
   },
   planDescription: {
-    fontSize: SIZES.width>400?14:10,
+    fontSize: SIZES.width > 400 ? 14 : 10,
     marginBottom: "1%",
   },
   button: {
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontSize: SIZES.width>400?16:12,
+    fontSize: SIZES.width > 400 ? 16 : 12,
     fontWeight: "bold",
   },
   selected: {

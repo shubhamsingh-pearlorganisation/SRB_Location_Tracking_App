@@ -8,8 +8,7 @@ import GroupIndividualItem from "./GroupIndividualItem";
 import Loader from "../../components/Loader";
 // -------------------------------------------------------------------------------------
 
-const 
-GroupsListing = ({ navigation, sendGroupDetails }: any) => {
+const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   const [groupMembersList, setGroupMembersList] = useState<any>([]);
@@ -31,11 +30,10 @@ GroupsListing = ({ navigation, sendGroupDetails }: any) => {
 
   return (
     <View
-    style={{
-      width:'100%',
-      height:'90%'
-      // justifyContent:'center'
-    }}
+      style={{
+        width: "100%",
+        height: "90%",
+      }}
     >
       <ScrollView
         style={{
@@ -78,7 +76,7 @@ GroupsListing = ({ navigation, sendGroupDetails }: any) => {
           width: "100%",
           flexDirection: "row",
           bottom: "5%",
-          justifyContent:'space-evenly',
+          justifyContent: "space-evenly",
         }}
       >
         {/* ---------------------------------------------------- */}

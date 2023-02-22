@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, Pressable } from "react-native";
+import { Text, Pressable } from "react-native";
 import { useContext } from "react";
 import { SIZES } from "../../constants";
 import { GroupsAndMembersContext } from "../../App";

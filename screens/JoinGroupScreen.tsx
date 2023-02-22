@@ -271,9 +271,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     margin: "1%",
     paddingHorizontal: 0,
-    paddingVertical:0,
+    paddingVertical: 0,
     textAlign: "center",
-    alignContent:'center'
+    alignContent: "center",
   },
 });
 
