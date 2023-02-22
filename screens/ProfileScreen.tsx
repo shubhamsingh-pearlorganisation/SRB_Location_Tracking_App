@@ -358,7 +358,7 @@ const ProfileScreen = ({ navigation }: any) => {
       );
     }
   };
-
+  // ----------------------------------------------------------------------------
   return !isEditable ? (
     <View style={styles.container}>
       <View style={styles.topView}>

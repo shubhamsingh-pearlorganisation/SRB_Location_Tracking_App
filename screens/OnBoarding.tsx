@@ -18,22 +18,18 @@ const { COLORS, SIZES } = theme;
 const onBoardings = [
   {
     title: "Stay close with family in one touch,\nwe can help you.",
-    // description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
     img: onboarding1,
   },
   {
     title: "With us you can be calm to your\nfriends and parents.",
-    // description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
     img: onboarding2,
   },
   {
     title: "We will help you in your\n aspects.",
-    // description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
     img: onboarding3,
   },
   {
     title: "We will also help you with\nvehicle tracking.",
-    // description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
     img: onboarding4,
   },
 ];
@@ -225,7 +221,8 @@ const OnBoarding = ({ navigation }: any) => {
     </View>
   );
 };
-
+// ======================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     flex: 1,

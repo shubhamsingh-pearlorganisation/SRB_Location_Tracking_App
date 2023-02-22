@@ -74,6 +74,7 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
       );
     }
   };
+  // ----------------------------------------------------------------------------------------
 
   return (
     <SafeAreaView style={styles.container}>

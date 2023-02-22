@@ -107,7 +107,7 @@ const JoinGroup = ({ navigation }: any) => {
       setDisableCreate(false);
     else setDisableCreate(true);
   }, [groupCode, disableCreate]);
-
+  // -------------------------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View

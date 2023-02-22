@@ -341,7 +341,7 @@ const EditViewGroup = ({ route, navigation }: any) => {
       }
     }
   };
-
+  // ----------------------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView style={styles.container}>
       {showLoader && <Loader />}
