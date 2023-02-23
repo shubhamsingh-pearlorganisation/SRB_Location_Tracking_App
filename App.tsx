@@ -136,14 +136,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching groups. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching groups. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
@@ -170,14 +170,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching user details. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching user details. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
@@ -203,14 +203,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching contacts. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching contacts. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
@@ -231,14 +231,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching faqs. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching faqs. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
@@ -247,7 +247,7 @@ const App = () => {
     try {
       const formData = new FormData();
       formData.append("token_id", authenticationToken);
-      const response = await instance.post("/user_setting_ghhet", formData);
+      const response = await instance.post("/user_setting_get", formData);
       if (response.status === 200 && response.data?.status === true) {
         setSettingsData({
           update: isUpdateRequired,

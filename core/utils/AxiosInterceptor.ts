@@ -1,4 +1,5 @@
 import axios from "axios";
+// import { handleLogout } from "../../screens/MenuScreen";
 import { showError } from "./helper";
 
 export const instance = axios.create({
@@ -42,13 +43,32 @@ instance.interceptors.response.use(
   function (error) {
     let errorMessage = "Sorry, something went wrong. Please try again later.";
 
+    console.log("error?.response?.status::: ", error?.response?.status);
     switch (error?.response?.status) {
+      case 400:
+        errorMessage =
+          "Bad Request. Please check the data which you are providing for accessing resource.";
+        showError(errorMessage);
+        break;
+
+      case 401:
+        errorMessage = "Unauthorized access. Please check login credentials.";
+        showError(errorMessage);
+        // handleLogout();
+        break;
+
       case 404:
         errorMessage =
           "The requested url is not found. Please check the url again.";
         showError(errorMessage);
+        break;
+
+      case 500:
+        errorMessage = "Internal server error. Please try again in some time.";
+        showError(errorMessage);
+        break;
+
       default:
-        errorMessage;
         showError(errorMessage);
     }
     return Promise.reject(error);

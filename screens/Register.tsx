@@ -236,14 +236,14 @@ const Register = ({ route }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while updating user's profile image. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while updating user's profile image. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
   // ================================== Image Upload Functionality -- Finished =========================
@@ -304,14 +304,14 @@ const Register = ({ route }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while saving user details. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while saving user details. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
