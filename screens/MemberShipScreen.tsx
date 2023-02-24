@@ -71,7 +71,7 @@ const MemberShip = () => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Sign up</Text>
+        <Text style={styles.buttonText}>Subscribe</Text>
       </TouchableOpacity>
     </View>
   );

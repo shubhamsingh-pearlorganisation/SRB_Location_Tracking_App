@@ -343,7 +343,7 @@ const Settings = ({ navigation }: any) => {
         </List.Accordion>
       </List.Section>
       <Pressable
-        style={styles.memberShipCard}
+        style={[styles.memberShipCard,{marginBottom:SIZES.width>400?"2%":"5%"}]}
         onPress={() => handleSettingsUpdate()}
       >
         <Text style={styles.subContent}>Save Settings</Text>
