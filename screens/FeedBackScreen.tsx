@@ -339,11 +339,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-<<<<<<< Updated upstream
-    width: "20%",
-=======
     width:SIZES.width>400?"20%":"40%",
->>>>>>> Stashed changes
     borderRadius: 20,
     paddingVertical: 10,
     elevation: 2,

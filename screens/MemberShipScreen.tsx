@@ -30,33 +30,46 @@ const MemberShip = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={[styles.plan, selectedPlan === "basic" && styles.selected]}
-        onPress={() => setSelectedPlan("basic")}
+      <View
+        style={[styles.planCard, selectedPlan === "basic" && styles.selected]}
       >
-        <Text style={[styles.planTitle]}>Basic</Text>
-        <Text style={styles.planPrice}>$0/month</Text>
-        <Text style={styles.planDescription}>Access to basic features</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.plan]}
+          onPress={() => setSelectedPlan("basic")}
+        >
+          <Text style={[styles.planTitle]}>Basic</Text>
+          <Text style={styles.planPrice}>$0/month</Text>
+          <Text style={styles.planDescription}>Access to basic features</Text>
+        </TouchableOpacity>
+      </View>
 
-      <TouchableOpacity
-        style={[styles.plan, selectedPlan === "premium" && styles.selected]}
-        onPress={() => setSelectedPlan("premium")}
+      <View
+        style={[styles.planCard, selectedPlan === "premium" && styles.selected]}
       >
-        <Text style={styles.planTitle}>Premium</Text>
-        <Text style={styles.planPrice}>$20/month</Text>
-        <Text style={styles.planDescription}>Access to all features</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.plan, selectedPlan === "platinum" && styles.selected]}
-        onPress={() => setSelectedPlan("platinum")}
+        <TouchableOpacity
+          style={[styles.plan]}
+          onPress={() => setSelectedPlan("premium")}
+        >
+          <Text style={styles.planTitle}>Premium</Text>
+          <Text style={styles.planPrice}>$20/month</Text>
+          <Text style={styles.planDescription}>Access to all features</Text>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={[
+          styles.planCard,
+          selectedPlan === "platinum" && styles.selected,
+        ]}
       >
-        <Text style={styles.planTitle}>Platinum</Text>
-        <Text style={styles.planPrice}>$50/month</Text>
-        <Text style={styles.planDescription}>Access to premium features</Text>
-      </TouchableOpacity>
-
+        <TouchableOpacity
+          style={[styles.plan]}
+          onPress={() => setSelectedPlan("platinum")}
+        >
+          <Text style={styles.planTitle}>Platinum</Text>
+          <Text style={styles.planPrice}>$50/month</Text>
+          <Text style={styles.planDescription}>Access to premium features</Text>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
@@ -76,42 +89,47 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: "2%",
   },
+  planCard: {
+    backgroundColor: "transparent",
+    padding: SIZES.width > 400 ? ".8%" : "1%",
+    borderRadius: 10,
+    marginBottom: SIZES.width > 400 ? "2%" : "4%",
+    width: SIZES.width > 400 ? "80%" : "90%",
+  },
   plan: {
     backgroundColor: "#f2f2f2",
-    padding: "2%",
-    borderRadius: 10,
-    marginBottom: "2%",
-    width:SIZES.width>400?"80%":"90%",
+    padding: SIZES.width > 400 ? "2%" : "4%",
+    borderRadius: 8,
   },
   planTitle: {
-    fontSize: SIZES.width > 400 ? 20 : 15,
+    fontSize: SIZES.width > 400 ? 24 : 18,
     fontWeight: "bold",
-    marginBottom: "2%",
+    marginBottom: SIZES.width > 400 ? "2%" : "4%",
   },
   planPrice: {
-    fontSize: SIZES.width > 400 ? 16 : 12,
+    fontSize: SIZES.width > 400 ? 18 : 15,
     fontWeight: "bold",
     color: COLORS.voilet,
-    marginBottom: "1%",
+    marginBottom: SIZES.width > 400 ? "1%" : "2%",
   },
   planDescription: {
-    fontSize: SIZES.width > 400 ? 14 : 10,
-    marginBottom: "1%",
+    fontSize: SIZES.width > 400 ? 18 : 15,
+    marginBottom: SIZES.width > 400 ? "1%" : "2%",
+    alignSelf: "baseline",
   },
   button: {
     backgroundColor: COLORS.voilet,
-    padding: "2%",
+    padding: SIZES.width > 400 ? "2%" : "4%",
     borderRadius: 5,
-    marginTop: "2%",
+    marginTop: SIZES.width > 400 ? "2%" : "4%",
   },
   buttonText: {
     color: "#fff",
-    fontSize: SIZES.width > 400 ? 16 : 12,
+    fontSize: SIZES.width > 400 ? 20 : 18,
     fontWeight: "bold",
   },
   selected: {
-    borderColor: COLORS.voilet,
-    borderWidth: 2,
+    backgroundColor: COLORS.voilet,
   },
 });
 
