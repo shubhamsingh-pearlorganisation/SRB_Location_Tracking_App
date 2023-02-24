@@ -102,253 +102,286 @@ const Settings = ({ navigation }: any) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View
-        style={{
-          width: SIZES.width * 0.95,
-          flexDirection: "row",
-          margin: "2%",
-          padding: "2%",
-          justifyContent: "space-between",
-        }}
-      >
-        <Text style={styles.textHeading}>Share My Location</Text>
-        <ToggleSwitch
-          isOn={shareLocation}
-          onColor={COLORS.voilet}
-          offColor="rgba(52,52,52,0.2)"
-          size={SIZES.width > 400 ? "medium" : "small"}
-          onToggle={() => setShareLocation(!shareLocation)}
-        />
-      </View>
-      <View style={styles.distanceUnitHolder}>
+    <View style={styles.container}>
+      <ScrollView style={{
+        marginBottom:'12%'
+      }}>
         <View
           style={{
-            width: "40%",
+            width: SIZES.width * 0.95,
+            flexDirection: "row",
+            margin: "2%",
+            padding: "2%",
+            justifyContent: "space-between",
           }}
         >
-          <Text style={styles.textHeading}>Distance Unit</Text>
-        </View>
-
-        <View style={styles.distanceCardHolder}>
-          <View style={styles.card}>
-            <Text
-              style={[
-                styles.cardText,
-                milesChecked ? styles.unSelected : styles.selected,
-              ]}
-            >
-              Kilometers
-            </Text>
-          </View>
+          <Text style={styles.textHeading}>Share My Location</Text>
           <ToggleSwitch
-            isOn={milesChecked}
+            isOn={shareLocation}
             onColor={COLORS.voilet}
-            offColor={COLORS.voilet}
+            offColor="rgba(52,52,52,0.2)"
             size={SIZES.width > 400 ? "medium" : "small"}
-            onToggle={() => setmilesChecked(!milesChecked)}
+            onToggle={() => setShareLocation(!shareLocation)}
           />
-          <View style={styles.card}>
-            <Text
-              style={[
-                styles.cardText,
-                milesChecked ? styles.selected : styles.unSelected,
-              ]}
-            >
-              Miles
+        </View>
+        <View style={styles.distanceUnitHolder}>
+          <View
+            style={{
+              width: "40%",
+            }}
+          >
+            <Text style={styles.textHeading}>Distance Unit</Text>
+          </View>
+
+          <View style={styles.distanceCardHolder}>
+            <View style={styles.card}>
+              <Text
+                style={[
+                  styles.cardText,
+                  milesChecked ? styles.unSelected : styles.selected,
+                ]}
+              >
+                Kilometers
+              </Text>
+            </View>
+            <ToggleSwitch
+              isOn={milesChecked}
+              onColor={COLORS.voilet}
+              offColor={COLORS.voilet}
+              size={SIZES.width > 400 ? "medium" : "small"}
+              onToggle={() => setmilesChecked(!milesChecked)}
+            />
+            <View style={styles.card}>
+              <Text
+                style={[
+                  styles.cardText,
+                  milesChecked ? styles.selected : styles.unSelected,
+                ]}
+              >
+                Miles
+              </Text>
+            </View>
+          </View>
+        </View>
+        {/* -----------------------------------------Tracking Time Cards----------------------------------------- */}
+        <View style={styles.trackingTimeView}>
+          <View style={styles.trackingFromTimeHolder}>
+            <Text style={styles.textHeading}>Tracking from Time</Text>
+            <View>
+              <Pressable
+                onPress={showstartTimePicker}
+                style={{
+                  flexDirection: "row",
+                  marginHorizontal: "1%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <DateTimePickerModal
+                  date={updatedSettingsData?.trackingFromTime}
+                  isVisible={startTimePickerVisible}
+                  mode="time"
+                  onConfirm={handleStartConfirm}
+                  onCancel={hideStartTimePicker}
+                />
+                <Ionicons
+                  name="timer-outline"
+                  size={SIZES.width > 400 ? 25 : 20}
+                  color="black"
+                  style={{ marginBottom: "2%", marginTop: "2%" }}
+                />
+                <Text
+                  style={{
+                    fontSize: SIZES.width > 400 ? 24 : 18,
+                    fontWeight: "bold",
+                    marginBottom: "2%",
+                    marginTop: "2%",
+                  }}
+                >
+                  {startTime
+                    ? startTime.toLocaleTimeString()
+                    : "No date selected"}
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+          <View style={styles.trackingToTimeHolder}>
+            <Text style={styles.textHeading}>Tracking to Time</Text>
+            <View>
+              <Pressable
+                onPress={showEndTimePicker}
+                style={{
+                  flexDirection: "row",
+                  marginHorizontal: "1%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <DateTimePickerModal
+                  date={updatedSettingsData?.trackingToTime}
+                  isVisible={endTimePickerVisible}
+                  mode="time"
+                  onConfirm={handleEndConfirm}
+                  onCancel={hideEndTimePicker}
+                />
+                <Ionicons
+                  name="timer-outline"
+                  size={SIZES.width > 400 ? 25 : 20}
+                  color="black"
+                  style={{ marginBottom: "2%", marginTop: "2%" }}
+                />
+                <Text
+                  style={{
+                    fontSize: SIZES.width > 400 ? 24 : 18,
+                    fontWeight: "bold",
+                    marginBottom: "2%",
+                    marginTop: "2%",
+                  }}
+                >
+                  {endTime ? endTime.toLocaleTimeString() : "No date selected"}
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+        <View style={styles.subscriptionView}>
+          <Text style={styles.textHeading}>Subscription Plan</Text>
+          <Pressable
+            style={styles.memberShipCard}
+            onPress={redirectToMemberShipScreen}
+          >
+            <Text style={styles.subContent}>
+              {userSettingsData?.is_subscription == 1
+                ? "Subscribed"
+                : "Not Subscribed"}
             </Text>
-          </View>
+            <MaterialIcons
+              name={"keyboard-arrow-right"}
+              size={24}
+              color={"white"}
+            />
+          </Pressable>
         </View>
-      </View>
-      {/* -----------------------------------------Tracking Time Cards----------------------------------------- */}
-      <View style={styles.trackingTimeView}>
-        <View style={styles.trackingFromTimeHolder}>
-          <Text style={styles.textHeading}>Tracking from Time</Text>
-          <View>
-            <Pressable
-              onPress={showstartTimePicker}
-              style={{
-                flexDirection: "row",
-                marginHorizontal: "1%",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <DateTimePickerModal
-                date={updatedSettingsData?.trackingFromTime}
-                isVisible={startTimePickerVisible}
-                mode="time"
-                onConfirm={handleStartConfirm}
-                onCancel={hideStartTimePicker}
-              />
-              <Ionicons
-                name="timer-outline"
-                size={SIZES.width > 400 ? 25 : 20}
-                color="black"
-                style={{ marginBottom: "2%", marginTop: "2%" }}
-              />
-              <Text
-                style={{
-                  fontSize: SIZES.width > 400 ? 24 : 18,
-                  fontWeight: "bold",
-                  marginBottom: "2%",
-                  marginTop: "2%",
+        <List.Section title="">
+          <List.Accordion
+            title="Select Map Mode"
+            titleStyle={styles.textHeading}
+            onPress={handlePress}
+            expanded={true}
+          >
+            <View style={styles.item}>
+              <List.Item
+                title="Default"
+                style={{ width: "40%" }}
+                titleStyle={{
+                  fontSize: SIZES.width > 400 ? 20 : 18,
+                  color: "black",
                 }}
-              >
-                {startTime
-                  ? startTime.toLocaleTimeString()
-                  : "No date selected"}
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-        <View style={styles.trackingToTimeHolder}>
-          <Text style={styles.textHeading}>Tracking to Time</Text>
-          <View>
-            <Pressable
-              onPress={showEndTimePicker}
-              style={{
-                flexDirection: "row",
-                marginHorizontal: "1%",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <DateTimePickerModal
-                date={updatedSettingsData?.trackingToTime}
-                isVisible={endTimePickerVisible}
-                mode="time"
-                onConfirm={handleEndConfirm}
-                onCancel={hideEndTimePicker}
               />
-              <Ionicons
-                name="timer-outline"
-                size={SIZES.width > 400 ? 25 : 20}
-                color="black"
-                style={{ marginBottom: "2%", marginTop: "2%" }}
-              />
-              <Text
-                style={{
-                  fontSize: SIZES.width > 400 ? 24 : 18,
-                  fontWeight: "bold",
-                  marginBottom: "2%",
-                  marginTop: "2%",
+
+              <View style={styles.itemButtonContainer}>
+                <ToggleSwitch
+                  isOn={mapType.includes("default") ? true : false}
+                  onColor={COLORS.voilet}
+                  offColor="rgba(52,52,52,0.2)"
+                  size={SIZES.width > 400 ? "medium" : "small"}
+                  onToggle={() => setMapType("default")}
+                />
+              </View>
+            </View>
+            <View style={styles.item}>
+              <List.Item
+                title="Satellite"
+                style={{ width: "40%" }}
+                titleStyle={{
+                  fontSize: SIZES.width > 400 ? 20 : 18,
+                  color: "black",
                 }}
-              >
-                {endTime ? endTime.toLocaleTimeString() : "No date selected"}
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      </View>
-      <View style={styles.subscriptionView}>
-        <Text style={styles.textHeading}>Subscription Plan</Text>
-        <Pressable
-          style={styles.memberShipCard}
-          onPress={redirectToMemberShipScreen}
-        >
-          <Text style={styles.subContent}>
-            {userSettingsData?.is_subscription == 1
-              ? "Subscribed"
-              : "Not Subscribed"}
-          </Text>
-          <MaterialIcons
-            name={"keyboard-arrow-right"}
-            size={24}
-            color={"white"}
-          />
-        </Pressable>
-      </View>
-      <List.Section title="">
-        <List.Accordion
-          title="Select Map Mode"
-          titleStyle={styles.textHeading}
-          onPress={handlePress}
-          expanded={true}
-        >
-          <View style={styles.item}>
-            <List.Item
-              title="Default"
-              style={{ width: "40%" }}
-              titleStyle={{
-                fontSize: SIZES.width > 400 ? 20 : 18,
-                color: "black",
-              }}
-            />
+              />
 
-            <View style={styles.itemButtonContainer}>
-              <ToggleSwitch
-                isOn={mapType.includes("default") ? true : false}
-                onColor={COLORS.voilet}
-                offColor="rgba(52,52,52,0.2)"
-                size={SIZES.width > 400 ? "medium" : "small"}
-                onToggle={() => setMapType("default")}
-              />
+              <View style={styles.itemButtonContainer}>
+                <ToggleSwitch
+                  isOn={mapType.includes("satellite") ? true : false}
+                  onColor={COLORS.voilet}
+                  offColor="rgba(52,52,52,0.2)"
+                  size={SIZES.width > 400 ? "medium" : "small"}
+                  onToggle={() => setMapType("satellite")}
+                />
+              </View>
             </View>
-          </View>
-          <View style={styles.item}>
+            <View style={styles.item}>
+              <List.Item
+                title="Terrain"
+                style={{ width: "40%" }}
+                titleStyle={{
+                  fontSize: SIZES.width > 400 ? 20 : 18,
+                  color: "black",
+                }}
+              />
+              <View style={styles.itemButtonContainer}>
+                <ToggleSwitch
+                  isOn={mapType.includes("terrain") ? true : false}
+                  onColor={COLORS.voilet}
+                  offColor="rgba(52,52,52,0.2)"
+                  size={SIZES.width > 400 ? "medium" : "small"}
+                  onToggle={() => setMapType("terrain")}
+                />
+              </View>
+            </View>
+          </List.Accordion>
+          <List.Accordion
+            title="Privacy Policy, Terms and Conditons"
+            titleStyle={styles.textHeading}
+            titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
+            onPress={handlePress}
+          >
             <List.Item
-              title="Satellite"
-              style={{ width: "40%" }}
-              titleStyle={{
-                fontSize: SIZES.width > 400 ? 20 : 18,
-                color: "black",
-              }}
+              title="Privacy Policy"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />
-
-            <View style={styles.itemButtonContainer}>
-              <ToggleSwitch
-                isOn={mapType.includes("satellite") ? true : false}
-                onColor={COLORS.voilet}
-                offColor="rgba(52,52,52,0.2)"
-                size={SIZES.width > 400 ? "medium" : "small"}
-                onToggle={() => setMapType("satellite")}
-              />
-            </View>
-          </View>
-          <View style={styles.item}>
             <List.Item
-              title="Terrain"
-              style={{ width: "40%" }}
-              titleStyle={{
-                fontSize: SIZES.width > 400 ? 20 : 18,
-                color: "black",
-              }}
+              title="Terms and Conditions"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />
-            <View style={styles.itemButtonContainer}>
-              <ToggleSwitch
-                isOn={mapType.includes("terrain") ? true : false}
-                onColor={COLORS.voilet}
-                offColor="rgba(52,52,52,0.2)"
-                size={SIZES.width > 400 ? "medium" : "small"}
-                onToggle={() => setMapType("terrain")}
-              />
-            </View>
-          </View>
-        </List.Accordion>
-        <List.Accordion
-          title="Privacy Policy, Terms and Conditons"
-          titleStyle={styles.textHeading}
-          titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-          onPress={handlePress}
-        >
-          <List.Item
-            title="Privacy Policy"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          />
-          <List.Item
-            title="Terms and Conditions"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          />
-        </List.Accordion>
-      </List.Section>
+            <List.Item
+              title="Terms and Conditions"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            />
+            <List.Item
+              title="Terms and Conditions"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            />
+            <List.Item
+              title="Terms and Conditions"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            />
+            <List.Item
+              title="Terms and Conditions"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            />
+            <List.Item
+              title="Terms and Conditions"
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            />
+          </List.Accordion>
+        </List.Section>
+        
+      </ScrollView>
       <Pressable
-        style={[styles.memberShipCard,{marginBottom:SIZES.width>400?"2%":"5%"}]}
-        onPress={() => handleSettingsUpdate()}
-      >
-        <Text style={styles.subContent}>Save Settings</Text>
-      </Pressable>
-    </ScrollView>
+          style={[
+            styles.memberShipCard,
+            {
+              marginBottom: SIZES.width > 400 ? "2%" : "5%",
+              bottom: 0,
+              position: "absolute",
+              alignSelf:'center'
+            },
+          ]}
+          onPress={() => handleSettingsUpdate()}
+        >
+          <Text style={styles.subContent}>Save Settings</Text>
+        </Pressable>
+    </View>
   );
 };
 // ---------------------------------------------------------------------------------------------
@@ -358,6 +391,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: "1%",
+    position: "relative",
+    height:SIZES.height
   },
   textHeading: {
     fontSize: SIZES.width > 400 ? 25 : 18,

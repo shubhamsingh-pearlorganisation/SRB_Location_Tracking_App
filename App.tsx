@@ -29,6 +29,7 @@ import PhonebookContactList from "./screens/EmergencyContacts/PhonebookContactLi
 import ContactsListingWithHelp from "./screens/EmergencyContacts/ContactsListingWithHelp";
 import MemberShipScreen from "./screens/MemberShipScreen";
 import GroupsListing from "./screens/DashboardScreen/GroupsListing";
+import ShareTemporaryLocation from "./screens/ShareTemporaryLocation";
 
 // ----------------------------------------------------------------------------------
 // CONTEXTS
@@ -533,8 +534,12 @@ const App = () => {
                       <Stack.Screen
                         name="IndividualContact"
                         component={IndividualContact}
+                      />
+                      <Stack.Screen
+                        name="GroupListing"
+                        component={GroupsListing}
                         options={{
-                          title: "IndividualContact",
+                          title: "Groups",
                           headerTintColor: COLORS.voilet,
                           headerTitleStyle: {
                             fontWeight: "bold",
@@ -544,10 +549,10 @@ const App = () => {
                         }}
                       />
                       <Stack.Screen
-                        name="GroupListing"
-                        component={GroupsListing}
+                        name="ShareLocation"
+                        component={ShareTemporaryLocation}
                         options={{
-                          title: "GroupListing",
+                          title: "Share Location",
                           headerTintColor: COLORS.voilet,
                           headerTitleStyle: {
                             fontWeight: "bold",
