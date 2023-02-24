@@ -28,6 +28,14 @@ const Settings = ({ navigation }: any) => {
       : false
   );
 
+  const [saveSettingsBtn, setSaveSettingsBtn] = useState(false);
+
+  const enableSaveBtn = () => {
+    if (saveSettingsBtn === false) {
+      setSaveSettingsBtn(true);
+    }
+  };
+
   // This "updatedSettingsData" state is used to prefilled settings data and also use to update settings data
   const [updatedSettingsData, setUpdatedSettingsData] = useState<any>({
     allowLocation: userSettingsData[0]?.allow_location == 1 ? 1 : 0,
@@ -82,6 +90,7 @@ const Settings = ({ navigation }: any) => {
   const handleStartConfirm = (date: any) => {
     setStartTime(date);
     hideStartTimePicker();
+    enableSaveBtn()
   };
 
   const showEndTimePicker = () => setEndTimePickerVisible(true);
@@ -90,6 +99,8 @@ const Settings = ({ navigation }: any) => {
   const handleEndConfirm = (date: any) => {
     setEndTime(date);
     hideEndTimePicker();
+    enableSaveBtn()
+
   };
 
   // --------------------------- Time Picker Handling -- Finished -----------------------------------
@@ -103,9 +114,11 @@ const Settings = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{
-        marginBottom:'12%'
-      }}>
+      <ScrollView
+        style={{
+          marginBottom: "12%",
+        }}
+      >
         <View
           style={{
             width: SIZES.width * 0.95,
@@ -121,7 +134,10 @@ const Settings = ({ navigation }: any) => {
             onColor={COLORS.voilet}
             offColor="rgba(52,52,52,0.2)"
             size={SIZES.width > 400 ? "medium" : "small"}
-            onToggle={() => setShareLocation(!shareLocation)}
+            onToggle={() => {
+              setShareLocation(!shareLocation);
+              enableSaveBtn();
+            }}
           />
         </View>
         <View style={styles.distanceUnitHolder}>
@@ -149,7 +165,7 @@ const Settings = ({ navigation }: any) => {
               onColor={COLORS.voilet}
               offColor={COLORS.voilet}
               size={SIZES.width > 400 ? "medium" : "small"}
-              onToggle={() => setmilesChecked(!milesChecked)}
+              onToggle={() => {setmilesChecked(!milesChecked);enableSaveBtn()}}
             />
             <View style={styles.card}>
               <Text
@@ -285,7 +301,7 @@ const Settings = ({ navigation }: any) => {
                   onColor={COLORS.voilet}
                   offColor="rgba(52,52,52,0.2)"
                   size={SIZES.width > 400 ? "medium" : "small"}
-                  onToggle={() => setMapType("default")}
+                  onToggle={() => {setMapType("default");enableSaveBtn()}}
                 />
               </View>
             </View>
@@ -305,7 +321,7 @@ const Settings = ({ navigation }: any) => {
                   onColor={COLORS.voilet}
                   offColor="rgba(52,52,52,0.2)"
                   size={SIZES.width > 400 ? "medium" : "small"}
-                  onToggle={() => setMapType("satellite")}
+                  onToggle={() =>{setMapType("satellite");enableSaveBtn()}}
                 />
               </View>
             </View>
@@ -324,7 +340,7 @@ const Settings = ({ navigation }: any) => {
                   onColor={COLORS.voilet}
                   offColor="rgba(52,52,52,0.2)"
                   size={SIZES.width > 400 ? "medium" : "small"}
-                  onToggle={() => setMapType("terrain")}
+                  onToggle={() => {setMapType("terrain");enableSaveBtn()}}
                 />
               </View>
             </View>
@@ -343,44 +359,23 @@ const Settings = ({ navigation }: any) => {
               title="Terms and Conditions"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />
-            <List.Item
-              title="Terms and Conditions"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            />
-            <List.Item
-              title="Terms and Conditions"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            />
-            <List.Item
-              title="Terms and Conditions"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            />
-            <List.Item
-              title="Terms and Conditions"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            />
-            <List.Item
-              title="Terms and Conditions"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            />
           </List.Accordion>
         </List.Section>
-        
       </ScrollView>
-      <Pressable
-          style={[
-            styles.memberShipCard,
-            {
-              marginBottom: SIZES.width > 400 ? "2%" : "5%",
-              bottom: 0,
-              position: "absolute",
-              alignSelf:'center'
-            },
-          ]}
-          onPress={() => handleSettingsUpdate()}
-        >
-          <Text style={styles.subContent}>Save Settings</Text>
-        </Pressable>
+      {saveSettingsBtn===true && <Pressable
+        style={[
+          styles.memberShipCard,
+          {
+            marginBottom: SIZES.width > 400 ? "2%" : "5%",
+            bottom: 0,
+            position: "absolute",
+            alignSelf: "center",
+          },
+        ]}
+        onPress={() => handleSettingsUpdate()}
+      >
+        <Text style={styles.subContent}>Save Settings</Text>
+      </Pressable>}
     </View>
   );
 };
@@ -392,7 +387,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: "1%",
     position: "relative",
-    height:SIZES.height
+    height: SIZES.height,
   },
   textHeading: {
     fontSize: SIZES.width > 400 ? 25 : 18,
