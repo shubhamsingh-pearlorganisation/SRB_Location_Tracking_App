@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     padding: "2%",
     borderRadius: 10,
     marginBottom: "2%",
-    width: "80%",
+    width:SIZES.width>400?"80%":"90%",
   },
   planTitle: {
     fontSize: SIZES.width > 400 ? 20 : 15,

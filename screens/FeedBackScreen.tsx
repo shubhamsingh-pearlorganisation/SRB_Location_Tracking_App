@@ -229,9 +229,9 @@ const FeedbackScreen = () => {
                     {
                       color: "white",
                       textAlign: "center",
-                      width: 120,
+                      // width: 120,
                       padding: 0,
-                      fontSize: 20,
+                      fontSize: SIZES.width>400?20:15,
                     },
                   ]}
                 >
@@ -249,9 +249,9 @@ const FeedbackScreen = () => {
                     {
                       color: "white",
                       textAlign: "center",
-                      width: 100,
+                      // width: 100,
                       padding: 0,
-                      fontSize: 20,
+                      fontSize: SIZES.width>400?20:15,
                     },
                   ]}
                 >
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     marginTop: "2%",
     marginBottom: "2%",
     alignSelf: "flex-start",
-    fontSize: SIZES.width > 400 ? 20 : 15,
+    fontSize: SIZES.width > 400 ? 22 : 18,
   },
   textInputStyle: {
     color: "black",
@@ -339,7 +339,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
+<<<<<<< Updated upstream
     width: "20%",
+=======
+    width:SIZES.width>400?"20%":"40%",
+>>>>>>> Stashed changes
     borderRadius: 20,
     paddingVertical: 10,
     elevation: 2,
