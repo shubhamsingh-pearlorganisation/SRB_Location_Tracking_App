@@ -472,7 +472,7 @@ const EditViewGroup = ({ route, navigation }: any) => {
       <View style={styles.memberList}>
         <ScrollView
           style={{
-            backgroundColor: "lightgrey",
+            backgroundColor: "transparent",
           }}
         >
           {editGroupFormDetails?.groupMembers?.length > 0 ? (
@@ -564,13 +564,14 @@ const styles = StyleSheet.create({
     height: "auto",
     flexDirection: "row",
     padding: "2%",
-    marginBottom: 2,
+    marginBottom: "1%",
     shadowColor: "black",
     shadowOpacity: 1,
     shadowOffset: {
       width: 0,
       height: 1,
     },
+    borderRadius:8
   },
   memberListItemImage: {
     backgroundColor: "white",

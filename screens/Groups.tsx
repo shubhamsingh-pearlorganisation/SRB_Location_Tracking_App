@@ -176,10 +176,10 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   largeTitle: {
-    paddingVertical: SIZES.width < 400 ? "18%" : "8%",
+    paddingVertical: SIZES.width < 400 ? "15%" : "8%",
   },
   bigTitle: {
-    paddingVertical: SIZES.width < 400 ? "10%" : "5%",
+    paddingVertical: SIZES.width < 400 ? "8%" : "5%",
   },
   normalTitle: {},
 });
