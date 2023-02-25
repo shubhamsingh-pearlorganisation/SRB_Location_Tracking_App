@@ -116,7 +116,7 @@ const Settings = ({ navigation }: any) => {
     <View style={styles.container}>
       <ScrollView
         style={{
-          marginBottom: "12%",
+          marginBottom:"12%",
         }}
       >
         <View
@@ -366,7 +366,7 @@ const Settings = ({ navigation }: any) => {
         style={[
           styles.memberShipCard,
           {
-            marginBottom: SIZES.width > 400 ? "2%" : "5%",
+            marginBottom:"2%",
             bottom: 0,
             position: "absolute",
             alignSelf: "center",
