@@ -20,10 +20,10 @@ const Settings = ({ navigation }: any) => {
   const [expanded, setExpanded] = useState(false);
 
   const [shareLocation, setShareLocation] = useState(
-    userSettingsData[0]?.allow_location == 1 ? true : false
+    userSettingsData?.[0]?.allow_location == 1 ? true : false
   );
   const [milesChecked, setmilesChecked] = useState(
-    userSettingsData[0]?.distance_unit?.toString().includes("kilometer")
+    userSettingsData?.[0]?.distance_unit?.toString().includes("kilometer")
       ? true
       : false
   );
@@ -38,16 +38,16 @@ const Settings = ({ navigation }: any) => {
 
   // This "updatedSettingsData" state is used to prefilled settings data and also use to update settings data
   const [updatedSettingsData, setUpdatedSettingsData] = useState<any>({
-    allowLocation: userSettingsData[0]?.allow_location == 1 ? 1 : 0,
-    distanceUnit: userSettingsData[0]?.distance_unit,
-    trackingFromTime: userSettingsData[0]?.tracking_from_time?.toString()
-      ? new Date(userSettingsData[0]?.tracking_from_time)
+    allowLocation: userSettingsData?.[0]?.allow_location == 1 ? 1 : 0,
+    distanceUnit: userSettingsData?.[0]?.distance_unit,
+    trackingFromTime: userSettingsData?.[0]?.tracking_from_time?.toString()
+      ? new Date(userSettingsData?.[0]?.tracking_from_time)
       : new Date(),
-    trackingToTime: userSettingsData[0]?.tracking_to_time?.toString()
-      ? new Date(userSettingsData[0]?.tracking_to_time)
+    trackingToTime: userSettingsData?.[0]?.tracking_to_time?.toString()
+      ? new Date(userSettingsData?.[0]?.tracking_to_time)
       : new Date(),
-    mapMode: userSettingsData[0]?.map_mode?.toString()
-      ? userSettingsData[0]?.map_mode?.toString()
+    mapMode: userSettingsData?.[0]?.map_mode?.toString()
+      ? userSettingsData?.[0]?.map_mode?.toString()
       : "default",
   });
 
@@ -68,7 +68,7 @@ const Settings = ({ navigation }: any) => {
   }, [milesChecked]);
 
   useEffect(() => {
-    setUserSettingsData(userSettings?.appSettings?.userSettings[0]);
+    setUserSettingsData(userSettings?.appSettings?.userSettings?.[0]);
     setUserGlobalSettingsData(userSettings?.appSettings?.userGlobalSettings);
   }, [userSettings]);
 

@@ -1,82 +1,67 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import { MembershipContext } from "../App";
 import { COLORS, SIZES } from "../constants";
-
-// const plans = [
-//   {
-//     title: "Plan 1",
-//     // description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-//     //   img: onboarding1,
-//   },
-//   {
-//     title: "Plan 2",
-//     // description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-//     //   img: onboarding2,
-//   },
-//   {
-//     title: "Plan 3",
-//     // description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-//     //   img: onboarding3,
-//   },
-//   {
-//     title: "Plan 4",
-//     // description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
-//     //   img: onboarding4,
-//   },
-// ];
-
+// ----------------------------------------------------------------------------------
 const MemberShip = () => {
-  const [selectedPlan, setSelectedPlan] = useState("basic");
+  const [selectedPlan, setSelectedPlan] = useState<any>({});
+  const membershipData: any = useContext(MembershipContext);
+
+  // Selecting Plan 1st for First Time when user come to this screen.
+  useEffect(() => {
+    if (membershipData?.membershipPlans?.length > 0)
+      setSelectedPlan(membershipData?.membershipPlans?.[0]);
+  }, []);
+
+  // This method is used for handling membership subscription through Payment Gateway API
+  const handleSubscribe = () => {
+    Alert.alert(
+      "Membership Plan Subscription",
+      "Your Selected Plan will be subscribed successfully once you made payment successful."
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <View
-        style={[styles.planCard, selectedPlan === "basic" && styles.selected]}
-      >
-        <TouchableOpacity
-          style={[styles.plan]}
-          onPress={() => setSelectedPlan("basic")}
-        >
-          <Text style={[styles.planTitle]}>Basic</Text>
-          <Text style={styles.planPrice}>$0/month</Text>
-          <Text style={styles.planDescription}>Access to basic features</Text>
-        </TouchableOpacity>
-      </View>
+      {membershipData?.membershipPlans?.length > 0 &&
+        membershipData?.membershipPlans.map((membership: any, i: number) => {
+          return (
+            <View
+              key={i}
+              style={[
+                styles.planCard,
+                selectedPlan?.title === membership?.title && styles.selected,
+              ]}
+            >
+              <TouchableOpacity
+                style={[styles.plan]}
+                onPress={() => setSelectedPlan(membership)}
+              >
+                <Text style={[styles.planTitle]}>{membership?.title}</Text>
+                <Text style={styles.planPrice}>
+                  {membership?.price}&nbsp;$/month
+                </Text>
+                <Text style={styles.planDescription}>
+                  {membership?.description}
+                </Text>
+                <Text style={styles.planDescription}>
+                  {membership?.duration} days validity
+                </Text>
+              </TouchableOpacity>
+            </View>
+          );
+        })}
 
-      <View
-        style={[styles.planCard, selectedPlan === "premium" && styles.selected]}
-      >
-        <TouchableOpacity
-          style={[styles.plan]}
-          onPress={() => setSelectedPlan("premium")}
-        >
-          <Text style={styles.planTitle}>Premium</Text>
-          <Text style={styles.planPrice}>$20/month</Text>
-          <Text style={styles.planDescription}>Access to all features</Text>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={[
-          styles.planCard,
-          selectedPlan === "platinum" && styles.selected,
-        ]}
-      >
-        <TouchableOpacity
-          style={[styles.plan]}
-          onPress={() => setSelectedPlan("platinum")}
-        >
-          <Text style={styles.planTitle}>Platinum</Text>
-          <Text style={styles.planPrice}>$50/month</Text>
-          <Text style={styles.planDescription}>Access to premium features</Text>
-        </TouchableOpacity>
-      </View>
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Subscribe</Text>
+        <Text style={styles.buttonText} onPress={handleSubscribe}>
+          Subscribe Now
+        </Text>
       </TouchableOpacity>
     </View>
   );
 };
-
+// ===========================================================================================
+// CSS CODE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -102,12 +87,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   planTitle: {
-    fontSize: SIZES.width > 400 ? 24 : 18,
+    fontSize: SIZES.width > 400 ? 26 : 18,
     fontWeight: "bold",
     marginBottom: SIZES.width > 400 ? "2%" : "4%",
   },
   planPrice: {
-    fontSize: SIZES.width > 400 ? 18 : 15,
+    fontSize: SIZES.width > 400 ? 20 : 15,
     fontWeight: "bold",
     color: COLORS.voilet,
     marginBottom: SIZES.width > 400 ? "1%" : "2%",
@@ -134,3 +119,4 @@ const styles = StyleSheet.create({
 });
 
 export default MemberShip;
+// ============================================ THE END ===============================================
