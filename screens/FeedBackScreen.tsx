@@ -231,7 +231,7 @@ const FeedbackScreen = () => {
                       textAlign: "center",
                       // width: 120,
                       padding: 0,
-                      fontSize: SIZES.width>400?20:15,
+                      fontSize: SIZES.width > 400 ? 20 : 15,
                     },
                   ]}
                 >
@@ -251,7 +251,7 @@ const FeedbackScreen = () => {
                       textAlign: "center",
                       // width: 100,
                       padding: 0,
-                      fontSize: SIZES.width>400?20:15,
+                      fontSize: SIZES.width > 400 ? 20 : 15,
                     },
                   ]}
                 >
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    width:SIZES.width>400?"20%":"40%",
+    width: SIZES.width > 400 ? "20%" : "40%",
     borderRadius: 20,
     paddingVertical: 10,
     elevation: 2,

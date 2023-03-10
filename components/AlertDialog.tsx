@@ -30,7 +30,7 @@ export default function AlertDialog({
               alignItems: "center",
               backgroundColor: "white",
               height:
-                SIZES.height > 700 ? SIZES.height * 0.30 : SIZES.height * 0.45,
+                SIZES.height > 700 ? SIZES.height * 0.3 : SIZES.height * 0.45,
               width: "90%",
               borderWidth: 1,
               borderColor: "#fff",

@@ -571,7 +571,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    borderRadius:8
+    borderRadius: 8,
   },
   memberListItemImage: {
     backgroundColor: "white",

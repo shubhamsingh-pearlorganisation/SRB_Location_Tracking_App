@@ -90,7 +90,7 @@ const Settings = ({ navigation }: any) => {
   const handleStartConfirm = (date: any) => {
     setStartTime(date);
     hideStartTimePicker();
-    enableSaveBtn()
+    enableSaveBtn();
   };
 
   const showEndTimePicker = () => setEndTimePickerVisible(true);
@@ -99,8 +99,7 @@ const Settings = ({ navigation }: any) => {
   const handleEndConfirm = (date: any) => {
     setEndTime(date);
     hideEndTimePicker();
-    enableSaveBtn()
-
+    enableSaveBtn();
   };
 
   // --------------------------- Time Picker Handling -- Finished -----------------------------------
@@ -116,7 +115,7 @@ const Settings = ({ navigation }: any) => {
     <View style={styles.container}>
       <ScrollView
         style={{
-          marginBottom:"12%",
+          marginBottom: "12%",
         }}
       >
         <View
@@ -165,7 +164,10 @@ const Settings = ({ navigation }: any) => {
               onColor={COLORS.voilet}
               offColor={COLORS.voilet}
               size={SIZES.width > 400 ? "medium" : "small"}
-              onToggle={() => {setmilesChecked(!milesChecked);enableSaveBtn()}}
+              onToggle={() => {
+                setmilesChecked(!milesChecked);
+                enableSaveBtn();
+              }}
             />
             <View style={styles.card}>
               <Text
@@ -301,7 +303,10 @@ const Settings = ({ navigation }: any) => {
                   onColor={COLORS.voilet}
                   offColor="rgba(52,52,52,0.2)"
                   size={SIZES.width > 400 ? "medium" : "small"}
-                  onToggle={() => {setMapType("default");enableSaveBtn()}}
+                  onToggle={() => {
+                    setMapType("default");
+                    enableSaveBtn();
+                  }}
                 />
               </View>
             </View>
@@ -321,7 +326,10 @@ const Settings = ({ navigation }: any) => {
                   onColor={COLORS.voilet}
                   offColor="rgba(52,52,52,0.2)"
                   size={SIZES.width > 400 ? "medium" : "small"}
-                  onToggle={() =>{setMapType("satellite");enableSaveBtn()}}
+                  onToggle={() => {
+                    setMapType("satellite");
+                    enableSaveBtn();
+                  }}
                 />
               </View>
             </View>
@@ -340,7 +348,10 @@ const Settings = ({ navigation }: any) => {
                   onColor={COLORS.voilet}
                   offColor="rgba(52,52,52,0.2)"
                   size={SIZES.width > 400 ? "medium" : "small"}
-                  onToggle={() => {setMapType("terrain");enableSaveBtn()}}
+                  onToggle={() => {
+                    setMapType("terrain");
+                    enableSaveBtn();
+                  }}
                 />
               </View>
             </View>
@@ -362,20 +373,22 @@ const Settings = ({ navigation }: any) => {
           </List.Accordion>
         </List.Section>
       </ScrollView>
-      {saveSettingsBtn===true && <Pressable
-        style={[
-          styles.memberShipCard,
-          {
-            marginBottom:"2%",
-            bottom: 0,
-            position: "absolute",
-            alignSelf: "center",
-          },
-        ]}
-        onPress={() => handleSettingsUpdate()}
-      >
-        <Text style={styles.subContent}>Save Settings</Text>
-      </Pressable>}
+      {saveSettingsBtn === true && (
+        <Pressable
+          style={[
+            styles.memberShipCard,
+            {
+              marginBottom: "2%",
+              bottom: 0,
+              position: "absolute",
+              alignSelf: "center",
+            },
+          ]}
+          onPress={() => handleSettingsUpdate()}
+        >
+          <Text style={styles.subContent}>Save Settings</Text>
+        </Pressable>
+      )}
     </View>
   );
 };
