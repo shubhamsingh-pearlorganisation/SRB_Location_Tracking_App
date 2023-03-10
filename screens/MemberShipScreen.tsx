@@ -4,8 +4,8 @@ import { MembershipContext } from "../App";
 import { COLORS, SIZES } from "../constants";
 // ----------------------------------------------------------------------------------
 const MemberShip = () => {
-  const [selectedPlan, setSelectedPlan] = useState<any>({});
   const membershipData: any = useContext(MembershipContext);
+  const [selectedPlan, setSelectedPlan] = useState<any>({});
 
   // Selecting Plan 1st for First Time when user come to this screen.
   useEffect(() => {
@@ -17,7 +17,7 @@ const MemberShip = () => {
   const handleSubscribe = () => {
     Alert.alert(
       "Membership Plan Subscription",
-      "Your Selected Plan will be subscribed successfully once you made payment successful."
+      "Your selected plan will be subscribed successfully once you made payment successful."
     );
   };
 

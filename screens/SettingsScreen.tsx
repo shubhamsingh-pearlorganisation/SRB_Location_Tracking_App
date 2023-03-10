@@ -18,86 +18,100 @@ const Settings = ({ navigation }: any) => {
   const [userSettingsData, setUserSettingsData] = useState<any>([]);
   const [userGlobalSettingsData, setUserGlobalSettingsData] = useState<any>([]);
   const [expanded, setExpanded] = useState(false);
-
-  const [shareLocation, setShareLocation] = useState(
-    userSettingsData?.[0]?.allow_location == 1 ? true : false
-  );
-  const [milesChecked, setmilesChecked] = useState(
-    userSettingsData?.[0]?.distance_unit?.toString().includes("kilometer")
-      ? true
-      : false
-  );
-
   const [saveSettingsBtn, setSaveSettingsBtn] = useState(false);
-
-  const enableSaveBtn = () => {
-    if (saveSettingsBtn === false) {
-      setSaveSettingsBtn(true);
-    }
-  };
-
-  // This "updatedSettingsData" state is used to prefilled settings data and also use to update settings data
-  const [updatedSettingsData, setUpdatedSettingsData] = useState<any>({
-    allowLocation: userSettingsData?.[0]?.allow_location == 1 ? 1 : 0,
-    distanceUnit: userSettingsData?.[0]?.distance_unit,
-    trackingFromTime: userSettingsData?.[0]?.tracking_from_time?.toString()
-      ? new Date(userSettingsData?.[0]?.tracking_from_time)
-      : new Date(),
-    trackingToTime: userSettingsData?.[0]?.tracking_to_time?.toString()
-      ? new Date(userSettingsData?.[0]?.tracking_to_time)
-      : new Date(),
-    mapMode: userSettingsData?.[0]?.map_mode?.toString()
-      ? userSettingsData?.[0]?.map_mode?.toString()
-      : "default",
-  });
-
-  useEffect(() => {
-    shareLocation &&
-      setUpdatedSettingsData({
-        ...updatedSettingsData,
-        allowLocation: shareLocation ? 1 : 0,
-      });
-  }, [shareLocation]);
-
-  useEffect(() => {
-    milesChecked &&
-      setUpdatedSettingsData({
-        ...updatedSettingsData,
-        distanceUnit: milesChecked ? "kilometer" : "miles",
-      });
-  }, [milesChecked]);
+  const [milesChecked, setMilesChecked] = useState(false);
 
   useEffect(() => {
     setUserSettingsData(userSettings?.appSettings?.userSettings?.[0]);
     setUserGlobalSettingsData(userSettings?.appSettings?.userGlobalSettings);
   }, [userSettings]);
 
-  const [mapType, setMapType] = useState(
-    userSettings[0]?.map_mode ? userSettings[0]?.map_mode : "default"
-  );
+  // This "updatedSettingsData" state is used to prefilled settings data and also use to update settings data
+  const [updatedSettingsData, setUpdatedSettingsData] = useState<any>({
+    allow_location: 0,
+    distance_unit: "kilometer",
+    tracking_from_time: new Date(),
+    tracking_to_time: new Date(),
+    map_mode: "default",
+    fromTime: "",
+    toTime: "",
+  });
 
+  useEffect(() => {
+    if (userSettingsData && Object.keys(userSettingsData).length > 0) {
+      setMilesChecked(
+        !userSettingsData?.distance_unit?.toString().includes("kilometer")
+          ? true
+          : false
+      );
+      setUpdatedSettingsData({
+        ...updatedSettingsData,
+        allow_location: userSettingsData?.allow_location,
+        distance_unit: userSettingsData?.distance_unit,
+        map_mode: userSettingsData?.map_mode,
+        tracking_from_time: userSettingsData?.tracking_from_time
+          ? new Date(userSettingsData?.tracking_from_time)
+          : new Date(),
+        tracking_to_time: userSettingsData?.tracking_to_time
+          ? new Date(userSettingsData?.tracking_to_time)
+          : new Date(),
+      });
+    }
+  }, [userSettingsData]);
+
+  useEffect(() => {
+    if (milesChecked) {
+      setUpdatedSettingsData({
+        ...updatedSettingsData,
+        distanceUnit: "mile",
+      });
+    } else {
+      setUpdatedSettingsData({
+        ...updatedSettingsData,
+        distanceUnit: "kilometer",
+      });
+    }
+  }, [milesChecked]);
+
+  const enableSaveBtn = () => {
+    if (!saveSettingsBtn) setSaveSettingsBtn(true);
+  };
   const handlePress = () => setExpanded(!expanded);
 
   // --------------------------- Time Picker Handling -- Start -----------------------------------
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
 
   const [startTimePickerVisible, setStartTimePickerVisible] = useState(false);
   const [endTimePickerVisible, setEndTimePickerVisible] = useState(false);
 
+  const [from_time, set_From_Time] = useState<any>("");
+  const [to_time, set_To_Time] = useState<any>("");
+
   const showstartTimePicker = () => setStartTimePickerVisible(true);
   const hideStartTimePicker = () => setStartTimePickerVisible(false);
+  const showEndTimePicker = () => setEndTimePickerVisible(true);
+  const hideEndTimePicker = () => setEndTimePickerVisible(false);
+
   const handleStartConfirm = (date: any) => {
-    setStartTime(date);
+    const trackingFromTime = date ? new Date(date).toLocaleTimeString() : "";
+
+    setUpdatedSettingsData({
+      ...updatedSettingsData,
+      fromTime: trackingFromTime,
+    });
+    set_From_Time(trackingFromTime);
     hideStartTimePicker();
     enableSaveBtn();
   };
 
-  const showEndTimePicker = () => setEndTimePickerVisible(true);
-  const hideEndTimePicker = () => setEndTimePickerVisible(false);
-
   const handleEndConfirm = (date: any) => {
-    setEndTime(date);
+    const trackingToTime = date ? new Date(date).toLocaleTimeString() : "";
+
+    setUpdatedSettingsData({
+      ...updatedSettingsData,
+      toTime: trackingToTime,
+    });
+    set_To_Time(trackingToTime);
+
     hideEndTimePicker();
     enableSaveBtn();
   };
@@ -109,8 +123,23 @@ const Settings = ({ navigation }: any) => {
 
   const handleSettingsUpdate = () => {
     console.log("updatedSettingsData::: ", updatedSettingsData);
+
+    let reqPayload = { ...updatedSettingsData };
+    reqPayload = {
+      ...reqPayload,
+      tracking_from_time: updatedSettingsData.fromTime,
+      tracking_to_time: updatedSettingsData.toTime,
+    };
+
+    delete reqPayload.fromTime;
+    delete reqPayload.toTime;
+
+    console.log("UPDATE_USER_SETTING_API_DATA::: ", reqPayload);
+
+    //NEED TO CALL UPDATE SETTING API HERE
   };
 
+  // =======================================================================================
   return (
     <View style={styles.container}>
       <ScrollView
@@ -129,12 +158,15 @@ const Settings = ({ navigation }: any) => {
         >
           <Text style={styles.textHeading}>Share My Location</Text>
           <ToggleSwitch
-            isOn={shareLocation}
+            isOn={updatedSettingsData?.allow_location}
             onColor={COLORS.voilet}
             offColor="rgba(52,52,52,0.2)"
             size={SIZES.width > 400 ? "medium" : "small"}
             onToggle={() => {
-              setShareLocation(!shareLocation);
+              setUpdatedSettingsData({
+                ...updatedSettingsData,
+                allow_location: !updatedSettingsData?.allow_location,
+              });
               enableSaveBtn();
             }}
           />
@@ -165,7 +197,7 @@ const Settings = ({ navigation }: any) => {
               offColor={COLORS.voilet}
               size={SIZES.width > 400 ? "medium" : "small"}
               onToggle={() => {
-                setmilesChecked(!milesChecked);
+                setMilesChecked(!milesChecked);
                 enableSaveBtn();
               }}
             />
@@ -196,7 +228,7 @@ const Settings = ({ navigation }: any) => {
                 }}
               >
                 <DateTimePickerModal
-                  date={updatedSettingsData?.trackingFromTime}
+                  date={updatedSettingsData?.tracking_from_time}
                   isVisible={startTimePickerVisible}
                   mode="time"
                   onConfirm={handleStartConfirm}
@@ -216,8 +248,12 @@ const Settings = ({ navigation }: any) => {
                     marginTop: "2%",
                   }}
                 >
-                  {startTime
-                    ? startTime.toLocaleTimeString()
+                  {from_time === "" && updatedSettingsData?.tracking_from_time
+                    ? new Date(
+                        updatedSettingsData?.tracking_from_time
+                      ).toLocaleTimeString()
+                    : from_time
+                    ? from_time
                     : "No date selected"}
                 </Text>
               </Pressable>
@@ -236,7 +272,7 @@ const Settings = ({ navigation }: any) => {
                 }}
               >
                 <DateTimePickerModal
-                  date={updatedSettingsData?.trackingToTime}
+                  date={updatedSettingsData?.tracking_to_time}
                   isVisible={endTimePickerVisible}
                   mode="time"
                   onConfirm={handleEndConfirm}
@@ -256,7 +292,13 @@ const Settings = ({ navigation }: any) => {
                     marginTop: "2%",
                   }}
                 >
-                  {endTime ? endTime.toLocaleTimeString() : "No date selected"}
+                  {to_time === "" && updatedSettingsData?.tracking_from_time
+                    ? new Date(
+                        updatedSettingsData?.tracking_to_time
+                      ).toLocaleTimeString()
+                    : to_time
+                    ? to_time
+                    : "No date selected"}
                 </Text>
               </Pressable>
             </View>
@@ -299,12 +341,19 @@ const Settings = ({ navigation }: any) => {
 
               <View style={styles.itemButtonContainer}>
                 <ToggleSwitch
-                  isOn={mapType.includes("default") ? true : false}
+                  isOn={
+                    updatedSettingsData?.map_mode.includes("default")
+                      ? true
+                      : false
+                  }
                   onColor={COLORS.voilet}
                   offColor="rgba(52,52,52,0.2)"
                   size={SIZES.width > 400 ? "medium" : "small"}
                   onToggle={() => {
-                    setMapType("default");
+                    setUpdatedSettingsData({
+                      ...updatedSettingsData,
+                      map_mode: "default",
+                    });
                     enableSaveBtn();
                   }}
                 />
@@ -322,12 +371,19 @@ const Settings = ({ navigation }: any) => {
 
               <View style={styles.itemButtonContainer}>
                 <ToggleSwitch
-                  isOn={mapType.includes("satellite") ? true : false}
+                  isOn={
+                    updatedSettingsData?.map_mode.includes("satellite")
+                      ? true
+                      : false
+                  }
                   onColor={COLORS.voilet}
                   offColor="rgba(52,52,52,0.2)"
                   size={SIZES.width > 400 ? "medium" : "small"}
                   onToggle={() => {
-                    setMapType("satellite");
+                    setUpdatedSettingsData({
+                      ...updatedSettingsData,
+                      map_mode: "satellite",
+                    });
                     enableSaveBtn();
                   }}
                 />
@@ -344,12 +400,19 @@ const Settings = ({ navigation }: any) => {
               />
               <View style={styles.itemButtonContainer}>
                 <ToggleSwitch
-                  isOn={mapType.includes("terrain") ? true : false}
+                  isOn={
+                    updatedSettingsData?.map_mode.includes("terrain")
+                      ? true
+                      : false
+                  }
                   onColor={COLORS.voilet}
                   offColor="rgba(52,52,52,0.2)"
                   size={SIZES.width > 400 ? "medium" : "small"}
                   onToggle={() => {
-                    setMapType("terrain");
+                    setUpdatedSettingsData({
+                      ...updatedSettingsData,
+                      map_mode: "terrain",
+                    });
                     enableSaveBtn();
                   }}
                 />
