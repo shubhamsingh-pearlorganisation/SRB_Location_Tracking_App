@@ -13,8 +13,9 @@ const getCurrentLocation = () => {
       try {
         const location: any = await Location.getCurrentPositionAsync({});
         // console.log("My Location Details:: ", location);
+        const { timestamp } = location;
         const { latitude, longitude } = location.coords;
-        resolve({ latitude, longitude });
+        resolve({ latitude, longitude, timestamp });
       } catch (err) {
         console.error(err, "something went wrong");
         reject(new Error("something went wrong"));

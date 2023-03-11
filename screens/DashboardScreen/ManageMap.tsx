@@ -1,17 +1,19 @@
 import { View, Image, StyleSheet, Platform, Dimensions } from "react-native";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { getCurrentLocation } from "../../core/utils/helper";
 import imagePath from "../../core/utils/constants";
 import { GOOGLE_API_KEY } from "../../core/utils/constants";
 import { styles } from "./style";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // -----------------------------------------------------------------------------------
 const ManageMap = ({ navigation }: any) => {
   type locationTypes = {
     latitude: number;
     longitude: number;
+    timestamp: number;
   };
 
   const screen = Dimensions.get("window");
@@ -40,6 +42,12 @@ const ManageMap = ({ navigation }: any) => {
     distance: 0,
     heading: 0,
   });
+  const [locationData, setLocationData] = useState<any>([]); // Used to store user's location data
+  const [individualLocationObj, setIndividualLocationObj] = useState<any>({
+    startingTime: "",
+    tenMinutesLocationData: [],
+  });
+  const [timeLeft, setTimeLeft] = useState<any>(600); // 600 seconds => 10 minutes
 
   const updateState = (data: any) =>
     setState((state: any) => ({ ...state, ...data }));
@@ -50,15 +58,24 @@ const ManageMap = ({ navigation }: any) => {
     });
   };
 
-  useEffect(() => {
-    getLiveLocation();
-  }, []);
-
+  // ==========================================================================================
   const getLiveLocation = async () => {
     getCurrentLocation()
-      .then((success: locationTypes | any) => {
-        const { latitude, longitude } = success;
-        // console.log("get live location after 6 second");
+      .then((locationResponse: locationTypes | any) => {
+        // console.log("locationResponse::: ", locationResponse);
+        const { latitude, longitude, timestamp } = locationResponse;
+        // console.log(
+        //   `In every 5 seconds My Latitude is ${latitude}, My Longitude is ${longitude},
+        //    my location date is ${new Date(timestamp).toLocaleDateString()} and
+        //    my location time is ${new Date(timestamp).toLocaleTimeString()}.`
+        // );
+
+        const formattedData = {
+          latitude: latitude,
+          longitude: longitude,
+          datetime: new Date(timestamp).toLocaleString(),
+        };
+
         animate(latitude, longitude);
         updateState({
           heading: heading,
@@ -70,18 +87,51 @@ const ManageMap = ({ navigation }: any) => {
             longitudeDelta: LONGITUDE_DELTA,
           }),
         });
+
+        setIndividualLocationObj({
+          ...individualLocationObj,
+          startingTime:
+            individualLocationObj.tenMinutesLocationData.length == 0
+              ? formattedData.datetime
+              : individualLocationObj?.tenMinutesLocationData[0]?.datetime,
+          tenMinutesLocationData: [
+            ...individualLocationObj.tenMinutesLocationData,
+            formattedData,
+          ],
+        });
       })
       .catch((err) => {
         setErrorMsg(err);
       });
   };
 
-  useEffect(() => {
+  useEffect((): any => {
+    if (timeLeft === 0) {
+      console.log("TIME LEFT IS 0");
+      setTimeLeft(null);
+    }
+
+    if (!timeLeft) return;
+
     const interval = setInterval(() => {
-      // getLiveLocation();
+      getLiveLocation(); // Fetching User's Location in every 6 seconds
+      setTimeLeft(timeLeft - 6);
     }, 6000);
     return () => clearInterval(interval);
-  }, []);
+  }, [locationData]);
+
+  useEffect(() => {
+    if (individualLocationObj) {
+      console.log("Location Data for Firebase: ", individualLocationObj);
+      console.log(
+        "Total Locations Fetched: ",
+        individualLocationObj.tenMinutesLocationData.length
+      );
+      setLocationData([...locationData, individualLocationObj]);
+    }
+  }, [individualLocationObj]);
+
+  // ==========================================================================================
 
   const animate = (latitude: number, longitude: number) => {
     const newCoordinate: any = { latitude, longitude };
@@ -152,13 +202,13 @@ const ManageMap = ({ navigation }: any) => {
             strokeColor="black"
             optimizeWaypoints={true}
             onStart={(params) => {
-              console.log(
-                `Started routing between "${params.origin}" and "${params.destination}"`
-              );
+              // console.log(
+              //   `Started routing between "${params.origin}" and "${params.destination}"`
+              // );
             }}
             onReady={(result) => {
-              console.log(`Distance: ${result.distance} km`);
-              console.log(`Duration: ${result.duration} min.`);
+              // console.log(`Distance: ${result.distance} km`);
+              // console.log(`Duration: ${result.duration} min.`);
               mapRef.current.fitToCoordinates(result.coordinates, {
                 edgePadding: {
                   right: 30,
@@ -169,7 +219,7 @@ const ManageMap = ({ navigation }: any) => {
               });
             }}
             onError={(errorMessage: any) => {
-              console.log("GOT AN ERROR: ", errorMessage);
+              // console.log("GOT AN ERROR: ", errorMessage);
             }}
           />
         )}
@@ -177,5 +227,5 @@ const ManageMap = ({ navigation }: any) => {
     </View>
   );
 };
-export default ManageMap;
+export default memo(ManageMap);
 // ----------------------------------------- THE END --------------------------------------------
