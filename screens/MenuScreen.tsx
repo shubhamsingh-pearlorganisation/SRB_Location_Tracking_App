@@ -239,7 +239,7 @@ const MenuScreen = ({ navigation }: any) => {
             <MaterialCommunityIcons
               style={[styles.icons, { paddingLeft: 5 }]}
               name="frequently-asked-questions"
-              size={30}
+              size={SIZES.width > 400 ? 30 : 20}
               color={"black"}
             />
 
@@ -265,7 +265,7 @@ const MenuScreen = ({ navigation }: any) => {
             <MaterialCommunityIcons
               style={[styles.icons, { paddingLeft: 5 }]}
               name="thought-bubble"
-              size={30}
+              size={SIZES.width > 400 ? 30 : 20}
               color={"black"}
             />
 

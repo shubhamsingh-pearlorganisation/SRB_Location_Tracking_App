@@ -316,15 +316,18 @@ const ProfileScreen = ({ navigation }: any) => {
       toast.show("Please enter a valid email id.", { type: "error" });
       return;
     }
+
     try {
       const { name, email, dob } = userDetails;
+
 
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
       formData.append("name", name);
       formData.append("email", email);
       formData.append("dob", dob);
-      setShowLoader(true);
+      // setShowLoader(true);
+      console.log("formData::: ", formData);
 
       const response = await instance.post("/users_update", formData);
       if (response.status === 200 && response.data?.status === true) {
@@ -348,14 +351,14 @@ const ProfileScreen = ({ navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while updating user details. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while updating user details. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
   // ----------------------------------------------------------------------------

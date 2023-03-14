@@ -166,6 +166,7 @@ const FeedbackScreen = () => {
                         title={feedback?.description}
                         titleNumberOfLines={10}
                         titleStyle={styles.answerText}
+                        style={{paddingLeft:"2%"}}
                       />
                     </List.Accordion>
                   );

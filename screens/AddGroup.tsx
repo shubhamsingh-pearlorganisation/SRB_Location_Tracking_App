@@ -113,7 +113,7 @@ const AddGroup = ({ navigation }: any) => {
               height: "100%",
             }}
             onPress={() => {
-              setAddGroupFormData({ ...addGroupFormData, group_type: 1 });
+              setAddGroupFormData({ ...addGroupFormData, group_type: 0 });
               setPublicChecked(true);
             }}
           >
@@ -144,7 +144,7 @@ const AddGroup = ({ navigation }: any) => {
               height: "100%",
             }}
             onPress={() => {
-              setAddGroupFormData({ ...addGroupFormData, group_type: 2 });
+              setAddGroupFormData({ ...addGroupFormData, group_type: 1 });
               setPublicChecked(false);
             }}
           >

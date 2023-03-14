@@ -489,26 +489,15 @@ const Register = ({ route }: any) => {
         </Pressable>
 
         <TouchableOpacity
-          style={{
-            position: SIZES.height > 500 ? "relative" : "absolute",
-            bottom: SIZES.height > 500 ? "2%" : "5%",
-            marginTop: "5%",
-            alignSelf: "center",
-            width: SIZES.width - SIZES.width * 0.2,
-            height: 60,
-            justifyContent: "center",
-            borderRadius: 30,
-            backgroundColor: "white",
-          }}
+          style={
+            styles.sendCode
+          }
           onPress={updateDetails}
         >
           <Text
-            style={{
-              fontWeight: "400",
-              fontSize: SIZES.width > 300 && SIZES.height > 600 ? 25 : 20,
-              color: "#705ECF",
-              alignSelf: "center",
-            }}
+            style={
+              styles.buttonText
+            }
           >
             Continue
           </Text>
@@ -582,17 +571,20 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     borderColor: "#fff",
+    width:SIZES.width*.8,
+    height:SIZES.height*.08
   },
   buttonText: {
-    lineHeight: 50,
+    lineHeight: 40,
     justifyContent: "center",
     position: "relative",
     paddingStart: 10,
     paddingEnd: 10,
-    height: 50,
+    height:40,
     color: "#705ECF",
     backgroundColor: "rgba(0,0,0,0)",
     textAlign: "center",
+    fontSize:20
   },
   otpText: {
     position: "relative",

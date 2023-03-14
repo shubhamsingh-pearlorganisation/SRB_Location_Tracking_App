@@ -29,20 +29,20 @@ const Groups = ({ navigation }: any) => {
   // This renderGroups component is used to render group list
   const renderGroups = (groupDetails: any) => {
     //condition to handle the height of item according to the length of group title
-    const customStyle =
-      groupDetails?.title?.toString().length >= 10 &&
-      groupDetails?.title?.toString().length <= 20
-        ? styles.bigTitle
-        : groupDetails?.title?.toString().length < 10
-        ? styles.normalTitle
-        : !groupDetails?.title
-        ? styles.normalTitle
-        : styles.largeTitle;
+    // const customStyle =
+    //   groupDetails?.title?.toString().length >= 10 &&
+    //   groupDetails?.title?.toString().length <= 20
+    //     ? styles.bigTitle
+    //     : groupDetails?.title?.toString().length < 10
+    //     ? styles.normalTitle
+    //     : !groupDetails?.title
+    //     ? styles.normalTitle
+    //     : styles.largeTitle;
     return (
-      <Pressable style={[styles.groupListItem, customStyle]}>
+      <Pressable style={[styles.groupListItem]}>
         <View
           style={{
-            left: 0,
+            left: 5,
             position: "absolute",
             width: "40%",
           }}
@@ -62,7 +62,11 @@ const Groups = ({ navigation }: any) => {
             </Text>
           </View>
           <Text style={styles.groupListItemName}>
-            {groupDetails?.title ? groupDetails?.title : "N.A"}
+            {groupDetails?.title
+              ? groupDetails?.title.toString().length > 10
+                ? groupDetails?.title.toString().slice(0, 10) + "..."
+                : groupDetails?.title
+              : "N.A"}
           </Text>
           <Text style={styles.groupListItemCode}>
             {groupDetails?.group_code ? groupDetails?.group_code : "N.A"}
@@ -148,7 +152,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderTopWidth: 1,
     padding: SIZES.width > 400 ? "3%" : "4%",
-    margin: "2%",
   },
   groupListItemName: {
     fontSize: SIZES.width > 400 ? 20 : 18,
