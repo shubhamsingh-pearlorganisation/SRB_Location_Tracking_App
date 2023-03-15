@@ -1,9 +1,125 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Modal } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, Modal, Alert } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { COLORS, SIZES } from "../constants";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
-const ImageDialog = ({visibility, sendData}:any) => {
+const ImageDialog = ({ visibility, sendData, route }: any) => {
+  console.log("visible:: ", visibility);
+
+  const [userDetails, setUserDetails] = useState<any>({
+    name: route?.params?.userDetails?.name
+      ? route?.params?.userDetails?.name
+      : "",
+    emailId: route?.params?.userDetails?.email
+      ? route?.params?.userDetails?.email
+      : "",
+    dob: route?.params?.userDetails?.dob ? route?.params?.userDetails?.dob : "",
+    contact: route?.params?.userDetails?.contact
+      ? route?.params?.userDetails?.contact
+      : "",
+  });
+
+  const [pickedImagePath, setPickedImagePath] = useState<any>({});
+
+  const getFileInfo = async (fileURI: string) => {
+    const fileInfo = await FileSystem.getInfoAsync(fileURI);
+    return fileInfo;
+  };
+
+  const isLessThanTheMB = (fileSize: number, smallerThanSizeMB: number) => {
+    // By default fileSize is in bytes format
+    // Convert in MB - fileSize / 1024 / 1024
+    const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB;
+    return isOk;
+  };
+
+  // This function is triggered when the "Select from Gallery" button pressed
+  const uploadImageFromGallery = async () => {
+    // Ask the user for the permission to access the media library
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert(
+        "Permission Failed",
+        "You've refused to allow this app to access your photos!"
+      );
+      return;
+    }
+
+    const result: any = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+
+    if (!fileInfo?.size) {
+      alert("Can't select this file as the size is unknown.");
+      return;
+    }
+
+    if (result?.assets[0]?.type === "image") {
+      const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+      if (!isLt5MB) {
+        alert(`Image size must be smaller than 5 MB!`);
+        return;
+      }
+    }
+
+    if (!result.canceled) {
+      setPickedImagePath(result.assets[0]);
+      setUserDetails({ ...userDetails, image: "" });
+    }
+  };
+
+  // This function is triggered when the "Open camera" button pressed
+  const uploadImageFromCamera = async () => {
+    // Ask the user for the permission to access the camera
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert(
+        "Permission Failed",
+        "You've refused to allow this app to access your camera!"
+      );
+      return;
+    }
+
+    const result: any = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+
+    if (!fileInfo?.size) {
+      alert("Can't select this file as the size is unknown.");
+      return;
+    }
+
+    if (result?.assets[0]?.type === "image") {
+      const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+      if (!isLt5MB) {
+        alert(`Image size must be smaller than 5 MB!`);
+        return;
+      }
+    }
+
+    if (!result.canceled) {
+      setPickedImagePath(result.assets[0]);
+      setUserDetails({ ...userDetails, image: "" });
+    }
+  };
+
+  useEffect(() => {
+    if (Object.keys(pickedImagePath).length > 0) {
+      sendData(pickedImagePath);
+    }
+  }, [pickedImagePath]);
+
   return (
     <View>
       <Modal visible={visibility} animationType={"fade"} transparent={true}>
@@ -20,7 +136,7 @@ const ImageDialog = ({visibility, sendData}:any) => {
               alignItems: "center",
               backgroundColor: "white",
               height:
-                SIZES.height > 700 ? SIZES.height * 0.3 : SIZES.height * 0.45,
+                SIZES.height > 700 ? SIZES.height * 0.3 : SIZES.height * 0.3,
               width: "90%",
               borderWidth: 1,
               borderColor: "#fff",
@@ -39,66 +155,65 @@ const ImageDialog = ({visibility, sendData}:any) => {
               </Text>
             </View>
 
-            <TouchableOpacity
-              activeOpacity={0.9}
-            //   onPress={() => confirmAction()}
+            <View
               style={{
-                alignItems: "center",
-                position: "absolute",
-                borderBottomWidth: 0,
-                width:
-                  SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
-                height: "20%",
-                justifyContent:  "center",
-                borderRadius: 30,
-                backgroundColor: COLORS.voilet,
-                bottom: "25%",
                 flexDirection: "row",
+                width: SIZES.width,
               }}
             >
-              <Text style={{ color: "white", margin: 15 }}>
-                Upload from Gallery
-              </Text>
-              {/* {showLoader && (
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => uploadImageFromGallery()}
+                style={{
+                  alignItems: "center",
+                  borderBottomWidth: 0,
+                  width: "30%",
+                  height: "auto",
+                  justifyContent: "center",
+                  borderRadius: 30,
+                  backgroundColor: COLORS.white,
+                }}
+              >
+                <Text style={{ color: "white", margin: 15 }}>
+                  Upload from Gallery
+                </Text>
+                {/* {showLoader && (
                 <ActivityIndicator
                   size={SIZES.width > 400 ? 30 : 20}
                   color="white"
                 />
               )} */}
-            </TouchableOpacity>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              activeOpacity={0.9}
-            //   onPress={() => dismissAlert(false)}
-              style={{
-                alignItems: "center",
-                position: "absolute",
-                borderBottomWidth: 0,
-                width:
-                  SIZES.width > 400 ? SIZES.width * 0.4 : SIZES.width * 0.8,
-                height: "auto",
-                justifyContent: "center",
-                borderRadius: 30,
-                backgroundColor: COLORS.white,
-
-                bottom: "1%",
-              }}
-            >
-              <Text
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => uploadImageFromCamera()}
                 style={{
-                  color: COLORS.voilet,
-                  margin: 15,
-                  textDecorationLine: "underline",
+                  alignItems: "center",
+                  borderBottomWidth: 0,
+                  width: "30%",
+                  height: "auto",
+                  justifyContent: "center",
+                  borderRadius: 30,
+                  backgroundColor: COLORS.white,
                 }}
               >
-                Take Picture
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: COLORS.voilet,
+                    margin: 15,
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Take Picture
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
     </View>
-  )
-}
+  );
+};
 
-export default ImageDialog
+export default ImageDialog;

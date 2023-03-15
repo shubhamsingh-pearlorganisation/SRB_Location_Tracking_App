@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -23,6 +23,7 @@ import {
 import { regexes } from "../core/utils/constants";
 import Loader from "../components/Loader";
 import * as FileSystem from "expo-file-system";
+import ImageDialog from "../components/ImageDialog";
 
 // -----------------------------------------------------------------------------------
 
@@ -56,97 +57,112 @@ const Register = ({ route }: any) => {
   const [pickedImagePath, setPickedImagePath] = useState<any>({});
 
   // This method is used to find selected image file size.
-  const getFileInfo = async (fileURI: string) => {
-    const fileInfo = await FileSystem.getInfoAsync(fileURI);
-    return fileInfo;
-  };
+  // const getFileInfo = async (fileURI: string) => {
+  //   const fileInfo = await FileSystem.getInfoAsync(fileURI);
+  //   return fileInfo;
+  // };
 
-  // This method is used to check file size length with 5 MB
-  const isLessThanTheMB = (fileSize: number, smallerThanSizeMB: number) => {
-    // By default fileSize is in bytes format
-    // Convert in MB - fileSize / 1024 / 1024
-    const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB;
-    return isOk;
-  };
+  // // This method is used to check file size length with 5 MB
+  // const isLessThanTheMB = (fileSize: number, smallerThanSizeMB: number) => {
+  //   // By default fileSize is in bytes format
+  //   // Convert in MB - fileSize / 1024 / 1024
+  //   const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB;
+  //   return isOk;
+  // };
 
   // This function is triggered when the "Select from Gallery" button pressed
-  const uploadImageFromGallery = async () => {
-    // Ask the user for the permission to access the media library
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+  // const uploadImageFromGallery = async () => {
+  //   // Ask the user for the permission to access the media library
+  //   const permissionResult =
+  //     await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (permissionResult.granted === false) {
-      Alert.alert(
-        "Permission Failed",
-        "You've refused to allow this app to access your photos!"
-      );
-      return;
-    }
+  //   if (permissionResult.granted === false) {
+  //     Alert.alert(
+  //       "Permission Failed",
+  //       "You've refused to allow this app to access your photos!"
+  //     );
+  //     return;
+  //   }
 
-    const result: any = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
+  //   const result: any = await ImagePicker.launchImageLibraryAsync({
+  //     allowsEditing: true,
+  //     quality: 1,
+  //   });
 
-    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+  //   const fileInfo = await getFileInfo(result?.assets[0]?.uri);
 
-    if (!fileInfo?.size) {
-      alert("Can't select this file as the size is unknown.");
-      return;
-    }
+  //   if (!fileInfo?.size) {
+  //     alert("Can't select this file as the size is unknown.");
+  //     return;
+  //   }
 
-    if (result?.assets[0]?.type === "image") {
-      const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-      if (!isLt5MB) {
-        alert(`Image size must be smaller than 5 MB!`);
-        return;
-      }
-    }
+  //   if (result?.assets[0]?.type === "image") {
+  //     const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+  //     if (!isLt5MB) {
+  //       alert(`Image size must be smaller than 5 MB!`);
+  //       return;
+  //     }
+  //   }
 
-    if (!result.canceled) {
-      setPickedImagePath(result.assets[0]);
-      setUserDetails({ ...userDetails, image: "" });
-    }
-  };
+  //   if (!result.canceled) {
+  //     setPickedImagePath(result.assets[0]);
+  //     setUserDetails({ ...userDetails, image: "" });
+  //   }
+  // };
 
-  // This function is triggered when the "Open camera" button pressed
-  const uploadImageFromCamera = async () => {
-    // Ask the user for the permission to access the camera
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+  // // This function is triggered when the "Open camera" button pressed
+  // const uploadImageFromCamera = async () => {
+  //   // Ask the user for the permission to access the camera
+  //   const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
-    if (permissionResult.granted === false) {
-      Alert.alert(
-        "Permission Failed",
-        "You've refused to allow this app to access your camera!"
-      );
-      return;
-    }
+  //   if (permissionResult.granted === false) {
+  //     Alert.alert(
+  //       "Permission Failed",
+  //       "You've refused to allow this app to access your camera!"
+  //     );
+  //     return;
+  //   }
 
-    const result: any = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
+  //   const result: any = await ImagePicker.launchCameraAsync({
+  //     allowsEditing: true,
+  //     quality: 1,
+  //   });
 
-    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+  //   const fileInfo = await getFileInfo(result?.assets[0]?.uri);
 
-    if (!fileInfo?.size) {
-      alert("Can't select this file as the size is unknown.");
-      return;
-    }
+  //   if (!fileInfo?.size) {
+  //     alert("Can't select this file as the size is unknown.");
+  //     return;
+  //   }
 
-    if (result?.assets[0]?.type === "image") {
-      const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-      if (!isLt5MB) {
-        alert(`Image size must be smaller than 5 MB!`);
-        return;
-      }
-    }
+  //   if (result?.assets[0]?.type === "image") {
+  //     const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+  //     if (!isLt5MB) {
+  //       alert(`Image size must be smaller than 5 MB!`);
+  //       return;
+  //     }
+  //   }
 
-    if (!result.canceled) {
-      setPickedImagePath(result.assets[0]);
-      setUserDetails({ ...userDetails, image: "" });
-    }
-  };
+  //   if (!result.canceled) {
+  //     setPickedImagePath(result.assets[0]);
+  //     setUserDetails({ ...userDetails, image: "" });
+  //   }
+  // };
+
+  const [uploadImageModal, setUploadImageModal] = useState(false)
+
+  const recieveImageData = (data:any) =>{
+    console.log("ImagePath::: ", data)
+    setUploadImageModal(false)
+    setPickedImagePath(data)
+    // uploadProfileImage()
+  }
+
+  useEffect(() => {
+  if(Object.keys(pickedImagePath).length>0){
+    uploadProfileImage()
+  }
+  }, [pickedImagePath])
 
   // This method is used to validate iimage data and call upload image api
   const uploadProfileImage = () => {
@@ -216,7 +232,7 @@ const Register = ({ route }: any) => {
       formData.append("token_id", authContextData?.token);
       formData.append("image", imageData);
 
-      setShowLoader(true);
+      // setShowLoader(true);
       const response = await instance.post("/users_image_update", formData);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
@@ -348,12 +364,13 @@ const Register = ({ route }: any) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
-        {showLoader && (
+      {uploadImageModal && <ImageDialog visibility={uploadImageModal} sendData={recieveImageData}/>}
+        {/* {showLoader && (
           <Loader
             message="Please wait.. we are creating your account."
             msgTextColor="white"
           />
-        )}
+        )} */}
 
         <Text style={styles.otpText}>
           You haven’t got account?{"\n"} Let's Create...
@@ -381,15 +398,15 @@ const Register = ({ route }: any) => {
           </View>
 
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.imgBtns} onPress={uploadImageFromGallery}>
+            {/* <Pressable style={styles.imgBtns} onPress={uploadImageFromGallery}>
               <Text style={styles.imgBtnText}>Gallery</Text>
             </Pressable>
             <Pressable style={styles.imgBtns} onPress={uploadImageFromCamera}>
               <Text style={styles.imgBtnText}>Camera</Text>
-            </Pressable>
+            </Pressable> */}
             <Pressable
               style={[styles.imgBtns, { backgroundColor: "#452FFF" }]}
-              onPress={uploadProfileImage}
+              onPress={()=>setUploadImageModal(true)}
             >
               <Text
                 style={[
@@ -530,10 +547,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   textInput: {
-    paddingTop: 40,
-    paddingBottom: 10,
+    textAlignVertical:"center",
     paddingHorizontal: 20,
-    fontSize: 24,
+    fontSize: SIZES.height>700?24:20,
     borderBottomColor: "#fff",
     borderBottomWidth: 0,
     marginBottom: 20,
@@ -542,9 +558,10 @@ const styles = StyleSheet.create({
   },
 
   textInput2: {
-    padding: 10,
+    textAlignVertical:"center",
     paddingHorizontal: 20,
-    fontSize: 24,
+    paddingVertical:5,
+    fontSize: SIZES.height>700?24:20,
     width: "80%",
     borderRadius: 30,
     borderColor: "#fff",
@@ -566,34 +583,35 @@ const styles = StyleSheet.create({
   sendCode: {
     marginRight: 40,
     marginLeft: 40,
-    marginTop: 10,
+    marginTop: 20,
     backgroundColor: "white",
     borderRadius: 100,
     borderWidth: 1,
     borderColor: "#fff",
     width:SIZES.width*.8,
-    height:SIZES.height*.08
+    height:SIZES.height*.06,
+    alignItems:'center',
+    justifyContent:'center'
   },
   buttonText: {
-    lineHeight: 40,
     justifyContent: "center",
     position: "relative",
     paddingStart: 10,
     paddingEnd: 10,
-    height:40,
+    textAlignVertical:"center",
     color: "#705ECF",
     backgroundColor: "rgba(0,0,0,0)",
     textAlign: "center",
-    fontSize:20
+    fontSize: SIZES.height>700?24:20,
+    alignSelf:'center'
   },
   otpText: {
     position: "relative",
-
     width: "auto",
     height: "auto",
     fontStyle: "normal",
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: SIZES.height>700?30:24,
     marginBottom: 30,
     textAlign: "center",
     color: "#FFFFFF",

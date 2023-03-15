@@ -147,6 +147,7 @@ const FeedbackScreen = () => {
         <>
           <List.Section title="Feedbacks">
             <ScrollView
+            showsVerticalScrollIndicator={false}
               style={{
                 height: "95%",
               }}

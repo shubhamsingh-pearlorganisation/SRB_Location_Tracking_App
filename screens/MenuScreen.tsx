@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { SIZES } from "../constants";
+import { COLORS, SIZES } from "../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext, UserDetailsContext } from "../App";
 // ---------------------------------------------------------------------------------------------
@@ -316,6 +316,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     height: "100%",
+    backgroundColor:COLORS.white
   },
   icons: {
     margin: 10,

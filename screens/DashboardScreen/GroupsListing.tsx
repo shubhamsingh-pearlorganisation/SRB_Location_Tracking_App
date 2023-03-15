@@ -1,6 +1,6 @@
 import { View, ScrollView } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
-import { SIZES } from "../../constants";
+import { COLORS, SIZES } from "../../constants";
 import NoDataFound from "../../components/NoDataFound";
 import { GroupsAndMembersContext } from "../../App";
 import GroupAvailableOptions from "./GroupAvailableOptions";
@@ -36,10 +36,12 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
       }}
     >
       <ScrollView
+      showsVerticalScrollIndicator={false}
         style={{
           width: "100%",
           marginTop: SIZES.width > 400 && SIZES.height > 700 ? "4%" : "2%",
           marginBottom: SIZES.width > 400 && SIZES.height > 700 ? "15%" : "17%",
+          
         }}
       >
         {groupsAndMembersData?.groupsAndMembersDetails?.length > 0 ? (
@@ -53,7 +55,16 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
                     selectedGroupDetails={selectedGroupDetails}
                     selectedGroupData={selectedGroupData}
                   />
+                  
                 )}
+                <View
+                style={{
+                  backgroundColor: COLORS.voilet,
+                  opacity: 0.3,
+                  height: 3,
+                  width: SIZES.width,
+                }}
+              />
               </View>
             )
           )
@@ -86,6 +97,7 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
         />
         {/* ---------------------------------------------------- */}
       </View>
+ 
     </View>
   );
 };

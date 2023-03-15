@@ -9,9 +9,10 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { GroupsAndMembersContext } from "../App";
-import { SIZES } from "../constants";
+import { COLORS, SIZES } from "../constants";
 import Loader from "../components/Loader";
 import NoDataFound from "../components/NoDataFound";
+import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 // -----------------------------------------------------------------
 const Groups = ({ navigation }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
@@ -42,9 +43,10 @@ const Groups = ({ navigation }: any) => {
       <Pressable style={[styles.groupListItem]}>
         <View
           style={{
-            left: 5,
+            left: 10,
             position: "absolute",
             width: "40%",
+            backgroundColor: "rgba(0,0,0,0)",
           }}
         >
           <View style={styles.groupListItemType}>
@@ -126,13 +128,33 @@ const Groups = ({ navigation }: any) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ backgroundColor: COLORS.white, paddingTop: 5 }}
+    >
       {showLoader && <Loader />}
       {groupsAndMembersData?.groupsAndMembersDetails.length > 0 ? (
         groupsAndMembersData?.groupsAndMembersDetails.map(
           (group: any, i: number) => (
             <View key={group?.group_code ? group?.group_code : i}>
               {group?.title && group?.group_code && renderGroups(group)}
+
+              {/* {groupsAndMembersData?.groupsAndMembersDetails.length -1 !== i &&     <View style={{
+                backgroundColor:COLORS.voilet,
+                opacity:.3,
+                height:3,
+                width:SIZES.width
+              }}/>
+            } */}
+
+              <View
+                style={{
+                  backgroundColor: COLORS.voilet,
+                  opacity: 0.3,
+                  height: 3,
+                  width: SIZES.width,
+                }}
+              />
             </View>
           )
         )
@@ -149,9 +171,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     flexDirection: "row",
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
+    margin: 2,
+    marginHorizontal: 5,
     padding: SIZES.width > 400 ? "3%" : "4%",
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
   },
   groupListItemName: {
     fontSize: SIZES.width > 400 ? 20 : 18,

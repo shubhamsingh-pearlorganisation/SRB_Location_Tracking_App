@@ -24,6 +24,7 @@ import {
 import { regexes } from "../core/utils/constants";
 import Loader from "../components/Loader";
 import * as FileSystem from "expo-file-system";
+import ImageDialog from "../components/ImageDialog";
 
 // ============================================================================================
 
@@ -70,97 +71,114 @@ const ProfileScreen = ({ navigation }: any) => {
   const [pickedImagePath, setPickedImagePath] = useState<any>({});
 
   // This method is used to find selected image file size.
-  const getFileInfo = async (fileURI: string) => {
-    const fileInfo = await FileSystem.getInfoAsync(fileURI);
-    return fileInfo;
-  };
+  // const getFileInfo = async (fileURI: string) => {
+  //   const fileInfo = await FileSystem.getInfoAsync(fileURI);
+  //   return fileInfo;
+  // };
 
-  // This method is used to check file size length with 5 MB
-  const isLessThanTheMB = (fileSize: number, smallerThanSizeMB: number) => {
-    // By default fileSize is in bytes format
-    // Convert in MB - fileSize / 1024 / 1024
-    const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB;
-    return isOk;
-  };
+  // // This method is used to check file size length with 5 MB
+  // const isLessThanTheMB = (fileSize: number, smallerThanSizeMB: number) => {
+  //   // By default fileSize is in bytes format
+  //   // Convert in MB - fileSize / 1024 / 1024
+  //   const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB;
+  //   return isOk;
+  // };
 
   // This function is triggered when the "Select from Gallery" button pressed
-  const uploadImageFromGallery = async () => {
-    // Ask the user for the permission to access the media library
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+  // const uploadImageFromGallery = async () => {
+  //   // Ask the user for the permission to access the media library
+  //   const permissionResult =
+  //     await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (permissionResult.granted === false) {
-      Alert.alert(
-        "Permission Failed",
-        "You've refused to allow this app to access your photos!"
-      );
-      return;
-    }
+  //   if (permissionResult.granted === false) {
+  //     Alert.alert(
+  //       "Permission Failed",
+  //       "You've refused to allow this app to access your photos!"
+  //     );
+  //     return;
+  //   }
 
-    const result: any = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
+  //   const result: any = await ImagePicker.launchImageLibraryAsync({
+  //     allowsEditing: true,
+  //     quality: 1,
+  //   });
 
-    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+  //   const fileInfo = await getFileInfo(result?.assets[0]?.uri);
 
-    if (!fileInfo?.size) {
-      alert("Can't select this file as the size is unknown.");
-      return;
-    }
+  //   if (!fileInfo?.size) {
+  //     alert("Can't select this file as the size is unknown.");
+  //     return;
+  //   }
 
-    if (result?.assets[0]?.type === "image") {
-      const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-      if (!isLt5MB) {
-        alert(`Image size must be smaller than 5 MB!`);
-        return;
-      }
-    }
+  //   if (result?.assets[0]?.type === "image") {
+  //     const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+  //     if (!isLt5MB) {
+  //       alert(`Image size must be smaller than 5 MB!`);
+  //       return;
+  //     }
+  //   }
 
-    if (!result.canceled) {
-      setPickedImagePath(result.assets[0]);
-      setUserDetails({ ...userDetails, image: "" });
-    }
-  };
+  //   if (!result.canceled) {
+  //     setPickedImagePath(result.assets[0]);
+  //     setUserDetails({ ...userDetails, image: "" });
+  //   }
+  // };
 
-  // This function is triggered when the "Open camera" button pressed
-  const uploadImageFromCamera = async () => {
-    // Ask the user for the permission to access the camera
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+  // // This function is triggered when the "Open camera" button pressed
+  // const uploadImageFromCamera = async () => {
+  //   // Ask the user for the permission to access the camera
+  //   const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
-    if (permissionResult.granted === false) {
-      Alert.alert(
-        "Permission Failed",
-        "You've refused to allow this app to access your camera!"
-      );
-      return;
-    }
+  //   if (permissionResult.granted === false) {
+  //     Alert.alert(
+  //       "Permission Failed",
+  //       "You've refused to allow this app to access your camera!"
+  //     );
+  //     return;
+  //   }
 
-    const result: any = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
+  //   const result: any = await ImagePicker.launchCameraAsync({
+  //     allowsEditing: true,
+  //     quality: 1,
+  //   });
 
-    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+  //   const fileInfo = await getFileInfo(result?.assets[0]?.uri);
 
-    if (!fileInfo?.size) {
-      alert("Can't select this file as the size is unknown.");
-      return;
-    }
+  //   if (!fileInfo?.size) {
+  //     alert("Can't select this file as the size is unknown.");
+  //     return;
+  //   }
 
-    if (result?.assets[0]?.type === "image") {
-      const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-      if (!isLt5MB) {
-        alert(`Image size must be smaller than 5 MB!`);
-        return;
-      }
-    }
+  //   if (result?.assets[0]?.type === "image") {
+  //     const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+  //     if (!isLt5MB) {
+  //       alert(`Image size must be smaller than 5 MB!`);
+  //       return;
+  //     }
+  //   }
 
-    if (!result.canceled) {
-      setPickedImagePath(result.assets[0]);
-      setUserDetails({ ...userDetails, image: "" });
-    }
-  };
+  //   if (!result.canceled) {
+  //     setPickedImagePath(result.assets[0]);
+  //     setUserDetails({ ...userDetails, image: "" });
+  //   }
+  // };
+
+  const [uploadImageModal, setUploadImageModal] = useState(false)
+
+  const recieveImageData = (data:any) =>{
+    console.log("ImagePath::: ", data)
+    setUploadImageModal(false)
+    setPickedImagePath(data)
+    // uploadProfileImage()
+  }
+
+
+  useEffect(() => {
+  if(Object.keys(pickedImagePath).length>0){
+    uploadProfileImage()
+  }
+  }, [pickedImagePath])
+  
 
   // This method is used to validate iimage data and call upload image api
   const uploadProfileImage = () => {
@@ -174,6 +192,7 @@ const ProfileScreen = ({ navigation }: any) => {
         ]
       : "";
 
+
     // Image Extension
     const fileExtension = uriLastSegment && uriLastSegment.split(".")[1];
 
@@ -183,12 +202,14 @@ const ProfileScreen = ({ navigation }: any) => {
       pickedImagePath?.type &&
       pickedImagePath?.type.toString().includes("image/") === true
     )
-      type = pickedImagePath?.type;
+      {type = pickedImagePath?.type;}
     else if (
       pickedImagePath?.type &&
       pickedImagePath?.type.toString().includes("image/") === false
-    )
+    ){
       type = "image/" + pickedImagePath?.type;
+    }
+      
     else type = "";
 
     // Name
@@ -207,6 +228,7 @@ const ProfileScreen = ({ navigation }: any) => {
       filename,
     };
 
+
     // Check Valid Image types
     if (Object.keys(pickedImagePath).length === 0)
       Alert.alert("Validation Failed", "Please select the image first");
@@ -215,7 +237,11 @@ const ProfileScreen = ({ navigation }: any) => {
       fileExtension === "jpg" ||
       fileExtension === "jpeg"
     )
+    {
       updateUserProfileImage(imageData);
+      
+    }
+      
     else
       Alert.alert(
         "Validation Failed",
@@ -230,7 +256,8 @@ const ProfileScreen = ({ navigation }: any) => {
       formData.append("token_id", authContextData?.token);
       formData.append("image", imageData);
 
-      setShowLoader(true);
+
+      // setShowLoader(true);
       const response = await instance.post("/users_image_update", formData);
       if (response.status === 200 && response.data?.status === true) {
         setShowLoader(false);
@@ -364,6 +391,8 @@ const ProfileScreen = ({ navigation }: any) => {
   // ----------------------------------------------------------------------------
   return !isEditable ? (
     <View style={styles.container}>
+      
+      
       <View style={styles.topView}>
         <View
           style={{
@@ -475,6 +504,7 @@ const ProfileScreen = ({ navigation }: any) => {
   ) : (
     // ---------------------------------Editable View----------------------------------------
     <View style={styles.container}>
+      {uploadImageModal && <ImageDialog visibility={uploadImageModal} sendData={recieveImageData}/>}
       <View
         style={[
           styles.topView,
@@ -571,6 +601,7 @@ const ProfileScreen = ({ navigation }: any) => {
                   source={{ uri: pickedImagePath?.uri }}
                   style={styles.profileImage}
                 />
+                
               )}
             {userDetails?.image !== "" && pickedImagePath && (
               <Image
@@ -580,15 +611,15 @@ const ProfileScreen = ({ navigation }: any) => {
             )}
           </View>
           <View style={styles.buttonContainer}>
-            <Pressable style={styles.imgBtns} onPress={uploadImageFromGallery}>
+            {/* <Pressable style={styles.imgBtns} onPress={uploadImageFromGallery}>
               <Text style={styles.imgBtnText}>Gallery</Text>
             </Pressable>
             <Pressable style={styles.imgBtns} onPress={uploadImageFromCamera}>
               <Text style={styles.imgBtnText}>Camera</Text>
-            </Pressable>
+            </Pressable> */}
             <Pressable
               style={[styles.imgBtns, { backgroundColor: "#452FFF" }]}
-              onPress={uploadProfileImage}
+              onPress={()=>setUploadImageModal(true)}
             >
               <Text
                 style={[

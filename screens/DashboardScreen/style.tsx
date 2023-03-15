@@ -103,8 +103,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     height: "auto",
     flexDirection: "row",
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
     padding: "2%",
   },
   groupListItemName: {

@@ -26,6 +26,7 @@ const FAQScreen = () => {
         <>
           <List.Section title="Frequently asked Questions">
             <ScrollView
+            showsVerticalScrollIndicator={false}
               style={{
                 height: "95%",
               }}
