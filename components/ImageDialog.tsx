@@ -160,7 +160,6 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
                 flexDirection: "row",
                 justifyContent:'flex-end',
                 alignItems:'flex-end',
-                
               }}
             >
               <TouchableOpacity
