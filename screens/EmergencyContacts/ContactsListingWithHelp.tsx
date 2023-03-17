@@ -136,7 +136,10 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
           padding: "2%",
         }}
       >
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.listContainer}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.listContainer}
+        >
           {contactsList?.length > 0 ? (
             contactsList.map((contact: any, i: number) => {
               return (

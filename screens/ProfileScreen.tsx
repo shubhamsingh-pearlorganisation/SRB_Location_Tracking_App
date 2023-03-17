@@ -163,22 +163,20 @@ const ProfileScreen = ({ navigation }: any) => {
   //   }
   // };
 
-  const [uploadImageModal, setUploadImageModal] = useState(false)
+  const [uploadImageModal, setUploadImageModal] = useState(false);
 
-  const recieveImageData = (data:any) =>{
-    console.log("ImagePath::: ", data)
-    setUploadImageModal(false)
-    setPickedImagePath(data)
+  const recieveImageData = (data: any) => {
+    console.log("ImagePath::: ", data);
+    setUploadImageModal(false);
+    setPickedImagePath(data);
     // uploadProfileImage()
-  }
-
+  };
 
   useEffect(() => {
-  if(Object.keys(pickedImagePath).length>0){
-    uploadProfileImage()
-  }
-  }, [pickedImagePath])
-  
+    if (Object.keys(pickedImagePath).length > 0) {
+      uploadProfileImage();
+    }
+  }, [pickedImagePath]);
 
   // This method is used to validate iimage data and call upload image api
   const uploadProfileImage = () => {
@@ -192,7 +190,6 @@ const ProfileScreen = ({ navigation }: any) => {
         ]
       : "";
 
-
     // Image Extension
     const fileExtension = uriLastSegment && uriLastSegment.split(".")[1];
 
@@ -201,16 +198,14 @@ const ProfileScreen = ({ navigation }: any) => {
     if (
       pickedImagePath?.type &&
       pickedImagePath?.type.toString().includes("image/") === true
-    )
-      {type = pickedImagePath?.type;}
-    else if (
+    ) {
+      type = pickedImagePath?.type;
+    } else if (
       pickedImagePath?.type &&
       pickedImagePath?.type.toString().includes("image/") === false
-    ){
+    ) {
       type = "image/" + pickedImagePath?.type;
-    }
-      
-    else type = "";
+    } else type = "";
 
     // Name
     const name = pickedImagePath?.name ? pickedImagePath?.name : uriLastSegment;
@@ -228,7 +223,6 @@ const ProfileScreen = ({ navigation }: any) => {
       filename,
     };
 
-
     // Check Valid Image types
     if (Object.keys(pickedImagePath).length === 0)
       Alert.alert("Validation Failed", "Please select the image first");
@@ -236,13 +230,9 @@ const ProfileScreen = ({ navigation }: any) => {
       fileExtension === "png" ||
       fileExtension === "jpg" ||
       fileExtension === "jpeg"
-    )
-    {
+    ) {
       updateUserProfileImage(imageData);
-      
-    }
-      
-    else
+    } else
       Alert.alert(
         "Validation Failed",
         "The selected file type is invalid. Please choose image with PNG, JPG or JPEG format only."
@@ -255,7 +245,6 @@ const ProfileScreen = ({ navigation }: any) => {
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
       formData.append("image", imageData);
-
 
       // setShowLoader(true);
       const response = await instance.post("/users_image_update", formData);
@@ -347,7 +336,6 @@ const ProfileScreen = ({ navigation }: any) => {
     try {
       const { name, email, dob } = userDetails;
 
-
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
       formData.append("name", name);
@@ -391,8 +379,6 @@ const ProfileScreen = ({ navigation }: any) => {
   // ----------------------------------------------------------------------------
   return !isEditable ? (
     <View style={styles.container}>
-      
-      
       <View style={styles.topView}>
         <View
           style={{
@@ -504,7 +490,12 @@ const ProfileScreen = ({ navigation }: any) => {
   ) : (
     // ---------------------------------Editable View----------------------------------------
     <View style={styles.container}>
-      {uploadImageModal && <ImageDialog visibility={uploadImageModal} sendData={recieveImageData}/>}
+      {uploadImageModal && (
+        <ImageDialog
+          visibility={uploadImageModal}
+          sendData={recieveImageData}
+        />
+      )}
       <View
         style={[
           styles.topView,
@@ -601,7 +592,6 @@ const ProfileScreen = ({ navigation }: any) => {
                   source={{ uri: pickedImagePath?.uri }}
                   style={styles.profileImage}
                 />
-                
               )}
             {userDetails?.image !== "" && pickedImagePath && (
               <Image
@@ -619,7 +609,7 @@ const ProfileScreen = ({ navigation }: any) => {
             </Pressable> */}
             <Pressable
               style={[styles.imgBtns, { backgroundColor: "#452FFF" }]}
-              onPress={()=>setUploadImageModal(true)}
+              onPress={() => setUploadImageModal(true)}
             >
               <Text
                 style={[

@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     height: "100%",
-    backgroundColor:COLORS.white
+    backgroundColor: COLORS.white,
   },
   icons: {
     margin: 10,

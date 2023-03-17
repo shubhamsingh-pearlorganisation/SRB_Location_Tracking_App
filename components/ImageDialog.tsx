@@ -158,8 +158,8 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
             <View
               style={{
                 flexDirection: "row",
-                justifyContent:'flex-end',
-                alignItems:'flex-end',
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
               }}
             >
               <TouchableOpacity
@@ -173,10 +173,14 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
                   justifyContent: "center",
                 }}
               >
-                <Text style={{color: COLORS.voilet,
-                fontSize:SIZES.width>400?22:18,
+                <Text
+                  style={{
+                    color: COLORS.voilet,
+                    fontSize: SIZES.width > 400 ? 22 : 18,
                     margin: 15,
-                    textDecorationLine: "underline",}}>
+                    textDecorationLine: "underline",
+                  }}
+                >
                   Gallery
                 </Text>
                 {/* {showLoader && (
@@ -203,7 +207,7 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
                     color: COLORS.voilet,
                     margin: 15,
                     textDecorationLine: "underline",
-                    fontSize:SIZES.width>400?22:18,
+                    fontSize: SIZES.width > 400 ? 22 : 18,
                   }}
                 >
                   Take Picture

@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView,Text } from "react-native";
+import { View, StyleSheet, ScrollView, Text } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { SIZES } from "../constants";
 import { List } from "react-native-paper";
@@ -26,7 +26,7 @@ const FAQScreen = () => {
         <>
           <List.Section title="Frequently asked Questions">
             <ScrollView
-            showsVerticalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
               style={{
                 height: "95%",
               }}
@@ -45,7 +45,7 @@ const FAQScreen = () => {
                         title={faq.description}
                         titleNumberOfLines={10}
                         titleStyle={styles.answerText}
-                        style={{paddingLeft:"2%"}}
+                        style={{ paddingLeft: "2%" }}
                       />
                     </List.Accordion>
                   </List.Section>

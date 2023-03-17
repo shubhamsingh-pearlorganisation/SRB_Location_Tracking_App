@@ -149,20 +149,20 @@ const Register = ({ route }: any) => {
   //   }
   // };
 
-  const [uploadImageModal, setUploadImageModal] = useState(false)
+  const [uploadImageModal, setUploadImageModal] = useState(false);
 
-  const recieveImageData = (data:any) =>{
-    console.log("ImagePath::: ", data)
-    setUploadImageModal(false)
-    setPickedImagePath(data)
+  const recieveImageData = (data: any) => {
+    console.log("ImagePath::: ", data);
+    setUploadImageModal(false);
+    setPickedImagePath(data);
     // uploadProfileImage()
-  }
+  };
 
   useEffect(() => {
-  if(Object.keys(pickedImagePath).length>0){
-    uploadProfileImage()
-  }
-  }, [pickedImagePath])
+    if (Object.keys(pickedImagePath).length > 0) {
+      uploadProfileImage();
+    }
+  }, [pickedImagePath]);
 
   // This method is used to validate iimage data and call upload image api
   const uploadProfileImage = () => {
@@ -364,7 +364,12 @@ const Register = ({ route }: any) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
-      {uploadImageModal && <ImageDialog visibility={uploadImageModal} sendData={recieveImageData}/>}
+        {uploadImageModal && (
+          <ImageDialog
+            visibility={uploadImageModal}
+            sendData={recieveImageData}
+          />
+        )}
         {/* {showLoader && (
           <Loader
             message="Please wait.. we are creating your account."
@@ -406,7 +411,7 @@ const Register = ({ route }: any) => {
             </Pressable> */}
             <Pressable
               style={[styles.imgBtns, { backgroundColor: "#452FFF" }]}
-              onPress={()=>setUploadImageModal(true)}
+              onPress={() => setUploadImageModal(true)}
             >
               <Text
                 style={[
@@ -505,19 +510,8 @@ const Register = ({ route }: any) => {
           </View>
         </Pressable>
 
-        <TouchableOpacity
-          style={
-            styles.sendCode
-          }
-          onPress={updateDetails}
-        >
-          <Text
-            style={
-              styles.buttonText
-            }
-          >
-            Continue
-          </Text>
+        <TouchableOpacity style={styles.sendCode} onPress={updateDetails}>
+          <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -547,9 +541,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   textInput: {
-    textAlignVertical:"center",
+    textAlignVertical: "center",
     paddingHorizontal: 20,
-    fontSize: SIZES.height>700?24:20,
+    fontSize: SIZES.height > 700 ? 24 : 20,
     borderBottomColor: "#fff",
     borderBottomWidth: 0,
     marginBottom: 20,
@@ -558,10 +552,10 @@ const styles = StyleSheet.create({
   },
 
   textInput2: {
-    textAlignVertical:"center",
+    textAlignVertical: "center",
     paddingHorizontal: 20,
-    paddingVertical:5,
-    fontSize: SIZES.height>700?24:20,
+    paddingVertical: 5,
+    fontSize: SIZES.height > 700 ? 24 : 20,
     width: "80%",
     borderRadius: 30,
     borderColor: "#fff",
@@ -588,22 +582,22 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 1,
     borderColor: "#fff",
-    width:SIZES.width*.8,
-    height:SIZES.height*.06,
-    alignItems:'center',
-    justifyContent:'center'
+    width: SIZES.width * 0.8,
+    height: SIZES.height * 0.06,
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     justifyContent: "center",
     position: "relative",
     paddingStart: 10,
     paddingEnd: 10,
-    textAlignVertical:"center",
+    textAlignVertical: "center",
     color: "#705ECF",
     backgroundColor: "rgba(0,0,0,0)",
     textAlign: "center",
-    fontSize: SIZES.height>700?24:20,
-    alignSelf:'center'
+    fontSize: SIZES.height > 700 ? 24 : 20,
+    alignSelf: "center",
   },
   otpText: {
     position: "relative",
@@ -611,7 +605,7 @@ const styles = StyleSheet.create({
     height: "auto",
     fontStyle: "normal",
     fontWeight: "bold",
-    fontSize: SIZES.height>700?30:24,
+    fontSize: SIZES.height > 700 ? 30 : 24,
     marginBottom: 30,
     textAlign: "center",
     color: "#FFFFFF",

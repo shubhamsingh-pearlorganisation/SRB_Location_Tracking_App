@@ -81,7 +81,7 @@ const Dashboard = ({ navigation }: any) => {
           navigation={navigation}
           sendGroupDetails={receiveGroupDetails}
         />
-        
+
         {/* ---------------------------------------------------- */}
 
         {/* Group Screen down icon Section */}
