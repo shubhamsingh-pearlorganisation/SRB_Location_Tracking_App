@@ -122,11 +122,11 @@ const ManageMap = ({ navigation }: any) => {
 
   useEffect(() => {
     if (individualLocationObj) {
-      console.log("Location Data for Firebase: ", individualLocationObj);
-      console.log(
-        "Total Locations Fetched: ",
-        individualLocationObj.tenMinutesLocationData.length
-      );
+      // console.log("Location Data for Firebase: ", individualLocationObj);
+      // console.log(
+      //   "Total Locations Fetched: ",
+      //   individualLocationObj.tenMinutesLocationData.length
+      // );
       setLocationData([...locationData, individualLocationObj]);
     }
   }, [individualLocationObj]);

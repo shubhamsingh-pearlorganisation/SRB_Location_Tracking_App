@@ -6,12 +6,17 @@ import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from "@expo/vector-icons";
-import { AppSettingsContext } from "../App";
+import { AppSettingsContext, AuthContext } from "../App";
+import { instance } from "../core/utils/AxiosInterceptor";
+import { useToast } from "react-native-toast-notifications";
 
 // ---------------------------------------------------------------------------------------------
 
 const Settings = ({ navigation }: any) => {
+  const toast = useToast();
+
   const userSettings: any = useContext(AppSettingsContext);
+  const authContextData: any = useContext(AuthContext);
 
   // Component's Local States
   // ========================
@@ -22,6 +27,7 @@ const Settings = ({ navigation }: any) => {
   const [milesChecked, setMilesChecked] = useState(false);
 
   useEffect(() => {
+    console.log("SHUBHAm::: ", userSettings?.appSettings?.userSettings?.[0]);
     setUserSettingsData(userSettings?.appSettings?.userSettings?.[0]);
     setUserGlobalSettingsData(userSettings?.appSettings?.userGlobalSettings);
   }, [userSettings]);
@@ -38,6 +44,7 @@ const Settings = ({ navigation }: any) => {
   });
 
   useEffect(() => {
+    console.log("dd", userSettingsData);
     if (userSettingsData && Object.keys(userSettingsData).length > 0) {
       setMilesChecked(
         !userSettingsData?.distance_unit?.toString().includes("kilometer")
@@ -47,7 +54,9 @@ const Settings = ({ navigation }: any) => {
       setUpdatedSettingsData({
         ...updatedSettingsData,
         allow_location: userSettingsData?.allow_location,
-        distance_unit: userSettingsData?.distance_unit,
+        distance_unit: userSettingsData?.distance_unit
+          ? userSettingsData?.distance_unit
+          : "kilometer",
         map_mode: userSettingsData?.map_mode,
         tracking_from_time: userSettingsData?.tracking_from_time
           ? new Date(userSettingsData?.tracking_from_time)
@@ -60,18 +69,34 @@ const Settings = ({ navigation }: any) => {
   }, [userSettingsData]);
 
   useEffect(() => {
-    if (milesChecked) {
-      setUpdatedSettingsData({
-        ...updatedSettingsData,
-        distanceUnit: "mile",
-      });
-    } else {
-      setUpdatedSettingsData({
-        ...updatedSettingsData,
-        distanceUnit: "kilometer",
-      });
-    }
+    console.log("milesChecked::: ", milesChecked);
   }, [milesChecked]);
+
+  useEffect(() => {
+    console.log("updatedSettingsData::: ", updatedSettingsData);
+  }, [updatedSettingsData]);
+
+  // useEffect(() => {
+  //   if (milesChecked) {
+  //     setUpdatedSettingsData({
+  //       ...updatedSettingsData,
+  //       distanceUnit: "mile",
+  //     });
+  //     updateSettings({ distance_unit: "mile" });
+  //   } else {
+  //     setUpdatedSettingsData({
+  //       ...updatedSettingsData,
+  //       distanceUnit: "kilometer",
+  //     });
+  //     updateSettings({ distance_unit: "kilometer" });
+  //   }
+  // }, [milesChecked]);
+
+  // useEffect(() => {
+  //   if (updatedSettingsData) {
+  //     // console.log("updatedSettingsData::: ", updatedSettingsData);
+  //   }
+  // }, [updatedSettingsData]);
 
   const enableSaveBtn = () => {
     if (!saveSettingsBtn) setSaveSettingsBtn(true);
@@ -122,7 +147,7 @@ const Settings = ({ navigation }: any) => {
     navigation.navigate("MemberShipScreen");
 
   const handleSettingsUpdate = () => {
-    console.log("updatedSettingsData::: ", updatedSettingsData);
+    // console.log("updatedSettingsData::: ", updatedSettingsData);
 
     let reqPayload = { ...updatedSettingsData };
     reqPayload = {
@@ -134,9 +159,58 @@ const Settings = ({ navigation }: any) => {
     delete reqPayload.fromTime;
     delete reqPayload.toTime;
 
-    console.log("UPDATE_USER_SETTING_API_DATA::: ", reqPayload);
+    // console.log("UPDATE_USER_SETTING_API_DATA::: ", reqPayload);
 
     //NEED TO CALL UPDATE SETTING API HERE
+  };
+
+  // This method is used to update user's settings
+  const updateSettings = async (settingData: any) => {
+    console.log(
+      "settingData::: ",
+      settingData,
+      Object.keys(settingData)[0],
+      Object.values(settingData)[0]
+    );
+    try {
+      if (Object.keys(settingData).length !== 0) {
+        let key = Object.keys(settingData)[0];
+        let value = Object.values(settingData)[0];
+
+        value = key === "allow_location" && value === true ? 1 : 0;
+
+        const formData: any = new FormData();
+        formData.append("token_id", authContextData?.token);
+        formData.append("key", key);
+        formData.append("value", value);
+
+        const response = await instance.post("/user_setting_update", formData);
+        if (response.status === 200 && response.data?.status === true) {
+          toast.show("User settings updated successfully", {
+            type: "success",
+          });
+          userSettings.updateSettingsData();
+        } else {
+          toast.show(
+            response.data?.message
+              ? response.data?.message
+              : "Getting an error while updating settings. Please try again later.",
+            {
+              type: "error",
+            }
+          );
+        }
+      } else return;
+    } catch (error: any) {
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while updating settings. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
+    }
   };
 
   // =======================================================================================
@@ -158,7 +232,7 @@ const Settings = ({ navigation }: any) => {
         >
           <Text style={styles.textHeading}>Share My Location</Text>
           <ToggleSwitch
-            isOn={updatedSettingsData?.allow_location}
+            isOn={updatedSettingsData?.allow_location == 1 ? true : false}
             onColor={COLORS.voilet}
             offColor="rgba(52,52,52,0.2)"
             size={SIZES.width > 400 ? "medium" : "small"}
@@ -167,7 +241,10 @@ const Settings = ({ navigation }: any) => {
                 ...updatedSettingsData,
                 allow_location: !updatedSettingsData?.allow_location,
               });
-              enableSaveBtn();
+              // enableSaveBtn();
+              updateSettings({
+                allow_location: !updatedSettingsData?.allow_location,
+              });
             }}
           />
         </View>
@@ -197,8 +274,11 @@ const Settings = ({ navigation }: any) => {
               offColor={COLORS.voilet}
               size={SIZES.width > 400 ? "medium" : "small"}
               onToggle={() => {
+                // enableSaveBtn();
                 setMilesChecked(!milesChecked);
-                enableSaveBtn();
+                updateSettings({
+                  distance_unit: milesChecked ? "mile" : "kilometer",
+                });
               }}
             />
             <View style={styles.card}>

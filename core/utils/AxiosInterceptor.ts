@@ -16,7 +16,7 @@ export const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    console.log("config: ", config);
+    // console.log("config: ", config);
 
     // const jwtToken = "";
     // if (jwtToken) {
@@ -35,45 +35,45 @@ instance.interceptors.request.use(
 // Added a response interceptor
 instance.interceptors.response.use(
   function (response) {
-    console.log("response: ", response);
+    // console.log("response: ", response);
 
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response;
   },
   function (error) {
-    console.log("response error::: ", error);
+    // console.log("response error::: ", error);
 
-    // let errorMessage = "Sorry, something went wrong. Please try again later.";
+    let errorMessage = "Sorry, something went wrong. Please try again later.";
 
-    // console.log("error?.response?.status::: ", error?.response?.status);
-    // switch (error?.response?.status) {
-    //   case 400:
-    //     errorMessage =
-    //       "Bad Request. Please check the data which you are providing for accessing resource.";
-    //     showError(errorMessage);
-    //     break;
+    console.log("error?.response?.status::: ", error?.response?.status);
+    switch (error?.response?.status) {
+      case 400:
+        errorMessage =
+          "Bad Request. Please check the data which you are providing for accessing resource.";
+        showError(errorMessage);
+        break;
 
-    //   case 401:
-    //     errorMessage = "Unauthorized access. Please check login credentials.";
-    //     showError(errorMessage);
-    //     // handleLogout();
-    //     break;
+      case 401:
+        errorMessage = "Unauthorized access. Please check login credentials.";
+        showError(errorMessage);
+        // handleLogout();
+        break;
 
-    //   case 404:
-    //     errorMessage =
-    //       "The requested url is not found. Please check the url again.";
-    //     showError(errorMessage);
-    //     break;
+      case 404:
+        errorMessage =
+          "The requested url is not found. Please check the url again.";
+        showError(errorMessage);
+        break;
 
-    //   case 500:
-    //     errorMessage = "Internal server error. Please try again in some time.";
-    //     showError(errorMessage);
-    //     break;
+      case 500:
+        errorMessage = "Internal server error. Please try again in some time.";
+        showError(errorMessage);
+        break;
 
-    //   default:
-    //     showError(errorMessage);
-    // }
+      default:
+        showError(errorMessage);
+    }
     return Promise.reject(error);
   }
 );
