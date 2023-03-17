@@ -126,7 +126,7 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(52, 52, 52, 0.8)",
+            backgroundColor: "rgba(52, 52, 52, 0.6)",
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -136,7 +136,7 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
               alignItems: "center",
               backgroundColor: "white",
               height:
-                SIZES.height > 700 ? SIZES.height * 0.3 : SIZES.height * 0.3,
+                SIZES.height > 700 ? SIZES.height * 0.2 : SIZES.height * 0.15,
               width: "90%",
               borderWidth: 1,
               borderColor: "#fff",
@@ -147,8 +147,8 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
             <View style={{ alignItems: "center", margin: 10 }}>
               <Text
                 style={{
-                  fontSize: SIZES.width > 400 ? 30 : 20,
-                  marginTop: "2%",
+                  fontSize: SIZES.width > 400 ? 30 : 22,
+                  marginTop: "1%",
                 }}
               >
                 Upload Profile Image
@@ -158,7 +158,9 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
             <View
               style={{
                 flexDirection: "row",
-                width: SIZES.width,
+                justifyContent:'flex-end',
+                alignItems:'flex-end',
+                
               }}
             >
               <TouchableOpacity
@@ -167,15 +169,16 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
                 style={{
                   alignItems: "center",
                   borderBottomWidth: 0,
-                  width: "30%",
+                  width: "auto",
                   height: "auto",
                   justifyContent: "center",
-                  borderRadius: 30,
-                  backgroundColor: COLORS.white,
                 }}
               >
-                <Text style={{ color: "white", margin: 15 }}>
-                  Upload from Gallery
+                <Text style={{color: COLORS.voilet,
+                fontSize:SIZES.width>400?22:18,
+                    margin: 15,
+                    textDecorationLine: "underline",}}>
+                  Gallery
                 </Text>
                 {/* {showLoader && (
                 <ActivityIndicator
@@ -191,11 +194,9 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
                 style={{
                   alignItems: "center",
                   borderBottomWidth: 0,
-                  width: "30%",
+                  width: "auto",
                   height: "auto",
                   justifyContent: "center",
-                  borderRadius: 30,
-                  backgroundColor: COLORS.white,
                 }}
               >
                 <Text
@@ -203,6 +204,7 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
                     color: COLORS.voilet,
                     margin: 15,
                     textDecorationLine: "underline",
+                    fontSize:SIZES.width>400?22:18,
                   }}
                 >
                   Take Picture
