@@ -4,7 +4,7 @@ import ManageMap from "./ManageMap";
 import { styles } from "./style";
 import { useState, useEffect, useContext } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { COLORS, SIZES } from "../../constants";
+import { SIZES } from "../../constants";
 import { GroupsAndMembersContext } from "../../App";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import GroupsMembersListing from "./GroupsMembersListing";
