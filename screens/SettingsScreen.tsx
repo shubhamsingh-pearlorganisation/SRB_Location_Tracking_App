@@ -23,7 +23,6 @@ const Settings = ({ navigation }: any) => {
   const [userSettingsData, setUserSettingsData] = useState<any>([]);
   const [userGlobalSettingsData, setUserGlobalSettingsData] = useState<any>([]);
   const [expanded, setExpanded] = useState(false);
-  const [saveSettingsBtn, setSaveSettingsBtn] = useState(false);
   const [milesChecked, setMilesChecked] = useState(false);
 
   useEffect(() => {
@@ -68,39 +67,6 @@ const Settings = ({ navigation }: any) => {
     }
   }, [userSettingsData]);
 
-  useEffect(() => {
-    console.log("milesChecked::: ", milesChecked);
-  }, [milesChecked]);
-
-  useEffect(() => {
-    console.log("updatedSettingsData::: ", updatedSettingsData);
-  }, [updatedSettingsData]);
-
-  // useEffect(() => {
-  //   if (milesChecked) {
-  //     setUpdatedSettingsData({
-  //       ...updatedSettingsData,
-  //       distanceUnit: "mile",
-  //     });
-  //     updateSettings({ distance_unit: "mile" });
-  //   } else {
-  //     setUpdatedSettingsData({
-  //       ...updatedSettingsData,
-  //       distanceUnit: "kilometer",
-  //     });
-  //     updateSettings({ distance_unit: "kilometer" });
-  //   }
-  // }, [milesChecked]);
-
-  // useEffect(() => {
-  //   if (updatedSettingsData) {
-  //     // console.log("updatedSettingsData::: ", updatedSettingsData);
-  //   }
-  // }, [updatedSettingsData]);
-
-  const enableSaveBtn = () => {
-    if (!saveSettingsBtn) setSaveSettingsBtn(true);
-  };
   const handlePress = () => setExpanded(!expanded);
 
   // --------------------------- Time Picker Handling -- Start -----------------------------------
@@ -125,7 +91,6 @@ const Settings = ({ navigation }: any) => {
     });
     set_From_Time(trackingFromTime);
     hideStartTimePicker();
-    enableSaveBtn();
   };
 
   const handleEndConfirm = (date: any) => {
@@ -138,31 +103,12 @@ const Settings = ({ navigation }: any) => {
     set_To_Time(trackingToTime);
 
     hideEndTimePicker();
-    enableSaveBtn();
   };
 
   // --------------------------- Time Picker Handling -- Finished -----------------------------------
 
   const redirectToMemberShipScreen = () =>
     navigation.navigate("MemberShipScreen");
-
-  const handleSettingsUpdate = () => {
-    // console.log("updatedSettingsData::: ", updatedSettingsData);
-
-    let reqPayload = { ...updatedSettingsData };
-    reqPayload = {
-      ...reqPayload,
-      tracking_from_time: updatedSettingsData.fromTime,
-      tracking_to_time: updatedSettingsData.toTime,
-    };
-
-    delete reqPayload.fromTime;
-    delete reqPayload.toTime;
-
-    // console.log("UPDATE_USER_SETTING_API_DATA::: ", reqPayload);
-
-    //NEED TO CALL UPDATE SETTING API HERE
-  };
 
   // This method is used to update user's settings
   const updateSettings = async (settingData: any) => {
@@ -174,10 +120,16 @@ const Settings = ({ navigation }: any) => {
     );
     try {
       if (Object.keys(settingData).length !== 0) {
-        let key = Object.keys(settingData)[0];
-        let value = Object.values(settingData)[0];
+        let key: any = Object.keys(settingData)[0].toString();
+        let value: any = Object.values(settingData)[0]?.toString();
 
-        value = key === "allow_location" && value === true ? 1 : 0;
+        //Location Specific Handling
+        if (key === "allow_location") {
+          if (value === true) value = 1;
+          else value = 0;
+        }
+
+        console.log("PEARL::: ", key, value);
 
         const formData: any = new FormData();
         formData.append("token_id", authContextData?.token);
@@ -202,14 +154,14 @@ const Settings = ({ navigation }: any) => {
         }
       } else return;
     } catch (error: any) {
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while updating settings. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while updating settings. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -241,7 +193,6 @@ const Settings = ({ navigation }: any) => {
                 ...updatedSettingsData,
                 allow_location: !updatedSettingsData?.allow_location,
               });
-              // enableSaveBtn();
               updateSettings({
                 allow_location: !updatedSettingsData?.allow_location,
               });
@@ -274,7 +225,6 @@ const Settings = ({ navigation }: any) => {
               offColor={COLORS.voilet}
               size={SIZES.width > 400 ? "medium" : "small"}
               onToggle={() => {
-                // enableSaveBtn();
                 setMilesChecked(!milesChecked);
                 updateSettings({
                   distance_unit: milesChecked ? "mile" : "kilometer",
@@ -434,7 +384,9 @@ const Settings = ({ navigation }: any) => {
                       ...updatedSettingsData,
                       map_mode: "default",
                     });
-                    enableSaveBtn();
+                    updateSettings({
+                      map_mode: "default",
+                    });
                   }}
                 />
               </View>
@@ -464,7 +416,9 @@ const Settings = ({ navigation }: any) => {
                       ...updatedSettingsData,
                       map_mode: "satellite",
                     });
-                    enableSaveBtn();
+                    updateSettings({
+                      map_mode: "satellite",
+                    });
                   }}
                 />
               </View>
@@ -493,7 +447,9 @@ const Settings = ({ navigation }: any) => {
                       ...updatedSettingsData,
                       map_mode: "terrain",
                     });
-                    enableSaveBtn();
+                    updateSettings({
+                      map_mode: "terrain",
+                    });
                   }}
                 />
               </View>
@@ -516,22 +472,6 @@ const Settings = ({ navigation }: any) => {
           </List.Accordion>
         </List.Section>
       </ScrollView>
-      {saveSettingsBtn === true && (
-        <Pressable
-          style={[
-            styles.memberShipCard,
-            {
-              marginBottom: "2%",
-              bottom: 0,
-              position: "absolute",
-              alignSelf: "center",
-            },
-          ]}
-          onPress={() => handleSettingsUpdate()}
-        >
-          <Text style={styles.subContent}>Save Settings</Text>
-        </Pressable>
-      )}
     </View>
   );
 };

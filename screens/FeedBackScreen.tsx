@@ -91,14 +91,14 @@ const FeedbackScreen = () => {
         setShowLoader(false);
       }
     } catch (error: any) {
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while adding a new feedback. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while adding a new feedback. Please try again later.",
+        {
+          type: "error",
+        }
+      );
       setModalVisible(false);
       setShowLoader(false);
     }
@@ -128,14 +128,14 @@ const FeedbackScreen = () => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while fetching Feedback List. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching Feedback List. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
   // ------------------------------------------------------------------------------
@@ -231,7 +231,6 @@ const FeedbackScreen = () => {
                     {
                       color: "white",
                       textAlign: "center",
-                      // width: 120,
                       padding: 0,
                       fontSize: SIZES.width > 400 ? 20 : 15,
                     },
@@ -251,7 +250,6 @@ const FeedbackScreen = () => {
                     {
                       color: "white",
                       textAlign: "center",
-                      // width: 100,
                       padding: 0,
                       fontSize: SIZES.width > 400 ? 20 : 15,
                     },

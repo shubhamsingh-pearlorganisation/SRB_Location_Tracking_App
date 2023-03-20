@@ -152,14 +152,14 @@ const EditViewGroup = ({ route, navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while deleting group. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while deleting group. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -196,14 +196,14 @@ const EditViewGroup = ({ route, navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while leaving group. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while leaving group. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -240,14 +240,14 @@ const EditViewGroup = ({ route, navigation }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while deleting group member. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while deleting group member. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -341,14 +341,14 @@ const EditViewGroup = ({ route, navigation }: any) => {
         }
       } catch (error: any) {
         setShowLoader(false);
-        // toast.show(
-        //   error.message
-        //     ? error.message
-        //     : "Getting an error while updating a group details. Please try again later.",
-        //   {
-        //     type: "error",
-        //   }
-        // );
+        toast.show(
+          error.message
+            ? error.message
+            : "Getting an error while updating a group details. Please try again later.",
+          {
+            type: "error",
+          }
+        );
       }
     }
   };

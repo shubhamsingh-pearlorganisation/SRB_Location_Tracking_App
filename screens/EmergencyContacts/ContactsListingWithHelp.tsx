@@ -75,14 +75,14 @@ const ContactsListingWithHelp = ({ navigation }: any) => {
     } catch (error: any) {
       setShowLoaderForDeleteContact(false);
 
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while deleting contact. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while deleting contact. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     } finally {
       setShowDeleteConfirmationPopup({
         ...setShowDeleteConfirmationPopup,

@@ -67,14 +67,14 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
     } catch (error: any) {
       setShowLoader(false);
 
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while sending emergency alert to your contacts. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while sending emergency alert to your contacts. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
   // ----------------------------------------------------------------------------------------

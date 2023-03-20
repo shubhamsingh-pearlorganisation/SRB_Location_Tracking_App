@@ -201,14 +201,14 @@ const PhonebookContactList = ({ navigation }: any) => {
     } catch (error: any) {
       setShowDoneLoader(false);
 
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while adding contacts. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while adding contacts. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 

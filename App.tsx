@@ -143,14 +143,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while fetching groups. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching groups. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -177,14 +177,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while fetching user details. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching user details. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -210,14 +210,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while fetching contacts. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching contacts. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -238,14 +238,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while fetching faqs. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching faqs. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -276,14 +276,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error while fetching app settings. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching app settings. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 
@@ -305,14 +305,14 @@ const App = () => {
         );
       }
     } catch (error: any) {
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     :"Getting an error while fetching membership plans list. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching membership plans list. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 

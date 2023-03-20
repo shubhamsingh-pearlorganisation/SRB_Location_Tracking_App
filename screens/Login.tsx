@@ -198,14 +198,14 @@ const Login = ({ navigation, route }: any) => {
       }
     } catch (error: any) {
       setShowLoader(false);
-      // toast.show(
-      //   error.message
-      //     ? error.message
-      //     : "Getting an error in generating authentication code. Please try again later.",
-      //   {
-      //     type: "error",
-      //   }
-      // );
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error in generating authentication code. Please try again later.",
+        {
+          type: "error",
+        }
+      );
     }
   };
 

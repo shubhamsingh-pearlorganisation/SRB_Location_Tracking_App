@@ -73,14 +73,14 @@ const AddGroup = ({ navigation }: any) => {
         }
       } catch (error: any) {
         setShowLoader(false);
-        // toast.show(
-        //   error.message
-        //     ? error.message
-        //     : "Getting an error while creating a new group. Please try again later.",
-        //   {
-        //     type: "error",
-        //   }
-        // );
+        toast.show(
+          error.message
+            ? error.message
+            : "Getting an error while creating a new group. Please try again later.",
+          {
+            type: "error",
+          }
+        );
       }
     }
   };
