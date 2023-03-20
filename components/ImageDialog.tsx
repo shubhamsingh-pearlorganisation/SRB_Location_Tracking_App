@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Modal, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  Alert,
+  Pressable,
+} from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { COLORS, SIZES } from "../constants";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import { Feather } from "@expo/vector-icons";
 
-const ImageDialog = ({ visibility, sendData, route }: any) => {
+// ==========================================================================
+
+const ImageDialog = ({
+  visibility,
+  sendData,
+  route,
+  updateModalVisibility,
+}: any) => {
   console.log("visible:: ", visibility);
 
   const [userDetails, setUserDetails] = useState<any>({
@@ -144,7 +159,13 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
               elevation: 10,
             }}
           >
-            <View style={{ alignItems: "center", margin: 10 }}>
+            <View
+              style={{
+                justifyContent: "space-around",
+                margin: 10,
+                flexDirection: "row",
+              }}
+            >
               <Text
                 style={{
                   fontSize: SIZES.width > 400 ? 30 : 22,
@@ -153,6 +174,9 @@ const ImageDialog = ({ visibility, sendData, route }: any) => {
               >
                 Upload Profile Image
               </Text>
+              <Pressable onPress={() => updateModalVisibility("close")}>
+                <Feather name="x-circle" size={24} color="black" />
+              </Pressable>
             </View>
 
             <View

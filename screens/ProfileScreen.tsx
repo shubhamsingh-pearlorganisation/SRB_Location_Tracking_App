@@ -494,6 +494,9 @@ const ProfileScreen = ({ navigation }: any) => {
         <ImageDialog
           visibility={uploadImageModal}
           sendData={recieveImageData}
+          updateModalVisibility={(data: string) => {
+            data === "close" && setUploadImageModal(false);
+          }}
         />
       )}
       <View
