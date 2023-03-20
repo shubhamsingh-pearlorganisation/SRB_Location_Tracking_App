@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../App";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { useToast } from "react-native-toast-notifications";
+import Loader from "../components/Loader";
 
 // ---------------------------------------------------------------------------------------------
 
@@ -20,7 +21,8 @@ const Settings = ({ navigation }: any) => {
   // ========================
   const [userSettings, setUserSettings] = useState<any>({}); // Used to store get settings api data
   const [expanded, setExpanded] = useState(false);
-  const [milesChecked, setMilesChecked] = useState(false);
+  const [kilometerChecked, setKilometerChecked] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
 
   // This "updatedSettingsData" state is used to prefilled settings data and also use to update settings data
   const [updatedSettingsData, setUpdatedSettingsData] = useState<any>({
@@ -36,11 +38,11 @@ const Settings = ({ navigation }: any) => {
   // This method is used to fetch complete settings list from the database.
   const fetchSettings = async () => {
     try {
+      setShowLoader(true);
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
       const response = await instance.post("/user_setting_get", formData);
       if (response.status === 200 && response.data?.status === true) {
-        console.log("Settings Response::: ", response.data?.setting[0]);
         setUserSettings(response.data?.setting[0]);
       } else {
         toast.show(
@@ -61,6 +63,8 @@ const Settings = ({ navigation }: any) => {
           type: "error",
         }
       );
+    } finally {
+      setShowLoader(false);
     }
   };
 
@@ -78,83 +82,22 @@ const Settings = ({ navigation }: any) => {
 
   useEffect(() => {
     if (userSettings && Object.keys(userSettings).length > 0) {
-      let formattedFromTimeValue: any = null;
-      let formattedToTimeValue: any = null;
-
-      console.log("ABCD::: ", new Date(userSettings?.tracking_from_time));
-      console.log("EFGH::: ", new Date(userSettings?.tracking_to_time));
-
-      setMilesChecked(
+      setKilometerChecked(
         !userSettings?.distance_unit?.toString().includes("kilometer")
           ? true
           : false
       );
-
-      if (userSettings?.tracking_from_time) {
-        let splittedFromTime = userSettings?.tracking_from_time
-          ?.toString()
-          .split(":");
-
-        console.log("splittedFromTime::: ", splittedFromTime);
-
-        const hrsFromTime = splittedFromTime[0];
-        const minsFromTime = splittedFromTime[1];
-        const secFromTime = splittedFromTime[2];
-
-        const fromTimeMilliSecondsVal =
-          (hrsFromTime * 60 * 60 + minsFromTime * 60 + secFromTime) * 1000;
-
-        console.log("fromTimeMilliSecondsVal::: ", fromTimeMilliSecondsVal);
-
-        formattedFromTimeValue = new Date(
-          new Date(fromTimeMilliSecondsVal).setHours(
-            new Date(fromTimeMilliSecondsVal).getHours() - 5,
-            new Date(fromTimeMilliSecondsVal).getMinutes() - 30
-          )
-        );
-
-        console.log("formattedFromTimeValue:: ", formattedFromTimeValue);
-      }
-
-      if (userSettings?.tracking_to_time) {
-        let splittedToTime = userSettings?.tracking_to_time
-          ?.toString()
-          .split(":");
-
-        console.log("splittedToTime::: ", splittedToTime);
-
-        const hrsToTime = splittedToTime[0];
-        const minsToTime = splittedToTime[1];
-        const secToTime = splittedToTime[2];
-
-        const ToTimeMilliSecondsVal =
-          (hrsToTime * 60 * 60 + minsToTime * 60 + secToTime) * 1000;
-
-        console.log("ToTimeMilliSecondsVal::: ", ToTimeMilliSecondsVal);
-
-        formattedToTimeValue = new Date(
-          new Date(ToTimeMilliSecondsVal).setHours(
-            new Date(ToTimeMilliSecondsVal).getHours() - 5,
-            new Date(ToTimeMilliSecondsVal).getMinutes() - 30
-          )
-        );
-
-        console.log("formattedToTimeValue:: ", formattedToTimeValue);
-      }
-
       setUpdatedSettingsData({
         ...updatedSettingsData,
         allow_location: userSettings?.allow_location,
         distance_unit: userSettings?.distance_unit
-          ? userSettings?.distance_unit
-          : "kilometer",
+          ?.toString()
+          .includes("kilometer")
+          ? "kilometer"
+          : "mile",
         map_mode: userSettings?.map_mode,
-        tracking_from_time: userSettings?.tracking_from_time
-          ? formattedFromTimeValue
-          : new Date(),
-        tracking_to_time: userSettings?.tracking_to_time
-          ? formattedToTimeValue
-          : new Date(),
+        tracking_from_time: new Date(),
+        tracking_to_time: new Date(),
       });
     }
   }, [userSettings]);
@@ -219,13 +162,13 @@ const Settings = ({ navigation }: any) => {
     try {
       if (Object.keys(settingData).length !== 0) {
         let key: any = Object.keys(settingData)[0].toString();
-        let value: any = Object.values(settingData)[0]?.toString();
+        let value: any = Object.values(settingData)[0];
 
-        //Location Specific Handling
-        if (key === "allow_location") {
-          if (value === true) value = 1;
-          else value = 0;
-        }
+        if (key === "allow_location" && value == true) {
+          value = parseInt("1");
+        } else if (key === "allow_location" && value == false) {
+          value = parseInt("0");
+        } else value = value;
 
         console.log("PEARL::: ", key, value);
 
@@ -263,6 +206,7 @@ const Settings = ({ navigation }: any) => {
   };
 
   // =======================================================================================
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -270,304 +214,311 @@ const Settings = ({ navigation }: any) => {
           marginBottom: "12%",
         }}
       >
-        <View
-          style={{
-            width: SIZES.width * 0.95,
-            flexDirection: "row",
-            margin: "2%",
-            padding: "2%",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text style={styles.textHeading}>Share My Location</Text>
-          <ToggleSwitch
-            isOn={updatedSettingsData?.allow_location == 1 ? true : false}
-            onColor={COLORS.voilet}
-            offColor="rgba(52,52,52,0.2)"
-            size={SIZES.width > 400 ? "medium" : "small"}
-            onToggle={() => {
-              setUpdatedSettingsData({
-                ...updatedSettingsData,
-                allow_location: !updatedSettingsData?.allow_location,
-              });
-              updateSettings({
-                allow_location: !updatedSettingsData?.allow_location,
-              });
-            }}
-          />
-        </View>
-        <View style={styles.distanceUnitHolder}>
-          <View
-            style={{
-              width: "40%",
-            }}
-          >
-            <Text style={styles.textHeading}>Distance Unit</Text>
-          </View>
-
-          <View style={styles.distanceCardHolder}>
-            <View style={styles.card}>
-              <Text
-                style={[
-                  styles.cardText,
-                  milesChecked ? styles.unSelected : styles.selected,
-                ]}
-              >
-                Kilometers
-              </Text>
-            </View>
-            <ToggleSwitch
-              isOn={milesChecked}
-              onColor={COLORS.voilet}
-              offColor={COLORS.voilet}
-              size={SIZES.width > 400 ? "medium" : "small"}
-              onToggle={() => {
-                setMilesChecked(!milesChecked);
-                updateSettings({
-                  distance_unit: milesChecked ? "mile" : "kilometer",
-                });
+        {showLoader ? (
+          <Loader message="Please wait ... We are fetching user's settings" />
+        ) : (
+          <>
+            <View
+              style={{
+                width: SIZES.width * 0.95,
+                flexDirection: "row",
+                margin: "2%",
+                padding: "2%",
+                justifyContent: "space-between",
               }}
-            />
-            <View style={styles.card}>
-              <Text
-                style={[
-                  styles.cardText,
-                  milesChecked ? styles.selected : styles.unSelected,
-                ]}
-              >
-                Miles
-              </Text>
+            >
+              <Text style={styles.textHeading}>Share My Location</Text>
+              <ToggleSwitch
+                isOn={updatedSettingsData?.allow_location == 1 ? true : false}
+                onColor={COLORS.voilet}
+                offColor="rgba(52,52,52,0.2)"
+                size={SIZES.width > 400 ? "medium" : "small"}
+                onToggle={() => {
+                  setUpdatedSettingsData({
+                    ...updatedSettingsData,
+                    allow_location: !updatedSettingsData?.allow_location,
+                  });
+                  updateSettings({
+                    allow_location: !updatedSettingsData?.allow_location,
+                  });
+                }}
+              />
             </View>
-          </View>
-        </View>
-        {/* -----------------------------------------Tracking Time Cards----------------------------------------- */}
-        <View style={styles.trackingTimeView}>
-          <View style={styles.trackingFromTimeHolder}>
-            <Text style={styles.textHeading}>Tracking from Time</Text>
-            <View>
-              <Pressable
-                onPress={showstartTimePicker}
+            <View style={styles.distanceUnitHolder}>
+              <View
                 style={{
-                  flexDirection: "row",
-                  marginHorizontal: "1%",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: "40%",
                 }}
               >
-                <DateTimePickerModal
-                  date={updatedSettingsData?.tracking_from_time}
-                  isVisible={startTimePickerVisible}
-                  mode="time"
-                  onConfirm={handleStartConfirm}
-                  onCancel={hideStartTimePicker}
-                />
-                <Ionicons
-                  name="timer-outline"
-                  size={SIZES.width > 400 ? 25 : 20}
-                  color="black"
-                  style={{ marginBottom: "2%", marginTop: "2%" }}
-                />
-                <Text
-                  style={{
-                    fontSize: SIZES.width > 400 ? 24 : 18,
-                    fontWeight: "bold",
-                    marginBottom: "2%",
-                    marginTop: "2%",
+                <Text style={styles.textHeading}>Distance Unit</Text>
+              </View>
+
+              <View style={styles.distanceCardHolder}>
+                <View style={styles.card}>
+                  <Text
+                    style={[
+                      styles.cardText,
+                      kilometerChecked ? styles.unSelected : styles.selected,
+                    ]}
+                  >
+                    Kilometers
+                  </Text>
+                </View>
+                <ToggleSwitch
+                  isOn={kilometerChecked}
+                  onColor={COLORS.voilet}
+                  offColor={COLORS.voilet}
+                  size={SIZES.width > 400 ? "medium" : "small"}
+                  onToggle={() => {
+                    setKilometerChecked(!kilometerChecked);
+                    updateSettings({
+                      distance_unit: kilometerChecked ? "kilometer" : "mile",
+                    });
                   }}
-                >
-                  {from_time === "" && updatedSettingsData?.tracking_from_time
-                    ? new Date(
-                        updatedSettingsData?.tracking_from_time
-                      ).toLocaleTimeString()
-                    : from_time
-                    ? from_time
-                    : "No date selected"}
+                />
+                <View style={styles.card}>
+                  <Text
+                    style={[
+                      styles.cardText,
+                      kilometerChecked ? styles.selected : styles.unSelected,
+                    ]}
+                  >
+                    Miles
+                  </Text>
+                </View>
+              </View>
+            </View>
+            {/* -----------------------------------------Tracking Time Cards----------------------------------------- */}
+            <View style={styles.trackingTimeView}>
+              <View style={styles.trackingFromTimeHolder}>
+                <Text style={styles.textHeading}>Tracking from Time</Text>
+                <View>
+                  <Pressable
+                    onPress={showstartTimePicker}
+                    style={{
+                      flexDirection: "row",
+                      marginHorizontal: "1%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <DateTimePickerModal
+                      date={updatedSettingsData?.tracking_from_time}
+                      isVisible={startTimePickerVisible}
+                      mode="time"
+                      onConfirm={handleStartConfirm}
+                      onCancel={hideStartTimePicker}
+                    />
+                    <Ionicons
+                      name="timer-outline"
+                      size={SIZES.width > 400 ? 25 : 20}
+                      color="black"
+                      style={{ marginBottom: "2%", marginTop: "2%" }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: SIZES.width > 400 ? 24 : 18,
+                        fontWeight: "bold",
+                        marginBottom: "2%",
+                        marginTop: "2%",
+                      }}
+                    >
+                      {from_time === "" &&
+                      updatedSettingsData?.tracking_from_time
+                        ? new Date(
+                            updatedSettingsData?.tracking_from_time
+                          ).toLocaleTimeString()
+                        : from_time
+                        ? from_time
+                        : "No date selected"}
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+              <View style={styles.trackingToTimeHolder}>
+                <Text style={styles.textHeading}>Tracking to Time</Text>
+                <View>
+                  <Pressable
+                    onPress={showEndTimePicker}
+                    style={{
+                      flexDirection: "row",
+                      marginHorizontal: "1%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <DateTimePickerModal
+                      date={updatedSettingsData?.tracking_to_time}
+                      isVisible={endTimePickerVisible}
+                      mode="time"
+                      onConfirm={handleEndConfirm}
+                      onCancel={hideEndTimePicker}
+                    />
+                    <Ionicons
+                      name="timer-outline"
+                      size={SIZES.width > 400 ? 25 : 20}
+                      color="black"
+                      style={{ marginBottom: "2%", marginTop: "2%" }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: SIZES.width > 400 ? 24 : 18,
+                        fontWeight: "bold",
+                        marginBottom: "2%",
+                        marginTop: "2%",
+                      }}
+                    >
+                      {to_time === "" && updatedSettingsData?.tracking_from_time
+                        ? new Date(
+                            updatedSettingsData?.tracking_to_time
+                          ).toLocaleTimeString()
+                        : to_time
+                        ? to_time
+                        : "No date selected"}
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+            <View style={styles.subscriptionView}>
+              <Text style={styles.textHeading}>Subscription Plan</Text>
+              <Pressable
+                style={styles.memberShipCard}
+                onPress={redirectToMemberShipScreen}
+              >
+                <Text style={styles.subContent}>
+                  {userSettings?.is_subscription == 1
+                    ? "Subscribed"
+                    : "Not Subscribed"}
                 </Text>
+                <MaterialIcons
+                  name={"keyboard-arrow-right"}
+                  size={24}
+                  color={"white"}
+                />
               </Pressable>
             </View>
-          </View>
-          <View style={styles.trackingToTimeHolder}>
-            <Text style={styles.textHeading}>Tracking to Time</Text>
-            <View>
-              <Pressable
-                onPress={showEndTimePicker}
-                style={{
-                  flexDirection: "row",
-                  marginHorizontal: "1%",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+            <List.Section title="">
+              <List.Accordion
+                title="Select Map Mode"
+                titleStyle={styles.textHeading}
+                onPress={handlePress}
+                expanded={true}
               >
-                <DateTimePickerModal
-                  date={updatedSettingsData?.tracking_to_time}
-                  isVisible={endTimePickerVisible}
-                  mode="time"
-                  onConfirm={handleEndConfirm}
-                  onCancel={hideEndTimePicker}
-                />
-                <Ionicons
-                  name="timer-outline"
-                  size={SIZES.width > 400 ? 25 : 20}
-                  color="black"
-                  style={{ marginBottom: "2%", marginTop: "2%" }}
-                />
-                <Text
-                  style={{
-                    fontSize: SIZES.width > 400 ? 24 : 18,
-                    fontWeight: "bold",
-                    marginBottom: "2%",
-                    marginTop: "2%",
-                  }}
-                >
-                  {to_time === "" && updatedSettingsData?.tracking_from_time
-                    ? new Date(
-                        updatedSettingsData?.tracking_to_time
-                      ).toLocaleTimeString()
-                    : to_time
-                    ? to_time
-                    : "No date selected"}
-                </Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
-        <View style={styles.subscriptionView}>
-          <Text style={styles.textHeading}>Subscription Plan</Text>
-          <Pressable
-            style={styles.memberShipCard}
-            onPress={redirectToMemberShipScreen}
-          >
-            <Text style={styles.subContent}>
-              {userSettings?.is_subscription == 1
-                ? "Subscribed"
-                : "Not Subscribed"}
-            </Text>
-            <MaterialIcons
-              name={"keyboard-arrow-right"}
-              size={24}
-              color={"white"}
-            />
-          </Pressable>
-        </View>
-        <List.Section title="">
-          <List.Accordion
-            title="Select Map Mode"
-            titleStyle={styles.textHeading}
-            onPress={handlePress}
-            expanded={true}
-          >
-            <View style={styles.item}>
-              <List.Item
-                title="Default"
-                style={{ width: "40%" }}
-                titleStyle={{
-                  fontSize: SIZES.width > 400 ? 20 : 18,
-                  color: "black",
-                }}
-              />
+                <View style={styles.item}>
+                  <List.Item
+                    title="Default"
+                    style={{ width: "40%" }}
+                    titleStyle={{
+                      fontSize: SIZES.width > 400 ? 20 : 18,
+                      color: "black",
+                    }}
+                  />
 
-              <View style={styles.itemButtonContainer}>
-                <ToggleSwitch
-                  isOn={
-                    updatedSettingsData?.map_mode.includes("default")
-                      ? true
-                      : false
-                  }
-                  onColor={COLORS.voilet}
-                  offColor="rgba(52,52,52,0.2)"
-                  size={SIZES.width > 400 ? "medium" : "small"}
-                  onToggle={() => {
-                    setUpdatedSettingsData({
-                      ...updatedSettingsData,
-                      map_mode: "default",
-                    });
-                    updateSettings({
-                      map_mode: "default",
-                    });
-                  }}
-                />
-              </View>
-            </View>
-            <View style={styles.item}>
-              <List.Item
-                title="Satellite"
-                style={{ width: "40%" }}
-                titleStyle={{
-                  fontSize: SIZES.width > 400 ? 20 : 18,
-                  color: "black",
-                }}
-              />
+                  <View style={styles.itemButtonContainer}>
+                    <ToggleSwitch
+                      isOn={
+                        updatedSettingsData?.map_mode.includes("default")
+                          ? true
+                          : false
+                      }
+                      onColor={COLORS.voilet}
+                      offColor="rgba(52,52,52,0.2)"
+                      size={SIZES.width > 400 ? "medium" : "small"}
+                      onToggle={() => {
+                        setUpdatedSettingsData({
+                          ...updatedSettingsData,
+                          map_mode: "default",
+                        });
+                        updateSettings({
+                          map_mode: "default",
+                        });
+                      }}
+                    />
+                  </View>
+                </View>
+                <View style={styles.item}>
+                  <List.Item
+                    title="Satellite"
+                    style={{ width: "40%" }}
+                    titleStyle={{
+                      fontSize: SIZES.width > 400 ? 20 : 18,
+                      color: "black",
+                    }}
+                  />
 
-              <View style={styles.itemButtonContainer}>
-                <ToggleSwitch
-                  isOn={
-                    updatedSettingsData?.map_mode.includes("satellite")
-                      ? true
-                      : false
-                  }
-                  onColor={COLORS.voilet}
-                  offColor="rgba(52,52,52,0.2)"
-                  size={SIZES.width > 400 ? "medium" : "small"}
-                  onToggle={() => {
-                    setUpdatedSettingsData({
-                      ...updatedSettingsData,
-                      map_mode: "satellite",
-                    });
-                    updateSettings({
-                      map_mode: "satellite",
-                    });
-                  }}
+                  <View style={styles.itemButtonContainer}>
+                    <ToggleSwitch
+                      isOn={
+                        updatedSettingsData?.map_mode.includes("satellite")
+                          ? true
+                          : false
+                      }
+                      onColor={COLORS.voilet}
+                      offColor="rgba(52,52,52,0.2)"
+                      size={SIZES.width > 400 ? "medium" : "small"}
+                      onToggle={() => {
+                        setUpdatedSettingsData({
+                          ...updatedSettingsData,
+                          map_mode: "satellite",
+                        });
+                        updateSettings({
+                          map_mode: "satellite",
+                        });
+                      }}
+                    />
+                  </View>
+                </View>
+                <View style={styles.item}>
+                  <List.Item
+                    title="Terrain"
+                    style={{ width: "40%" }}
+                    titleStyle={{
+                      fontSize: SIZES.width > 400 ? 20 : 18,
+                      color: "black",
+                    }}
+                  />
+                  <View style={styles.itemButtonContainer}>
+                    <ToggleSwitch
+                      isOn={
+                        updatedSettingsData?.map_mode.includes("terrain")
+                          ? true
+                          : false
+                      }
+                      onColor={COLORS.voilet}
+                      offColor="rgba(52,52,52,0.2)"
+                      size={SIZES.width > 400 ? "medium" : "small"}
+                      onToggle={() => {
+                        setUpdatedSettingsData({
+                          ...updatedSettingsData,
+                          map_mode: "terrain",
+                        });
+                        updateSettings({
+                          map_mode: "terrain",
+                        });
+                      }}
+                    />
+                  </View>
+                </View>
+              </List.Accordion>
+              <List.Accordion
+                title="Privacy Policy, Terms and Conditons"
+                titleStyle={styles.textHeading}
+                titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
+                onPress={handlePress}
+              >
+                <List.Item
+                  title="Privacy Policy"
+                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 />
-              </View>
-            </View>
-            <View style={styles.item}>
-              <List.Item
-                title="Terrain"
-                style={{ width: "40%" }}
-                titleStyle={{
-                  fontSize: SIZES.width > 400 ? 20 : 18,
-                  color: "black",
-                }}
-              />
-              <View style={styles.itemButtonContainer}>
-                <ToggleSwitch
-                  isOn={
-                    updatedSettingsData?.map_mode.includes("terrain")
-                      ? true
-                      : false
-                  }
-                  onColor={COLORS.voilet}
-                  offColor="rgba(52,52,52,0.2)"
-                  size={SIZES.width > 400 ? "medium" : "small"}
-                  onToggle={() => {
-                    setUpdatedSettingsData({
-                      ...updatedSettingsData,
-                      map_mode: "terrain",
-                    });
-                    updateSettings({
-                      map_mode: "terrain",
-                    });
-                  }}
+                <List.Item
+                  title="Terms and Conditions"
+                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 />
-              </View>
-            </View>
-          </List.Accordion>
-          <List.Accordion
-            title="Privacy Policy, Terms and Conditons"
-            titleStyle={styles.textHeading}
-            titleNumberOfLines={SIZES.width > 400 ? 5 : 10}
-            onPress={handlePress}
-          >
-            <List.Item
-              title="Privacy Policy"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            />
-            <List.Item
-              title="Terms and Conditions"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            />
-          </List.Accordion>
-        </List.Section>
+              </List.Accordion>
+            </List.Section>
+          </>
+        )}
       </ScrollView>
     </View>
   );
