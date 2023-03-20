@@ -6,7 +6,7 @@ import { COLORS, SIZES } from "../constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Ionicons } from "@expo/vector-icons";
-import { AppSettingsContext, AuthContext } from "../App";
+import { AuthContext } from "../App";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { useToast } from "react-native-toast-notifications";
 
@@ -14,58 +14,150 @@ import { useToast } from "react-native-toast-notifications";
 
 const Settings = ({ navigation }: any) => {
   const toast = useToast();
-
-  const userSettings: any = useContext(AppSettingsContext);
   const authContextData: any = useContext(AuthContext);
 
   // Component's Local States
   // ========================
-  const [userSettingsData, setUserSettingsData] = useState<any>([]);
-  const [userGlobalSettingsData, setUserGlobalSettingsData] = useState<any>([]);
+  const [userSettings, setUserSettings] = useState<any>({}); // Used to store get settings api data
   const [expanded, setExpanded] = useState(false);
   const [milesChecked, setMilesChecked] = useState(false);
 
-  useEffect(() => {
-    console.log("SHUBHAm::: ", userSettings?.appSettings?.userSettings?.[0]);
-    setUserSettingsData(userSettings?.appSettings?.userSettings?.[0]);
-    setUserGlobalSettingsData(userSettings?.appSettings?.userGlobalSettings);
-  }, [userSettings]);
-
   // This "updatedSettingsData" state is used to prefilled settings data and also use to update settings data
   const [updatedSettingsData, setUpdatedSettingsData] = useState<any>({
-    allow_location: 0,
-    distance_unit: "kilometer",
+    allow_location: null,
+    distance_unit: "",
     tracking_from_time: new Date(),
     tracking_to_time: new Date(),
-    map_mode: "default",
+    map_mode: "",
     fromTime: "",
     toTime: "",
   });
 
+  // This method is used to fetch complete settings list from the database.
+  const fetchSettings = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("token_id", authContextData?.token);
+      const response = await instance.post("/user_setting_get", formData);
+      if (response.status === 200 && response.data?.status === true) {
+        console.log("Settings Response::: ", response.data?.setting[0]);
+        setUserSettings(response.data?.setting[0]);
+      } else {
+        toast.show(
+          response.data?.message
+            ? response.data?.message
+            : "Getting an error while fetching app settings. Please try again later.",
+          {
+            type: "error",
+          }
+        );
+      }
+    } catch (error: any) {
+      toast.show(
+        error.message
+          ? error.message
+          : "Getting an error while fetching app settings. Please try again later.",
+        {
+          type: "error",
+        }
+      );
+    }
+  };
+
   useEffect(() => {
-    console.log("dd", userSettingsData);
-    if (userSettingsData && Object.keys(userSettingsData).length > 0) {
+    fetchSettings();
+  }, []);
+
+  useEffect(() => {
+    if (userSettings) {
+      console.log("userSettings::: ", userSettings);
+    }
+  }, [userSettings]);
+
+  // ================================================================
+
+  useEffect(() => {
+    if (userSettings && Object.keys(userSettings).length > 0) {
+      let formattedFromTimeValue: any = null;
+      let formattedToTimeValue: any = null;
+
+      console.log("ABCD::: ", new Date(userSettings?.tracking_from_time));
+      console.log("EFGH::: ", new Date(userSettings?.tracking_to_time));
+
       setMilesChecked(
-        !userSettingsData?.distance_unit?.toString().includes("kilometer")
+        !userSettings?.distance_unit?.toString().includes("kilometer")
           ? true
           : false
       );
+
+      if (userSettings?.tracking_from_time) {
+        let splittedFromTime = userSettings?.tracking_from_time
+          ?.toString()
+          .split(":");
+
+        console.log("splittedFromTime::: ", splittedFromTime);
+
+        const hrsFromTime = splittedFromTime[0];
+        const minsFromTime = splittedFromTime[1];
+        const secFromTime = splittedFromTime[2];
+
+        const fromTimeMilliSecondsVal =
+          (hrsFromTime * 60 * 60 + minsFromTime * 60 + secFromTime) * 1000;
+
+        console.log("fromTimeMilliSecondsVal::: ", fromTimeMilliSecondsVal);
+
+        formattedFromTimeValue = new Date(
+          new Date(fromTimeMilliSecondsVal).setHours(
+            new Date(fromTimeMilliSecondsVal).getHours() - 5,
+            new Date(fromTimeMilliSecondsVal).getMinutes() - 30
+          )
+        );
+
+        console.log("formattedFromTimeValue:: ", formattedFromTimeValue);
+      }
+
+      if (userSettings?.tracking_to_time) {
+        let splittedToTime = userSettings?.tracking_to_time
+          ?.toString()
+          .split(":");
+
+        console.log("splittedToTime::: ", splittedToTime);
+
+        const hrsToTime = splittedToTime[0];
+        const minsToTime = splittedToTime[1];
+        const secToTime = splittedToTime[2];
+
+        const ToTimeMilliSecondsVal =
+          (hrsToTime * 60 * 60 + minsToTime * 60 + secToTime) * 1000;
+
+        console.log("ToTimeMilliSecondsVal::: ", ToTimeMilliSecondsVal);
+
+        formattedToTimeValue = new Date(
+          new Date(ToTimeMilliSecondsVal).setHours(
+            new Date(ToTimeMilliSecondsVal).getHours() - 5,
+            new Date(ToTimeMilliSecondsVal).getMinutes() - 30
+          )
+        );
+
+        console.log("formattedToTimeValue:: ", formattedToTimeValue);
+      }
+
       setUpdatedSettingsData({
         ...updatedSettingsData,
-        allow_location: userSettingsData?.allow_location,
-        distance_unit: userSettingsData?.distance_unit
-          ? userSettingsData?.distance_unit
+        allow_location: userSettings?.allow_location,
+        distance_unit: userSettings?.distance_unit
+          ? userSettings?.distance_unit
           : "kilometer",
-        map_mode: userSettingsData?.map_mode,
-        tracking_from_time: userSettingsData?.tracking_from_time
-          ? new Date(userSettingsData?.tracking_from_time)
+        map_mode: userSettings?.map_mode,
+        tracking_from_time: userSettings?.tracking_from_time
+          ? formattedFromTimeValue
           : new Date(),
-        tracking_to_time: userSettingsData?.tracking_to_time
-          ? new Date(userSettingsData?.tracking_to_time)
+        tracking_to_time: userSettings?.tracking_to_time
+          ? formattedToTimeValue
           : new Date(),
       });
     }
-  }, [userSettingsData]);
+  }, [userSettings]);
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -89,6 +181,9 @@ const Settings = ({ navigation }: any) => {
       ...updatedSettingsData,
       fromTime: trackingFromTime,
     });
+    updateSettings({
+      tracking_from_time: trackingFromTime,
+    });
     set_From_Time(trackingFromTime);
     hideStartTimePicker();
   };
@@ -99,6 +194,9 @@ const Settings = ({ navigation }: any) => {
     setUpdatedSettingsData({
       ...updatedSettingsData,
       toTime: trackingToTime,
+    });
+    updateSettings({
+      tracking_to_time: trackingToTime,
     });
     set_To_Time(trackingToTime);
 
@@ -141,7 +239,6 @@ const Settings = ({ navigation }: any) => {
           toast.show("User settings updated successfully", {
             type: "success",
           });
-          userSettings.updateSettingsData();
         } else {
           toast.show(
             response.data?.message
@@ -341,7 +438,7 @@ const Settings = ({ navigation }: any) => {
             onPress={redirectToMemberShipScreen}
           >
             <Text style={styles.subContent}>
-              {userSettingsData?.is_subscription == 1
+              {userSettings?.is_subscription == 1
                 ? "Subscribed"
                 : "Not Subscribed"}
             </Text>

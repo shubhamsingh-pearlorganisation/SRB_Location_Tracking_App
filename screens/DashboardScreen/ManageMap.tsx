@@ -6,7 +6,6 @@ import { getCurrentLocation } from "../../core/utils/helper";
 import imagePath from "../../core/utils/constants";
 import { GOOGLE_API_KEY } from "../../core/utils/constants";
 import { styles } from "./style";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // -----------------------------------------------------------------------------------
 const ManageMap = ({ navigation }: any) => {
