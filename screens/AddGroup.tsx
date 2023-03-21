@@ -86,91 +86,95 @@ const AddGroup = ({ navigation }: any) => {
   };
   // ----------------------------------------------------------------------------
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      {showLoader && <Loader />}
-
+    <View style={styles.container}>
       <View>
-        <TextInput
-          placeholder="Enter Group Title ..."
-          style={styles.textInput}
-          placeholderTextColor="rgba(0,0,0,0.4)"
-          underlineColor="transparent"
-          autoFocus
-          onChangeText={(val: any) =>
-            setAddGroupFormData({
-              ...addGroupFormData,
-              title: val?.toString(),
-            })
-          }
-          maxLength={15}
-        />
-      </View>
-      <View style={styles.cardHolder}>
-        <View style={styles.card}>
-          <Pressable
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-            onPress={() => {
-              setAddGroupFormData({ ...addGroupFormData, group_type: 0 });
-              setPublicChecked(true);
-            }}
-          >
-            <View
+        {showLoader && <Loader />}
+      <View>
+        <View>
+          <TextInput
+            placeholder="Enter Group Title ..."
+            style={styles.textInput}
+            placeholderTextColor="rgba(0,0,0,0.4)"
+            underlineColor="transparent"
+            autoFocus
+            onChangeText={(val: any) =>
+              setAddGroupFormData({
+                ...addGroupFormData,
+                title: val?.toString(),
+              })
+            }
+            maxLength={15}
+          />
+        </View>
+        <View style={styles.cardHolder}>
+          <View style={styles.card}>
+            <Pressable
               style={{
-                flexDirection: "row",
-                margin: 10,
+                width: "100%",
+                height: "100%",
+              }}
+              onPress={() => {
+                setAddGroupFormData({ ...addGroupFormData, group_type: 0 });
+                setPublicChecked(true);
               }}
             >
-              <Text style={styles.cardHeading}>Public</Text>
-              <Pressable
-                style={[
-                  publicChecked ? styles.checked : styles.unchecked,
-                  styles.radio,
-                ]}
-              />
-            </View>
-            <Text style={styles.cardText}>
-              All members can see each other & their location.
-            </Text>
-          </Pressable>
-        </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  margin: 10,
+                }}
+              >
+                <Text style={styles.cardHeading}>Public</Text>
+                <Pressable
+                  style={[
+                    publicChecked ? styles.checked : styles.unchecked,
+                    styles.radio,
+                  ]}
+                />
+              </View>
+              <Text style={styles.cardText}>
+                All members can see each other & their location.
+              </Text>
+            </Pressable>
+          </View>
 
-        <View style={styles.card}>
-          <Pressable
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-            onPress={() => {
-              setAddGroupFormData({ ...addGroupFormData, group_type: 1 });
-              setPublicChecked(false);
-            }}
-          >
-            <View
+          <View style={styles.card}>
+            <Pressable
               style={{
-                flexDirection: "row",
-                margin: 10,
+                width: "100%",
+                height: "100%",
+              }}
+              onPress={() => {
+                setAddGroupFormData({ ...addGroupFormData, group_type: 1 });
+                setPublicChecked(false);
               }}
             >
-              <Text style={styles.cardHeading}>Private</Text>
-              <Pressable
-                style={[
-                  !publicChecked ? styles.checked : styles.unchecked,
-                  styles.radio,
-                ]}
-              />
-            </View>
-            <Text style={styles.cardText}>Only you can see other members</Text>
-          </Pressable>
+              <View
+                style={{
+                  flexDirection: "row",
+                  margin: 10,
+                }}
+              >
+                <Text style={styles.cardHeading}>Private</Text>
+                <Pressable
+                  style={[
+                    !publicChecked ? styles.checked : styles.unchecked,
+                    styles.radio,
+                  ]}
+                />
+              </View>
+              <Text style={styles.cardText}>
+                Only you can see other members
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </View>
+      </View>
+      
 
       <TouchableOpacity
         style={{
-          position: SIZES.height > 500 ? "absolute" : "relative",
-          bottom: SIZES.height > 500 ? "20%" : "10%",
           marginTop: "5%",
           alignSelf: "center",
           width: SIZES.width - SIZES.width * 0.2,
@@ -178,6 +182,7 @@ const AddGroup = ({ navigation }: any) => {
           justifyContent: "center",
           borderRadius: 30,
           backgroundColor: "#705ECF",
+          marginBottom: "5%",
         }}
         onPress={addNewGroup}
       >
@@ -192,7 +197,7 @@ const AddGroup = ({ navigation }: any) => {
           Create Group
         </Text>
       </TouchableOpacity>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 // =========================================================================================
@@ -202,13 +207,16 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   textInput: {
-    fontSize: SIZES.width > 400 ? 40 : 30,
+    fontSize: SIZES.width > 400 ? 34 : 26,
     backgroundColor: "transparent",
     textAlign: "center",
     borderBottomWidth: 0,
-    margin: 20,
+    marginVertical: 10,
+    marginHorizontal: 20,
   },
   focusedTextInput: {
     borderBottomWidth: 0,
@@ -254,7 +262,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: SIZES.width > 400 ? 20 : 15,
     width: SIZES.width > 400 ? "70%" : "90%",
-    bottom: "20%",
+    bottom: "10%",
     position: "absolute",
     paddingLeft: 10,
   },

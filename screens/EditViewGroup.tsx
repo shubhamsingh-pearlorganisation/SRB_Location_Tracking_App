@@ -354,200 +354,209 @@ const EditViewGroup = ({ route, navigation }: any) => {
   };
   // ----------------------------------------------------------------------------------------
   return (
-    <KeyboardAvoidingView style={styles.container}>
-      {showLoader && <Loader />}
+    <View style={styles.container}>
+      <View>
+        {showLoader && <Loader />}
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          margin: 10,
-        }}
-      >
-        <TextInput
-          placeholder="Enter Group Title ..."
-          style={styles.textInput}
-          placeholderTextColor="rgba(0,0,0,0.4)"
-          underlineColor="transparent"
-          value={editGroupFormDetails?.title}
-          maxLength={15}
-          disabled={!isModificationAllowed}
-          onChangeText={(val: any) =>
-            setEditGroupFormDetails({
-              ...editGroupFormDetails,
-              title: val?.toString().trim(),
-            })
-          }
-        />
-      </View>
-      <View style={styles.cardHolder}>
-        <View style={styles.card}>
-          <Pressable
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-            onPress={() => {
-              setpublicChecked(true);
-            }}
-            disabled={!isModificationAllowed}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                margin: 10,
-              }}
-            >
-              <Text style={styles.cardHeading}>Public</Text>
-              <Pressable
-                style={[
-                  publicChecked ? styles.checked : styles.unchecked,
-                  styles.radio,
-                ]}
-              />
-            </View>
-            <Text style={styles.cardText}>
-              All members can see each other & their location.
-            </Text>
-          </Pressable>
-        </View>
-
-        <View style={styles.card}>
-          <Pressable
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-            onPress={() => {
-              setpublicChecked(false);
-            }}
-            disabled={!isModificationAllowed}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                margin: 10,
-              }}
-            >
-              <Text style={styles.cardHeading}>Private</Text>
-              <Pressable
-                style={[
-                  !publicChecked ? styles.checked : styles.unchecked,
-                  styles.radio,
-                ]}
-              />
-            </View>
-            <Text style={styles.cardText}>Only you can see other members</Text>
-          </Pressable>
-        </View>
-      </View>
-
-      {isModificationAllowed ? (
-        <TouchableOpacity
-          style={{
-            marginTop: "5%",
-            marginBottom: "10%",
-            alignSelf: "center",
-            width: SIZES.width - SIZES.width * 0.2,
-            height: SIZES.width > 400 ? 60 : 40,
-            justifyContent: "center",
-            borderRadius: 30,
-            backgroundColor: "#705ECF",
-          }}
-          onPress={handleGroupUpdate}
-        >
-          <Text
-            style={{
-              fontWeight: "400",
-              fontSize: SIZES.width > 400 ? 25 : 20,
-              color: "white",
-              alignSelf: "center",
-            }}
-          >
-            Update Group Details
-          </Text>
-        </TouchableOpacity>
-      ) : null}
-
-      <View style={styles.memberList}>
-        <ScrollView
-          style={{
-            backgroundColor: "transparent",
-          }}
-        >
-          {editGroupFormDetails?.groupMembers?.length > 0 ? (
-            editGroupFormDetails?.groupMembers.map((member: any, i: number) => (
-              <View key={member?.group_code ? member?.group_code : i}>
-                {renderGroupMembers(member)}
-              </View>
-            ))
-          ) : (
-            <>
-              <Text>No Member Found</Text>
-            </>
-          )}
-        </ScrollView>
-      </View>
-
-      {isModificationAllowed ? (
-        <View
-          style={{
-            bottom: "1%",
-            width: SIZES.width,
-            alignItems: "center",
-            position: "absolute",
-          }}
-        >
-          <Pressable
+        <View>
+          <View
             style={{
               flexDirection: "row",
               justifyContent: "center",
-              alignItems: "center",
+              margin: 10,
             }}
-            onPress={() => deleteGroupConfirmation()}
           >
-            <Text
+            <TextInput
+              placeholder="Enter Group Title ..."
+              style={styles.textInput}
+              placeholderTextColor="rgba(0,0,0,0.4)"
+              underlineColor="transparent"
+              value={editGroupFormDetails?.title}
+              maxLength={15}
+              disabled={!isModificationAllowed}
+              onChangeText={(val: any) =>
+                setEditGroupFormDetails({
+                  ...editGroupFormDetails,
+                  title: val?.toString().trim(),
+                })
+              }
+            />
+          </View>
+          <View style={styles.cardHolder}>
+            <View style={styles.card}>
+              <Pressable
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+                onPress={() => {
+                  setpublicChecked(true);
+                }}
+                disabled={!isModificationAllowed}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    margin: 10,
+                  }}
+                >
+                  <Text style={styles.cardHeading}>Public</Text>
+                  <Pressable
+                    style={[
+                      publicChecked ? styles.checked : styles.unchecked,
+                      styles.radio,
+                    ]}
+                  />
+                </View>
+                <Text style={styles.cardText}>
+                  All members can see each other & their location.
+                </Text>
+              </Pressable>
+            </View>
+
+            <View style={styles.card}>
+              <Pressable
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+                onPress={() => {
+                  setpublicChecked(false);
+                }}
+                disabled={!isModificationAllowed}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    margin: 10,
+                  }}
+                >
+                  <Text style={styles.cardHeading}>Private</Text>
+                  <Pressable
+                    style={[
+                      !publicChecked ? styles.checked : styles.unchecked,
+                      styles.radio,
+                    ]}
+                  />
+                </View>
+                <Text style={styles.cardText}>
+                  Only you can see other members
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+          {isModificationAllowed ? (
+            <TouchableOpacity
               style={{
-                fontSize: SIZES.width > 400 ? 25 : 18,
-                fontWeight: "600",
-                marginHorizontal: "2%",
+                marginTop: "5%",
+                marginBottom: "10%",
+                alignSelf: "center",
+                width: SIZES.width - SIZES.width * 0.2,
+                height: SIZES.width > 400 ? 60 : 40,
+                justifyContent: "center",
+                borderRadius: 30,
+                backgroundColor: "#705ECF",
               }}
+              onPress={handleGroupUpdate}
             >
-              Delete
-            </Text>
-            <AntDesign name="delete" size={20} />
-          </Pressable>
+              <Text
+                style={{
+                  fontWeight: "400",
+                  fontSize: SIZES.width > 400 ? 25 : 20,
+                  color: "white",
+                  alignSelf: "center",
+                }}
+              >
+                Update Group Details
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
-      ) : (
-        <View
-          style={{
-            bottom: "1%",
-            width: SIZES.width,
-            alignItems: "center",
-            position: "absolute",
-          }}
-        >
-          <Pressable
+      </View>
+
+      <View>
+        <View style={styles.memberList}>
+          <ScrollView
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
+              backgroundColor: "transparent",
             }}
-            onPress={() => leaveGroupConfirmation()}
           >
-            <Text
-              style={{
-                fontSize: SIZES.width > 400 ? 25 : 18,
-                fontWeight: "600",
-                marginHorizontal: "2%",
-              }}
-            >
-              Leave Group
-            </Text>
-          </Pressable>
+            {editGroupFormDetails?.groupMembers?.length > 0 ? (
+              editGroupFormDetails?.groupMembers.map(
+                (member: any, i: number) => (
+                  <View key={member?.group_code ? member?.group_code : i}>
+                    {renderGroupMembers(member)}
+                  </View>
+                )
+              )
+            ) : (
+              <>
+                <Text>No Member Found</Text>
+              </>
+            )}
+          </ScrollView>
         </View>
-      )}
-    </KeyboardAvoidingView>
+
+        {isModificationAllowed ? (
+          <View
+            style={{
+              bottom: "1%",
+              width: SIZES.width,
+              alignItems: "center",
+              position: "absolute",
+            }}
+          >
+            <Pressable
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={() => deleteGroupConfirmation()}
+            >
+              <Text
+                style={{
+                  fontSize: SIZES.width > 400 ? 25 : 18,
+                  fontWeight: "600",
+                  marginHorizontal: "2%",
+                }}
+              >
+                Delete
+              </Text>
+              <AntDesign name="delete" size={20} />
+            </Pressable>
+          </View>
+        ) : (
+          <View
+            style={{
+              bottom: "1%",
+              width: SIZES.width,
+              alignItems: "center",
+              position: "absolute",
+            }}
+          >
+            <Pressable
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={() => leaveGroupConfirmation()}
+            >
+              <Text
+                style={{
+                  fontSize: SIZES.width > 400 ? 25 : 18,
+                  fontWeight: "600",
+                  marginHorizontal: "2%",
+                }}
+              >
+                Leave Group
+              </Text>
+            </Pressable>
+          </View>
+        )}
+      </View>
+    </View>
   );
 };
 // =========================================================================================
@@ -557,6 +566,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   memberListItem: {
     backgroundColor: "white",
@@ -668,7 +679,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: SIZES.width > 400 ? 20 : 15,
     width: SIZES.width > 400 ? "70%" : "90%",
-    bottom: "20%",
+    bottom: "10%",
     position: "absolute",
     paddingLeft: 10,
   },

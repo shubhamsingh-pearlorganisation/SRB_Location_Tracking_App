@@ -9,7 +9,7 @@ const Loader = ({
   return (
     <>
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
+        <ActivityIndicator size={SIZES.width > 400 ? 30 : 20} />
         <Text style={[styles.loadingDescriptionMsg, { color: msgTextColor }]}>
           {message}
         </Text>

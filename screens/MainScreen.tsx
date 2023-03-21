@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import MenuScreen from "./MenuScreen";
 import Dashboard from "./DashboardScreen";
+
 // ---------------------------------------------------------------------------------------------
 
 const MainScreen = ({ navigation }: any) => {
@@ -27,6 +28,7 @@ const MainScreen = ({ navigation }: any) => {
           else if (rn === "Groups")
             iconName = focused ? "people" : "people-outline";
           else if (rn === "Menu") iconName = focused ? "menu" : "menu-outline";
+
           else iconName = "menu";
 
           return <Ionicons name={iconName} size={size} color={"#705ECF"} />;
