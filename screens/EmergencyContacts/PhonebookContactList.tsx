@@ -33,6 +33,7 @@ const PhonebookContactList = ({ navigation }: any) => {
     contactList: [],
     isContactListEmpty: false,
   });
+  const [backupContacts, setBackupContacts] = useState<any>([]);
   const [showLoader, setShowLoader] = useState(false);
   const [selectedContacts, setSelectedContacts] = useState<any>([]);
   const [showDoneLoader, setShowDoneLoader] = useState(false);
@@ -56,16 +57,14 @@ const PhonebookContactList = ({ navigation }: any) => {
 
   // This method is used to filter contacts list
   const filterSearchedContacts = () => {
-    // console.log("searchQuery:: ", searchQuery);
-    const currentContactsList = contacts.contactList;
     if (contacts.contactList?.length > 0 && searchQuery.length > 0) {
       const filteredContacts = contacts.contactList.filter((contact: any) =>
         contact.name.match(searchQuery)
       );
-      // console.log("filteredContacts::: ", filteredContacts);
-      if (filteredContacts.length > 0)
-        setContacts({ ...contacts, contactList: filteredContacts });
-    } else setContacts({ ...contacts, contactList: currentContactsList });
+      setContacts({ ...contacts, contactList: filteredContacts });
+    } else {
+      setContacts({ ...contacts, contactList: backupContacts });
+    }
   };
 
   useEffect(() => {
@@ -115,6 +114,7 @@ const PhonebookContactList = ({ navigation }: any) => {
             contactList: uniqueContacts,
             isContactListEmpty: false,
           });
+          setBackupContacts(uniqueContacts);
         } else
           setContacts({
             contactList: [],
