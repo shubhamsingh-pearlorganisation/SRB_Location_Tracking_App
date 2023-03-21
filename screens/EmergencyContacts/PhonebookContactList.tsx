@@ -56,13 +56,13 @@ const PhonebookContactList = ({ navigation }: any) => {
 
   // This method is used to filter contacts list
   const filterSearchedContacts = () => {
-    console.log("searchQuery:: ", searchQuery);
+    // console.log("searchQuery:: ", searchQuery);
     const currentContactsList = contacts.contactList;
     if (contacts.contactList?.length > 0 && searchQuery.length > 0) {
       const filteredContacts = contacts.contactList.filter((contact: any) =>
         contact.name.match(searchQuery)
       );
-      console.log("filteredContacts::: ", filteredContacts);
+      // console.log("filteredContacts::: ", filteredContacts);
       if (filteredContacts.length > 0)
         setContacts({ ...contacts, contactList: filteredContacts });
     } else setContacts({ ...contacts, contactList: currentContactsList });
