@@ -106,7 +106,7 @@ const ManageMap = ({ navigation }: any) => {
 
   useEffect((): any => {
     if (timeLeft === 0) {
-      console.log("TIME LEFT IS 0");
+      // console.log("TIME LEFT IS 0");
       setTimeLeft(null);
     }
 

@@ -1,18 +1,11 @@
 import React, { useState, useContext } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Alert,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { GroupsAndMembersContext } from "../App";
 import { COLORS, SIZES } from "../constants";
 import Loader from "../components/Loader";
 import NoDataFound from "../components/NoDataFound";
-import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+
 // -----------------------------------------------------------------
 const Groups = ({ navigation }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
@@ -29,16 +22,6 @@ const Groups = ({ navigation }: any) => {
 
   // This renderGroups component is used to render group list
   const renderGroups = (groupDetails: any) => {
-    //condition to handle the height of item according to the length of group title
-    // const customStyle =
-    //   groupDetails?.title?.toString().length >= 10 &&
-    //   groupDetails?.title?.toString().length <= 20
-    //     ? styles.bigTitle
-    //     : groupDetails?.title?.toString().length < 10
-    //     ? styles.normalTitle
-    //     : !groupDetails?.title
-    //     ? styles.normalTitle
-    //     : styles.largeTitle;
     return (
       <Pressable style={[styles.groupListItem]}>
         <View

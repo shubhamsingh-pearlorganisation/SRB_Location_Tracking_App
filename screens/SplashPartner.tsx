@@ -3,9 +3,8 @@ import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 // ---------------------------------------------------------------------------------------------
 
 const SplashPartner = ({ navigation }: any) => {
-  const onPressSubmit = () => {
-    navigation.navigate("Login");
-  };
+  const onPressSubmit = () => navigation.navigate("Login");
+
   return (
     <View style={styles.container}>
       <Image

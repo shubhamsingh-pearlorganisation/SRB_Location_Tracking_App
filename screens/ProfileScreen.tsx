@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
@@ -15,16 +16,13 @@ import { instance } from "../core/utils/AxiosInterceptor";
 import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import * as ImagePicker from "expo-image-picker";
 import {
   AuthContext,
   GroupsAndMembersContext,
   UserDetailsContext,
 } from "../App";
 import { regexes } from "../core/utils/constants";
-import Loader from "../components/Loader";
-import * as FileSystem from "expo-file-system";
-import ImageDialog from "../components/ImageDialog";
+import ImageUploadDialog from "../components/ImageUploadDialog";
 
 // ============================================================================================
 
@@ -38,12 +36,14 @@ const ProfileScreen = ({ navigation }: any) => {
   // Component's Local States
   // ========================
   const [showLoader, setShowLoader] = useState(false);
+  const [showImageUploadLoader, setShowImageUploadLoader] = useState(false);
+  const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
 
   // "userDetailsPrefilled" state is used to prefilled user's data from the api during view profile
   const [userDetailsPrefilled] = useState<any>(
     userDetailsContextData?.userDetails
   );
-  const [isEditable, setIsEditable] = useState(false);
 
   // "userDetails" state is used to store user's form data during update profile
   const [userDetails, setUserDetails] = useState<any>({
@@ -67,109 +67,14 @@ const ProfileScreen = ({ navigation }: any) => {
   }, [userDetailsPrefilled]);
 
   // =============================== Image Upload Functionality -- Start =========================
-  // The data of the picked image
-  const [pickedImagePath, setPickedImagePath] = useState<any>({});
-
-  // This method is used to find selected image file size.
-  // const getFileInfo = async (fileURI: string) => {
-  //   const fileInfo = await FileSystem.getInfoAsync(fileURI);
-  //   return fileInfo;
-  // };
-
-  // // This method is used to check file size length with 5 MB
-  // const isLessThanTheMB = (fileSize: number, smallerThanSizeMB: number) => {
-  //   // By default fileSize is in bytes format
-  //   // Convert in MB - fileSize / 1024 / 1024
-  //   const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB;
-  //   return isOk;
-  // };
-
-  // This function is triggered when the "Select from Gallery" button pressed
-  // const uploadImageFromGallery = async () => {
-  //   // Ask the user for the permission to access the media library
-  //   const permissionResult =
-  //     await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-  //   if (permissionResult.granted === false) {
-  //     Alert.alert(
-  //       "Permission Failed",
-  //       "You've refused to allow this app to access your photos!"
-  //     );
-  //     return;
-  //   }
-
-  //   const result: any = await ImagePicker.launchImageLibraryAsync({
-  //     allowsEditing: true,
-  //     quality: 1,
-  //   });
-
-  //   const fileInfo = await getFileInfo(result?.assets[0]?.uri);
-
-  //   if (!fileInfo?.size) {
-  //     alert("Can't select this file as the size is unknown.");
-  //     return;
-  //   }
-
-  //   if (result?.assets[0]?.type === "image") {
-  //     const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-  //     if (!isLt5MB) {
-  //       alert(`Image size must be smaller than 5 MB!`);
-  //       return;
-  //     }
-  //   }
-
-  //   if (!result.canceled) {
-  //     setPickedImagePath(result.assets[0]);
-  //     setUserDetails({ ...userDetails, image: "" });
-  //   }
-  // };
-
-  // // This function is triggered when the "Open camera" button pressed
-  // const uploadImageFromCamera = async () => {
-  //   // Ask the user for the permission to access the camera
-  //   const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-  //   if (permissionResult.granted === false) {
-  //     Alert.alert(
-  //       "Permission Failed",
-  //       "You've refused to allow this app to access your camera!"
-  //     );
-  //     return;
-  //   }
-
-  //   const result: any = await ImagePicker.launchCameraAsync({
-  //     allowsEditing: true,
-  //     quality: 1,
-  //   });
-
-  //   const fileInfo = await getFileInfo(result?.assets[0]?.uri);
-
-  //   if (!fileInfo?.size) {
-  //     alert("Can't select this file as the size is unknown.");
-  //     return;
-  //   }
-
-  //   if (result?.assets[0]?.type === "image") {
-  //     const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-  //     if (!isLt5MB) {
-  //       alert(`Image size must be smaller than 5 MB!`);
-  //       return;
-  //     }
-  //   }
-
-  //   if (!result.canceled) {
-  //     setPickedImagePath(result.assets[0]);
-  //     setUserDetails({ ...userDetails, image: "" });
-  //   }
-  // };
+  const [pickedImagePath, setPickedImagePath] = useState<any>({}); // Used to store data of the picked image
 
   const [uploadImageModal, setUploadImageModal] = useState(false);
 
-  const recieveImageData = (data: any) => {
-    console.log("ImagePath::: ", data);
+  // This method is used to receive image data after image selection.
+  const receiveImageData = (data: any) => {
     setUploadImageModal(false);
     setPickedImagePath(data);
-    // uploadProfileImage()
   };
 
   useEffect(() => {
@@ -242,19 +147,21 @@ const ProfileScreen = ({ navigation }: any) => {
   // This method is used to update user's profile image using an API
   const updateUserProfileImage = async (imageData: any) => {
     try {
+      setDisableSubmitBtn(true);
+      setShowImageUploadLoader(true);
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
       formData.append("image", imageData);
 
-      // setShowLoader(true);
       const response = await instance.post("/users_image_update", formData);
       if (response.status === 200 && response.data?.status === true) {
-        setShowLoader(false);
+        setDisableSubmitBtn(false);
+        setShowImageUploadLoader(false);
         toast.show("Profile Image updated successfully!", {
           type: "success",
         });
       } else {
-        setShowLoader(false);
+        setShowImageUploadLoader(false);
         toast.show(
           response.data?.message
             ? response.data?.message
@@ -265,7 +172,7 @@ const ProfileScreen = ({ navigation }: any) => {
         );
       }
     } catch (error: any) {
-      setShowLoader(false);
+      setShowImageUploadLoader(false);
       toast.show(
         error.message
           ? error.message
@@ -279,9 +186,7 @@ const ProfileScreen = ({ navigation }: any) => {
   // ================================== Image Upload Functionality -- Finished =========================
 
   // Redirect to back screen
-  const goToBackScreen = () => {
-    navigation.navigate("Main");
-  };
+  const goToBackScreen = () => navigation.navigate("Main");
 
   // --------------------------- Date Picker Handling -- Start -----------------------------------
 
@@ -334,6 +239,8 @@ const ProfileScreen = ({ navigation }: any) => {
     }
 
     try {
+      setShowLoader(true);
+
       const { name, email, dob } = userDetails;
 
       const formData = new FormData();
@@ -341,8 +248,6 @@ const ProfileScreen = ({ navigation }: any) => {
       formData.append("name", name);
       formData.append("email", email);
       formData.append("dob", dob);
-      // setShowLoader(true);
-      console.log("formData::: ", formData);
 
       const response = await instance.post("/users_update", formData);
       if (response.status === 200 && response.data?.status === true) {
@@ -433,7 +338,6 @@ const ProfileScreen = ({ navigation }: any) => {
             onPress={() => setIsEditable(true)}
           >
             <MaterialIcons name="edit" size={30} color={COLORS.white} />
-            {showLoader && <Loader message="" />}
           </TouchableOpacity>
         </View>
 
@@ -491,9 +395,9 @@ const ProfileScreen = ({ navigation }: any) => {
     // ---------------------------------Editable View----------------------------------------
     <View style={styles.container}>
       {uploadImageModal && (
-        <ImageDialog
+        <ImageUploadDialog
           visibility={uploadImageModal}
-          sendData={recieveImageData}
+          sendData={receiveImageData}
           updateModalVisibility={(data: string) => {
             data === "close" && setUploadImageModal(false);
           }}
@@ -559,6 +463,7 @@ const ProfileScreen = ({ navigation }: any) => {
               width: "15%",
             }}
             onPress={updateUserDetails}
+            disabled={disableSubmitBtn}
           >
             <Text
               style={[
@@ -582,34 +487,26 @@ const ProfileScreen = ({ navigation }: any) => {
               position: "absolute",
             }}
           >
-            {showLoader && <Loader message="" />}
+            {showLoader && (
+              <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
+            )}
           </View>
         </View>
 
         <View style={styles.screen}>
           <View style={styles.imageContainer}>
-            {userDetails?.image === "" &&
-              pickedImagePath &&
-              pickedImagePath?.uri !== "" && (
-                <Image
-                  source={{ uri: pickedImagePath?.uri }}
-                  style={styles.profileImage}
-                />
-              )}
-            {userDetails?.image !== "" && pickedImagePath && (
-              <Image
-                source={{ uri: userDetails.image }}
-                style={styles.profileImage}
-              />
-            )}
+            <Image
+              source={{
+                uri: pickedImagePath?.uri
+                  ? pickedImagePath?.uri
+                  : userDetailsPrefilled?.image
+                  ? userDetailsPrefilled?.image
+                  : profile,
+              }}
+              style={styles.profileImage}
+            />
           </View>
           <View style={styles.buttonContainer}>
-            {/* <Pressable style={styles.imgBtns} onPress={uploadImageFromGallery}>
-              <Text style={styles.imgBtnText}>Gallery</Text>
-            </Pressable>
-            <Pressable style={styles.imgBtns} onPress={uploadImageFromCamera}>
-              <Text style={styles.imgBtnText}>Camera</Text>
-            </Pressable> */}
             <Pressable
               style={[styles.imgBtns, { backgroundColor: "#452FFF" }]}
               onPress={() => setUploadImageModal(true)}
@@ -623,6 +520,9 @@ const ProfileScreen = ({ navigation }: any) => {
                 Upload Image
               </Text>
             </Pressable>
+            {showImageUploadLoader && (
+              <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
+            )}
           </View>
         </View>
 
@@ -641,7 +541,7 @@ const ProfileScreen = ({ navigation }: any) => {
           value={userDetails?.name ? userDetails?.name : ""}
           maxLength={30}
           onChangeText={(val: any) =>
-            setUserDetails({ ...userDetails, name: val.toString().trim() })
+            setUserDetails({ ...userDetails, name: val.toString() })
           }
         ></TextInput>
       </View>
@@ -660,7 +560,7 @@ const ProfileScreen = ({ navigation }: any) => {
           underlineColor="transparent"
           value={userDetails?.email ? userDetails?.email : ""}
           onChangeText={(val: any) =>
-            setUserDetails({ ...userDetails, email: val.toString().trim() })
+            setUserDetails({ ...userDetails, email: val.toString() })
           }
         ></TextInput>
         <Pressable onPress={showDatePicker}>

@@ -99,7 +99,7 @@ const AddGroup = ({ navigation }: any) => {
           onChangeText={(val: any) =>
             setAddGroupFormData({
               ...addGroupFormData,
-              title: val?.toString().trim(),
+              title: val?.toString(),
             })
           }
           maxLength={15}

@@ -9,9 +9,9 @@ import {
   KeyboardAvoidingView,
   Pressable,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
-import * as ImagePicker from "expo-image-picker";
 import { instance } from "../core/utils/AxiosInterceptor";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
@@ -21,9 +21,7 @@ import {
   UserDetailsContext,
 } from "../App";
 import { regexes } from "../core/utils/constants";
-import Loader from "../components/Loader";
-import * as FileSystem from "expo-file-system";
-import ImageDialog from "../components/ImageDialog";
+import ImageUploadDialog from "../components/ImageUploadDialog";
 
 // -----------------------------------------------------------------------------------
 
@@ -36,6 +34,8 @@ const Register = ({ route }: any) => {
   // Component's Local States
   // ========================
   const [showLoader, setShowLoader] = useState(false);
+  const [showImageUploadLoader, setShowImageUploadLoader] = useState(false);
+  const [disableSubmitBtn, setDisableSubmitBtn] = useState(false);
 
   // Saving Route's data in component's local state - userDetails
   const [userDetails, setUserDetails] = useState<any>({
@@ -54,108 +54,14 @@ const Register = ({ route }: any) => {
 
   // ================================== Image Upload Functionality -- Start =========================
   // The data of the picked image
-  const [pickedImagePath, setPickedImagePath] = useState<any>({});
-
-  // This method is used to find selected image file size.
-  // const getFileInfo = async (fileURI: string) => {
-  //   const fileInfo = await FileSystem.getInfoAsync(fileURI);
-  //   return fileInfo;
-  // };
-
-  // // This method is used to check file size length with 5 MB
-  // const isLessThanTheMB = (fileSize: number, smallerThanSizeMB: number) => {
-  //   // By default fileSize is in bytes format
-  //   // Convert in MB - fileSize / 1024 / 1024
-  //   const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB;
-  //   return isOk;
-  // };
-
-  // This function is triggered when the "Select from Gallery" button pressed
-  // const uploadImageFromGallery = async () => {
-  //   // Ask the user for the permission to access the media library
-  //   const permissionResult =
-  //     await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-  //   if (permissionResult.granted === false) {
-  //     Alert.alert(
-  //       "Permission Failed",
-  //       "You've refused to allow this app to access your photos!"
-  //     );
-  //     return;
-  //   }
-
-  //   const result: any = await ImagePicker.launchImageLibraryAsync({
-  //     allowsEditing: true,
-  //     quality: 1,
-  //   });
-
-  //   const fileInfo = await getFileInfo(result?.assets[0]?.uri);
-
-  //   if (!fileInfo?.size) {
-  //     alert("Can't select this file as the size is unknown.");
-  //     return;
-  //   }
-
-  //   if (result?.assets[0]?.type === "image") {
-  //     const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-  //     if (!isLt5MB) {
-  //       alert(`Image size must be smaller than 5 MB!`);
-  //       return;
-  //     }
-  //   }
-
-  //   if (!result.canceled) {
-  //     setPickedImagePath(result.assets[0]);
-  //     setUserDetails({ ...userDetails, image: "" });
-  //   }
-  // };
-
-  // // This function is triggered when the "Open camera" button pressed
-  // const uploadImageFromCamera = async () => {
-  //   // Ask the user for the permission to access the camera
-  //   const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-  //   if (permissionResult.granted === false) {
-  //     Alert.alert(
-  //       "Permission Failed",
-  //       "You've refused to allow this app to access your camera!"
-  //     );
-  //     return;
-  //   }
-
-  //   const result: any = await ImagePicker.launchCameraAsync({
-  //     allowsEditing: true,
-  //     quality: 1,
-  //   });
-
-  //   const fileInfo = await getFileInfo(result?.assets[0]?.uri);
-
-  //   if (!fileInfo?.size) {
-  //     alert("Can't select this file as the size is unknown.");
-  //     return;
-  //   }
-
-  //   if (result?.assets[0]?.type === "image") {
-  //     const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-  //     if (!isLt5MB) {
-  //       alert(`Image size must be smaller than 5 MB!`);
-  //       return;
-  //     }
-  //   }
-
-  //   if (!result.canceled) {
-  //     setPickedImagePath(result.assets[0]);
-  //     setUserDetails({ ...userDetails, image: "" });
-  //   }
-  // };
+  const [pickedImagePath, setPickedImagePath] = useState<any>({}); // Used to store data of the picked image
 
   const [uploadImageModal, setUploadImageModal] = useState(false);
 
-  const recieveImageData = (data: any) => {
-    console.log("ImagePath::: ", data);
+  // This method is used to receive image data after image selection.
+  const receiveImageData = (data: any) => {
     setUploadImageModal(false);
     setPickedImagePath(data);
-    // uploadProfileImage()
   };
 
   useEffect(() => {
@@ -228,19 +134,20 @@ const Register = ({ route }: any) => {
   // This method is used to update user's profile image using an API
   const updateUserProfileImage = async (imageData: any) => {
     try {
+      setShowImageUploadLoader(true);
+      setDisableSubmitBtn(true);
       const formData = new FormData();
       formData.append("token_id", authContextData?.token);
       formData.append("image", imageData);
-
-      // setShowLoader(true);
       const response = await instance.post("/users_image_update", formData);
       if (response.status === 200 && response.data?.status === true) {
-        setShowLoader(false);
+        setDisableSubmitBtn(false);
+        setShowImageUploadLoader(false);
         toast.show("Profile Image updated successfully!", {
           type: "success",
         });
       } else {
-        setShowLoader(false);
+        setShowImageUploadLoader(false);
         toast.show(
           response.data?.message
             ? response.data?.message
@@ -251,7 +158,7 @@ const Register = ({ route }: any) => {
         );
       }
     } catch (error: any) {
-      setShowLoader(false);
+      setShowImageUploadLoader(false);
       toast.show(
         error.message
           ? error.message
@@ -286,6 +193,8 @@ const Register = ({ route }: any) => {
       toast.show("Please enter your date of birth", { type: "error" });
     }
     try {
+      setShowLoader(true);
+
       const { name, emailId, dob } = userDetails;
 
       const formData = new FormData();
@@ -293,7 +202,6 @@ const Register = ({ route }: any) => {
       formData.append("name", name);
       formData.append("email", emailId);
       formData.append("dob", dob);
-      setShowLoader(true);
 
       const response = await instance.post("/users_update", formData);
       if (response.status === 200 && response.data?.status === true) {
@@ -365,17 +273,17 @@ const Register = ({ route }: any) => {
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
         {uploadImageModal && (
-          <ImageDialog
+          <ImageUploadDialog
             visibility={uploadImageModal}
-            sendData={recieveImageData}
+            sendData={receiveImageData}
+            updateModalVisibility={(data: string) => {
+              data === "close" && setUploadImageModal(false);
+            }}
           />
         )}
-        {/* {showLoader && (
-          <Loader
-            message="Please wait.. we are creating your account."
-            msgTextColor="white"
-          />
-        )} */}
+        {showLoader && (
+          <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} color="white" />
+        )}
 
         <Text style={styles.otpText}>
           You haven’t got account?{"\n"} Let's Create...
@@ -403,12 +311,6 @@ const Register = ({ route }: any) => {
           </View>
 
           <View style={styles.buttonContainer}>
-            {/* <Pressable style={styles.imgBtns} onPress={uploadImageFromGallery}>
-              <Text style={styles.imgBtnText}>Gallery</Text>
-            </Pressable>
-            <Pressable style={styles.imgBtns} onPress={uploadImageFromCamera}>
-              <Text style={styles.imgBtnText}>Camera</Text>
-            </Pressable> */}
             <Pressable
               style={[styles.imgBtns, { backgroundColor: "#452FFF" }]}
               onPress={() => setUploadImageModal(true)}
@@ -422,6 +324,12 @@ const Register = ({ route }: any) => {
                 Upload Image
               </Text>
             </Pressable>
+            {showImageUploadLoader && (
+              <ActivityIndicator
+                size={SIZES.width > 400 ? 40 : 20}
+                color="white"
+              />
+            )}
           </View>
         </View>
 
@@ -511,7 +419,9 @@ const Register = ({ route }: any) => {
         </Pressable>
 
         <TouchableOpacity style={styles.sendCode} onPress={updateDetails}>
-          <Text style={styles.buttonText}>Continue</Text>
+          <Text style={styles.buttonText} disabled={disableSubmitBtn}>
+            Continue
+          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

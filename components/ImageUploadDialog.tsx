@@ -7,7 +7,6 @@ import {
   Alert,
   Pressable,
 } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { COLORS, SIZES } from "../constants";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -15,37 +14,27 @@ import { Feather } from "@expo/vector-icons";
 
 // ==========================================================================
 
-const ImageDialog = ({
+const ImageUploadDialog = ({
   visibility,
   sendData,
-  route,
   updateModalVisibility,
 }: any) => {
-  console.log("visible:: ", visibility);
-
-  const [userDetails, setUserDetails] = useState<any>({
-    name: route?.params?.userDetails?.name
-      ? route?.params?.userDetails?.name
-      : "",
-    emailId: route?.params?.userDetails?.email
-      ? route?.params?.userDetails?.email
-      : "",
-    dob: route?.params?.userDetails?.dob ? route?.params?.userDetails?.dob : "",
-    contact: route?.params?.userDetails?.contact
-      ? route?.params?.userDetails?.contact
-      : "",
-  });
-
   const [pickedImagePath, setPickedImagePath] = useState<any>({});
 
+  // This method is used to find selected image file size.
   const getFileInfo = async (fileURI: string) => {
     const fileInfo = await FileSystem.getInfoAsync(fileURI);
     return fileInfo;
   };
 
+  // This method is used to check file size length with 5 MB
   const isLessThanTheMB = (fileSize: number, smallerThanSizeMB: number) => {
     // By default fileSize is in bytes format
     // Convert in MB - fileSize / 1024 / 1024
+
+    // console.log("fileSize:: ", fileSize);
+    // console.log("smallerThanSizeMB:: ", smallerThanSizeMB);
+
     const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB;
     return isOk;
   };
@@ -78,6 +67,7 @@ const ImageDialog = ({
 
     if (result?.assets[0]?.type === "image") {
       const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+      // console.log("isLt5MB:: ", isLt5MB);
       if (!isLt5MB) {
         alert(`Image size must be smaller than 5 MB!`);
         return;
@@ -86,7 +76,6 @@ const ImageDialog = ({
 
     if (!result.canceled) {
       setPickedImagePath(result.assets[0]);
-      setUserDetails({ ...userDetails, image: "" });
     }
   };
 
@@ -117,6 +106,7 @@ const ImageDialog = ({
 
     if (result?.assets[0]?.type === "image") {
       const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
+      // console.log("isLt5MB::: ", isLt5MB);
       if (!isLt5MB) {
         alert(`Image size must be smaller than 5 MB!`);
         return;
@@ -125,7 +115,6 @@ const ImageDialog = ({
 
     if (!result.canceled) {
       setPickedImagePath(result.assets[0]);
-      setUserDetails({ ...userDetails, image: "" });
     }
   };
 
@@ -245,4 +234,5 @@ const ImageDialog = ({
   );
 };
 
-export default ImageDialog;
+export default ImageUploadDialog;
+// =============================================== THE END =====================================================
