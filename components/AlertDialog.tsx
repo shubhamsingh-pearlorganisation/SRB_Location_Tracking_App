@@ -29,8 +29,6 @@ export default function AlertDialog({
             style={{
               alignItems: "center",
               backgroundColor: "white",
-              height:
-                SIZES.height > 700 ? SIZES.height * 0.3 : SIZES.height * 0.45,
               width: "90%",
               borderWidth: 1,
               borderColor: "#fff",
@@ -59,15 +57,15 @@ export default function AlertDialog({
               onPress={() => confirmAction()}
               style={{
                 alignItems: "center",
-                position: "absolute",
+                
                 borderBottomWidth: 0,
                 width:
                   SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
-                height: "20%",
+                // height: "20%",
                 justifyContent: showLoader ? "space-around" : "center",
                 borderRadius: 30,
                 backgroundColor: COLORS.voilet,
-                bottom: "25%",
+                
                 flexDirection: "row",
               }}
             >
@@ -87,7 +85,7 @@ export default function AlertDialog({
               onPress={() => dismissAlert(false)}
               style={{
                 alignItems: "center",
-                position: "absolute",
+                
                 borderBottomWidth: 0,
                 width:
                   SIZES.width > 400 ? SIZES.width * 0.4 : SIZES.width * 0.8,
@@ -96,7 +94,7 @@ export default function AlertDialog({
                 borderRadius: 30,
                 backgroundColor: COLORS.white,
 
-                bottom: "1%",
+                
               }}
             >
               <Text

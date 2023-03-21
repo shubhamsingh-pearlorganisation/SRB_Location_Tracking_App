@@ -22,6 +22,7 @@ import {
 } from "../App";
 import { regexes } from "../core/utils/constants";
 import ImageUploadDialog from "../components/ImageUploadDialog";
+import Loader from "../components/Loader";
 
 // -----------------------------------------------------------------------------------
 
@@ -324,11 +325,8 @@ const Register = ({ route }: any) => {
                 Upload Image
               </Text>
             </Pressable>
-            {showImageUploadLoader && (
-              <ActivityIndicator
-                size={SIZES.width > 400 ? 40 : 20}
-                color="white"
-              />
+            {(showLoader || showImageUploadLoader) && (
+              <Loader/>
             )}
           </View>
         </View>
@@ -391,6 +389,7 @@ const Register = ({ route }: any) => {
             onCancel={hideDatePicker}
             maximumDate={new Date()}
             minimumDate={new Date("1930-01-01")}
+            timePickerModeAndroid="spinner"
           />
           <View
             style={{

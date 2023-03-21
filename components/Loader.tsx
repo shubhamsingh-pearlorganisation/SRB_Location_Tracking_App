@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { View, Text, ActivityIndicator, StyleSheet, Modal } from "react-native";
 import { COLORS, SIZES } from "../constants";
 // ----------------------------------------------------------------------------
 // This is the common component for Showing Loader.
@@ -7,14 +7,25 @@ const Loader = ({
   msgTextColor = COLORS.voilet,
 }) => {
   return (
-    <>
+    <View>
+      <Modal visible={true} animationType={"fade"} transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(52, 52, 52, 0.6)",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size={SIZES.width > 400 ? 30 : 20} />
+        <ActivityIndicator size={SIZES.width > 400 ? 40 : 30} />
         <Text style={[styles.loadingDescriptionMsg, { color: msgTextColor }]}>
           {message}
         </Text>
       </View>
-    </>
+      </View>
+      </Modal>
+    </View>
   );
 };
 
@@ -23,6 +34,12 @@ const Loader = ({
 const styles = StyleSheet.create({
   loadingContainer: {
     margin: "5%",
+    backgroundColor:COLORS.white,
+    height:SIZES.width*.3,
+    width:SIZES.width*.4,
+    borderRadius:10,
+    flexDirection:'column',
+    justifyContent:'center'
   },
   loadingDescriptionMsg: {
     textAlign: "center",

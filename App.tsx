@@ -319,7 +319,9 @@ const App = () => {
   // =============================================================================================
 
   return (
-    <ToastProvider>
+    <ToastProvider 
+    duration={500}
+    >
       <NavigationContainer>
         <AuthContext.Provider
           value={{

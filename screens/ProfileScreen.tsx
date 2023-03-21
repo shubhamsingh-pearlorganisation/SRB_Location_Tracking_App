@@ -23,6 +23,7 @@ import {
 } from "../App";
 import { regexes } from "../core/utils/constants";
 import ImageUploadDialog from "../components/ImageUploadDialog";
+import Loader from "../components/Loader";
 
 // ============================================================================================
 
@@ -487,8 +488,8 @@ const ProfileScreen = ({ navigation }: any) => {
               position: "absolute",
             }}
           >
-            {showLoader && (
-              <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
+            {(showLoader || showImageUploadLoader) && (
+              <Loader/>
             )}
           </View>
         </View>
@@ -520,9 +521,9 @@ const ProfileScreen = ({ navigation }: any) => {
                 Upload Image
               </Text>
             </Pressable>
-            {showImageUploadLoader && (
+            {/* {showImageUploadLoader && (
               <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
-            )}
+            )} */}
           </View>
         </View>
 
@@ -572,6 +573,7 @@ const ProfileScreen = ({ navigation }: any) => {
             maximumDate={new Date()}
             minimumDate={new Date("1930-01-01")}
             date={new Date(userDetails?.dob)}
+            
           />
           <Text style={styles.textView}>
             {userDetails?.dob

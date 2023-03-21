@@ -103,9 +103,9 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
 
       <Text
         style={{
-          fontSize: 40,
+          fontSize: SIZES.width>400?40:30,
           fontWeight: "300",
-          padding: "2%",
+          padding: "5%",
         }}
       >
         We will send you an alert message to your contacts when count will be 0.
