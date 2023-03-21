@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import Checkbox from "expo-checkbox";
 import { styles } from "./style";
@@ -41,5 +41,5 @@ const IndividualContact = ({ contact, sendSelectedContact }: any) => {
   );
 };
 
-export default IndividualContact;
+export default memo(IndividualContact);
 // =============================================== THE END =====================================================

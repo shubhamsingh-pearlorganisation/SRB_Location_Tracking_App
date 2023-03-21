@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, memo } from "react";
 import {
   FlatList,
   Text,
@@ -16,10 +16,13 @@ import { AuthContext, UserDetailsContext } from "../../App";
 import Loader from "../../components/Loader";
 import NoDataFound from "../../components/NoDataFound";
 import { styles } from "./style";
+import { Searchbar } from "react-native-paper";
 
 // -------------------------------------------------------------------------------
 
 const PhonebookContactList = ({ navigation }: any) => {
+  const [searchQuery, setSearchQuery] = React.useState("");
+
   const toast = useToast();
   const authContextData: any = useContext(AuthContext);
   const userDetailsContextData: any = useContext(UserDetailsContext);
@@ -47,6 +50,28 @@ const PhonebookContactList = ({ navigation }: any) => {
       setSelectedContacts([]);
     };
   }, []);
+
+  // ============================= Contacts List Filtering based on Search - Code Start ===============================
+  const onChangeSearch = (query: string) => setSearchQuery(query);
+
+  // This method is used to filter contacts list
+  const filterSearchedContacts = () => {
+    console.log("searchQuery:: ", searchQuery);
+    const currentContactsList = contacts.contactList;
+    if (contacts.contactList?.length > 0 && searchQuery.length > 0) {
+      const filteredContacts = contacts.contactList.filter((contact: any) =>
+        contact.name.match(searchQuery)
+      );
+      console.log("filteredContacts::: ", filteredContacts);
+      if (filteredContacts.length > 0)
+        setContacts({ ...contacts, contactList: filteredContacts });
+    } else setContacts({ ...contacts, contactList: currentContactsList });
+  };
+
+  useEffect(() => {
+    filterSearchedContacts();
+  }, [searchQuery]);
+  // ============================= Contacts List Filtering based on Search - Code Finish ===============================
 
   // This method is used to fetch contacts list from user's phone directory by using "expo-contacts" package.
   const fetchContactsFromUserPhoneDirectory = async () => {
@@ -234,6 +259,12 @@ const PhonebookContactList = ({ navigation }: any) => {
         <>
           {!contacts.isContactListEmpty && contacts.contactList.length > 0 && (
             <>
+              <Searchbar
+                placeholder="Search Contacts here.."
+                onChangeText={onChangeSearch}
+                value={searchQuery}
+                style={{ marginHorizontal: 20, marginVertical: 20 }}
+              />
               <View
                 style={{
                   display: "flex",
@@ -291,5 +322,5 @@ const PhonebookContactList = ({ navigation }: any) => {
   );
 };
 
-export default PhonebookContactList;
+export default memo(PhonebookContactList);
 // =============================================== THE END =====================================================
