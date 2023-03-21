@@ -510,6 +510,7 @@ const EditViewGroup = ({ route, navigation }: any) => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
+                marginBottom: "5%",
               }}
               onPress={() => deleteGroupConfirmation()}
             >
