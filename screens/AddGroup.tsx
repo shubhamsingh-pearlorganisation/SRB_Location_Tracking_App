@@ -88,7 +88,7 @@ const AddGroup = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <View>
-        {showLoader && <Loader />}
+      {showLoader && <Loader/>}
       <View>
         <View>
           <TextInput

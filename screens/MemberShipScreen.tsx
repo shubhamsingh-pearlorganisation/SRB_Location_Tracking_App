@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { MembershipContext } from "../App";
 import { COLORS, SIZES } from "../constants";
 // ----------------------------------------------------------------------------------
@@ -22,35 +23,57 @@ const MemberShip = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {membershipData?.membershipPlans?.length > 0 &&
-        membershipData?.membershipPlans.map((membership: any, i: number) => {
-          return (
-            <View
-              key={i}
-              style={[
-                styles.planCard,
-                selectedPlan?.title === membership?.title && styles.selected,
-              ]}
-            >
-              <TouchableOpacity
-                style={[styles.plan]}
-                onPress={() => setSelectedPlan(membership)}
-              >
-                <Text style={[styles.planTitle]}>{membership?.title}</Text>
-                <Text style={styles.planPrice}>
-                  {membership?.price}&nbsp;$/month
-                </Text>
-                <Text style={styles.planDescription}>
-                  {membership?.description}
-                </Text>
-                <Text style={styles.planDescription}>
-                  {membership?.duration} days validity
-                </Text>
-              </TouchableOpacity>
-            </View>
-          );
-        })}
+    <View
+      style={{
+        height: "100%",
+        width: "100%",
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ScrollView
+        style={{
+          paddingTop:"2%",
+          width:'100%'
+        }}
+      >
+        <View style={styles.container}>
+          {membershipData?.membershipPlans?.length > 0 &&
+            membershipData?.membershipPlans.map(
+              (membership: any, i: number) => {
+                return (
+                  <View
+                    key={i}
+                    style={[
+                      styles.planCard,
+                      selectedPlan?.title === membership?.title &&
+                        styles.selected,
+                    ]}
+                  >
+                    <TouchableOpacity
+                      style={[styles.plan]}
+                      onPress={() => setSelectedPlan(membership)}
+                    >
+                      <Text style={[styles.planTitle]}>
+                        {membership?.title}
+                      </Text>
+                      <Text style={styles.planPrice}>
+                        {membership?.price}&nbsp;$/month
+                      </Text>
+                      <Text style={styles.planDescription}>
+                        {membership?.description}
+                      </Text>
+                      <Text style={styles.planDescription}>
+                        {membership?.duration} days validity
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }
+            )}
+        </View>
+      </ScrollView>
 
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText} onPress={handleSubscribe}>
@@ -64,7 +87,7 @@ const MemberShip = () => {
 // CSS CODE
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "100%",
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
@@ -104,9 +127,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: COLORS.voilet,
-    padding: SIZES.width > 400 ? "2%" : "4%",
+    paddingHorizontal: SIZES.width > 400 ? "6%" : "10%",
+    paddingVertical: SIZES.width > 400 ? "2%" : "3%",
     borderRadius: 5,
-    marginTop: SIZES.width > 400 ? "2%" : "4%",
+    marginTop: SIZES.width > 400 ? "2%" : "3%",
+    marginBottom:SIZES.width > 400 ? "2%" : "3%",
   },
   buttonText: {
     color: "#fff",

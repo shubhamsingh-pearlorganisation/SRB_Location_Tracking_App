@@ -250,7 +250,7 @@ const PhonebookContactList = ({ navigation }: any) => {
   return (
     <>
       {showLoader && (
-        <Loader message=" Please wait. We are fetching contacts" />
+        <Loader message={" Please wait. \nWe are fetching contacts"} />
       )}
 
       {contacts.isContactListEmpty && contacts.contactList.length === 0 ? (

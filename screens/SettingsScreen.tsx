@@ -212,11 +212,11 @@ const Settings = ({ navigation }: any) => {
     <View style={styles.container}>
       <ScrollView
         style={{
-          marginBottom: "12%",
+          
         }}
       >
         {showLoader ? (
-          <Loader message="Please wait ... We are fetching user's settings" />
+          <Loader message={"Please wait ... \nWe are fetching user's settings"} />
         ) : (
           <>
             <View

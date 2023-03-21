@@ -232,6 +232,13 @@ const Login = ({ navigation, route }: any) => {
     }
   }, [counter, disableVerificationBtn, verificationId]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowLoader(false)
+    }, 3000);
+  }, [showLoader])
+  
+
   // -------------------------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -245,7 +252,7 @@ const Login = ({ navigation, route }: any) => {
           {route?.params?.comingFrom === "login" ? "Login" : "Sign up"} with
           number
         </Text>
-        {showLoader && <Loader msgTextColor="white" />}
+        {showLoader && <Loader />}
 
         <View
           style={{
