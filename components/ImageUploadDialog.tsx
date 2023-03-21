@@ -139,13 +139,13 @@ const ImageUploadDialog = ({
             style={{
               alignItems: "center",
               backgroundColor: "white",
-              height:
-                SIZES.height > 700 ? SIZES.height * 0.2 : SIZES.height * 0.15,
               width: "90%",
               borderWidth: 1,
               borderColor: "#fff",
               borderRadius: 7,
               elevation: 10,
+              flexDirection:'column',
+              height:'auto'
             }}
           >
             <View
@@ -153,26 +153,35 @@ const ImageUploadDialog = ({
                 justifyContent: "space-around",
                 margin: 10,
                 flexDirection: "row",
+                width:'100%',
+                alignItems:'center',
+                paddingHorizontal:'2%'
               }}
             >
               <Text
                 style={{
                   fontSize: SIZES.width > 400 ? 30 : 22,
                   marginTop: "1%",
+                  width:'90%',
+                  textAlign:'center'
                 }}
               >
                 Upload Profile Image
               </Text>
               <Pressable onPress={() => updateModalVisibility("close")}>
-                <Feather name="x-circle" size={24} color="black" />
+                <Feather name="x-circle" size={SIZES.width>400?35:24} color="black" />
               </Pressable>
             </View>
 
+            <View style={{width:'100%', height:1, backgroundColor:COLORS.voilet}}/>
+
             <View
               style={{
+                width:'100%',
                 flexDirection: "row",
-                justifyContent: "flex-end",
-                alignItems: "flex-end",
+                justifyContent: "space-evenly",
+                alignSelf:'center',
+                paddingVertical:30
               }}
             >
               <TouchableOpacity
@@ -182,16 +191,19 @@ const ImageUploadDialog = ({
                   alignItems: "center",
                   borderBottomWidth: 0,
                   width: "auto",
-                  height: "auto",
                   justifyContent: "center",
+                  backgroundColor:COLORS.voilet,
+                  borderRadius:10,
+                  paddingHorizontal:'8%',
+                  paddingVertical:"2%",
+                  marginVertical:'2%'
                 }}
               >
                 <Text
                   style={{
-                    color: COLORS.voilet,
+                    color: COLORS.white,
                     fontSize: SIZES.width > 400 ? 22 : 18,
-                    margin: 15,
-                    textDecorationLine: "underline",
+                    
                   }}
                 >
                   Gallery
@@ -211,15 +223,19 @@ const ImageUploadDialog = ({
                   alignItems: "center",
                   borderBottomWidth: 0,
                   width: "auto",
-                  height: "auto",
+                  
                   justifyContent: "center",
+                  backgroundColor:COLORS.voilet,
+                  borderRadius:10,
+                  paddingHorizontal:'8%',
+                  paddingVertical:"2%",
+                  marginVertical:'2%'
                 }}
               >
                 <Text
                   style={{
-                    color: COLORS.voilet,
-                    margin: 15,
-                    textDecorationLine: "underline",
+                    color: COLORS.white,
+                    
                     fontSize: SIZES.width > 400 ? 22 : 18,
                   }}
                 >
