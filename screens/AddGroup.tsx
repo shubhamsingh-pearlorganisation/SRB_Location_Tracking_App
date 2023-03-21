@@ -88,90 +88,89 @@ const AddGroup = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <View>
-      {showLoader && <Loader/>}
-      <View>
+        {showLoader && <Loader />}
         <View>
-          <TextInput
-            placeholder="Enter Group Title ..."
-            style={styles.textInput}
-            placeholderTextColor="rgba(0,0,0,0.4)"
-            underlineColor="transparent"
-            autoFocus
-            onChangeText={(val: any) =>
-              setAddGroupFormData({
-                ...addGroupFormData,
-                title: val?.toString(),
-              })
-            }
-            maxLength={15}
-          />
-        </View>
-        <View style={styles.cardHolder}>
-          <View style={styles.card}>
-            <Pressable
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-              onPress={() => {
-                setAddGroupFormData({ ...addGroupFormData, group_type: 0 });
-                setPublicChecked(true);
-              }}
-            >
-              <View
+          <View>
+            <TextInput
+              placeholder="Enter Group Title ..."
+              style={styles.textInput}
+              placeholderTextColor="rgba(0,0,0,0.4)"
+              underlineColor="transparent"
+              autoFocus
+              onChangeText={(val: any) =>
+                setAddGroupFormData({
+                  ...addGroupFormData,
+                  title: val?.toString(),
+                })
+              }
+              maxLength={15}
+            />
+          </View>
+          <View style={styles.cardHolder}>
+            <View style={styles.card}>
+              <Pressable
                 style={{
-                  flexDirection: "row",
-                  margin: 10,
+                  width: "100%",
+                  height: "100%",
+                }}
+                onPress={() => {
+                  setAddGroupFormData({ ...addGroupFormData, group_type: 0 });
+                  setPublicChecked(true);
                 }}
               >
-                <Text style={styles.cardHeading}>Public</Text>
-                <Pressable
-                  style={[
-                    publicChecked ? styles.checked : styles.unchecked,
-                    styles.radio,
-                  ]}
-                />
-              </View>
-              <Text style={styles.cardText}>
-                All members can see each other & their location.
-              </Text>
-            </Pressable>
-          </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    margin: 10,
+                  }}
+                >
+                  <Text style={styles.cardHeading}>Public</Text>
+                  <Pressable
+                    style={[
+                      publicChecked ? styles.checked : styles.unchecked,
+                      styles.radio,
+                    ]}
+                  />
+                </View>
+                <Text style={styles.cardText}>
+                  All members can see each other & their location.
+                </Text>
+              </Pressable>
+            </View>
 
-          <View style={styles.card}>
-            <Pressable
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-              onPress={() => {
-                setAddGroupFormData({ ...addGroupFormData, group_type: 1 });
-                setPublicChecked(false);
-              }}
-            >
-              <View
+            <View style={styles.card}>
+              <Pressable
                 style={{
-                  flexDirection: "row",
-                  margin: 10,
+                  width: "100%",
+                  height: "100%",
+                }}
+                onPress={() => {
+                  setAddGroupFormData({ ...addGroupFormData, group_type: 1 });
+                  setPublicChecked(false);
                 }}
               >
-                <Text style={styles.cardHeading}>Private</Text>
-                <Pressable
-                  style={[
-                    !publicChecked ? styles.checked : styles.unchecked,
-                    styles.radio,
-                  ]}
-                />
-              </View>
-              <Text style={styles.cardText}>
-                Only you can see other members
-              </Text>
-            </Pressable>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    margin: 10,
+                  }}
+                >
+                  <Text style={styles.cardHeading}>Private</Text>
+                  <Pressable
+                    style={[
+                      !publicChecked ? styles.checked : styles.unchecked,
+                      styles.radio,
+                    ]}
+                  />
+                </View>
+                <Text style={styles.cardText}>
+                  Only you can see other members
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </View>
-      </View>
-      
 
       <TouchableOpacity
         style={{

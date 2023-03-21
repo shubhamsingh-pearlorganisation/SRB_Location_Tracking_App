@@ -57,7 +57,7 @@ export default function AlertDialog({
               onPress={() => confirmAction()}
               style={{
                 alignItems: "center",
-                
+
                 borderBottomWidth: 0,
                 width:
                   SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
@@ -65,7 +65,7 @@ export default function AlertDialog({
                 justifyContent: showLoader ? "space-around" : "center",
                 borderRadius: 30,
                 backgroundColor: COLORS.voilet,
-                
+
                 flexDirection: "row",
               }}
             >
@@ -85,7 +85,7 @@ export default function AlertDialog({
               onPress={() => dismissAlert(false)}
               style={{
                 alignItems: "center",
-                
+
                 borderBottomWidth: 0,
                 width:
                   SIZES.width > 400 ? SIZES.width * 0.4 : SIZES.width * 0.8,
@@ -93,8 +93,6 @@ export default function AlertDialog({
                 justifyContent: "center",
                 borderRadius: 30,
                 backgroundColor: COLORS.white,
-
-                
               }}
             >
               <Text

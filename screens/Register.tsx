@@ -325,9 +325,7 @@ const Register = ({ route }: any) => {
                 Upload Image
               </Text>
             </Pressable>
-            {(showLoader || showImageUploadLoader) && (
-              <Loader/>
-            )}
+            {(showLoader || showImageUploadLoader) && <Loader />}
           </View>
         </View>
 

@@ -234,10 +234,9 @@ const Login = ({ navigation, route }: any) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setShowLoader(false)
+      setShowLoader(false);
     }, 3000);
-  }, [showLoader])
-  
+  }, [showLoader]);
 
   // -------------------------------------------------------------------------------------------
   return (

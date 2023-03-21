@@ -122,14 +122,6 @@ const Groups = ({ navigation }: any) => {
             <View key={group?.group_code ? group?.group_code : i}>
               {group?.title && group?.group_code && renderGroups(group)}
 
-              {/* {groupsAndMembersData?.groupsAndMembersDetails.length -1 !== i &&     <View style={{
-                backgroundColor:COLORS.voilet,
-                opacity:.3,
-                height:3,
-                width:SIZES.width
-              }}/>
-            } */}
-
               <View
                 style={{
                   backgroundColor: COLORS.voilet,

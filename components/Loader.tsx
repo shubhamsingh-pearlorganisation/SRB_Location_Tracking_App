@@ -17,13 +17,15 @@ const Loader = ({
             justifyContent: "center",
           }}
         >
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size={SIZES.width > 400 ? 40 : 30} />
-        <Text style={[styles.loadingDescriptionMsg, { color: msgTextColor }]}>
-          {message}
-        </Text>
-      </View>
-      </View>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size={SIZES.width > 400 ? 40 : 30} />
+            <Text
+              style={[styles.loadingDescriptionMsg, { color: msgTextColor }]}
+            >
+              {message}
+            </Text>
+          </View>
+        </View>
       </Modal>
     </View>
   );
@@ -34,12 +36,12 @@ const Loader = ({
 const styles = StyleSheet.create({
   loadingContainer: {
     margin: "5%",
-    backgroundColor:COLORS.white,
-    height:SIZES.width*.3,
-    width:SIZES.width*.4,
-    borderRadius:10,
-    flexDirection:'column',
-    justifyContent:'center'
+    backgroundColor: COLORS.white,
+    height: SIZES.width * 0.3,
+    width: SIZES.width * 0.4,
+    borderRadius: 10,
+    flexDirection: "column",
+    justifyContent: "center",
   },
   loadingDescriptionMsg: {
     textAlign: "center",

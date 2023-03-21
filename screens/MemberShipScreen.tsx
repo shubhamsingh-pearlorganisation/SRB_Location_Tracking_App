@@ -34,8 +34,8 @@ const MemberShip = () => {
     >
       <ScrollView
         style={{
-          paddingTop:"2%",
-          width:'100%'
+          paddingTop: "2%",
+          width: "100%",
         }}
       >
         <View style={styles.container}>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.width > 400 ? "2%" : "3%",
     borderRadius: 5,
     marginTop: SIZES.width > 400 ? "2%" : "3%",
-    marginBottom:SIZES.width > 400 ? "2%" : "3%",
+    marginBottom: SIZES.width > 400 ? "2%" : "3%",
   },
   buttonText: {
     color: "#fff",

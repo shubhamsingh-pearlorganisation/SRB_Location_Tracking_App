@@ -144,8 +144,8 @@ const ImageUploadDialog = ({
               borderColor: "#fff",
               borderRadius: 7,
               elevation: 10,
-              flexDirection:'column',
-              height:'auto'
+              flexDirection: "column",
+              height: "auto",
             }}
           >
             <View
@@ -153,35 +153,45 @@ const ImageUploadDialog = ({
                 justifyContent: "space-around",
                 margin: 10,
                 flexDirection: "row",
-                width:'100%',
-                alignItems:'center',
-                paddingHorizontal:'2%'
+                width: "100%",
+                alignItems: "center",
+                paddingHorizontal: "2%",
               }}
             >
               <Text
                 style={{
                   fontSize: SIZES.width > 400 ? 30 : 22,
                   marginTop: "1%",
-                  width:'90%',
-                  textAlign:'center'
+                  width: "90%",
+                  textAlign: "center",
                 }}
               >
                 Upload Profile Image
               </Text>
               <Pressable onPress={() => updateModalVisibility("close")}>
-                <Feather name="x-circle" size={SIZES.width>400?35:24} color="black" />
+                <Feather
+                  name="x-circle"
+                  size={SIZES.width > 400 ? 35 : 24}
+                  color="black"
+                />
               </Pressable>
             </View>
 
-            <View style={{width:'100%', height:1, backgroundColor:COLORS.voilet}}/>
+            <View
+              style={{
+                width: "100%",
+                height: 1,
+                backgroundColor: COLORS.voilet,
+              }}
+            />
 
             <View
               style={{
-                width:'100%',
+                width: "100%",
                 flexDirection: "row",
                 justifyContent: "space-evenly",
-                alignSelf:'center',
-                paddingVertical:30
+                alignSelf: "center",
+                paddingVertical: 30,
               }}
             >
               <TouchableOpacity
@@ -192,28 +202,21 @@ const ImageUploadDialog = ({
                   borderBottomWidth: 0,
                   width: "auto",
                   justifyContent: "center",
-                  backgroundColor:COLORS.voilet,
-                  borderRadius:10,
-                  paddingHorizontal:'8%',
-                  paddingVertical:"2%",
-                  marginVertical:'2%'
+                  backgroundColor: COLORS.voilet,
+                  borderRadius: 10,
+                  paddingHorizontal: "8%",
+                  paddingVertical: "2%",
+                  marginVertical: "2%",
                 }}
               >
                 <Text
                   style={{
                     color: COLORS.white,
                     fontSize: SIZES.width > 400 ? 22 : 18,
-                    
                   }}
                 >
                   Gallery
                 </Text>
-                {/* {showLoader && (
-                <ActivityIndicator
-                  size={SIZES.width > 400 ? 30 : 20}
-                  color="white"
-                />
-              )} */}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -223,19 +226,19 @@ const ImageUploadDialog = ({
                   alignItems: "center",
                   borderBottomWidth: 0,
                   width: "auto",
-                  
+
                   justifyContent: "center",
-                  backgroundColor:COLORS.voilet,
-                  borderRadius:10,
-                  paddingHorizontal:'8%',
-                  paddingVertical:"2%",
-                  marginVertical:'2%'
+                  backgroundColor: COLORS.voilet,
+                  borderRadius: 10,
+                  paddingHorizontal: "8%",
+                  paddingVertical: "2%",
+                  marginVertical: "2%",
                 }}
               >
                 <Text
                   style={{
                     color: COLORS.white,
-                    
+
                     fontSize: SIZES.width > 400 ? 22 : 18,
                   }}
                 >

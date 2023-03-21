@@ -28,7 +28,6 @@ const MainScreen = ({ navigation }: any) => {
           else if (rn === "Groups")
             iconName = focused ? "people" : "people-outline";
           else if (rn === "Menu") iconName = focused ? "menu" : "menu-outline";
-
           else iconName = "menu";
 
           return <Ionicons name={iconName} size={size} color={"#705ECF"} />;

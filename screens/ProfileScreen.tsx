@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
-  ActivityIndicator,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
@@ -488,9 +487,7 @@ const ProfileScreen = ({ navigation }: any) => {
               position: "absolute",
             }}
           >
-            {(showLoader || showImageUploadLoader) && (
-              <Loader/>
-            )}
+            {(showLoader || showImageUploadLoader) && <Loader />}
           </View>
         </View>
 
@@ -521,9 +518,6 @@ const ProfileScreen = ({ navigation }: any) => {
                 Upload Image
               </Text>
             </Pressable>
-            {/* {showImageUploadLoader && (
-              <ActivityIndicator size={SIZES.width > 400 ? 40 : 20} />
-            )} */}
           </View>
         </View>
 
@@ -573,7 +567,6 @@ const ProfileScreen = ({ navigation }: any) => {
             maximumDate={new Date()}
             minimumDate={new Date("1930-01-01")}
             date={new Date(userDetails?.dob)}
-            
           />
           <Text style={styles.textView}>
             {userDetails?.dob

@@ -73,12 +73,6 @@ const Settings = ({ navigation }: any) => {
     fetchSettings();
   }, []);
 
-  // useEffect(() => {
-  //   if (userSettings) {
-  //     console.log("userSettings::: ", userSettings);
-  //   }
-  // }, [userSettings]);
-
   // ================================================================
 
   useEffect(() => {
@@ -154,12 +148,6 @@ const Settings = ({ navigation }: any) => {
 
   // This method is used to update user's settings
   const updateSettings = async (settingData: any) => {
-    // console.log(
-    //   "settingData::: ",
-    //   settingData,
-    //   Object.keys(settingData)[0],
-    //   Object.values(settingData)[0]
-    // );
     try {
       if (Object.keys(settingData).length !== 0) {
         let key: any = Object.keys(settingData)[0].toString();
@@ -170,8 +158,6 @@ const Settings = ({ navigation }: any) => {
         } else if (key === "allow_location" && value == false) {
           value = parseInt("0");
         } else value = value;
-
-        // console.log("PEARL::: ", key, value);
 
         const formData: any = new FormData();
         formData.append("token_id", authContextData?.token);
@@ -210,13 +196,11 @@ const Settings = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={{
-          
-        }}
-      >
+      <ScrollView style={{}}>
         {showLoader ? (
-          <Loader message={"Please wait ... \nWe are fetching user's settings"} />
+          <Loader
+            message={"Please wait ... \nWe are fetching user's settings"}
+          />
         ) : (
           <>
             <View

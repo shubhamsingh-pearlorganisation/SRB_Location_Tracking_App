@@ -103,7 +103,7 @@ const EmergencyTimerScreen = ({ navigation }: any) => {
 
       <Text
         style={{
-          fontSize: SIZES.width>400?40:30,
+          fontSize: SIZES.width > 400 ? 40 : 30,
           fontWeight: "300",
           padding: "5%",
         }}
