@@ -1,6 +1,8 @@
 import * as firebase from "firebase/compat";
 import "@firebase/auth";
 import "@firebase/firestore";
+import { getDatabase } from "firebase/database";
+
 // ---------------------------------------------------------------------------------------------
 
 // Initialize Firebase
@@ -15,5 +17,8 @@ export const firebaseConfig = {
 };
 
 if (!firebase.apps.length > 0) firebase.initializeApp(firebaseConfig);
+const db = getDatabase();
+
+export { db };
 
 // ---------------------------------------------------------------------------------------------

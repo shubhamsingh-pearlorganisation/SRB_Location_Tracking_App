@@ -1,14 +1,30 @@
 import { View, Image, StyleSheet, Platform, Dimensions } from "react-native";
-import React, { useState, useEffect, useRef, useCallback, memo } from "react";
+import React, { useState, useEffect, useRef, memo, useContext } from "react";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
-import { getCurrentLocation } from "../../core/utils/helper";
+import {
+  add_AMPM_With_Date,
+  getCurrentLocation,
+} from "../../core/utils/helper";
 import imagePath from "../../core/utils/constants";
 import { GOOGLE_API_KEY } from "../../core/utils/constants";
 import { styles } from "./style";
+import { db } from "../../firebaseConfig";
+import { ref, set } from "firebase/database";
+import { AppSettingsContext } from "../../App";
 
 // -----------------------------------------------------------------------------------
 const ManageMap = ({ navigation }: any) => {
+  // -------------------------------------------------------------------------------------------------------
+  // Fetching Current User Id
+  const userSettings: any = useContext(AppSettingsContext);
+  const [userId, setUserId] = useState<any>(null);
+
+  useEffect(() => {
+    if (userSettings?.loggedInUserId) setUserId(userSettings?.loggedInUserId);
+  }, [userSettings?.loggedInUserId]);
+
+  // -------------------------------------------------------------------------------------------------------
   type locationTypes = {
     latitude: number;
     longitude: number;
@@ -46,7 +62,7 @@ const ManageMap = ({ navigation }: any) => {
     startingTime: "",
     tenMinutesLocationData: [],
   });
-  const [timeLeft, setTimeLeft] = useState<any>(600); // 600 seconds => 10 minutes
+  const [timeLeft, setTimeLeft] = useState<any>(30); // 600 seconds => 10 minutes
 
   const updateState = (data: any) =>
     setState((state: any) => ({ ...state, ...data }));
@@ -104,9 +120,73 @@ const ManageMap = ({ navigation }: any) => {
       });
   };
 
+  const addLocationsObjectsToFirebase = async (locData: any) => {
+    console.log("locData::: ", locData);
+    let finalData = {};
+
+    const updatedLocationData = {
+      ...locData,
+      // startingTime: new Date(locData?.startingTime).toLocaleTimeString(
+      //   "en-US",
+      //   {
+      //     hour: "numeric",
+      //     minute: "numeric",
+      //     second: "numeric",
+      //     hour12: true,
+      //   }
+      // ),
+      startingTime: add_AMPM_With_Date(new Date(locData?.startingTime)),
+    };
+
+    if (
+      Array.isArray(updatedLocationData?.tenMinutesLocationData) &&
+      updatedLocationData?.tenMinutesLocationData.length > 0
+    ) {
+      // --------------------------------------------------------------------------
+      let keyName = "";
+      const updatedData = updatedLocationData?.tenMinutesLocationData.map(
+        (item: any) => {
+          keyName = add_AMPM_With_Date(new Date(item?.datetime));
+          // const result = {
+          //   keyName: {
+          //     ...item,
+          //     datetime: add_AMPM_With_Date(new Date(item?.datetime)),
+          //   },
+          // };
+          // return result;
+          return {
+            keyName: {
+              ...item,
+              datetime: add_AMPM_With_Date(new Date(item?.datetime)),
+            },
+          };
+        }
+      );
+      // --------------------------------------------------------------------------
+      console.log("updatedData::: ", updatedData);
+      finalData = {
+        ...updatedLocationData,
+        tenMinutesLocationData: updatedData,
+      };
+      console.log("finalData::: ", finalData);
+    }
+
+    try {
+      await set(
+        ref(db, `users/${userId}/location/${locData?.startingTime}`),
+        locData?.tenMinutesLocationData
+      );
+    } catch (error: any) {
+      console.log(
+        "Getting an error while saving location data to firebase: ",
+        error
+      );
+    }
+  };
+
   useEffect((): any => {
     if (timeLeft === 0) {
-      // console.log("TIME LEFT IS 0");
+      console.log("TIME LEFT IS 0");
       setTimeLeft(null);
     }
 
@@ -121,14 +201,22 @@ const ManageMap = ({ navigation }: any) => {
 
   useEffect(() => {
     if (individualLocationObj) {
-      // console.log("Location Data for Firebase: ", individualLocationObj);
-      // console.log(
-      //   "Total Locations Fetched: ",
-      //   individualLocationObj.tenMinutesLocationData.length
-      // );
+      console.log("Location Data for Firebase: ", individualLocationObj);
+      console.log(
+        "Total Locations Fetched: ",
+        individualLocationObj.tenMinutesLocationData.length
+      );
       setLocationData([...locationData, individualLocationObj]);
     }
   }, [individualLocationObj]);
+
+  useEffect(() => {
+    if (
+      timeLeft === 0 &&
+      individualLocationObj?.tenMinutesLocationData.length > 4
+    )
+      addLocationsObjectsToFirebase(individualLocationObj);
+  }, [timeLeft, individualLocationObj]);
 
   // ==========================================================================================
 
