@@ -53,18 +53,25 @@ const fetchAuthenticationToken = async () => {
   }
 };
 
-export const add_AMPM_With_Date = (date: any) => {
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-  var ampm = hours >= 12 ? "P.M" : "A.M";
+// This method is used to return time in "12:02:02 PM" format.
+const add_AMPM_With_Date = (date: any) => {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes;
   seconds = seconds < 10 ? "0" + seconds : seconds;
 
-  var strTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
-  return strTime;
+  let strTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
+  return strTime.toString();
 };
 
-export { getCurrentLocation, showError, showSuccess, fetchAuthenticationToken };
+export {
+  getCurrentLocation,
+  showError,
+  showSuccess,
+  fetchAuthenticationToken,
+  add_AMPM_With_Date,
+};

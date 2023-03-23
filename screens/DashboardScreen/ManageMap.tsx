@@ -62,7 +62,7 @@ const ManageMap = ({ navigation }: any) => {
     startingTime: "",
     tenMinutesLocationData: [],
   });
-  const [timeLeft, setTimeLeft] = useState<any>(30); // 600 seconds => 10 minutes
+  const [timeLeft, setTimeLeft] = useState<any>(600); // 600 seconds => 10 minutes
 
   const updateState = (data: any) =>
     setState((state: any) => ({ ...state, ...data }));
@@ -120,21 +120,13 @@ const ManageMap = ({ navigation }: any) => {
       });
   };
 
+  // This method is used to save 10 minutes location data to Firebase Realtime Database.
   const addLocationsObjectsToFirebase = async (locData: any) => {
     console.log("locData::: ", locData);
-    let finalData = {};
+    let finalData: any = {};
 
     const updatedLocationData = {
       ...locData,
-      // startingTime: new Date(locData?.startingTime).toLocaleTimeString(
-      //   "en-US",
-      //   {
-      //     hour: "numeric",
-      //     minute: "numeric",
-      //     second: "numeric",
-      //     hour12: true,
-      //   }
-      // ),
       startingTime: add_AMPM_With_Date(new Date(locData?.startingTime)),
     };
 
@@ -147,18 +139,14 @@ const ManageMap = ({ navigation }: any) => {
       const updatedData = updatedLocationData?.tenMinutesLocationData.map(
         (item: any) => {
           keyName = add_AMPM_With_Date(new Date(item?.datetime));
-          // const result = {
-          //   keyName: {
-          //     ...item,
-          //     datetime: add_AMPM_With_Date(new Date(item?.datetime)),
-          //   },
-          // };
-          // return result;
+          console.log("keyName::: ", keyName);
           return {
-            keyName: {
-              ...item,
-              datetime: add_AMPM_With_Date(new Date(item?.datetime)),
-            },
+            // [keyName]: {
+            //   ...item,
+            //   datetime: add_AMPM_With_Date(new Date(item?.datetime)),
+            // },
+            ...item,
+            datetime: add_AMPM_With_Date(new Date(item?.datetime)),
           };
         }
       );
@@ -171,16 +159,18 @@ const ManageMap = ({ navigation }: any) => {
       console.log("finalData::: ", finalData);
     }
 
-    try {
-      await set(
-        ref(db, `users/${userId}/location/${locData?.startingTime}`),
-        locData?.tenMinutesLocationData
-      );
-    } catch (error: any) {
-      console.log(
-        "Getting an error while saving location data to firebase: ",
-        error
-      );
+    if (finalData.startingTime && finalData.tenMinutesLocationData.length > 0) {
+      try {
+        await set(
+          ref(db, `users/${userId}/location/${finalData.startingTime}`),
+          finalData.tenMinutesLocationData
+        );
+      } catch (error: any) {
+        console.log(
+          "Getting an error while saving location data to firebase: ",
+          error
+        );
+      }
     }
   };
 
@@ -189,7 +179,6 @@ const ManageMap = ({ navigation }: any) => {
       console.log("TIME LEFT IS 0");
       setTimeLeft(null);
     }
-
     if (!timeLeft) return;
 
     const interval = setInterval(() => {
@@ -213,7 +202,7 @@ const ManageMap = ({ navigation }: any) => {
   useEffect(() => {
     if (
       timeLeft === 0 &&
-      individualLocationObj?.tenMinutesLocationData.length > 4
+      individualLocationObj?.tenMinutesLocationData.length == 100
     )
       addLocationsObjectsToFirebase(individualLocationObj);
   }, [timeLeft, individualLocationObj]);
