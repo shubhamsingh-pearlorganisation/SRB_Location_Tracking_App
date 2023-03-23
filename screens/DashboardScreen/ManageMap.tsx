@@ -122,7 +122,7 @@ const ManageMap = ({ navigation }: any) => {
 
   // This method is used to save 10 minutes location data to Firebase Realtime Database.
   const addLocationsObjectsToFirebase = async (locData: any) => {
-    console.log("locData::: ", locData);
+    // console.log("locData::: ", locData);
     let finalData: any = {};
 
     const updatedLocationData = {
@@ -151,12 +151,12 @@ const ManageMap = ({ navigation }: any) => {
         }
       );
       // --------------------------------------------------------------------------
-      console.log("updatedData::: ", updatedData);
+      // console.log("updatedData::: ", updatedData);
       finalData = {
         ...updatedLocationData,
         tenMinutesLocationData: updatedData,
       };
-      console.log("finalData::: ", finalData);
+      // console.log("finalData::: ", finalData);
     }
 
     if (finalData.startingTime && finalData.tenMinutesLocationData.length > 0) {
