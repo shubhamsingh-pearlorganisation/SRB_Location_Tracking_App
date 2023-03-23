@@ -9,6 +9,7 @@ import Timeline from "react-native-timeline-flatlist";
 import { db } from "../firebaseConfig";
 import { ref, onValue } from "firebase/database";
 import { AppSettingsContext } from "../App";
+import { convertDateIn_DDMMYYYY_Format } from "../core/utils/helper";
 // -----------------------------------------------------------------------------------
 
 const timelineData = [
@@ -63,14 +64,23 @@ const MemberHistory = () => {
 
   const fetchLocationDataFromFirebase = () => {
     // const startingTime = "2:39:14 PM";
+    const startingDate = convertDateIn_DDMMYYYY_Format(new Date());
     try {
-      const startCountRef = ref(db, `users/${userId}/location/`);
+      const startCountRef = ref(db, `users/${userId}/location/${startingDate}`);
       // console.log("startCountRef:: ", startCountRef);
       onValue(startCountRef, (snapshot) => {
         const locationData = snapshot.val();
+        // console.log("locationData::: ", locationData);
         console.log(
-          `Retrieved Location data From Firebase Realtime database ::: ${locationData} and total objects found: ${locationData.length}`
+          "Location Objects Length: ",
+          Object.keys(locationData),
+          Object.keys(locationData).length
         );
+        for (let key in locationData) {
+          console.log(
+            `Key ${key} contains ${locationData[key].length} location objects.`
+          );
+        }
       });
     } catch (error: any) {
       console.log(

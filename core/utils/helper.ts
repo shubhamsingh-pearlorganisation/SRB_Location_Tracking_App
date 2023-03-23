@@ -68,10 +68,24 @@ const add_AMPM_With_Date = (date: any) => {
   return strTime.toString();
 };
 
+// This method is used to convert date in "23-03-2023" format.
+const convertDateIn_DDMMYYYY_Format = (selectedDate: any) => {
+  const selDate = selectedDate ? selectedDate : new Date();
+  let date: any = selDate.getDate();
+  let month: any = selDate.getMonth() + 1;
+  let year: any = selDate.getFullYear();
+  if (date < 10) date = "0" + date;
+  if (month < 10) month = "0" + month;
+  const convertedDate = date + "-" + month + "-" + year;
+  console.log("convertedDate::: ", convertedDate);
+  return convertedDate.toString();
+};
+
 export {
   getCurrentLocation,
   showError,
   showSuccess,
   fetchAuthenticationToken,
   add_AMPM_With_Date,
+  convertDateIn_DDMMYYYY_Format,
 };

@@ -4,6 +4,7 @@ import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import {
   add_AMPM_With_Date,
+  convertDateIn_DDMMYYYY_Format,
   getCurrentLocation,
 } from "../../core/utils/helper";
 import imagePath from "../../core/utils/constants";
@@ -62,7 +63,7 @@ const ManageMap = ({ navigation }: any) => {
     startingTime: "",
     tenMinutesLocationData: [],
   });
-  const [timeLeft, setTimeLeft] = useState<any>(600); // 600 seconds => 10 minutes
+  const [timeLeft, setTimeLeft] = useState<any>(30); // 600 seconds => 10 minutes
 
   const updateState = (data: any) =>
     setState((state: any) => ({ ...state, ...data }));
@@ -134,23 +135,14 @@ const ManageMap = ({ navigation }: any) => {
       Array.isArray(updatedLocationData?.tenMinutesLocationData) &&
       updatedLocationData?.tenMinutesLocationData.length > 0
     ) {
-      // --------------------------------------------------------------------------
-      let keyName = "";
       const updatedData = updatedLocationData?.tenMinutesLocationData.map(
         (item: any) => {
-          keyName = add_AMPM_With_Date(new Date(item?.datetime));
-          // console.log("keyName::: ", keyName);
           return {
-            // [keyName]: {
-            //   ...item,
-            //   datetime: add_AMPM_With_Date(new Date(item?.datetime)),
-            // },
             ...item,
             datetime: add_AMPM_With_Date(new Date(item?.datetime)),
           };
         }
       );
-      // --------------------------------------------------------------------------
       // console.log("updatedData::: ", updatedData);
       finalData = {
         ...updatedLocationData,
@@ -160,9 +152,14 @@ const ManageMap = ({ navigation }: any) => {
     }
 
     if (finalData.startingTime && finalData.tenMinutesLocationData.length > 0) {
+      const selectedDate = convertDateIn_DDMMYYYY_Format(new Date());
+      console.log("selectedDate:: ", selectedDate);
       try {
         await set(
-          ref(db, `users/${userId}/location/${finalData.startingTime}`),
+          ref(
+            db,
+            `users/${userId}/location/${selectedDate}/${finalData.startingTime}`
+          ),
           finalData.tenMinutesLocationData
         );
       } catch (error: any) {
@@ -175,18 +172,20 @@ const ManageMap = ({ navigation }: any) => {
   };
 
   useEffect((): any => {
-    if (timeLeft === 0) {
-      console.log("TIME LEFT IS 0");
-      setTimeLeft(null);
-    }
-    if (!timeLeft) return;
+    if (userId) {
+      if (timeLeft === 0) {
+        console.log("TIME LEFT IS 0");
+        setTimeLeft(null);
+      }
+      if (!timeLeft) return;
 
-    const interval = setInterval(() => {
-      getLiveLocation(); // Fetching User's Location in every 6 seconds
-      setTimeLeft(timeLeft - 6);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [locationData]);
+      const interval = setInterval(() => {
+        getLiveLocation(); // Fetching User's Location in every 6 seconds
+        setTimeLeft(timeLeft - 6);
+      }, 6000);
+      return () => clearInterval(interval);
+    }
+  }, [locationData, userId]);
 
   useEffect(() => {
     if (individualLocationObj) {
@@ -202,10 +201,11 @@ const ManageMap = ({ navigation }: any) => {
   useEffect(() => {
     if (
       timeLeft === 0 &&
-      individualLocationObj?.tenMinutesLocationData.length == 100
+      individualLocationObj?.tenMinutesLocationData.length == 5 &&
+      userId
     )
       addLocationsObjectsToFirebase(individualLocationObj);
-  }, [timeLeft, individualLocationObj]);
+  }, [timeLeft, individualLocationObj, userId]);
 
   // ==========================================================================================
 
