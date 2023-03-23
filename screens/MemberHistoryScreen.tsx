@@ -3,9 +3,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import Timeline from "react-native-timeline-flatlist";
+import { db } from "../firebaseConfig";
+import { ref, onValue } from "firebase/database";
+import { AppSettingsContext } from "../App";
+// -----------------------------------------------------------------------------------
 
 const timelineData = [
   {
@@ -49,6 +53,37 @@ const timelineData = [
 // ---------------------------------------------------------------------------------------------
 
 const MemberHistory = () => {
+  // Fetching Current User Id
+  const userSettings: any = useContext(AppSettingsContext);
+  const [userId, setUserId] = useState<any>(null);
+
+  useEffect(() => {
+    if (userSettings?.loggedInUserId) setUserId(userSettings?.loggedInUserId);
+  }, [userSettings?.loggedInUserId]);
+
+  const fetchLocationDataFromFirebase = () => {
+    // const startingTime = "2:39:14 PM";
+    try {
+      const startCountRef = ref(db, `users/${userId}/location/`);
+      // console.log("startCountRef:: ", startCountRef);
+      onValue(startCountRef, (snapshot) => {
+        const locationData = snapshot.val();
+        console.log(
+          `Retrieved Location data From Firebase Realtime database ::: ${locationData} and total objects found: ${locationData.length}`
+        );
+      });
+    } catch (error: any) {
+      console.log(
+        "Getting error while fetching posts:: ",
+        error?.message ? error?.message : error
+      );
+    }
+  };
+
+  useEffect(() => {
+    userId && fetchLocationDataFromFirebase();
+  }, [userId]);
+
   // --------------------------- Date Picker Handling -- Start -----------------------------------
 
   //  const [historyDate, setHistoryDate] = useState(new Date());

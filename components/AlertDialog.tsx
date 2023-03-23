@@ -61,7 +61,6 @@ export default function AlertDialog({
                 borderBottomWidth: 0,
                 width:
                   SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
-                // height: "20%",
                 justifyContent: showLoader ? "space-around" : "center",
                 borderRadius: 30,
                 backgroundColor: COLORS.voilet,

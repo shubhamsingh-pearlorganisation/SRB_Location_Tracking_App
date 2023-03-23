@@ -139,7 +139,7 @@ const ManageMap = ({ navigation }: any) => {
       const updatedData = updatedLocationData?.tenMinutesLocationData.map(
         (item: any) => {
           keyName = add_AMPM_With_Date(new Date(item?.datetime));
-          console.log("keyName::: ", keyName);
+          // console.log("keyName::: ", keyName);
           return {
             // [keyName]: {
             //   ...item,
