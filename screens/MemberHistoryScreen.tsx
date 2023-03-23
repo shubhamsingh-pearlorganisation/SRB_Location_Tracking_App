@@ -10,6 +10,7 @@ import { db } from "../firebaseConfig";
 import { ref, onValue } from "firebase/database";
 import { AppSettingsContext } from "../App";
 import { convertDateIn_DDMMYYYY_Format } from "../core/utils/helper";
+import Loader from "../components/Loader";
 // -----------------------------------------------------------------------------------
 
 const timelineData = [
@@ -57,6 +58,8 @@ const MemberHistory = () => {
   // Fetching Current User Id
   const userSettings: any = useContext(AppSettingsContext);
   const [userId, setUserId] = useState<any>(null);
+  const [showLoader, setShowLoader] = useState(false);
+  const [firebaseLocationData, setFirebaseLocationData] = useState<any>({});
 
   useEffect(() => {
     if (userSettings?.loggedInUserId) setUserId(userSettings?.loggedInUserId);
@@ -66,10 +69,12 @@ const MemberHistory = () => {
     // const startingTime = "2:39:14 PM";
     const startingDate = convertDateIn_DDMMYYYY_Format(new Date());
     try {
+      setShowLoader(true);
       const startCountRef = ref(db, `users/${userId}/location/${startingDate}`);
       // console.log("startCountRef:: ", startCountRef);
       onValue(startCountRef, (snapshot) => {
         const locationData = snapshot.val();
+        if (locationData) setFirebaseLocationData(locationData);
         // console.log("locationData::: ", locationData);
         console.log(
           "Location Objects Length: ",
@@ -87,12 +92,14 @@ const MemberHistory = () => {
         "Getting error while fetching posts:: ",
         error?.message ? error?.message : error
       );
+    } finally {
+      setShowLoader(false);
     }
   };
 
   useEffect(() => {
     userId && fetchLocationDataFromFirebase();
-  }, [userId]);
+  }, [userId, userSettings]);
 
   // --------------------------- Date Picker Handling -- Start -----------------------------------
 
@@ -132,102 +139,106 @@ const MemberHistory = () => {
 
   // --------------------------- Date Picker Handling -- Finished -----------------------------------
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.holder}>
-        <View style={styles.backBtn}>
-          <MaterialIcons
-            name="keyboard-arrow-left"
-            size={SIZES.width > 400 ? 30 : 25}
-            color={"black"}
-          />
+  return showLoader ? (
+    <Loader message="Please wait ... We are fetching Locations Records." />
+  ) : (
+    <>
+      <View style={styles.container}>
+        <View style={styles.holder}>
+          <View style={styles.backBtn}>
+            <MaterialIcons
+              name="keyboard-arrow-left"
+              size={SIZES.width > 400 ? 30 : 25}
+              color={"black"}
+            />
+          </View>
+
+          <View style={styles.userInfoHolder}>
+            <Text style={styles.heading}>Name</Text>
+            <Text style={styles.subHeading}>Last Location</Text>
+            <Text style={styles.subHeading}>LastUpdated</Text>
+          </View>
+          <Pressable style={styles.getDirection}>
+            <Entypo
+              name="direction"
+              size={SIZES.width > 400 ? 24 : 18}
+              color="black"
+            />
+            <Text>GET Direction</Text>
+          </Pressable>
+        </View>
+        <View style={styles.dateDataHolder}>
+          <Pressable>
+            <MaterialIcons
+              name={"keyboard-arrow-left"}
+              size={SIZES.width > 400 ? 24 : 18}
+              color={"black"}
+            />
+          </Pressable>
+          <Pressable onPress={showDatePicker} style={styles.dateHolder}>
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+              maximumDate={new Date()}
+              minimumDate={new Date("1930-01-01")}
+              // date={historyDate}
+            />
+            <AntDesign
+              name="calendar"
+              size={SIZES.width > 400 ? 24 : 18}
+              color="black"
+              style={{ marginHorizontal: "5%" }}
+            />
+            <Text style={styles.subHeading}>
+              20 Feb
+              {/* {Object.keys(historyDate).length} */}
+              {/* {new Date(historyDate)} */}
+              {/* {typeof historyDate} */}
+            </Text>
+          </Pressable>
+          <Pressable
+          // onPress={() => nextDate()}
+          >
+            <MaterialIcons
+              name={"keyboard-arrow-right"}
+              size={SIZES.width > 400 ? 24 : 18}
+              color={"black"}
+            />
+          </Pressable>
         </View>
 
-        <View style={styles.userInfoHolder}>
-          <Text style={styles.heading}>Name</Text>
-          <Text style={styles.subHeading}>Last Location</Text>
-          <Text style={styles.subHeading}>LastUpdated</Text>
+        {/* ---------------------------------------location history timeline-------------------------------------- */}
+
+        <View style={styles.locationLineHolder}>
+          <Timeline
+            style={[styles.list, { paddingTop: 5 }]}
+            data={timelineData}
+            circleSize={SIZES.width > 400 ? 30 : 20}
+            circleColor={COLORS.voilet}
+            circleStyle={{
+              borderColor: COLORS.white,
+              borderWidth: 2,
+            }}
+            titleStyle={styles.listItemTitle}
+            lineColor={COLORS.voilet}
+            timeContainerStyle={{ width: "auto", marginTop: -5 }}
+            timeStyle={styles.listItemTime}
+            descriptionStyle={{ color: "gray" }}
+            rowContainerStyle={{ paddingTop: "2%" }}
+            // options={{
+            //   style:{paddingTop:5}
+            // }}
+            // innerCircle={"icon"}
+            // onEventPress={this.onEventPress}
+            separator={false}
+            detailContainerStyle={styles.listItem}
+            columnFormat="two-column"
+          />
         </View>
-        <Pressable style={styles.getDirection}>
-          <Entypo
-            name="direction"
-            size={SIZES.width > 400 ? 24 : 18}
-            color="black"
-          />
-          <Text>GET Direction</Text>
-        </Pressable>
       </View>
-      <View style={styles.dateDataHolder}>
-        <Pressable>
-          <MaterialIcons
-            name={"keyboard-arrow-left"}
-            size={SIZES.width > 400 ? 24 : 18}
-            color={"black"}
-          />
-        </Pressable>
-        <Pressable onPress={showDatePicker} style={styles.dateHolder}>
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
-            maximumDate={new Date()}
-            minimumDate={new Date("1930-01-01")}
-            // date={historyDate}
-          />
-          <AntDesign
-            name="calendar"
-            size={SIZES.width > 400 ? 24 : 18}
-            color="black"
-            style={{ marginHorizontal: "5%" }}
-          />
-          <Text style={styles.subHeading}>
-            20 Feb
-            {/* {Object.keys(historyDate).length} */}
-            {/* {new Date(historyDate)} */}
-            {/* {typeof historyDate} */}
-          </Text>
-        </Pressable>
-        <Pressable
-        // onPress={() => nextDate()}
-        >
-          <MaterialIcons
-            name={"keyboard-arrow-right"}
-            size={SIZES.width > 400 ? 24 : 18}
-            color={"black"}
-          />
-        </Pressable>
-      </View>
-
-      {/* ---------------------------------------location history timeline-------------------------------------- */}
-
-      <View style={styles.locationLineHolder}>
-        <Timeline
-          style={[styles.list, { paddingTop: 5 }]}
-          data={timelineData}
-          circleSize={SIZES.width > 400 ? 30 : 20}
-          circleColor={COLORS.voilet}
-          circleStyle={{
-            borderColor: COLORS.white,
-            borderWidth: 2,
-          }}
-          titleStyle={styles.listItemTitle}
-          lineColor={COLORS.voilet}
-          timeContainerStyle={{ width: "auto", marginTop: -5 }}
-          timeStyle={styles.listItemTime}
-          descriptionStyle={{ color: "gray" }}
-          rowContainerStyle={{ paddingTop: "2%" }}
-          // options={{
-          //   style:{paddingTop:5}
-          // }}
-          // innerCircle={"icon"}
-          // onEventPress={this.onEventPress}
-          separator={false}
-          detailContainerStyle={styles.listItem}
-          columnFormat="two-column"
-        />
-      </View>
-    </View>
+    </>
   );
 };
 // =========================================================================================

@@ -97,7 +97,7 @@ const GroupsMembersListing = ({ navigation, selectedGroupData }: any) => {
                 <NoDataFound message="No Group Member Found" />
               </View>
             ) : (
-              <Loader message={"Please wait... \nfetching data"} />
+              <Loader message={"Please wait..."} />
             )}
           </>
         )}
