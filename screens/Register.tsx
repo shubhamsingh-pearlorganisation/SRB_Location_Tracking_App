@@ -13,7 +13,9 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import { instance } from "../core/utils/AxiosInterceptor";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import RNDateTimePicker, {
+  DateTimePickerAndroid,
+} from "@react-native-community/datetimepicker";
 import { useToast } from "react-native-toast-notifications";
 import {
   AuthContext,
@@ -380,15 +382,17 @@ const Register = ({ route }: any) => {
             Your Birthday
           </Text>
 
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
-            maximumDate={new Date()}
-            minimumDate={new Date("1930-01-01")}
-            timePickerModeAndroid="spinner"
-          />
+          {isDatePickerVisible && (
+            <RNDateTimePicker
+              mode="date"
+              display="spinner"
+              maximumDate={new Date()}
+              minimumDate={new Date("1930-01-01")}
+              value={new Date(userDetails?.dob)}
+              onChange={(val: any) => handleConfirm(val)}
+              positiveButton={{ label: "OK", textColor: "green" }}
+            />
+          )}
           <View
             style={{
               flexDirection: "row",

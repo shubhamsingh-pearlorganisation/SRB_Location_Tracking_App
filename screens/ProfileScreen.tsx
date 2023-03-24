@@ -14,7 +14,9 @@ import { useToast } from "react-native-toast-notifications";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import RNDateTimePicker, {
+  DateTimePickerAndroid,
+} from "@react-native-community/datetimepicker";
 import {
   AuthContext,
   GroupsAndMembersContext,
@@ -201,8 +203,8 @@ const ProfileScreen = ({ navigation }: any) => {
   };
 
   const handleConfirm = (date: any) => {
-    let tempDate = new Date(date);
-
+    // console.log("date:: ", date.nativeEvent.timestamp)
+    let tempDate = new Date(date.nativeEvent.timestamp);
     const currentDate = tempDate.getDate();
     const month = tempDate.getMonth() + 1;
     const year = tempDate.getFullYear();
@@ -559,15 +561,18 @@ const ProfileScreen = ({ navigation }: any) => {
           }
         ></TextInput>
         <Pressable onPress={showDatePicker}>
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
-            maximumDate={new Date()}
-            minimumDate={new Date("1930-01-01")}
-            date={new Date(userDetails?.dob)}
-          />
+          {isDatePickerVisible && (
+            <RNDateTimePicker
+              mode="date"
+              display="spinner"
+              maximumDate={new Date()}
+              minimumDate={new Date("1930-01-01")}
+              value={new Date(userDetails?.dob)}
+              onChange={(val: any) => handleConfirm(val)}
+              positiveButton={{ label: "OK", textColor: "green" }}
+            />
+          )}
+
           <Text style={styles.textView}>
             {userDetails?.dob
               ? userDetails?.dob.toString().split("-")[2] +

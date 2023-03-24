@@ -54,7 +54,7 @@ const timelineData = [
 
 // ---------------------------------------------------------------------------------------------
 
-const MemberHistory = () => {
+const MemberHistory = ({ navigation }: any) => {
   // Fetching Current User Id
   const userSettings: any = useContext(AppSettingsContext);
   const [userId, setUserId] = useState<any>(null);
@@ -146,11 +146,13 @@ const MemberHistory = () => {
       <View style={styles.container}>
         <View style={styles.holder}>
           <View style={styles.backBtn}>
-            <MaterialIcons
-              name="keyboard-arrow-left"
-              size={SIZES.width > 400 ? 30 : 25}
-              color={"black"}
-            />
+            <Pressable onPress={() => navigation.navigate("Main")}>
+              <MaterialIcons
+                name="keyboard-arrow-left"
+                size={SIZES.width > 400 ? 30 : 25}
+                color={"black"}
+              />
+            </Pressable>
           </View>
 
           <View style={styles.userInfoHolder}>
