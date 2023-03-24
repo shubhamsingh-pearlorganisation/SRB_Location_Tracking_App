@@ -9,8 +9,11 @@ import Timeline from "react-native-timeline-flatlist";
 import { db } from "../firebaseConfig";
 import { ref, onValue } from "firebase/database";
 import { AppSettingsContext } from "../App";
-import { convertDateIn_DDMMYYYY_Format } from "../core/utils/helper";
+import { convertDateIn_DDMMYYYY_Format, convertMonthNumberToName } from "../core/utils/helper";
 import Loader from "../components/Loader";
+import RNDateTimePicker, {
+  DateTimePickerAndroid,
+} from "@react-native-community/datetimepicker";
 // -----------------------------------------------------------------------------------
 
 const timelineData = [
@@ -67,7 +70,9 @@ const MemberHistory = ({ navigation }: any) => {
 
   const fetchLocationDataFromFirebase = () => {
     // const startingTime = "2:39:14 PM";
-    const startingDate = convertDateIn_DDMMYYYY_Format(new Date());
+    const startingDate = historyDate ? convertDateIn_DDMMYYYY_Format(new Date(historyDate)):"";
+    console.log("Starting Date:: ", startingDate)
+   if(startingDate){
     try {
       setShowLoader(true);
       const startCountRef = ref(db, `users/${userId}/location/${startingDate}`);
@@ -95,23 +100,32 @@ const MemberHistory = ({ navigation }: any) => {
     } finally {
       setShowLoader(false);
     }
+   }
   };
 
-  useEffect(() => {
-    userId && fetchLocationDataFromFirebase();
-  }, [userId, userSettings]);
 
   // --------------------------- Date Picker Handling -- Start -----------------------------------
 
-  //  const [historyDate, setHistoryDate] = useState(new Date());
+  const [historyDate, setHistoryDate] = useState<any>(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  //  const nextDate = () =>{
-  //   setHistoryDate(new Date().setDate(new Date().getDate()+1))
-  //  }
-  //  const previousDate = () =>{
-  //   setHistoryDate(new Date().getDate()-1)
-  //  }
+  const [dateValue, setDateValue] = useState<any>("")
+  
+
+  useEffect(() => {
+    console.log("history date:: ", new Date(historyDate));
+    const monthName = convertMonthNumberToName(new Date(historyDate).getMonth());
+    setDateValue(`${new Date(historyDate).getDate()} ${monthName}`)
+  }, [historyDate]);
+
+  const nextDate = () => {
+    setHistoryDate(new Date(historyDate).setDate(new Date(historyDate).getDate() + 1));
+    console.log("next date:: ", new Date(historyDate));
+  };
+  const previousDate = () => {
+    setHistoryDate(new Date(historyDate).setDate(new Date(historyDate).getDate() - 1));
+    console.log("previous date:: ", new Date(historyDate));
+  };
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -132,11 +146,16 @@ const MemberHistory = ({ navigation }: any) => {
     let fullDate = `${year}-${month < 10 ? "0" + month : month}-${
       currentDate < 10 ? "0" + currentDate : currentDate
     }`;
-
+    setHistoryDate(tempDate)
     //  setUserDetails({ ...userDetails, dob: fullDate });
     hideDatePicker();
   };
 
+
+  
+  useEffect(() => {
+    userId && historyDate && fetchLocationDataFromFirebase();
+  }, [userId, historyDate]);
   // --------------------------- Date Picker Handling -- Finished -----------------------------------
 
   return showLoader ? (
@@ -161,48 +180,55 @@ const MemberHistory = ({ navigation }: any) => {
             <Text style={styles.subHeading}>LastUpdated</Text>
           </View>
           <Pressable style={styles.getDirection}>
+            <Text style={{ color: "black" }}>{"Get\nDirection"}</Text>
+
             <Entypo
               name="direction"
-              size={SIZES.width > 400 ? 24 : 18}
+              size={SIZES.width > 400 ? 40 : 30}
               color="black"
+              style={{ margin: "5%" }}
             />
-            <Text>GET Direction</Text>
           </Pressable>
         </View>
         <View style={styles.dateDataHolder}>
-          <Pressable>
+          <Pressable 
+          onPress={previousDate}
+          >
             <MaterialIcons
               name={"keyboard-arrow-left"}
-              size={SIZES.width > 400 ? 24 : 18}
+              size={SIZES.width > 400 ? 30 : 22}
               color={"black"}
             />
           </Pressable>
           <Pressable onPress={showDatePicker} style={styles.dateHolder}>
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-              maximumDate={new Date()}
-              minimumDate={new Date("1930-01-01")}
-              // date={historyDate}
-            />
+            {isDatePickerVisible && (
+              <RNDateTimePicker
+                mode="date"
+                display="spinner"
+                maximumDate={new Date()}
+                minimumDate={new Date("1930-01-01")}
+                value={new Date(historyDate)}
+                onChange={(val: any) =>
+                  handleConfirm(val.nativeEvent.timestamp)
+                }
+                positiveButton={{ label: "OK", textColor: "green" }}
+              />
+            )}
+
             <AntDesign
               name="calendar"
-              size={SIZES.width > 400 ? 24 : 18}
+              size={SIZES.width > 400 ? 30 : 22}
               color="black"
               style={{ marginHorizontal: "5%" }}
             />
             <Text style={styles.subHeading}>
-              20 Feb
+              
               {/* {Object.keys(historyDate).length} */}
-              {/* {new Date(historyDate)} */}
+              {`${dateValue}`}
               {/* {typeof historyDate} */}
             </Text>
           </Pressable>
-          <Pressable
-          // onPress={() => nextDate()}
-          >
+          <Pressable onPress={() => nextDate()}>
             <MaterialIcons
               name={"keyboard-arrow-right"}
               size={SIZES.width > 400 ? 24 : 18}
@@ -290,18 +316,20 @@ const styles = StyleSheet.create({
   },
   dateHolder: {
     flexDirection: "row",
-    marginHorizontal: "1%",
+    marginHorizontal: "5%",
   },
   getDirection: {
     right: "2%",
     top: "2%",
     position: "absolute",
-    width: SIZES.width > 400 ? "10%" : "20%",
-    borderColor: "black",
+    width: SIZES.width > 400 ? "20%" : "30%",
+    borderColor: COLORS.voilet,
     borderRadius: 15,
     borderWidth: 1,
     padding: "8%",
-    backgroundColor: "rgba(52,52,52,0.1)",
+    flexDirection: "row",
+    backgroundColor: "rgba(112, 94, 207, .5)",
+    alignItems: "center",
   },
   list: {
     flex: 1,

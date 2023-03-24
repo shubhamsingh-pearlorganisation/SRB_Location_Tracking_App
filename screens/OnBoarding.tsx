@@ -113,8 +113,8 @@ const OnBoarding = ({ navigation }: any) => {
                 <Text
                   style={{
                     fontSize: 30,
-                    color: COLORS.white,
                     textAlign: "center",
+                    color:COLORS.white
                   }}
                 >
                   {item.title}
