@@ -9,7 +9,10 @@ import Timeline from "react-native-timeline-flatlist";
 import { db } from "../firebaseConfig";
 import { ref, onValue } from "firebase/database";
 import { AppSettingsContext } from "../App";
-import { convertDateIn_DDMMYYYY_Format, convertMonthNumberToName } from "../core/utils/helper";
+import {
+  convertDateIn_DDMMYYYY_Format,
+  convertMonthNumberToName,
+} from "../core/utils/helper";
 import Loader from "../components/Loader";
 import RNDateTimePicker, {
   DateTimePickerAndroid,
@@ -70,60 +73,70 @@ const MemberHistory = ({ navigation }: any) => {
 
   const fetchLocationDataFromFirebase = () => {
     // const startingTime = "2:39:14 PM";
-    const startingDate = historyDate ? convertDateIn_DDMMYYYY_Format(new Date(historyDate)):"";
-    console.log("Starting Date:: ", startingDate)
-   if(startingDate){
-    try {
-      setShowLoader(true);
-      const startCountRef = ref(db, `users/${userId}/location/${startingDate}`);
-      // console.log("startCountRef:: ", startCountRef);
-      onValue(startCountRef, (snapshot) => {
-        const locationData = snapshot.val();
-        if (locationData) setFirebaseLocationData(locationData);
-        // console.log("locationData::: ", locationData);
-        console.log(
-          "Location Objects Length: ",
-          Object.keys(locationData),
-          Object.keys(locationData).length
+    const startingDate = historyDate
+      ? convertDateIn_DDMMYYYY_Format(new Date(historyDate))
+      : "";
+    console.log("Starting Date:: ", startingDate);
+    if (startingDate) {
+      try {
+        setShowLoader(true);
+        const startCountRef = ref(
+          db,
+          `users/${userId}/location/${startingDate}`
         );
-        for (let key in locationData) {
-          console.log(
-            `Key ${key} contains ${locationData[key].length} location objects.`
-          );
-        }
-      });
-    } catch (error: any) {
-      console.log(
-        "Getting error while fetching posts:: ",
-        error?.message ? error?.message : error
-      );
-    } finally {
-      setShowLoader(false);
+        // console.log("startCountRef:: ", startCountRef);
+        onValue(startCountRef, (snapshot) => {
+          const locationData = snapshot.val();
+          console.log("Firebase Response::: ", locationData);
+          if (locationData) setFirebaseLocationData(locationData);
+          // console.log("locationData::: ", locationData);
+          // console.log(
+          //   "Location Objects Length: ",
+          //   Object.keys(locationData),
+          //   Object.keys(locationData).length
+          // );
+          for (let key in locationData) {
+            console.log(
+              `Key ${key} contains ${locationData[key].length} location objects.`
+            );
+          }
+        });
+      } catch (error: any) {
+        console.log(
+          "Getting error while fetching posts:: ",
+          error?.message ? error?.message : error
+        );
+      } finally {
+        setShowLoader(false);
+      }
     }
-   }
   };
-
 
   // --------------------------- Date Picker Handling -- Start -----------------------------------
 
   const [historyDate, setHistoryDate] = useState<any>(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const [dateValue, setDateValue] = useState<any>("")
-  
+  const [dateValue, setDateValue] = useState<any>("");
 
   useEffect(() => {
     console.log("history date:: ", new Date(historyDate));
-    const monthName = convertMonthNumberToName(new Date(historyDate).getMonth());
-    setDateValue(`${new Date(historyDate).getDate()} ${monthName}`)
+    const monthName = convertMonthNumberToName(
+      new Date(historyDate).getMonth()
+    );
+    setDateValue(`${new Date(historyDate).getDate()} ${monthName}`);
   }, [historyDate]);
 
   const nextDate = () => {
-    setHistoryDate(new Date(historyDate).setDate(new Date(historyDate).getDate() + 1));
+    setHistoryDate(
+      new Date(historyDate).setDate(new Date(historyDate).getDate() + 1)
+    );
     console.log("next date:: ", new Date(historyDate));
   };
   const previousDate = () => {
-    setHistoryDate(new Date(historyDate).setDate(new Date(historyDate).getDate() - 1));
+    setHistoryDate(
+      new Date(historyDate).setDate(new Date(historyDate).getDate() - 1)
+    );
     console.log("previous date:: ", new Date(historyDate));
   };
 
@@ -146,13 +159,11 @@ const MemberHistory = ({ navigation }: any) => {
     let fullDate = `${year}-${month < 10 ? "0" + month : month}-${
       currentDate < 10 ? "0" + currentDate : currentDate
     }`;
-    setHistoryDate(tempDate)
+    setHistoryDate(tempDate);
     //  setUserDetails({ ...userDetails, dob: fullDate });
     hideDatePicker();
   };
 
-
-  
   useEffect(() => {
     userId && historyDate && fetchLocationDataFromFirebase();
   }, [userId, historyDate]);
@@ -191,12 +202,10 @@ const MemberHistory = ({ navigation }: any) => {
           </Pressable>
         </View>
         <View style={styles.dateDataHolder}>
-          <Pressable 
-          onPress={previousDate}
-          >
+          <Pressable onPress={previousDate}>
             <MaterialIcons
               name={"keyboard-arrow-left"}
-              size={SIZES.width > 400 ? 30 : 22}
+              size={SIZES.width > 400 ? 30 : 25}
               color={"black"}
             />
           </Pressable>
@@ -222,7 +231,6 @@ const MemberHistory = ({ navigation }: any) => {
               style={{ marginHorizontal: "5%" }}
             />
             <Text style={styles.subHeading}>
-              
               {/* {Object.keys(historyDate).length} */}
               {`${dateValue}`}
               {/* {typeof historyDate} */}
@@ -231,7 +239,7 @@ const MemberHistory = ({ navigation }: any) => {
           <Pressable onPress={() => nextDate()}>
             <MaterialIcons
               name={"keyboard-arrow-right"}
-              size={SIZES.width > 400 ? 24 : 18}
+              size={SIZES.width > 400 ? 30 : 25}
               color={"black"}
             />
           </Pressable>
@@ -316,7 +324,7 @@ const styles = StyleSheet.create({
   },
   dateHolder: {
     flexDirection: "row",
-    marginHorizontal: "5%",
+    marginHorizontal: "2%",
   },
   getDirection: {
     right: "2%",

@@ -114,7 +114,7 @@ const OnBoarding = ({ navigation }: any) => {
                   style={{
                     fontSize: 30,
                     textAlign: "center",
-                    color:COLORS.white
+                    color: COLORS.white,
                   }}
                 >
                   {item.title}
@@ -144,7 +144,7 @@ const OnBoarding = ({ navigation }: any) => {
             style={{
               fontWeight: "400",
               fontSize: SIZES.width > 300 && SIZES.height > 600 ? 25 : 20,
-              color: "Black",
+              color: "black",
               alignSelf: "center",
             }}
           >

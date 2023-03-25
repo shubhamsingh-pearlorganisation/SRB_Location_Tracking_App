@@ -74,11 +74,15 @@ const ManageMap = ({ navigation }: any) => {
     });
   };
 
+  useEffect(() => {
+    console.log("individualLocationObj::: ", individualLocationObj);
+  }, [individualLocationObj]);
+
   // ==========================================================================================
   const getLiveLocation = async () => {
     getCurrentLocation()
       .then((locationResponse: locationTypes | any) => {
-        // console.log("locationResponse::: ", locationResponse);
+        console.log("locationResponse::: ", locationResponse);
         const { latitude, longitude, timestamp } = locationResponse;
         // console.log(
         //   `In every 5 seconds My Latitude is ${latitude}, My Longitude is ${longitude},
@@ -89,8 +93,10 @@ const ManageMap = ({ navigation }: any) => {
         const formattedData = {
           latitude: latitude,
           longitude: longitude,
-          datetime: new Date(timestamp).toLocaleString(),
+          datetime: new Date(timestamp),
         };
+
+        console.log("formattedData::: ", formattedData);
 
         animate(latitude, longitude);
         updateState({
@@ -153,7 +159,7 @@ const ManageMap = ({ navigation }: any) => {
 
     if (finalData.startingTime && finalData.tenMinutesLocationData.length > 0) {
       const selectedDate = convertDateIn_DDMMYYYY_Format(new Date());
-      console.log("selectedDate:: ", selectedDate);
+      // console.log("selectedDate:: ", selectedDate);
       try {
         await set(
           ref(

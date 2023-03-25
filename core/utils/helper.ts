@@ -56,6 +56,7 @@ const fetchAuthenticationToken = async () => {
 
 // This method is used to return time in "12:02:02 PM" format.
 const add_AMPM_With_Date = (date: any) => {
+  console.log("date: ", date);
   let hours = date.getHours();
   let minutes = date.getMinutes();
   let seconds = date.getSeconds();
@@ -66,6 +67,7 @@ const add_AMPM_With_Date = (date: any) => {
   seconds = seconds < 10 ? "0" + seconds : seconds;
 
   let strTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
+  console.log("strTime::: ", strTime);
   return strTime.toString();
 };
 
@@ -144,5 +146,5 @@ export {
   fetchAuthenticationToken,
   add_AMPM_With_Date,
   convertDateIn_DDMMYYYY_Format,
-  convertMonthNumberToName
+  convertMonthNumberToName,
 };
