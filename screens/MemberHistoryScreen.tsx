@@ -7,7 +7,6 @@ import { AntDesign } from "@expo/vector-icons";
 import Timeline from "react-native-timeline-flatlist";
 import { db } from "../firebaseConfig";
 import { ref, onValue } from "firebase/database";
-import { AppSettingsContext } from "../App";
 import {
   convertDateIn_DDMMYYYY_Format,
   convertMonthNumberToName,
@@ -18,16 +17,14 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 // ---------------------------------------------------------------------------------------------
 
-const MemberHistory = ({ navigation }: any) => {
+const MemberHistory = ({ navigation, route }: any) => {
+  const memberName = route?.params?.memberName;
+  const uId = route?.params?.userId;
+
   // Fetching Current User Id
-  const userSettings: any = useContext(AppSettingsContext);
-  const [userId, setUserId] = useState<any>(null);
+  const [userId] = useState<any>(uId);
   const [showLoader, setShowLoader] = useState(false);
   const [firebaseLocationData, setFirebaseLocationData] = useState<any>({});
-
-  useEffect(() => {
-    if (userSettings?.loggedInUserId) setUserId(userSettings?.loggedInUserId);
-  }, [userSettings?.loggedInUserId]);
 
   const fetchLocationDataFromFirebase = () => {
     // const startingTime = "2:39:14 PM";
@@ -48,6 +45,7 @@ const MemberHistory = ({ navigation }: any) => {
           if (locationData) {
             setShowLoader(false);
             setFirebaseLocationData(locationData);
+            setLocationsTimelineData([]);
           } else {
             setShowLoader(false);
             setFirebaseLocationData([]);
@@ -128,7 +126,7 @@ const MemberHistory = ({ navigation }: any) => {
   // --------------------------- Date Picker Handling -- Finished -----------------------------------
 
   return showLoader ? (
-    <Loader message="Please wait ... We are fetching Locations Records." />
+    <Loader message="Please wait ..." />
   ) : (
     <>
       <View style={styles.container}>
@@ -144,9 +142,19 @@ const MemberHistory = ({ navigation }: any) => {
           </View>
 
           <View style={styles.userInfoHolder}>
-            <Text style={styles.heading}>Name</Text>
-            <Text style={styles.subHeading}>Last Location</Text>
-            <Text style={styles.subHeading}>LastUpdated</Text>
+            <Text style={styles.heading}>
+              {memberName ? memberName?.toString().split(" ")[0] : "N.A"}
+            </Text>
+            <Text style={styles.subHeading}>
+              {locationsTimelineData.length > 0
+                ? locationsTimelineData[locationsTimelineData.length - 1]?.title
+                : "N.A"}
+            </Text>
+            <Text style={styles.subHeading}>
+              {locationsTimelineData.length > 0
+                ? locationsTimelineData[locationsTimelineData.length - 1]?.time
+                : "N.A"}
+            </Text>
           </View>
           <Pressable style={styles.getDirection}>
             <Text style={{ color: "black" }}>{"Get\nDirection"}</Text>
@@ -249,7 +257,7 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
   },
   userInfoHolder: {
-    width: "30%",
+    width: SIZES.width > 400 ? "40%" : "30%",
     marginLeft: "2%",
   },
   heading: {
