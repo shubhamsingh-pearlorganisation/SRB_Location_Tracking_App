@@ -16,45 +16,6 @@ import Loader from "../components/Loader";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 // -----------------------------------------------------------------------------------
 
-const timelineData = [
-  {
-    time: "09:00",
-    title: "Archery Training",
-  },
-  {
-    time: "10:45",
-    title: "Play Badminton",
-  },
-  {
-    time: "12:00",
-    title: "Lunch",
-  },
-  {
-    time: "12:00",
-    title: "Lunch",
-  },
-  {
-    time: "12:00",
-    title: "Lunch",
-  },
-  {
-    time: "12:00",
-    title: "Lunch",
-  },
-  {
-    time: "12:00",
-    title: "Lunch",
-  },
-  {
-    time: "14:00",
-    title: "Watch Soccer",
-  },
-  {
-    time: "16:30",
-    title: "Go to Fitness center",
-  },
-];
-
 // ---------------------------------------------------------------------------------------------
 
 const MemberHistory = ({ navigation }: any) => {
@@ -72,34 +33,34 @@ const MemberHistory = ({ navigation }: any) => {
     // const startingTime = "2:39:14 PM";
     const startingDate = historyDate
       ? convertDateIn_DDMMYYYY_Format(new Date(historyDate))
-      : convertDateIn_DDMMYYYY_Format(new Date());
+      : "";
 
-    console.log("Starting Date:: ", startingDate);
     if (startingDate) {
       try {
+        console.log("startingDate::: ", startingDate);
         setShowLoader(true);
         const startCountRef = ref(
           db,
           `users/${userId}/location/${startingDate}`
         );
-        // console.log("startCountRef:: ", startCountRef);
         onValue(startCountRef, (snapshot) => {
           const locationData = snapshot.val();
-          console.log("Firebase Response::: ", locationData);
-          if (locationData) setFirebaseLocationData(locationData);
-          for (let key in locationData) {
-            console.log(
-              `Key ${key} contains ${locationData[key].length} location objects.`
-            );
+          if (locationData) {
+            setShowLoader(false);
+            setFirebaseLocationData(locationData);
+          } else {
+            setShowLoader(false);
+            setFirebaseLocationData([]);
+            setLocationsTimelineData([]);
           }
         });
       } catch (error: any) {
+        setShowLoader(false);
+
         console.log(
           "Getting error while fetching posts:: ",
           error?.message ? error?.message : error
         );
-      } finally {
-        setShowLoader(false);
       }
     }
   };
@@ -109,6 +70,27 @@ const MemberHistory = ({ navigation }: any) => {
   const [historyDate, setHistoryDate] = useState<any>(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [dateValue, setDateValue] = useState<any>("");
+  const [locationsTimelineData, setLocationsTimelineData] = useState<any>([]);
+
+  useEffect(() => {
+    if (Object.keys(firebaseLocationData).length > 0) {
+      console.log("firebaseLocationData::: ", firebaseLocationData);
+
+      for (let key in firebaseLocationData) {
+        const time = key;
+        const placeName = firebaseLocationData[key][0].address;
+        console.log("time::: ", time);
+        setLocationsTimelineData((prevState: any) => [
+          ...prevState,
+          { time, title: placeName },
+        ]);
+      }
+    }
+  }, [firebaseLocationData]);
+
+  useEffect(() => {
+    console.log("locationsTimelineData::: ", locationsTimelineData);
+  }, [locationsTimelineData]);
 
   useEffect(() => {
     console.log("history date:: ", new Date(historyDate));
@@ -132,22 +114,11 @@ const MemberHistory = ({ navigation }: any) => {
   };
 
   const showDatePicker = () => setDatePickerVisibility(true);
-
   const hideDatePicker = () => setDatePickerVisibility(false);
 
   const handleConfirm = (date: any) => {
     let tempDate = new Date(date);
-
-    const currentDate = tempDate.getDate();
-    const month = tempDate.getMonth() + 1;
-    const year = tempDate.getFullYear();
-
-    // Making Full Date of Birth which we need to send in API
-    let fullDate = `${year}-${month < 10 ? "0" + month : month}-${
-      currentDate < 10 ? "0" + currentDate : currentDate
-    }`;
     setHistoryDate(tempDate);
-    //  setUserDetails({ ...userDetails, dob: fullDate });
     hideDatePicker();
   };
 
@@ -234,27 +205,31 @@ const MemberHistory = ({ navigation }: any) => {
 
         {/* ---------------------------------------location history timeline-------------------------------------- */}
 
-        <View style={styles.locationLineHolder}>
-          <Timeline
-            style={[styles.list, { paddingTop: 5 }]}
-            data={timelineData}
-            circleSize={SIZES.width > 400 ? 30 : 20}
-            circleColor={COLORS.voilet}
-            circleStyle={{
-              borderColor: COLORS.white,
-              borderWidth: 2,
-            }}
-            titleStyle={styles.listItemTitle}
-            lineColor={COLORS.voilet}
-            timeContainerStyle={{ width: "auto", marginTop: -5 }}
-            timeStyle={styles.listItemTime}
-            descriptionStyle={{ color: "gray" }}
-            rowContainerStyle={{ paddingTop: "2%" }}
-            separator={false}
-            detailContainerStyle={styles.listItem}
-            columnFormat="two-column"
-          />
-        </View>
+        {locationsTimelineData.length > 0 ? (
+          <View style={styles.locationLineHolder}>
+            <Timeline
+              style={[styles.list, { paddingTop: 5 }]}
+              data={locationsTimelineData}
+              circleSize={SIZES.width > 400 ? 30 : 20}
+              circleColor={COLORS.voilet}
+              circleStyle={{
+                borderColor: COLORS.white,
+                borderWidth: 2,
+              }}
+              titleStyle={styles.listItemTitle}
+              lineColor={COLORS.voilet}
+              timeContainerStyle={{ width: "auto", marginTop: -5 }}
+              timeStyle={styles.listItemTime}
+              descriptionStyle={{ color: "gray" }}
+              rowContainerStyle={{ paddingTop: "2%" }}
+              separator={false}
+              detailContainerStyle={styles.listItem}
+              columnFormat="two-column"
+            />
+          </View>
+        ) : (
+          <Text>No Timeline data Found</Text>
+        )}
       </View>
     </>
   );

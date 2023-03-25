@@ -51,7 +51,6 @@ const getCurrentLocation = () => {
           geolocationAddress,
         });
       } catch (err) {
-        console.error(err, "something went wrong");
         reject(new Error("something went wrong"));
       }
     }
@@ -89,7 +88,6 @@ const fetchAuthenticationToken = async () => {
 
 // This method is used to return time in "12:02:02 PM" format.
 const add_AMPM_With_Date = (date: any) => {
-  console.log("date: ", date);
   let hours = date.getHours();
   let minutes = date.getMinutes();
   let seconds = date.getSeconds();
@@ -100,7 +98,6 @@ const add_AMPM_With_Date = (date: any) => {
   seconds = seconds < 10 ? "0" + seconds : seconds;
 
   let strTime = hours + ":" + minutes + ":" + seconds + " " + ampm;
-  console.log("strTime::: ", strTime);
   return strTime.toString();
 };
 
@@ -113,7 +110,6 @@ const convertDateIn_DDMMYYYY_Format = (selectedDate: any) => {
   if (date < 10) date = "0" + date;
   if (month < 10) month = "0" + month;
   const convertedDate = date + "-" + month + "-" + year;
-  console.log("convertedDate::: ", convertedDate);
   return convertedDate.toString();
 };
 
