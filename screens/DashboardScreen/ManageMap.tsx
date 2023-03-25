@@ -63,7 +63,7 @@ const ManageMap = ({ navigation }: any) => {
     startingTime: "",
     tenMinutesLocationData: [],
   });
-  const [timeLeft, setTimeLeft] = useState<any>(30); // 600 seconds => 10 minutes
+  const [timeLeft, setTimeLeft] = useState<any>(600); // 600 seconds => 10 minutes
 
   const updateState = (data: any) =>
     setState((state: any) => ({ ...state, ...data }));
@@ -186,7 +186,7 @@ const ManageMap = ({ navigation }: any) => {
   useEffect(() => {
     if (
       timeLeft === 0 &&
-      individualLocationObj?.tenMinutesLocationData.length == 5 &&
+      individualLocationObj?.tenMinutesLocationData.length == 100 &&
       userId
     )
       addLocationsObjectsToFirebase(individualLocationObj);

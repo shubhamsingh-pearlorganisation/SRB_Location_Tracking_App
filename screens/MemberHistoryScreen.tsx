@@ -13,6 +13,7 @@ import {
 } from "../core/utils/helper";
 import Loader from "../components/Loader";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
+import NoDataFound from "../components/NoDataFound";
 // -----------------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------------------------
@@ -168,53 +169,61 @@ const MemberHistory = ({ navigation, route }: any) => {
           </Pressable>
         </View>
         <View style={styles.dateDataHolder}>
-          <Pressable onPress={previousDate}>
-            <MaterialIcons
-              name={"keyboard-arrow-left"}
-              size={SIZES.width > 400 ? 30 : 25}
-              color={"black"}
-            />
-          </Pressable>
-          <Pressable onPress={showDatePicker} style={styles.dateHolder}>
-            {isDatePickerVisible && (
-              <RNDateTimePicker
-                mode="date"
-                display="spinner"
-                maximumDate={new Date()}
-                minimumDate={new Date("1930-01-01")}
-                value={new Date(historyDate)}
-                onChange={(val: any) =>
-                  handleConfirm(val.nativeEvent.timestamp)
-                }
-                positiveButton={{ label: "OK", textColor: "green" }}
+          <View
+            style={{
+              flexDirection: "row",
+              width: SIZES.width>400?"30%":'50%',
+              justifyContent: "space-between",
+            }}
+          >
+            <Pressable onPress={previousDate}>
+              <MaterialIcons
+                name={"keyboard-arrow-left"}
+                size={SIZES.width > 400 ? 30 : 25}
+                color={"black"}
               />
-            )}
-
-            <AntDesign
-              name="calendar"
-              size={SIZES.width > 400 ? 30 : 22}
-              color="black"
-              style={{ marginHorizontal: "5%" }}
-            />
-            <Text style={styles.subHeading}>
-              {/* {Object.keys(historyDate).length} */}
-              {`${dateValue}`}
-              {/* {typeof historyDate} */}
-            </Text>
-          </Pressable>
-          <Pressable onPress={() => nextDate()}>
-            <MaterialIcons
-              name={"keyboard-arrow-right"}
-              size={SIZES.width > 400 ? 30 : 25}
-              color={"black"}
-            />
-          </Pressable>
+            </Pressable>
+            <Pressable onPress={showDatePicker} style={styles.dateHolder}>
+              {isDatePickerVisible && (
+                <RNDateTimePicker
+                  mode="date"
+                  display="spinner"
+                  maximumDate={new Date()}
+                  minimumDate={new Date("1930-01-01")}
+                  value={new Date(historyDate)}
+                  onChange={(val: any) =>
+                    handleConfirm(val.nativeEvent.timestamp)
+                  }
+                  positiveButton={{ label: "OK", textColor: "green" }}
+                />
+              )}
+              <View style={{ marginHorizontal: "2%", flexDirection: "row" }}>
+                <AntDesign
+                  name="calendar"
+                  size={SIZES.width > 400 ? 30 : 22}
+                  color="black"
+                />
+                <Text style={[styles.subHeading,{marginLeft:'5%'}]}>
+                  {/* {Object.keys(historyDate).length} */}
+                  {`${dateValue}`}
+                  {/* {typeof historyDate} */}
+                </Text>
+              </View>
+            </Pressable>
+            <Pressable onPress={() => nextDate()}>
+              <MaterialIcons
+                name={"keyboard-arrow-right"}
+                size={SIZES.width > 400 ? 30 : 25}
+                color={"black"}
+              />
+            </Pressable>
+          </View>
         </View>
 
         {/* ---------------------------------------location history timeline-------------------------------------- */}
 
         {locationsTimelineData.length > 0 ? (
-          <View style={styles.locationLineHolder}>
+          <View style={[styles.locationLineHolder]}>
             <Timeline
               style={[styles.list, { paddingTop: 5 }]}
               data={locationsTimelineData}
@@ -236,7 +245,7 @@ const MemberHistory = ({ navigation, route }: any) => {
             />
           </View>
         ) : (
-          <Text>No Timeline data Found</Text>
+          <NoDataFound />
         )}
       </View>
     </>
@@ -249,6 +258,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: "1%",
     backgroundColor: COLORS.white,
+    height: SIZES.height,
+    position: "relative",
   },
   holder: {
     flexDirection: "row",
@@ -257,7 +268,7 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
   },
   userInfoHolder: {
-    width: SIZES.width > 400 ? "40%" : "30%",
+    width: SIZES.width > 400 ? "40%" : "50%",
     marginLeft: "2%",
   },
   heading: {
@@ -269,13 +280,15 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     height: "100%",
-    width: "8%",
+    width: SIZES.width > 400 ? "4%" : "8%",
   },
   locationLineHolder: {
-    height: SIZES.height * 0.65,
+    height: SIZES.width > 400 ? SIZES.height * 0.68 : SIZES.height * 0.62,
     alignItems: "center",
     justifyContent: "center",
-    width: SIZES.width,
+    width: SIZES.width * 0.98,
+    position: "absolute",
+    bottom: 0,
   },
   dateDataHolder: {
     borderColor: "black",
@@ -289,7 +302,7 @@ const styles = StyleSheet.create({
   },
   dateHolder: {
     flexDirection: "row",
-    marginHorizontal: "2%",
+    marginHorizontal: "1%",
   },
   getDirection: {
     right: "2%",
@@ -306,7 +319,6 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    marginTop: 20,
     width: "100%",
     height: "100%",
     padding: "5%",
