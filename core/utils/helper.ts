@@ -1,7 +1,6 @@
 import * as Location from "expo-location";
 import { showMessage } from "react-native-flash-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
 // --------------------------------------------------------------------------------------
 
 // This method is used to fetch user's current location
@@ -12,11 +11,45 @@ const getCurrentLocation = () => {
       reject("Permission to access location was denied");
     else {
       try {
+        let geolocationAddress = "";
         const location: any = await Location.getCurrentPositionAsync({});
-        // console.log("My Location Details:: ", location);
-        const { timestamp } = location;
+        const { timestamp, coords } = location;
         const { latitude, longitude } = location.coords;
-        resolve({ latitude, longitude, timestamp });
+        if (coords) {
+          // fetching Address based on latitude and longitude
+          let reverseGeocodingResponse: any =
+            await Location.reverseGeocodeAsync({
+              latitude,
+              longitude,
+            });
+          if (Object.keys(reverseGeocodingResponse[0]).length > 0) {
+            const streetName = reverseGeocodingResponse[0]?.street
+              ? reverseGeocodingResponse[0]?.street
+              : "";
+            const districtName = reverseGeocodingResponse[0]?.district
+              ? reverseGeocodingResponse[0]?.district
+              : "";
+            const cityName = reverseGeocodingResponse[0]?.city
+              ? reverseGeocodingResponse[0]?.city
+              : "";
+            const postalCode = reverseGeocodingResponse[0]?.postalCode
+              ? reverseGeocodingResponse[0]?.postalCode
+              : "";
+            const isoCountryCode = reverseGeocodingResponse[0]?.isoCountryCode
+              ? reverseGeocodingResponse[0]?.isoCountryCode
+              : "";
+            // combining address
+            let myGeolocationAddress = `${streetName}, ${districtName}, ${cityName} - ${postalCode}, ${isoCountryCode}`;
+            geolocationAddress = myGeolocationAddress;
+          }
+        }
+        // Returning Location Data to Manage Map component
+        resolve({
+          latitude,
+          longitude,
+          timestamp,
+          geolocationAddress,
+        });
       } catch (err) {
         console.error(err, "something went wrong");
         reject(new Error("something went wrong"));
@@ -87,7 +120,6 @@ const convertDateIn_DDMMYYYY_Format = (selectedDate: any) => {
 // This method is used to convert given month number to Month Name.
 const convertMonthNumberToName = (monthNumber: number) => {
   let monthName = "";
-
   switch (monthNumber) {
     case 0:
       monthName = "January";
@@ -136,7 +168,7 @@ const convertMonthNumberToName = (monthNumber: number) => {
       monthName = "December";
       break;
   }
-  return monthName.substring(0, 3);
+  return monthName.substring(0, 3); //sending first 3 characters of month name as per our requirement.
 };
 
 export {

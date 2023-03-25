@@ -74,29 +74,20 @@ const ManageMap = ({ navigation }: any) => {
     });
   };
 
-  useEffect(() => {
-    console.log("individualLocationObj::: ", individualLocationObj);
-  }, [individualLocationObj]);
-
   // ==========================================================================================
   const getLiveLocation = async () => {
     getCurrentLocation()
       .then((locationResponse: locationTypes | any) => {
-        console.log("locationResponse::: ", locationResponse);
-        const { latitude, longitude, timestamp } = locationResponse;
-        // console.log(
-        //   `In every 5 seconds My Latitude is ${latitude}, My Longitude is ${longitude},
-        //    my location date is ${new Date(timestamp).toLocaleDateString()} and
-        //    my location time is ${new Date(timestamp).toLocaleTimeString()}.`
-        // );
+        const { latitude, longitude, timestamp, geolocationAddress } =
+          locationResponse;
 
+        // Formatted Location Data for Firebase
         const formattedData = {
           latitude: latitude,
           longitude: longitude,
           datetime: new Date(timestamp),
+          address: geolocationAddress,
         };
-
-        console.log("formattedData::: ", formattedData);
 
         animate(latitude, longitude);
         updateState({
@@ -127,16 +118,13 @@ const ManageMap = ({ navigation }: any) => {
       });
   };
 
-  // This method is used to save 10 minutes location data to Firebase Realtime Database.
+  // This method is used to save 10-10 minutes location data (100 Location objects - 1 object in 6 second) to Firebase Realtime Database.
   const addLocationsObjectsToFirebase = async (locData: any) => {
-    // console.log("locData::: ", locData);
     let finalData: any = {};
-
     const updatedLocationData = {
       ...locData,
       startingTime: add_AMPM_With_Date(new Date(locData?.startingTime)),
     };
-
     if (
       Array.isArray(updatedLocationData?.tenMinutesLocationData) &&
       updatedLocationData?.tenMinutesLocationData.length > 0
@@ -149,17 +137,14 @@ const ManageMap = ({ navigation }: any) => {
           };
         }
       );
-      // console.log("updatedData::: ", updatedData);
       finalData = {
         ...updatedLocationData,
         tenMinutesLocationData: updatedData,
       };
-      // console.log("finalData::: ", finalData);
     }
 
     if (finalData.startingTime && finalData.tenMinutesLocationData.length > 0) {
       const selectedDate = convertDateIn_DDMMYYYY_Format(new Date());
-      // console.log("selectedDate:: ", selectedDate);
       try {
         await set(
           ref(
@@ -194,14 +179,8 @@ const ManageMap = ({ navigation }: any) => {
   }, [locationData, userId]);
 
   useEffect(() => {
-    if (individualLocationObj) {
-      console.log("Location Data for Firebase: ", individualLocationObj);
-      console.log(
-        "Total Locations Fetched: ",
-        individualLocationObj.tenMinutesLocationData.length
-      );
+    if (individualLocationObj)
       setLocationData([...locationData, individualLocationObj]);
-    }
   }, [individualLocationObj]);
 
   useEffect(() => {

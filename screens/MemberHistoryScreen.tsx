@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useState, useEffect, useContext } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import Timeline from "react-native-timeline-flatlist";
@@ -14,9 +13,7 @@ import {
   convertMonthNumberToName,
 } from "../core/utils/helper";
 import Loader from "../components/Loader";
-import RNDateTimePicker, {
-  DateTimePickerAndroid,
-} from "@react-native-community/datetimepicker";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 // -----------------------------------------------------------------------------------
 
 const timelineData = [
@@ -75,7 +72,8 @@ const MemberHistory = ({ navigation }: any) => {
     // const startingTime = "2:39:14 PM";
     const startingDate = historyDate
       ? convertDateIn_DDMMYYYY_Format(new Date(historyDate))
-      : "";
+      : convertDateIn_DDMMYYYY_Format(new Date());
+
     console.log("Starting Date:: ", startingDate);
     if (startingDate) {
       try {
@@ -89,12 +87,6 @@ const MemberHistory = ({ navigation }: any) => {
           const locationData = snapshot.val();
           console.log("Firebase Response::: ", locationData);
           if (locationData) setFirebaseLocationData(locationData);
-          // console.log("locationData::: ", locationData);
-          // console.log(
-          //   "Location Objects Length: ",
-          //   Object.keys(locationData),
-          //   Object.keys(locationData).length
-          // );
           for (let key in locationData) {
             console.log(
               `Key ${key} contains ${locationData[key].length} location objects.`
@@ -116,7 +108,6 @@ const MemberHistory = ({ navigation }: any) => {
 
   const [historyDate, setHistoryDate] = useState<any>(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
   const [dateValue, setDateValue] = useState<any>("");
 
   useEffect(() => {
@@ -140,13 +131,9 @@ const MemberHistory = ({ navigation }: any) => {
     console.log("previous date:: ", new Date(historyDate));
   };
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+  const showDatePicker = () => setDatePickerVisibility(true);
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  const hideDatePicker = () => setDatePickerVisibility(false);
 
   const handleConfirm = (date: any) => {
     let tempDate = new Date(date);
@@ -263,11 +250,6 @@ const MemberHistory = ({ navigation }: any) => {
             timeStyle={styles.listItemTime}
             descriptionStyle={{ color: "gray" }}
             rowContainerStyle={{ paddingTop: "2%" }}
-            // options={{
-            //   style:{paddingTop:5}
-            // }}
-            // innerCircle={"icon"}
-            // onEventPress={this.onEventPress}
             separator={false}
             detailContainerStyle={styles.listItem}
             columnFormat="two-column"
