@@ -73,7 +73,7 @@ const MemberHistory = ({ navigation, route }: any) => {
 
   useEffect(() => {
     if (Object.keys(firebaseLocationData).length > 0) {
-      console.log("firebaseLocationData::: ", firebaseLocationData);
+      console.log("firebaseL ocationData::: ", firebaseLocationData);
 
       for (let key in firebaseLocationData) {
         const time = key;
@@ -172,7 +172,7 @@ const MemberHistory = ({ navigation, route }: any) => {
           <View
             style={{
               flexDirection: "row",
-              width: SIZES.width>400?"30%":'50%',
+              width: SIZES.width > 400 ? "30%" : "50%",
               justifyContent: "space-between",
             }}
           >
@@ -203,7 +203,7 @@ const MemberHistory = ({ navigation, route }: any) => {
                   size={SIZES.width > 400 ? 30 : 22}
                   color="black"
                 />
-                <Text style={[styles.subHeading,{marginLeft:'5%'}]}>
+                <Text style={[styles.subHeading, { marginLeft: "5%" }]}>
                   {/* {Object.keys(historyDate).length} */}
                   {`${dateValue}`}
                   {/* {typeof historyDate} */}
