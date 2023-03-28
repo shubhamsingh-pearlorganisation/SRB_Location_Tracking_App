@@ -56,6 +56,7 @@ const getCurrentLocation = () => {
     }
   });
 };
+
 const showError = (message: string) => {
   showMessage({
     message,
