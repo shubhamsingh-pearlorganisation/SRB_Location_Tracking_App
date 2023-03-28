@@ -1,3 +1,4 @@
 {
-    "git.enabled": false
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

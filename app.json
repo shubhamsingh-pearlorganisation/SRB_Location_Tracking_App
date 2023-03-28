@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "expoSrbTracking",
-    "slug": "expoSrbTracking",
+    "name": "Srb Tracking App",
+    "slug": "srb-tracking-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -14,9 +14,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -24,21 +22,21 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.pearlios.srbtrackingreactnative",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "expo": {
-      "plugins": [
-        "@react-native-firebase/app",
-        "@react-native-firebase/auth"
-      ]
+      "plugins": ["@react-native-firebase/app", "@react-native-firebase/auth"]
     },
     "extra": {
       "eas": {
-        "projectId": "7f590a4b-462b-4696-a165-78d8e9e3b154"
+        "projectId": "3a2b9603-7bb5-4d78-bd73-2bf9d820a656"
       }
-    }
+    },
+    "owner": "pearlios"
   }
 }

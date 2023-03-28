@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import SrbButton from "../components/SrbButton";
 import { showError } from "../core/utils/helper";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { GOOGLE_API_KEY } from "../core/utils/constants";
+// ---------------------------------------------------------------------------------------------
 
 const SelectLocation = (props: any) => {
   const navigation = useNavigation();
@@ -57,7 +58,6 @@ const SelectLocation = (props: any) => {
           nearbyPlacesAPI={"GooglePlacesSearch"}
           debounce={400}
           onPress={(data, details: any) => {
-            console.log(details, ":checkkk");
             fetchDestinationCords(
               details.geometry.location.lat,
               details.geometry.location.lng
@@ -82,6 +82,7 @@ const SelectLocation = (props: any) => {
     </View>
   );
 };
+// -------------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -97,3 +98,5 @@ const styles = StyleSheet.create({
   },
 });
 export default SelectLocation;
+
+// ------------------------------------------ THE END ---------------------------------------------------
