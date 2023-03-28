@@ -179,8 +179,10 @@ const ManageMap = ({ navigation }: any) => {
   }, [locationData, userId]);
 
   useEffect(() => {
-    if (individualLocationObj)
+    if (individualLocationObj) {
       setLocationData([...locationData, individualLocationObj]);
+      console.log("individualLocationObj::: ", individualLocationObj?.tenMinutesLocationData?.length)
+    }
   }, [individualLocationObj]);
 
   useEffect(() => {
@@ -188,8 +190,14 @@ const ManageMap = ({ navigation }: any) => {
       timeLeft === 0 &&
       individualLocationObj?.tenMinutesLocationData.length == 100 &&
       userId
-    )
+    ) {
       addLocationsObjectsToFirebase(individualLocationObj);
+      setTimeLeft(600);
+      setIndividualLocationObj({
+        startingTime: "",
+        tenMinutesLocationData: [],
+      });
+    }
   }, [timeLeft, individualLocationObj, userId]);
 
   // ==========================================================================================
