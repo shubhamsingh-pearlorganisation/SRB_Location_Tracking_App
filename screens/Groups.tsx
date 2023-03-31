@@ -1,16 +1,21 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { GroupsAndMembersContext, UserDetailsContext } from "../App";
+import {
+  FirebaseLocationContext,
+  GroupsAndMembersContext,
+  UserDetailsContext,
+} from "../App";
 import { COLORS, SIZES } from "../constants";
 import Loader from "../components/Loader";
 import NoDataFound from "../components/NoDataFound";
-
+import { db } from "../firebaseConfig";
+import { ref, set } from "firebase/database";
 // -----------------------------------------------------------------
 const Groups = ({ navigation, route }: any) => {
-  console.log("Route Data::: ", route);
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
   const userDetailsContextData: any = useContext(UserDetailsContext);
+  const firebaseLocationContextData: any = useContext(FirebaseLocationContext);
 
   // Component's Local States
   // ========================
@@ -34,19 +39,17 @@ const Groups = ({ navigation, route }: any) => {
   }, [userDetailsContextData]);
 
   useEffect(() => {
-    console.log("userId::: ", userId);
-  }, [userId]);
+    if (locationData && lastCreatedGroupCode && userId)
+      sendGroupDataToFirebase();
+  }, [lastCreatedGroupCode, userId, locationData]);
 
   useEffect(() => {
-    console.log("lastCreatedGroupCode::: ", lastCreatedGroupCode);
-  }, [lastCreatedGroupCode]);
+    if (firebaseLocationContextData)
+      setLocationData(firebaseLocationContextData?.firebaseLocationData);
+  }, [firebaseLocationContextData]);
 
   useEffect(() => {
     if (route?.params?.isNewGroupCreated) {
-      console.log(
-        "groupsAndMembersData?.groupsAndMembersDetails::: ",
-        groupsAndMembersData?.groupsAndMembersDetails?.[0]
-      );
       if (
         Object.keys(groupsAndMembersData?.groupsAndMembersDetails?.[0]).length >
           0 &&
@@ -59,21 +62,20 @@ const Groups = ({ navigation, route }: any) => {
     }
   }, [route?.params, groupsAndMembersData?.groupsAndMembersDetails]);
 
-  // const sendGroupDataToFirebase = () => {
-  //   try {
-  //     await set(
-  //       ref(db, `groups/${lastCreatedGroupCode}/${userId}/${location}`),
-  //       locationData
-  //     );
-  //   } catch (error: any) {
-  //     console.log(
-  //       "Getting an error while saving location data to firebase: ",
-  //       error
-  //     );
-  //   }
-  // };
-
-  useEffect(() => {}, []);
+  // This method is used to send group specific location data to firebase realtime database.
+  const sendGroupDataToFirebase = async () => {
+    try {
+      await set(
+        ref(db, `groups/${lastCreatedGroupCode}/${userId}/location/`),
+        locationData
+      );
+    } catch (error: any) {
+      console.log(
+        "Getting an error while saving group specific location data to firebase realtime database: ",
+        error
+      );
+    }
+  };
 
   // This renderGroups component is used to render group list
   const renderGroups = (groupDetails: any) => {

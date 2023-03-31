@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import Timeline from "react-native-timeline-flatlist";
 import { db } from "../firebaseConfig";
@@ -28,14 +28,13 @@ const MemberHistory = ({ navigation, route }: any) => {
   const [firebaseLocationData, setFirebaseLocationData] = useState<any>({});
 
   const fetchLocationDataFromFirebase = () => {
-    // const startingTime = "2:39:14 PM";
+    // const startingTime = "2:39:14 PM"; //We need this format of time for time specific data from firebase
     const startingDate = historyDate
       ? convertDateIn_DDMMYYYY_Format(new Date(historyDate))
       : "";
 
     if (startingDate) {
       try {
-        console.log("startingDate::: ", startingDate);
         setShowLoader(true);
         const startCountRef = ref(
           db,
@@ -73,12 +72,9 @@ const MemberHistory = ({ navigation, route }: any) => {
 
   useEffect(() => {
     if (Object.keys(firebaseLocationData).length > 0) {
-      console.log("firebaseL ocationData::: ", firebaseLocationData);
-
       for (let key in firebaseLocationData) {
         const time = key;
         const placeName = firebaseLocationData[key][0].address;
-        console.log("time::: ", time);
         setLocationsTimelineData((prevState: any) => [
           ...prevState,
           { time, title: placeName },
@@ -88,11 +84,6 @@ const MemberHistory = ({ navigation, route }: any) => {
   }, [firebaseLocationData]);
 
   useEffect(() => {
-    console.log("locationsTimelineData::: ", locationsTimelineData);
-  }, [locationsTimelineData]);
-
-  useEffect(() => {
-    console.log("history date:: ", new Date(historyDate));
     const monthName = convertMonthNumberToName(
       new Date(historyDate).getMonth()
     );
@@ -103,13 +94,11 @@ const MemberHistory = ({ navigation, route }: any) => {
     setHistoryDate(
       new Date(historyDate).setDate(new Date(historyDate).getDate() + 1)
     );
-    console.log("next date:: ", new Date(historyDate));
   };
   const previousDate = () => {
     setHistoryDate(
       new Date(historyDate).setDate(new Date(historyDate).getDate() - 1)
     );
-    console.log("previous date:: ", new Date(historyDate));
   };
 
   const showDatePicker = () => setDatePickerVisibility(true);

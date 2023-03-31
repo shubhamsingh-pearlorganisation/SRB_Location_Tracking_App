@@ -40,6 +40,7 @@ export const GroupsAndMembersContext: any = createContext(null);
 export const UserDetailsContext: any = createContext(null);
 export const AppSettingsContext: any = createContext(null);
 export const MembershipContext: any = createContext(null);
+export const FirebaseLocationContext: any = createContext(null);
 
 // ----------------------------------------------------------------------------------
 
@@ -49,7 +50,6 @@ const App = () => {
 
   // Component's Local States
   // ========================
-
   // Used to store authentication token
   const [authenticationToken, setAuthenticationToken] = useState<any>("");
 
@@ -61,7 +61,7 @@ const App = () => {
   });
 
   //Used to store user details
-  const [userDetails, setUserDetails] = useState({
+  const [userDetails, setUserDetails] = useState<any>({
     update: false,
     userData: {},
   });
@@ -86,6 +86,12 @@ const App = () => {
 
   //Used to store membership plans details
   const [membershipPlansList, setMembershipPlansList] = useState<any>([]);
+
+  // Used to store current logged in user last location object of current date from firebase realtime databse.
+  const [lastLocationObjLatLng, setlastLocationObjLatLng] = useState<any>({
+    lat: "",
+    lng: "",
+  });
 
   // This method is used to receive authentication token from login screen after successful login
   const receiveAuthenticationToken = (jwtToken: any) => {
@@ -319,20 +325,42 @@ const App = () => {
   };
 
   // This method is used to fetch Group Specific Location Data from Firebase Realtime Database.
-  const fetchGroupSpecificLocationsFromFirebase = () => {
+  const fetchLoggedInUser_LocationsFromFirebase = () => {
     try {
-      const url = `users/2/location/${convertDateIn_DDMMYYYY_Format(
-        new Date()
-      )}`;
-      console.log("Firebase URL::: ", url);
-      const startCountRef = ref(db, url);
-      onValue(startCountRef, (snapshot) => {
-        const locationData = snapshot.val();
-        if (locationData) {
-          console.log("Firebase Location Data::: ", locationData);
-        } else {
-        }
-      });
+      const loggedInUserId = userDetails?.userData?.user_id
+        ? userDetails?.userData?.user_id
+        : "";
+      if (loggedInUserId) {
+        const url = `users/${loggedInUserId}/location/${convertDateIn_DDMMYYYY_Format(
+          new Date()
+        )}`;
+        const startCountRef = ref(db, url);
+        onValue(startCountRef, (snapshot) => {
+          const locationData = snapshot.val();
+          if (Object.keys(locationData).length > 0) {
+            const lastObjectTime =
+              Object.keys(locationData)[Object.keys(locationData).length - 1];
+            const lastLocationObjData = locationData[lastObjectTime.toString()];
+            const lastTimeObj =
+              lastLocationObjData[lastLocationObjData.length - 1];
+
+            if (
+              Object.keys(lastTimeObj).length > 0 &&
+              lastTimeObj.latitude &&
+              lastTimeObj.longitude
+            )
+              setlastLocationObjLatLng({
+                lat: lastTimeObj.latitude,
+                lng: lastTimeObj.longitude,
+              });
+          } else {
+            setlastLocationObjLatLng({
+              lat: "",
+              lng: "",
+            });
+          }
+        });
+      }
     } catch (error: any) {
       console.log(
         "Getting error while fetching location data from firebase realtime database:: ",
@@ -342,10 +370,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (authenticationToken)
-      console.log("User Details are::: ", userDetails?.userData);
-    fetchGroupSpecificLocationsFromFirebase();
-  }, [authenticationToken, userDetails?.userData]);
+    if (authenticationToken && userDetails?.userData?.user_id)
+      fetchLoggedInUser_LocationsFromFirebase();
+  }, [authenticationToken, userDetails?.userData?.user_id]);
+
   // =============================================================================================
 
   return (
@@ -386,258 +414,264 @@ const App = () => {
                     membershipPlans: membershipPlansList,
                   }}
                 >
-                  <Stack.Navigator>
-                    {!authenticationToken ? (
-                      <>
-                        <Stack.Screen
-                          name="OnBoarding"
-                          component={OnBoarding}
-                          options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                          name="Login"
-                          component={Login}
-                          options={{ headerShown: false }}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <Stack.Screen
-                          name="Main"
-                          component={MainScreen}
-                          options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                          name="Register"
-                          component={Register}
-                          options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                          name="SelectLocation"
-                          component={SelectLocation}
-                          options={{ headerShown: false }}
-                        />
-                        <Stack.Screen
-                          name="AddGroup"
-                          component={AddGroup}
-                          options={{
-                            title: "Add Group",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="Emergency"
-                          component={EmergencyContactsScreen}
-                          options={{
-                            title: "Emergency Service",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
+                  <FirebaseLocationContext.Provider
+                    value={{
+                      firebaseLocationData: lastLocationObjLatLng,
+                    }}
+                  >
+                    <Stack.Navigator>
+                      {!authenticationToken ? (
+                        <>
+                          <Stack.Screen
+                            name="OnBoarding"
+                            component={OnBoarding}
+                            options={{ headerShown: false }}
+                          />
+                          <Stack.Screen
+                            name="Login"
+                            component={Login}
+                            options={{ headerShown: false }}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <Stack.Screen
+                            name="Main"
+                            component={MainScreen}
+                            options={{ headerShown: false }}
+                          />
+                          <Stack.Screen
+                            name="Register"
+                            component={Register}
+                            options={{ headerShown: false }}
+                          />
+                          <Stack.Screen
+                            name="SelectLocation"
+                            component={SelectLocation}
+                            options={{ headerShown: false }}
+                          />
+                          <Stack.Screen
+                            name="AddGroup"
+                            component={AddGroup}
+                            options={{
+                              title: "Add Group",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="Emergency"
+                            component={EmergencyContactsScreen}
+                            options={{
+                              title: "Emergency Service",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
 
-                        <Stack.Screen
-                          name="ContactsListingWithHelp"
-                          component={ContactsListingWithHelp}
-                          options={{
-                            title: "Emergency Service",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="EmergencyTimer"
-                          component={EmergencyTimerScreen}
-                          options={{
-                            title: "Emergency Service",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="EditViewGroup"
-                          component={EditViewGroup}
-                          options={{
-                            title: "Edit Group",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="AddMember"
-                          component={AddMember}
-                          options={{
-                            title: "Add Member",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
+                          <Stack.Screen
+                            name="ContactsListingWithHelp"
+                            component={ContactsListingWithHelp}
+                            options={{
+                              title: "Emergency Service",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="EmergencyTimer"
+                            component={EmergencyTimerScreen}
+                            options={{
+                              title: "Emergency Service",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="EditViewGroup"
+                            component={EditViewGroup}
+                            options={{
+                              title: "Edit Group",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="AddMember"
+                            component={AddMember}
+                            options={{
+                              title: "Add Member",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
 
-                        <Stack.Screen
-                          name="ProfileScreen"
-                          component={ProfileScreen}
-                          options={{
-                            title: "Profile Page",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
+                          <Stack.Screen
+                            name="ProfileScreen"
+                            component={ProfileScreen}
+                            options={{
+                              title: "Profile Page",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
 
-                        <Stack.Screen
-                          name="FAQScreen"
-                          component={FAQScreen}
-                          options={{
-                            title: "FAQ & Support",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
+                          <Stack.Screen
+                            name="FAQScreen"
+                            component={FAQScreen}
+                            options={{
+                              title: "FAQ & Support",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
 
-                        <Stack.Screen
-                          name="FeedbackScreen"
-                          component={FeedbackScreen}
-                          options={{
-                            title: "Feedback Screen",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 19,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="SettingsScreen"
-                          component={SettingsScreen}
-                          options={{
-                            title: "Settings",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="MemberShipScreen"
-                          component={MemberShipScreen}
-                          options={{
-                            title: "Membership Plans",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="JoinGroupScreen"
-                          component={JoinGroup}
-                          options={{
-                            title: "Join A Group",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="MemberHistoryScreen"
-                          component={MemberHistory}
-                          options={{
-                            title: "History",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="PhonebookContactList"
-                          component={PhonebookContactList}
-                          options={{
-                            title: "Emergency Service",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="IndividualContact"
-                          component={IndividualContact}
-                        />
-                        <Stack.Screen
-                          name="GroupListing"
-                          component={GroupsListing}
-                          options={{
-                            title: "Groups",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                        <Stack.Screen
-                          name="ShareLocation"
-                          component={ShareTemporaryLocation}
-                          options={{
-                            title: "Share Location",
-                            headerTintColor: COLORS.voilet,
-                            headerTitleStyle: {
-                              fontWeight: "bold",
-                              fontSize: SIZES.width > 400 ? 30 : 20,
-                            },
-                            headerBackVisible: false,
-                          }}
-                        />
-                      </>
-                    )}
-                  </Stack.Navigator>
+                          <Stack.Screen
+                            name="FeedbackScreen"
+                            component={FeedbackScreen}
+                            options={{
+                              title: "Feedback Screen",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 19,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="SettingsScreen"
+                            component={SettingsScreen}
+                            options={{
+                              title: "Settings",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="MemberShipScreen"
+                            component={MemberShipScreen}
+                            options={{
+                              title: "Membership Plans",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="JoinGroupScreen"
+                            component={JoinGroup}
+                            options={{
+                              title: "Join A Group",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="MemberHistoryScreen"
+                            component={MemberHistory}
+                            options={{
+                              title: "History",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="PhonebookContactList"
+                            component={PhonebookContactList}
+                            options={{
+                              title: "Emergency Service",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="IndividualContact"
+                            component={IndividualContact}
+                          />
+                          <Stack.Screen
+                            name="GroupListing"
+                            component={GroupsListing}
+                            options={{
+                              title: "Groups",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                          <Stack.Screen
+                            name="ShareLocation"
+                            component={ShareTemporaryLocation}
+                            options={{
+                              title: "Share Location",
+                              headerTintColor: COLORS.voilet,
+                              headerTitleStyle: {
+                                fontWeight: "bold",
+                                fontSize: SIZES.width > 400 ? 30 : 20,
+                              },
+                              headerBackVisible: false,
+                            }}
+                          />
+                        </>
+                      )}
+                    </Stack.Navigator>
 
-                  <FlashMessage position="bottom" />
+                    <FlashMessage position="bottom" />
+                  </FirebaseLocationContext.Provider>
                 </MembershipContext.Provider>
               </AppSettingsContext.Provider>
             </UserDetailsContext.Provider>
