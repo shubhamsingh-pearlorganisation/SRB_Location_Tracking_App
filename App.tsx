@@ -334,10 +334,16 @@ const App = () => {
         const url = `users/${loggedInUserId}/location/${convertDateIn_DDMMYYYY_Format(
           new Date()
         )}`;
+        console.log(
+          "URL:: ",
+          `users/${loggedInUserId}/location/${convertDateIn_DDMMYYYY_Format(
+            new Date()
+          )}`
+        );
         const startCountRef = ref(db, url);
         onValue(startCountRef, (snapshot) => {
           const locationData = snapshot.val();
-          if (Object.keys(locationData).length > 0) {
+          if (locationData !== null && Object.keys(locationData).length > 0) {
             const lastObjectTime =
               Object.keys(locationData)[Object.keys(locationData).length - 1];
             const lastLocationObjData = locationData[lastObjectTime.toString()];
@@ -354,10 +360,8 @@ const App = () => {
                 lng: lastTimeObj.longitude,
               });
           } else {
-            setlastLocationObjLatLng({
-              lat: "",
-              lng: "",
-            });
+            const existingLocData = { ...lastLocationObjLatLng };
+            setlastLocationObjLatLng(existingLocData);
           }
         });
       }
@@ -373,6 +377,22 @@ const App = () => {
     if (authenticationToken && userDetails?.userData?.user_id)
       fetchLoggedInUser_LocationsFromFirebase();
   }, [authenticationToken, userDetails?.userData?.user_id]);
+
+  // This method is used to receive user live location coordinates from manage map component.
+  const getUsersLiveLocationData = (locData: any) => {
+    console.log("locData:::: ", locData);
+    if (
+      locData !== null &&
+      Object.keys(locData).length > 0 &&
+      locData.latitude &&
+      locData.longitude
+    ) {
+      setlastLocationObjLatLng({
+        lat: locData.latitude,
+        lng: locData.longitude,
+      });
+    }
+  };
 
   // =============================================================================================
 
@@ -417,6 +437,7 @@ const App = () => {
                   <FirebaseLocationContext.Provider
                     value={{
                       firebaseLocationData: lastLocationObjLatLng,
+                      liveLocationData: getUsersLiveLocationData,
                     }}
                   >
                     <Stack.Navigator>

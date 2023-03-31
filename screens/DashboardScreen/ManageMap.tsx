@@ -19,12 +19,14 @@ import { GOOGLE_API_KEY } from "../../core/utils/constants";
 import { styles } from "./style";
 import { db } from "../../firebaseConfig";
 import { ref, set } from "firebase/database";
-import { AppSettingsContext } from "../../App";
+import { AppSettingsContext, FirebaseLocationContext } from "../../App";
 import { FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../../constants";
 
-// -----------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
 const ManageMap = ({ navigation }: any) => {
+  const firebaseLocationContextData: any = useContext(FirebaseLocationContext);
+
   // -------------------------------------------------------------------------------------------------------
   // Fetching Current User Id
   const userSettings: any = useContext(AppSettingsContext);
@@ -84,7 +86,7 @@ const ManageMap = ({ navigation }: any) => {
   };
 
   // ==========================================================================================
-  const getLiveLocation = async () => {
+  const getLiveLocation = async (time: any) => {
     getCurrentLocation()
       .then((locationResponse: locationTypes | any) => {
         const { latitude, longitude, timestamp, geolocationAddress } =
@@ -109,6 +111,10 @@ const ManageMap = ({ navigation }: any) => {
             longitudeDelta: LONGITUDE_DELTA,
           }),
         });
+
+        if (time === 600) {
+          sendUsersLiveLocation(formattedData);
+        }
 
         setIndividualLocationObj({
           ...individualLocationObj,
@@ -180,7 +186,7 @@ const ManageMap = ({ navigation }: any) => {
       if (!timeLeft) return;
 
       const interval = setInterval(() => {
-        getLiveLocation(); // Fetching User's Location in every 6 seconds
+        getLiveLocation(timeLeft); // Fetching User's Location in every 6 seconds
         setTimeLeft(timeLeft - 6);
       }, 6000);
       return () => clearInterval(interval);
@@ -211,6 +217,13 @@ const ManageMap = ({ navigation }: any) => {
       });
     }
   }, [timeLeft, individualLocationObj, userId]);
+
+  useEffect(() => {}, []);
+
+  const sendUsersLiveLocation = (data: any) => {
+    console.log("shubham data::: ", data);
+    firebaseLocationContextData?.liveLocationData(data);
+  };
 
   // ==========================================================================================
 
