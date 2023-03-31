@@ -320,7 +320,7 @@ const App = () => {
 
   return (
     <ToastProvider duration={1000}>
-      <StatusBar barStyle={"dark-content"}/>
+      <StatusBar barStyle={"light-content"} />
       <NavigationContainer>
         <AuthContext.Provider
           value={{

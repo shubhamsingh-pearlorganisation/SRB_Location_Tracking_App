@@ -2,7 +2,7 @@ import { View, ScrollView } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { COLORS, SIZES } from "../../constants";
 import NoDataFound from "../../components/NoDataFound";
-import { GroupsAndMembersContext } from "../../App";
+import { GroupsAndMembersContext, UserDetailsContext } from "../../App";
 import GroupAvailableOptions from "./GroupAvailableOptions";
 import GroupIndividualItem from "./GroupIndividualItem";
 import Loader from "../../components/Loader";
@@ -11,6 +11,8 @@ import Loader from "../../components/Loader";
 const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
+  // Component's Local States
+  // ========================
   const [selectedGroupData, setSelectedGroupData] = useState<any>(
     groupsAndMembersData?.groupsAndMembersDetails[0]
   );

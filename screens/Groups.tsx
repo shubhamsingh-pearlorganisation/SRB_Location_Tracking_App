@@ -1,16 +1,23 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { GroupsAndMembersContext } from "../App";
+import { GroupsAndMembersContext, UserDetailsContext } from "../App";
 import { COLORS, SIZES } from "../constants";
 import Loader from "../components/Loader";
 import NoDataFound from "../components/NoDataFound";
 
 // -----------------------------------------------------------------
-const Groups = ({ navigation }: any) => {
+const Groups = ({ navigation, route }: any) => {
+  console.log("Route Data::: ", route);
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
+  const userDetailsContextData: any = useContext(UserDetailsContext);
 
+  // Component's Local States
+  // ========================
   const [showLoader] = useState<boolean>(false);
+  const [userId, setUserId] = useState<any>(null);
+  const [locationData, setLocationData] = useState<any>(null);
+  const [lastCreatedGroupCode, setLastCreatedGroupCode] = useState<any>("");
 
   // This method is used to redirect user to edit/view group screen.
   const redirectToEditViewGroupScreen = (
@@ -19,6 +26,54 @@ const Groups = ({ navigation }: any) => {
   ) => {
     navigation.navigate("EditViewGroup", { groupDetails, editGroupAllowed });
   };
+
+  useEffect(() => {
+    if (userDetailsContextData?.userDetails?.user_id) {
+      setUserId(userDetailsContextData?.userDetails?.user_id);
+    }
+  }, [userDetailsContextData]);
+
+  useEffect(() => {
+    console.log("userId::: ", userId);
+  }, [userId]);
+
+  useEffect(() => {
+    console.log("lastCreatedGroupCode::: ", lastCreatedGroupCode);
+  }, [lastCreatedGroupCode]);
+
+  useEffect(() => {
+    if (route?.params?.isNewGroupCreated) {
+      console.log(
+        "groupsAndMembersData?.groupsAndMembersDetails::: ",
+        groupsAndMembersData?.groupsAndMembersDetails?.[0]
+      );
+      if (
+        Object.keys(groupsAndMembersData?.groupsAndMembersDetails?.[0]).length >
+          0 &&
+        groupsAndMembersData?.groupsAndMembersDetails?.[0]?.group_code
+      ) {
+        setLastCreatedGroupCode(
+          groupsAndMembersData?.groupsAndMembersDetails?.[0]?.group_code
+        );
+      }
+    }
+  }, [route?.params, groupsAndMembersData?.groupsAndMembersDetails]);
+
+  // const sendGroupDataToFirebase = () => {
+  //   try {
+  //     await set(
+  //       ref(db, `groups/${lastCreatedGroupCode}/${userId}/${location}`),
+  //       locationData
+  //     );
+  //   } catch (error: any) {
+  //     console.log(
+  //       "Getting an error while saving location data to firebase: ",
+  //       error
+  //     );
+  //   }
+  // };
+
+  useEffect(() => {}, []);
 
   // This renderGroups component is used to render group list
   const renderGroups = (groupDetails: any) => {

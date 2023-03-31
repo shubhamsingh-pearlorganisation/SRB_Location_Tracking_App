@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,12 +13,17 @@ import { useToast } from "react-native-toast-notifications";
 import { AuthContext, GroupsAndMembersContext } from "../App";
 import { instance } from "../core/utils/AxiosInterceptor";
 import Loader from "../components/Loader";
+import { db } from "../firebaseConfig";
+import { ref, set } from "firebase/database";
+import { UserDetailsContext } from "../App";
+
 // ----------------------------------------------------------------------------
 const AddGroup = ({ navigation }: any) => {
   const toast = useToast();
 
   const authContextData: any = useContext(AuthContext);
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
+  const userDetailsContextData: any = useContext(UserDetailsContext);
 
   // Component's Local States
   // ========================
@@ -57,8 +62,10 @@ const AddGroup = ({ navigation }: any) => {
             type: "success",
           });
 
+          // console.log("Create Group API RESPONSE::: ", response.data);
+
           groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing Globally
-          navigation.navigate("Groups"); // Redirect back to Groups Listing Screen
+          navigation.navigate("Groups", { isNewGroupCreated: true }); // Redirect back to Groups Listing Screen
         } else {
           setShowLoader(false);
           toast.show(
