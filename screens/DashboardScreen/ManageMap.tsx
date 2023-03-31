@@ -1,4 +1,11 @@
-import { View, Image, StyleSheet, Platform, Dimensions, Text } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Platform,
+  Dimensions,
+  Text,
+} from "react-native";
 import React, { useState, useEffect, useRef, memo, useContext } from "react";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -249,14 +256,22 @@ const ManageMap = ({ navigation }: any) => {
           identifier={"origin"}
           coordinate={coordinate}
         >
-          <View style={{height:70}}>
+          <View style={{ height: 70 }}>
             <FontAwesome
               name="map-marker"
               size={60}
               color={COLORS.voilet}
-              style={{ backgroundColor: "transparent", marginTop:0 }}
+              style={{ backgroundColor: "transparent", marginTop: 0 }}
             />
-            <Text style={{marginTop:-50,alignSelf:'center', textAlignVertical:'top'}}>Y</Text>
+            <Text
+              style={{
+                marginTop: -50,
+                alignSelf: "center",
+                textAlignVertical: "top",
+              }}
+            >
+              Y
+            </Text>
           </View>
         </Marker.Animated>
 

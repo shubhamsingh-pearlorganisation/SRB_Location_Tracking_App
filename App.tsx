@@ -30,7 +30,9 @@ import ContactsListingWithHelp from "./screens/EmergencyContacts/ContactsListing
 import MemberShipScreen from "./screens/MemberShipScreen";
 import GroupsListing from "./screens/DashboardScreen/GroupsListing";
 import ShareTemporaryLocation from "./screens/ShareTemporaryLocation";
-
+import { db } from "./firebaseConfig";
+import { ref, onValue } from "firebase/database";
+import { convertDateIn_DDMMYYYY_Format } from "./core/utils/helper";
 // ----------------------------------------------------------------------------------
 // CONTEXTS
 export const AuthContext: any = createContext(null);
@@ -316,6 +318,34 @@ const App = () => {
     }
   };
 
+  // This method is used to fetch Group Specific Location Data from Firebase Realtime Database.
+  const fetchGroupSpecificLocationsFromFirebase = () => {
+    try {
+      const url = `users/2/location/${convertDateIn_DDMMYYYY_Format(
+        new Date()
+      )}`;
+      console.log("Firebase URL::: ", url);
+      const startCountRef = ref(db, url);
+      onValue(startCountRef, (snapshot) => {
+        const locationData = snapshot.val();
+        if (locationData) {
+          console.log("Firebase Location Data::: ", locationData);
+        } else {
+        }
+      });
+    } catch (error: any) {
+      console.log(
+        "Getting error while fetching location data from firebase realtime database:: ",
+        error?.message ? error?.message : error
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (authenticationToken)
+      console.log("User Details are::: ", userDetails?.userData);
+    fetchGroupSpecificLocationsFromFirebase();
+  }, [authenticationToken, userDetails?.userData]);
   // =============================================================================================
 
   return (
