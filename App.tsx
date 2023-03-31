@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OnBoarding from "./screens/OnBoarding";
@@ -133,24 +133,24 @@ const App = () => {
           isDetailsLoaded: true,
         });
       } else {
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while fetching groups. Please try again later.",
-          {
-            type: "error",
-          }
-        );
+        // toast.show(
+        //   response.data?.message
+        //     ? response.data?.message
+        //     : "Getting an error while fetching groups. Please try again later.",
+        //   {
+        //     type: "error",
+        //   }
+        // );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching groups. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching groups. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
@@ -167,24 +167,24 @@ const App = () => {
           userData: response.data?.data,
         });
       } else {
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while fetching user details. Please try again later.",
-          {
-            type: "error",
-          }
-        );
+        // toast.show(
+        //   response.data?.message
+        //     ? response.data?.message
+        //     : "Getting an error while fetching user details. Please try again later.",
+        //   {
+        //     type: "error",
+        //   }
+        // );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching user details. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching user details. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
@@ -319,7 +319,8 @@ const App = () => {
   // =============================================================================================
 
   return (
-    <ToastProvider duration={500}>
+    <ToastProvider duration={1000}>
+      <StatusBar barStyle={"dark-content"}/>
       <NavigationContainer>
         <AuthContext.Provider
           value={{

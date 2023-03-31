@@ -240,29 +240,31 @@ const Login = ({ navigation, route }: any) => {
 
   // -------------------------------------------------------------------------------------------
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <View style={styles.container}>
-        <FirebaseRecaptchaVerifierModal
-          ref={recaptchaVerifier}
-          firebaseConfig={firebaseConfig}
-        />
+    <View style={styles.container}>
+      <FirebaseRecaptchaVerifierModal
+        ref={recaptchaVerifier}
+        firebaseConfig={firebaseConfig}
+      />
+      <View>
         <Text style={styles.otpText}>
           Let’s start{"\n"}{" "}
           {route?.params?.comingFrom === "login" ? "Login" : "Sign up"} with
           number
         </Text>
-        {showLoader && <Loader />}
+      </View>
+      {showLoader && <Loader />}
 
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CountryDropdown getCompleteMobileNumber={getCompleteMobileNumber} />
-        </View>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CountryDropdown getCompleteMobileNumber={getCompleteMobileNumber} />
+      </View>
+      <View>
         <TouchableOpacity
           style={[
             styles.sendVerification,
@@ -335,7 +337,7 @@ const Login = ({ navigation, route }: any) => {
           </>
         )}
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 export default Login;
@@ -346,7 +348,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#705ECF",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "column",
+    paddingTop:'10%'
   },
   textInput: {
     textAlignVertical: "center",
@@ -354,32 +358,27 @@ const styles = StyleSheet.create({
     fontSize: SIZES.height > 700 ? 24 : 20,
     borderBottomColor: "#fff",
     borderBottomWidth: 0,
-    marginBottom: 20,
     textAlign: "center",
     color: "white",
   },
-
   sendVerification: {
-    marginRight: 40,
-    marginLeft: 40,
-    marginTop: 10,
-    backgroundColor: "white",
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  sendCode: {
-    marginRight: 40,
-    marginLeft: 40,
-    marginTop: 20,
+    alignSelf:'center',
     backgroundColor: "white",
     borderRadius: 100,
     borderWidth: 1,
     borderColor: "#fff",
     width: SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
-    height: "auto",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  sendCode: {
+    alignSelf:'center',
+    backgroundColor: "white",
+    borderRadius: 100,
+    borderWidth: 1,
+    marginVertical:'5%',
+    borderColor: "#fff",
+    width: SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -392,13 +391,13 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0)",
     textAlign: "center",
     fontSize: SIZES.width > 400 ? 20 : 18,
-    paddingVertical: "2%",
+    paddingVertical: 10,
+    textAlignVertical:'center'
   },
   otpText: {
     position: "relative",
     width: "90%",
     height: "auto",
-    marginBottom: 150,
     fontStyle: "normal",
     fontWeight: "bold",
     fontSize: SIZES.height > 700 ? 30 : 24,

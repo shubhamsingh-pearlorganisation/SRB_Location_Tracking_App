@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, Platform, Dimensions } from "react-native";
+import { View, Image, StyleSheet, Platform, Dimensions, Text } from "react-native";
 import React, { useState, useEffect, useRef, memo, useContext } from "react";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -13,6 +13,8 @@ import { styles } from "./style";
 import { db } from "../../firebaseConfig";
 import { ref, set } from "firebase/database";
 import { AppSettingsContext } from "../../App";
+import { FontAwesome } from "@expo/vector-icons";
+import { COLORS } from "../../constants";
 
 // -----------------------------------------------------------------------------------
 const ManageMap = ({ navigation }: any) => {
@@ -181,7 +183,10 @@ const ManageMap = ({ navigation }: any) => {
   useEffect(() => {
     if (individualLocationObj) {
       setLocationData([...locationData, individualLocationObj]);
-      console.log("individualLocationObj::: ", individualLocationObj?.tenMinutesLocationData?.length)
+      console.log(
+        "individualLocationObj::: ",
+        individualLocationObj?.tenMinutesLocationData?.length
+      );
     }
   }, [individualLocationObj]);
 
@@ -244,14 +249,15 @@ const ManageMap = ({ navigation }: any) => {
           identifier={"origin"}
           coordinate={coordinate}
         >
-          <Image
-            source={imagePath.originMarker}
-            style={{
-              width: 40,
-              height: 40,
-            }}
-            resizeMode="contain"
-          />
+          <View style={{height:70}}>
+            <FontAwesome
+              name="map-marker"
+              size={60}
+              color={COLORS.voilet}
+              style={{ backgroundColor: "transparent", marginTop:0 }}
+            />
+            <Text style={{marginTop:-50,alignSelf:'center', textAlignVertical:'top'}}>Y</Text>
+          </View>
         </Marker.Animated>
 
         {Object.keys(destinationCords).length > 0 && (

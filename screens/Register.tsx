@@ -252,8 +252,8 @@ const Register = ({ route }: any) => {
   };
 
   const handleConfirm = (date: any) => {
-    let tempDate = new Date(date);
-
+    // let tempDate = new Date(date);
+    let tempDate = new Date(date.nativeEvent.timestamp);
     const currentDate = tempDate.getDate();
     const month = tempDate.getMonth() + 1;
     const year = tempDate.getFullYear();
