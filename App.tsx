@@ -334,12 +334,7 @@ const App = () => {
         const url = `users/${loggedInUserId}/location/${convertDateIn_DDMMYYYY_Format(
           new Date()
         )}`;
-        console.log(
-          "URL:: ",
-          `users/${loggedInUserId}/location/${convertDateIn_DDMMYYYY_Format(
-            new Date()
-          )}`
-        );
+
         const startCountRef = ref(db, url);
         onValue(startCountRef, (snapshot) => {
           const locationData = snapshot.val();
@@ -380,7 +375,6 @@ const App = () => {
 
   // This method is used to receive user live location coordinates from manage map component.
   const getUsersLiveLocationData = (locData: any) => {
-    console.log("locData:::: ", locData);
     if (
       locData !== null &&
       Object.keys(locData).length > 0 &&

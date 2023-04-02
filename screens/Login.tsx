@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  KeyboardAvoidingView,
 } from "react-native";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebaseConfig";
@@ -350,7 +349,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly",
     flexDirection: "column",
-    paddingTop:'10%'
+    paddingTop: "10%",
   },
   textInput: {
     textAlignVertical: "center",
@@ -362,7 +361,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   sendVerification: {
-    alignSelf:'center',
+    alignSelf: "center",
     backgroundColor: "white",
     borderRadius: 100,
     borderWidth: 1,
@@ -372,11 +371,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   sendCode: {
-    alignSelf:'center',
+    alignSelf: "center",
     backgroundColor: "white",
     borderRadius: 100,
     borderWidth: 1,
-    marginVertical:'5%',
+    marginVertical: "5%",
     borderColor: "#fff",
     width: SIZES.width > 400 ? SIZES.width * 0.5 : SIZES.width * 0.8,
     alignItems: "center",
@@ -392,7 +391,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: SIZES.width > 400 ? 20 : 18,
     paddingVertical: 10,
-    textAlignVertical:'center'
+    textAlignVertical: "center",
   },
   otpText: {
     position: "relative",

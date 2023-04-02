@@ -193,9 +193,7 @@ const MemberHistory = ({ navigation, route }: any) => {
                   color="black"
                 />
                 <Text style={[styles.subHeading, { marginLeft: "5%" }]}>
-                  {/* {Object.keys(historyDate).length} */}
                   {`${dateValue}`}
-                  {/* {typeof historyDate} */}
                 </Text>
               </View>
             </Pressable>

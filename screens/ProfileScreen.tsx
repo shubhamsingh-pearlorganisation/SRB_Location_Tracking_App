@@ -14,9 +14,7 @@ import { useToast } from "react-native-toast-notifications";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { profile } from "../constants/images";
 import { TextInput } from "react-native-paper";
-import RNDateTimePicker, {
-  DateTimePickerAndroid,
-} from "@react-native-community/datetimepicker";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 import {
   AuthContext,
   GroupsAndMembersContext,

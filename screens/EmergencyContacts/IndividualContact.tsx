@@ -1,5 +1,5 @@
 import React, { useState, memo } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import Checkbox from "expo-checkbox";
 import { styles } from "./style";
 // -----------------------------------------------------------------

@@ -7,7 +7,6 @@ import { Ionicons } from "@expo/vector-icons";
 
 // This component is used to render Groups individual Member
 const GroupIndividualMember = ({ navigation, member }: any) => {
-  console.log("member id:: ", member);
   return (
     <Pressable
       style={styles.memberListItem}
