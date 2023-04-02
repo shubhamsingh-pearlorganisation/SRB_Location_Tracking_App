@@ -218,10 +218,8 @@ const ManageMap = ({ navigation }: any) => {
     }
   }, [timeLeft, individualLocationObj, userId]);
 
-  useEffect(() => {}, []);
-
+  // This method is used to send users live location to App.tsx component
   const sendUsersLiveLocation = (data: any) => {
-    console.log("shubham data::: ", data);
     firebaseLocationContextData?.liveLocationData(data);
   };
 

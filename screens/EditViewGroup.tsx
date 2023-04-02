@@ -546,8 +546,9 @@ const EditViewGroup = ({ route, navigation }: any) => {
               <Text
                 style={{
                   fontSize: SIZES.width > 400 ? 25 : 18,
-                  fontWeight: "600",
+                  fontWeight: "700",
                   marginHorizontal: "2%",
+                  marginVertical: "5%",
                 }}
               >
                 Leave Group

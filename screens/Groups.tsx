@@ -60,7 +60,7 @@ const Groups = ({ navigation, route }: any) => {
         );
       }
     }
-  }, [route?.params, groupsAndMembersData?.groupsAndMembersDetails]);
+  }, [groupsAndMembersData?.groupsAndMembersDetails]);
 
   // This method is used to send group specific location data to firebase realtime database.
   const sendGroupDataToFirebase = async () => {

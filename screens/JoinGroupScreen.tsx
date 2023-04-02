@@ -7,12 +7,19 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import { AuthContext, GroupsAndMembersContext } from "../App";
+import {
+  AuthContext,
+  FirebaseLocationContext,
+  GroupsAndMembersContext,
+  UserDetailsContext,
+} from "../App";
 import { SIZES } from "../constants";
 import { instance } from "../core/utils/AxiosInterceptor";
 import { useToast } from "react-native-toast-notifications";
 import Loader from "../components/Loader";
 
+import { db } from "../firebaseConfig";
+import { ref, set, update } from "firebase/database";
 // -------------------------------------------------------------------------------------
 
 const JoinGroup = ({ navigation }: any) => {
@@ -20,6 +27,16 @@ const JoinGroup = ({ navigation }: any) => {
 
   const authContextData: any = useContext(AuthContext);
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
+  const userDetailsContextData: any = useContext(UserDetailsContext);
+  const firebaseLocationContextData: any = useContext(FirebaseLocationContext);
+
+  const [groupsData, setGroupsData] = useState<any>([]);
+
+  useEffect(() => {
+    if (groupsAndMembersData.groupsAndMembersDetails.length > 0) {
+      setGroupsData(groupsAndMembersData.groupsAndMembersDetails);
+    }
+  }, [groupsAndMembersData.groupsAndMembersDetails]);
 
   // Used for Input Fields Autofocusing
   const codeFirstCharacter: any = useRef(null);
@@ -51,11 +68,16 @@ const JoinGroup = ({ navigation }: any) => {
   } = groupCode;
 
   const [disableCreate, setDisableCreate] = useState(true);
+  const [userId, setUserId] = useState<any>(null);
+  const [locationData, setLocationData] = useState<any>(null);
+  const [lastCreatedGroupCode, setLastCreatedGroupCode] = useState<any>("");
 
   // This method is used to call group join API
   const handleGroupJoin = async () => {
     const finalCode = `${firstCharacter}${secondCharacter}${thirdCharacter}${fourthCharacter}${fifthCharacter}${sixthCharacter}`;
     if (finalCode && finalCode.toString().length === 6) {
+      setLastCreatedGroupCode(finalCode);
+
       try {
         const formData = new FormData();
         formData.append("token_id", authContextData?.token);
@@ -69,7 +91,6 @@ const JoinGroup = ({ navigation }: any) => {
             type: "success",
           });
           groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing
-          navigation.navigate("Home");
         } else {
           setShowLoader(false);
           toast.show(
@@ -107,6 +128,39 @@ const JoinGroup = ({ navigation }: any) => {
       setDisableCreate(false);
     else setDisableCreate(true);
   }, [groupCode, disableCreate]);
+
+  // This method is used to send group specific location data to firebase realtime database.
+  const sendGroupDataToFirebase = async () => {
+    try {
+      await update(
+        ref(db, `groups/${lastCreatedGroupCode}/${userId}/location/`),
+        locationData
+      );
+      navigation.navigate("Home");
+    } catch (error: any) {
+      console.log(
+        "Getting an error while saving group specific location data to firebase realtime database: ",
+        error
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (locationData && lastCreatedGroupCode && userId)
+      sendGroupDataToFirebase();
+  }, [lastCreatedGroupCode, userId, locationData]);
+
+  useEffect(() => {
+    if (userDetailsContextData?.userDetails?.user_id) {
+      setUserId(userDetailsContextData?.userDetails?.user_id);
+    }
+  }, [userDetailsContextData]);
+
+  useEffect(() => {
+    if (firebaseLocationContextData)
+      setLocationData(firebaseLocationContextData?.firebaseLocationData);
+  }, [firebaseLocationContextData]);
+
   // -------------------------------------------------------------------------------------------
   return (
     <KeyboardAvoidingView style={styles.container}>
