@@ -395,11 +395,11 @@ const App = () => {
     setUserLiveLocationData(locData);
   };
 
-  useEffect(() => {
-    if (usersLiveLocationData) {
-      console.log("usersLiveLocationData::: ", usersLiveLocationData);
-    }
-  }, [usersLiveLocationData]);
+  // useEffect(() => {
+  //   if (usersLiveLocationData) {
+  //     // console.log("usersLiveLocationData::: ", usersLiveLocationData);
+  //   }
+  // }, [usersLiveLocationData]);
   // =============================================================================================
 
   return (
