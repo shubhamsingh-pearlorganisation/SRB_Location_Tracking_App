@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Pressable } from "react-native";
 import GroupsListing from "./GroupsListing";
 import ManageMap from "./ManageMap";
 import { styles } from "./style";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SIZES } from "../../constants";
 import { GroupsAndMembersContext } from "../../App";
@@ -32,10 +32,13 @@ const Dashboard = ({ navigation }: any) => {
   const receiveGroupDetails = (groupData: any) =>
     setSelectedGroupData(groupData);
 
-  const receiveGroupSpecificFirebaseLocationData = (locationData: any) => {
-    console.log("locationData::: ", locationData);
-    setFirebaseLocationCoordinates(locationData);
-  };
+  const receiveGroupSpecificFirebaseLocationData = useCallback(
+    (locationData: any) => {
+      console.log("locationData::: ", locationData);
+      setFirebaseLocationCoordinates(locationData);
+    },
+    []
+  );
   useEffect(() => {
     groupsAndMembersData?.groupsAndMembersDetails?.length > 0 &&
       setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);

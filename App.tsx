@@ -208,24 +208,24 @@ const App = () => {
           contacts: response.data?.data?.reverse(),
         });
       } else {
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while fetching contacts. Please try again later.",
-          {
-            type: "error",
-          }
-        );
+        // toast.show(
+        //   response.data?.message
+        //     ? response.data?.message
+        //     : "Getting an error while fetching contacts. Please try again later.",
+        //   {
+        //     type: "error",
+        //   }
+        // );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching contacts. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching contacts. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
@@ -236,24 +236,24 @@ const App = () => {
       if (response.status === 200 && response.data?.status === true) {
         setFaqList(response.data?.data);
       } else {
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while fetching faqs. Please try again later.",
-          {
-            type: "error",
-          }
-        );
+        // toast.show(
+        //   response.data?.message
+        //     ? response.data?.message
+        //     : "Getting an error while fetching faqs. Please try again later.",
+        //   {
+        //     type: "error",
+        //   }
+        // );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching faqs. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching faqs. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
@@ -274,24 +274,24 @@ const App = () => {
           },
         });
       } else {
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while fetching app settings. Please try again later.",
-          {
-            type: "error",
-          }
-        );
+        // toast.show(
+        //   response.data?.message
+        //     ? response.data?.message
+        //     : "Getting an error while fetching app settings. Please try again later.",
+        //   {
+        //     type: "error",
+        //   }
+        // );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching app settings. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching app settings. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 
@@ -303,24 +303,24 @@ const App = () => {
         const data = response?.data?.data;
         setMembershipPlansList(data);
       } else {
-        toast.show(
-          response.data?.message
-            ? response.data?.message
-            : "Getting an error while fetching membership plans list. Please try again later.",
-          {
-            type: "error",
-          }
-        );
+        // toast.show(
+        //   response.data?.message
+        //     ? response.data?.message
+        //     : "Getting an error while fetching membership plans list. Please try again later.",
+        //   {
+        //     type: "error",
+        //   }
+        // );
       }
     } catch (error: any) {
-      toast.show(
-        error.message
-          ? error.message
-          : "Getting an error while fetching membership plans list. Please try again later.",
-        {
-          type: "error",
-        }
-      );
+      // toast.show(
+      //   error.message
+      //     ? error.message
+      //     : "Getting an error while fetching membership plans list. Please try again later.",
+      //   {
+      //     type: "error",
+      //   }
+      // );
     }
   };
 

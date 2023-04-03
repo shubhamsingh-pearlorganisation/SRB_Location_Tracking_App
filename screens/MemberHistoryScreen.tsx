@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Platform,
+  Linking,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
@@ -70,6 +77,9 @@ const MemberHistory = ({ navigation, route }: any) => {
   const [dateValue, setDateValue] = useState<any>("");
   const [locationsTimelineData, setLocationsTimelineData] = useState<any>([]);
 
+  const [lat, setLat] = useState<any>("");
+  const [lng, setLng] = useState<any>("");
+
   useEffect(() => {
     if (Object.keys(firebaseLocationData).length > 0) {
       for (let key in firebaseLocationData) {
@@ -79,6 +89,8 @@ const MemberHistory = ({ navigation, route }: any) => {
           ...prevState,
           { time, title: placeName },
         ]);
+        setLat(firebaseLocationData[key][0].latitude);
+        setLng(firebaseLocationData[key][0].longitude);
       }
     }
   }, [firebaseLocationData]);
@@ -115,6 +127,23 @@ const MemberHistory = ({ navigation, route }: any) => {
   }, [userId, historyDate]);
   // --------------------------- Date Picker Handling -- Finished -----------------------------------
 
+  const scheme = Platform.select({ ios: "maps:0,0?q=", android: "geo:0,0?q=" });
+  const latLng = `${lat},${lng}`;
+  const label = memberName?.toString();
+  const url: any = Platform.select({
+    ios: `${scheme}${label}@${latLng}`,
+    android: `${scheme}${latLng}(${label})`,
+  });
+
+  const redirectToMap = async () => {
+    try {
+      const res = await Linking.openURL(url);
+      console.log("Map response:: ", res);
+    } catch (error) {
+      console.log("Map redirection Error:: ", error);
+    }
+  };
+
   return showLoader ? (
     <Loader message="Please wait ..." />
   ) : (
@@ -146,9 +175,11 @@ const MemberHistory = ({ navigation, route }: any) => {
                 : "N.A"}
             </Text>
           </View>
-          <Pressable style={styles.getDirection}>
+          <Pressable
+            style={styles.getDirection}
+            onPress={() => redirectToMap()}
+          >
             <Text style={{ color: "black" }}>{"Get\nDirection"}</Text>
-
             <Entypo
               name="direction"
               size={SIZES.width > 400 ? 40 : 30}

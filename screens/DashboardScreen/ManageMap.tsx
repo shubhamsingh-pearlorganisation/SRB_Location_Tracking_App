@@ -27,7 +27,20 @@ import { COLORS } from "../../constants";
 const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
   console.log("firebaseLocationCoordinates::: ", firebaseLocationCoordinates);
 
+  // const [membersLocationData, setMembersLocationData] = useState<any>([])
+  // setMembersLocationData(firebaseLocationCoordinates?.groupMembers)
+  const memberLocationData = firebaseLocationCoordinates?.groupMembers;
+  console.log("membersLocationData:: ", memberLocationData);
+
   const firebaseLocationContextData: any = useContext(FirebaseLocationContext);
+
+  // const [lat, setLat] = useState<any>("");
+  // const [lng, setLng] = useState<any>("");
+
+  // firebaseLocationCoordinates?.groupMembers.forEach((element:any) => {
+  //   setLat(element.lat)
+  //   setLng(element.lng)
+  // });
 
   // -------------------------------------------------------------------------------------------------------
   // Fetching Current User Id
@@ -54,6 +67,7 @@ const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
   const markerRef: any = useRef();
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const [state, setState] = useState<any>({
     curLoc: {
       latitude: 30.7333,
@@ -198,10 +212,10 @@ const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
   useEffect(() => {
     if (individualLocationObj) {
       setLocationData([...locationData, individualLocationObj]);
-      console.log(
-        "individualLocationObj::: ",
-        individualLocationObj?.tenMinutesLocationData?.length
-      );
+      // console.log(
+      //   "individualLocationObj::: ",
+      //   individualLocationObj?.tenMinutesLocationData?.length
+      // );
     }
   }, [individualLocationObj]);
 
@@ -264,7 +278,48 @@ const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
           longitudeDelta: LONGITUDE_DELTA,
         }}
       >
-        <Marker.Animated
+        {Array.isArray(memberLocationData) &&
+          memberLocationData.length > 0 &&
+          memberLocationData.map((data, index) => {
+            return (
+              // <Marker
+              //   key={index}
+              //   coordinate={{
+              //     latitude: data?.lat ? data?.lat : 30.7333,
+              //     longitude: data?.lng ? data?.lng : 76.7794,
+              //   }}
+              // />
+              <Marker.Animated
+                key={index}
+                ref={markerRef}
+                identifier={"origin"}
+                coordinate={{
+                  latitude: data?.lat ? data?.lat : 30.7333,
+                  longitude: data?.lng ? data?.lng : 76.7794,
+                }}
+              >
+                <View style={{ height: 70 }}>
+                  <FontAwesome
+                    name="map-marker"
+                    size={60}
+                    color={COLORS.voilet}
+                    style={{ backgroundColor: "transparent", marginTop: 0 }}
+                  />
+                  <Text
+                    style={{
+                      marginTop: -50,
+                      alignSelf: "center",
+                      textAlignVertical: "top",
+                    }}
+                  >
+                    Y
+                  </Text>
+                </View>
+              </Marker.Animated>
+            );
+          })}
+
+        {/* <Marker.Animated
           ref={markerRef}
           identifier={"origin"}
           coordinate={coordinate}
@@ -286,7 +341,7 @@ const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
               Y
             </Text>
           </View>
-        </Marker.Animated>
+        </Marker.Animated> */}
 
         {Object.keys(destinationCords).length > 0 && (
           <Marker
