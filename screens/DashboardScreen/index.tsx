@@ -14,6 +14,8 @@ const Dashboard = ({ navigation }: any) => {
 
   const [showGroupsListing, setGroupListing] = useState(false);
   const [selectedGroupData, setSelectedGroupData] = useState<any>({});
+  const [firebaseLocationCoordinates, setFirebaseLocationCoordinates] =
+    useState<any>(null);
 
   useEffect(() => {
     if (
@@ -30,17 +32,25 @@ const Dashboard = ({ navigation }: any) => {
   const receiveGroupDetails = (groupData: any) =>
     setSelectedGroupData(groupData);
 
+  const receiveGroupSpecificFirebaseLocationData = (locationData: any) => {
+    console.log("locationData::: ", locationData);
+    setFirebaseLocationCoordinates(locationData);
+  };
   useEffect(() => {
     groupsAndMembersData?.groupsAndMembersDetails?.length > 0 &&
       setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);
   }, [groupsAndMembersData?.groupsAndMembersDetails]);
+
   // ---------------------------------------------------------------------------------------------
 
   return (
     <GestureHandlerRootView style={styles.homeWrapper}>
       {/* ---------------------------------------------------- */}
       {/* Map Section  */}
-      <ManageMap navigation={navigation} />
+      <ManageMap
+        navigation={navigation}
+        firebaseLocationCoordinates={firebaseLocationCoordinates}
+      />
       {/* ---------------------------------------------------- */}
 
       {/* Group Screen Up Icon Section  */}
@@ -80,6 +90,7 @@ const Dashboard = ({ navigation }: any) => {
         <GroupsListing
           navigation={navigation}
           sendGroupDetails={receiveGroupDetails}
+          sendFirebaseData={receiveGroupSpecificFirebaseLocationData}
         />
 
         {/* ---------------------------------------------------- */}

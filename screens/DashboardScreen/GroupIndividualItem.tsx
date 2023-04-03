@@ -2,6 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { styles } from "./style";
 import { COLORS, SIZES } from "../../constants";
+
 // -------------------------------------------------------------------------------------
 
 // This component is used to render Groups Individual Item

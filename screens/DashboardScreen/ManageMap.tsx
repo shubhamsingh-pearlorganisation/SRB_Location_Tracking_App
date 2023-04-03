@@ -24,7 +24,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../../constants";
 
 // --------------------------------------------------------------------------------------------------------
-const ManageMap = ({ navigation }: any) => {
+const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
+  console.log("firebaseLocationCoordinates::: ", firebaseLocationCoordinates);
+
   const firebaseLocationContextData: any = useContext(FirebaseLocationContext);
 
   // -------------------------------------------------------------------------------------------------------

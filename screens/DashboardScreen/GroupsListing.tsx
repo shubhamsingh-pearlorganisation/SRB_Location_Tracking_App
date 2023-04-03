@@ -1,14 +1,21 @@
 import { View, ScrollView } from "react-native";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { COLORS, SIZES } from "../../constants";
 import NoDataFound from "../../components/NoDataFound";
-import { GroupsAndMembersContext, UserDetailsContext } from "../../App";
+import { GroupsAndMembersContext } from "../../App";
 import GroupAvailableOptions from "./GroupAvailableOptions";
 import GroupIndividualItem from "./GroupIndividualItem";
 import Loader from "../../components/Loader";
+import { db } from "../../firebaseConfig";
+import { ref, onValue } from "firebase/database";
+
 // -------------------------------------------------------------------------------------
 
-const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
+const GroupsListing = ({
+  navigation,
+  sendGroupDetails,
+  sendFirebaseData,
+}: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   // Component's Local States
@@ -17,8 +24,77 @@ const GroupsListing = ({ navigation, sendGroupDetails }: any) => {
     groupsAndMembersData?.groupsAndMembersDetails[0]
   );
 
-  const selectedGroupDetails = (selGroupDetails: any) =>
-    selGroupDetails && setSelectedGroupData(selGroupDetails);
+  const [selectedGroup_GroupCode, setSelectedGroup_GroupCode] =
+    useState<any>("");
+
+  const [
+    groupSpecificFirebaseLocationData,
+    setGroupSpecificFirebaseLocationData,
+  ] = useState<any>({
+    groupCode: "",
+    groupMembers: [
+      {
+        id: "",
+        lat: "",
+        lng: "",
+      },
+    ],
+  });
+
+  const selectedGroupDetails = useCallback(
+    (selGroupDetails: any) =>
+      selGroupDetails && setSelectedGroupData(selGroupDetails),
+    []
+  );
+
+  useEffect(() => {
+    if (selectedGroupData) {
+      setSelectedGroup_GroupCode(selectedGroupData?.group_code);
+    }
+  }, [selectedGroupData]);
+
+  useEffect(() => {
+    if (selectedGroup_GroupCode) {
+      fetchGroupSpecificLocationData();
+    }
+  }, [selectedGroup_GroupCode]);
+
+  // This method is used to fetch Group Specific Location Data from Firebase Realtime Database.
+  const fetchGroupSpecificLocationData = () => {
+    try {
+      const url = `groups/${selectedGroup_GroupCode}/`;
+
+      const startCountRef = ref(db, url);
+      onValue(startCountRef, (snapshot) => {
+        const locationData = snapshot.val();
+
+        let groupMembersData = [];
+        for (let key in locationData) {
+          groupMembersData.push({
+            id: key,
+            lat: locationData[key]?.location?.lat,
+            lng: locationData[key]?.location?.lng,
+          });
+        }
+        setGroupSpecificFirebaseLocationData({
+          ...groupSpecificFirebaseLocationData,
+          groupCode: selectedGroup_GroupCode,
+          groupMembers: groupMembersData,
+        });
+      });
+    } catch (error: any) {
+      console.log(
+        "Getting error while fetching location data from firebase realtime database:: ",
+        error?.message ? error?.message : error
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (groupSpecificFirebaseLocationData) {
+      sendFirebaseData(groupSpecificFirebaseLocationData);
+    }
+  }, [groupSpecificFirebaseLocationData]);
 
   useEffect(() => {
     sendGroupDetails(selectedGroupData);
