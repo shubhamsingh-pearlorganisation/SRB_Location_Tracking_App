@@ -1,12 +1,26 @@
-import React, { useContext } from "react";
-import { View, Text, Image, StyleSheet, Pressable, Alert } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  Alert,
+  Share,
+  Platform,
+  Linking,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext, UserDetailsContext } from "../App";
+import {
+  AuthContext,
+  LocationTrackingContext,
+  UserDetailsContext,
+} from "../App";
 // ---------------------------------------------------------------------------------------------
 
 const MenuScreen = ({ navigation }: any) => {
@@ -48,6 +62,48 @@ const MenuScreen = ({ navigation }: any) => {
     } catch (error: any) {
       Alert.alert("Getting an error during logout: ", error?.message);
     }
+  };
+
+  const locTrackingContext: any = useContext(LocationTrackingContext);
+  console.log("locTrackingContext::: ", locTrackingContext.locationData);
+  const [lat, setLat] = useState<any>("");
+  const [lng, setLng] = useState<any>("");
+
+  useEffect((): any => {
+    const interval = setInterval(() => {
+      // if (locTrackingContext.locationData) {
+      setLat(locTrackingContext?.locationData?.lat);
+      setLng(locTrackingContext?.locationData?.lng);
+      // console.log(
+      //   "lat,lng in 6 sec:: ",
+      //   `${locTrackingContext.locationData.lat},${locTrackingContext.locationData.lng}`
+      // );
+      console.log(
+        "lat,lng in 6 sec:: ",
+        `${lat},${lng}`
+      );
+      // }
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [locTrackingContext]);
+
+  // const interval = setInterval(() => {
+  //   if (LocationTrackingContext) {
+  //     setLat(LocationTrackingContext?.lat);
+  //     setLng(LocationTrackingContext?.lng);
+  //   }
+  // }, 6000);
+
+  const scheme = Platform.select({ ios: "maps:0,0?q=", android: "geo:0,0?q=" });
+  const latLng = `${lat},${lng}`;
+  const label = userDetailsContextData?.userDetails?.name;
+  const url: any = Platform.select({
+    ios: `${scheme}${label}@${latLng}`,
+    android: `${scheme}${latLng}(${label})`,
+  });
+
+  const shareLocation = () => {
+    Linking.openURL(url);
   };
   // ---------------------------------------------------------------------------------------
   return (
@@ -131,28 +187,31 @@ const MenuScreen = ({ navigation }: any) => {
           margin: 10,
         }}
       >
-        <View
-          style={{
-            width: "99%",
-            flexDirection: "row",
-          }}
-        >
-          <Ionicons
-            style={[styles.icons]}
-            name="ios-share-outline"
-            size={SIZES.width > 400 ? 30 : 20}
-            color={"black"}
-          />
-
-          <Text
+        <View>
+          <Pressable
             style={{
-              fontSize: SIZES.width > 400 ? 30 : 20,
-              alignSelf: "center",
-              fontWeight: "600",
+              width: "99%",
+              flexDirection: "row",
             }}
+            onPress={() => shareLocation()}
           >
-            Share Temporary Location
-          </Text>
+            <Ionicons
+              style={[styles.icons]}
+              name="ios-share-outline"
+              size={SIZES.width > 400 ? 30 : 20}
+              color={"black"}
+            />
+
+            <Text
+              style={{
+                fontSize: SIZES.width > 400 ? 30 : 20,
+                alignSelf: "center",
+                fontWeight: "600",
+              }}
+            >
+              Share Temporary Location
+            </Text>
+          </Pressable>
         </View>
         <View>
           <Pressable

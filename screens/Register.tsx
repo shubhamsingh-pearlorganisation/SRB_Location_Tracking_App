@@ -273,7 +273,7 @@ const Register = ({ route }: any) => {
   };
   // ---------------------------------------------------------------------------------------------
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.container}>
         {uploadImageModal && (
           <ImageUploadDialog
@@ -425,7 +425,7 @@ const Register = ({ route }: any) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 // ==================================================
