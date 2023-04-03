@@ -34,7 +34,7 @@ const Dashboard = ({ navigation }: any) => {
 
   const receiveGroupSpecificFirebaseLocationData = useCallback(
     (locationData: any) => {
-      console.log("locationData::: ", locationData);
+      // console.log("locationData::: ", locationData);
       setFirebaseLocationCoordinates(locationData);
     },
     []

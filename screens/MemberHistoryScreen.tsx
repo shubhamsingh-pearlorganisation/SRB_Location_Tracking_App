@@ -138,7 +138,7 @@ const MemberHistory = ({ navigation, route }: any) => {
   const redirectToMap = async () => {
     try {
       const res = await Linking.openURL(url);
-      console.log("Map response:: ", res);
+      // console.log("Map response:: ", res);
     } catch (error) {
       console.log("Map redirection Error:: ", error);
     }

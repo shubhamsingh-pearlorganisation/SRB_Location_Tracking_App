@@ -49,7 +49,7 @@ const GroupsListing = ({
 
   useEffect(() => {
     if (selectedGroupData) {
-      console.log("selectedGroupData::: ", selectedGroupData);
+      // console.log("selectedGroupData::: ", selectedGroupData);
       setSelectedGroup_GroupCode(selectedGroupData?.group_code);
     }
   }, [selectedGroupData]);

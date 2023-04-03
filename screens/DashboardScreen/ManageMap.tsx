@@ -19,18 +19,23 @@ import { GOOGLE_API_KEY } from "../../core/utils/constants";
 import { styles } from "./style";
 import { db } from "../../firebaseConfig";
 import { ref, set } from "firebase/database";
-import { AppSettingsContext, FirebaseLocationContext } from "../../App";
+import {
+  AppSettingsContext,
+  FirebaseLocationContext,
+  LocationTrackingContext,
+} from "../../App";
 import { FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../../constants";
 
 // --------------------------------------------------------------------------------------------------------
 const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
-  console.log("firebaseLocationCoordinates::: ", firebaseLocationCoordinates);
+  // console.log("firebaseLocationCoordinates::: ", firebaseLocationCoordinates);
+  const locTrackingContext: any = useContext(LocationTrackingContext);
 
   // const [membersLocationData, setMembersLocationData] = useState<any>([])
   // setMembersLocationData(firebaseLocationCoordinates?.groupMembers)
   const memberLocationData = firebaseLocationCoordinates?.groupMembers;
-  console.log("membersLocationData:: ", memberLocationData);
+  // console.log("membersLocationData:: ", memberLocationData);
 
   const firebaseLocationContextData: any = useContext(FirebaseLocationContext);
 
@@ -115,6 +120,13 @@ const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
           datetime: new Date(timestamp),
           address: geolocationAddress,
         };
+
+        if (formattedData.latitude && formattedData.longitude) {
+          locTrackingContext.updateLocationData({
+            lat: formattedData.latitude,
+            lng: formattedData.longitude,
+          });
+        }
 
         animate(latitude, longitude);
         updateState({
