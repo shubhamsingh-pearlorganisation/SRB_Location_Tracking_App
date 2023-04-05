@@ -1,8 +1,6 @@
-import tw from "twrnc";
-import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
-
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
+// ---------------------------------------------------------------------------------------------
 
 const SplashChild = ({ navigation }: any) => {
   const onPressSubmit = () => {
@@ -23,7 +21,9 @@ const SplashChild = ({ navigation }: any) => {
   );
 };
 export default SplashChild;
-
+// ---------------------------------------------------------------------------------------------
+// CSS CODE
+// =========
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -61,3 +61,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+// ------------------------------------------- THE END --------------------------------------------------

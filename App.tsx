@@ -94,6 +94,11 @@ const App = () => {
     lng: "",
   });
 
+  // Used to store user's location coordinates of every 6 seconds.
+  const [usersLiveLocationData, setUserLiveLocationData] = useState<any>({});
+
+  // ===============================================================================================================
+
   // This method is used to receive authentication token from login screen after successful login
   const receiveAuthenticationToken = (jwtToken: any) => {
     if (jwtToken !== null) setAuthenticationToken(jwtToken);
@@ -389,17 +394,10 @@ const App = () => {
     }
   };
 
-  const [usersLiveLocationData, setUserLiveLocationData] = useState<any>({});
-  const receiveUpdatedUsersLiveLocation = (locData: any) => {
-    console.log("Location Data::: ", locData);
+  // This method is used to receive 6-6 seconds location coordinates from ManageMap component.
+  const receiveUpdatedUsersLiveLocation = (locData: any) =>
     setUserLiveLocationData(locData);
-  };
 
-  // useEffect(() => {
-  //   if (usersLiveLocationData) {
-  //     // console.log("usersLiveLocationData::: ", usersLiveLocationData);
-  //   }
-  // }, [usersLiveLocationData]);
   // =============================================================================================
 
   return (

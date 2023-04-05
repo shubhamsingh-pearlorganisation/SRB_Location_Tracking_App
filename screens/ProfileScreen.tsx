@@ -201,7 +201,6 @@ const ProfileScreen = ({ navigation }: any) => {
   };
 
   const handleConfirm = (date: any) => {
-    // console.log("date:: ", date.nativeEvent.timestamp)
     let tempDate = new Date(date.nativeEvent.timestamp);
     const currentDate = tempDate.getDate();
     const month = tempDate.getMonth() + 1;

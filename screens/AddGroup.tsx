@@ -13,7 +13,6 @@ import { useToast } from "react-native-toast-notifications";
 import { AuthContext, GroupsAndMembersContext } from "../App";
 import { instance } from "../core/utils/AxiosInterceptor";
 import Loader from "../components/Loader";
-import { UserDetailsContext } from "../App";
 
 // ----------------------------------------------------------------------------
 const AddGroup = ({ navigation }: any) => {
@@ -58,8 +57,6 @@ const AddGroup = ({ navigation }: any) => {
           toast.show("Group created successfully!", {
             type: "success",
           });
-
-          // console.log("Create Group API RESPONSE::: ", response.data);
 
           groupsAndMembersData.fetchGroupsAndMembersList(true); //Update Groups Listing Globally
           navigation.navigate("Groups", { isNewGroupCreated: true }); // Redirect back to Groups Listing Screen

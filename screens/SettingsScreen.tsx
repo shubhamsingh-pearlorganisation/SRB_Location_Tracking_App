@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Text, Pressable, ScrollView, Share } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Pressable,
+  ScrollView,
+  Share,
+} from "react-native";
 import { List } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";
 import { COLORS, SIZES } from "../constants";
@@ -43,7 +50,6 @@ const Settings = ({ navigation }: any) => {
       formData.append("token_id", authContextData?.token);
       const response = await instance.post("/user_setting_get", formData);
       if (response.status === 200 && response.data?.status === true) {
-        // console.log("response.data?.setting[0]::: ", response.data?.setting[0]);
         setUserSettings(response.data?.setting[0]);
       } else {
         toast.show(
@@ -191,7 +197,6 @@ const Settings = ({ navigation }: any) => {
       );
     }
   };
-
 
   // =======================================================================================
 

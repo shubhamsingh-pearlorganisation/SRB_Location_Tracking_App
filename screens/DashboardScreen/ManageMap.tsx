@@ -1,11 +1,4 @@
-import {
-  View,
-  Image,
-  StyleSheet,
-  Platform,
-  Dimensions,
-  Text,
-} from "react-native";
+import { View, StyleSheet, Platform, Dimensions, Text } from "react-native";
 import React, { useState, useEffect, useRef, memo, useContext } from "react";
 import MapView, { Marker, AnimatedRegion } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -29,7 +22,6 @@ import { COLORS } from "../../constants";
 
 // --------------------------------------------------------------------------------------------------------
 const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
-  // console.log("firebaseLocationCoordinates::: ", firebaseLocationCoordinates);
   const locTrackingContext: any = useContext(LocationTrackingContext);
 
   // const [membersLocationData, setMembersLocationData] = useState<any>([])

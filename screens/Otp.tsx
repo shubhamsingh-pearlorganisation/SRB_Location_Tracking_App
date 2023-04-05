@@ -5,11 +5,11 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
 } from "react-native";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../firebaseConfig";
 import fireb from "firebase/compat";
+// --------------------------------------------------------------------------------------------
 const Otp = ({ navigation }: any) => {
   const onPressSubmit = () => {
     navigation.navigate("Home");
@@ -18,12 +18,14 @@ const Otp = ({ navigation }: any) => {
   const [code, setCode] = useState("");
   const [verificationId, setVerificationId] = useState<any>(null);
   const recaptchaVerifier = useRef<any>(null);
+
   const sendVerification = () => {
     const phoneProvider = new fireb.auth.PhoneAuthProvider();
     phoneProvider
       .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
       .then(setVerificationId);
   };
+
   const confirmCode = () => {
     const credential = fireb.auth.PhoneAuthProvider.credential(
       verificationId,
@@ -34,7 +36,6 @@ const Otp = ({ navigation }: any) => {
       .signInWithCredential(credential)
       .then((result) => {
         navigation.navigate("Home");
-        // console.log(result);
       });
   };
 
@@ -74,6 +75,8 @@ const Otp = ({ navigation }: any) => {
   );
 };
 export default Otp;
+
+// ----------------------------------------------------------------------------------------
 
 const styles = StyleSheet.create({
   container: {
@@ -115,3 +118,5 @@ const styles = StyleSheet.create({
     margin: 20,
   },
 });
+
+// ========================================================================================================================

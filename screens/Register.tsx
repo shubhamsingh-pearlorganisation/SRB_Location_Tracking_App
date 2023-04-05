@@ -6,16 +6,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  KeyboardAvoidingView,
   Pressable,
   Alert,
   ActivityIndicator,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import { instance } from "../core/utils/AxiosInterceptor";
-import RNDateTimePicker, {
-  DateTimePickerAndroid,
-} from "@react-native-community/datetimepicker";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useToast } from "react-native-toast-notifications";
 import {
   AuthContext,

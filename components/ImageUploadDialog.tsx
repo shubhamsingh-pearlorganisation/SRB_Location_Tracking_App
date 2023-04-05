@@ -58,7 +58,7 @@ const ImageUploadDialog = ({
       quality: 1,
     });
 
-    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+    const fileInfo: any = await getFileInfo(result?.assets[0]?.uri);
 
     if (!fileInfo?.size) {
       alert("Can't select this file as the size is unknown.");
@@ -67,7 +67,6 @@ const ImageUploadDialog = ({
 
     if (result?.assets[0]?.type === "image") {
       const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-      // console.log("isLt5MB:: ", isLt5MB);
       if (!isLt5MB) {
         alert(`Image size must be smaller than 5 MB!`);
         return;
@@ -97,7 +96,7 @@ const ImageUploadDialog = ({
       quality: 1,
     });
 
-    const fileInfo = await getFileInfo(result?.assets[0]?.uri);
+    const fileInfo: any = await getFileInfo(result?.assets[0]?.uri);
 
     if (!fileInfo?.size) {
       alert("Can't select this file as the size is unknown.");
@@ -106,7 +105,6 @@ const ImageUploadDialog = ({
 
     if (result?.assets[0]?.type === "image") {
       const isLt5MB = isLessThanTheMB(fileInfo.size, 5);
-      // console.log("isLt5MB::: ", isLt5MB);
       if (!isLt5MB) {
         alert(`Image size must be smaller than 5 MB!`);
         return;

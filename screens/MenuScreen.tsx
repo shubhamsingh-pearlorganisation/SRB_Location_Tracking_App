@@ -65,34 +65,16 @@ const MenuScreen = ({ navigation }: any) => {
   };
 
   const locTrackingContext: any = useContext(LocationTrackingContext);
-  console.log("locTrackingContext::: ", locTrackingContext.locationData);
   const [lat, setLat] = useState<any>("");
   const [lng, setLng] = useState<any>("");
 
   useEffect((): any => {
     const interval = setInterval(() => {
-      // if (locTrackingContext.locationData) {
       setLat(locTrackingContext?.locationData?.lat);
       setLng(locTrackingContext?.locationData?.lng);
-      // console.log(
-      //   "lat,lng in 6 sec:: ",
-      //   `${locTrackingContext.locationData.lat},${locTrackingContext.locationData.lng}`
-      // );
-      console.log(
-        "lat,lng in 6 sec:: ",
-        `${lat},${lng}`
-      );
-      // }
     }, 6000);
     return () => clearInterval(interval);
   }, [locTrackingContext]);
-
-  // const interval = setInterval(() => {
-  //   if (LocationTrackingContext) {
-  //     setLat(LocationTrackingContext?.lat);
-  //     setLng(LocationTrackingContext?.lng);
-  //   }
-  // }, 6000);
 
   const scheme = Platform.select({ ios: "maps:0,0?q=", android: "geo:0,0?q=" });
   const latLng = `${lat},${lng}`;

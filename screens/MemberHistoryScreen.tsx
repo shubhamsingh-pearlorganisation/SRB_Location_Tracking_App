@@ -127,6 +127,7 @@ const MemberHistory = ({ navigation, route }: any) => {
   }, [userId, historyDate]);
   // --------------------------- Date Picker Handling -- Finished -----------------------------------
 
+  // Google Maps Redirection URL creation
   const scheme = Platform.select({ ios: "maps:0,0?q=", android: "geo:0,0?q=" });
   const latLng = `${lat},${lng}`;
   const label = memberName?.toString();
@@ -135,10 +136,10 @@ const MemberHistory = ({ navigation, route }: any) => {
     android: `${scheme}${latLng}(${label})`,
   });
 
+  // This method is used to redirect user to Google Map
   const redirectToMap = async () => {
     try {
-      const res = await Linking.openURL(url);
-      // console.log("Map response:: ", res);
+      await Linking.openURL(url);
     } catch (error) {
       console.log("Map redirection Error:: ", error);
     }
