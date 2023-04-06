@@ -19,7 +19,7 @@ import { useToast } from "react-native-toast-notifications";
 import Loader from "../components/Loader";
 
 import { db } from "../firebaseConfig";
-import { ref, set, update } from "firebase/database";
+import { ref, update } from "firebase/database";
 // -------------------------------------------------------------------------------------
 
 const JoinGroup = ({ navigation }: any) => {

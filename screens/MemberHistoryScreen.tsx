@@ -21,8 +21,6 @@ import {
 import Loader from "../components/Loader";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import NoDataFound from "../components/NoDataFound";
-// -----------------------------------------------------------------------------------
-
 // ---------------------------------------------------------------------------------------------
 
 const MemberHistory = ({ navigation, route }: any) => {

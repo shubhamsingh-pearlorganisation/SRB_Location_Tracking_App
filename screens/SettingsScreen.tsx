@@ -1,12 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Pressable,
-  ScrollView,
-  Share,
-} from "react-native";
+import { View, StyleSheet, Text, Pressable, ScrollView } from "react-native";
 import { List } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";
 import { COLORS, SIZES } from "../constants";
