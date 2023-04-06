@@ -146,6 +146,12 @@ const ProfileScreen = ({ navigation }: any) => {
 
   // This method is used to update user's profile image using an API
   const updateUserProfileImage = async (imageData: any) => {
+    if (!authContextData?.token) {
+      toast.show("Authentication Failed. Please login again.", {
+        type: "error",
+      });
+      return;
+    }
     try {
       setDisableSubmitBtn(true);
       setShowImageUploadLoader(true);
@@ -219,6 +225,12 @@ const ProfileScreen = ({ navigation }: any) => {
 
   // This method is used to update User details
   const updateUserDetails = async () => {
+    if (!authContextData?.token) {
+      toast.show("Authentication Failed. Please login again.", {
+        type: "error",
+      });
+      return;
+    }
     // Form Validation
     if (userDetails?.name?.toString().length === 0) {
       toast.show("User Name is required", { type: "error" });
@@ -234,6 +246,9 @@ const ProfileScreen = ({ navigation }: any) => {
       !regexes.validEmailRegex.test(userDetails?.email?.toString())
     ) {
       toast.show("Please enter a valid email id.", { type: "error" });
+      return;
+    } else if (userDetails?.dob?.toString()?.length === 0) {
+      toast.show("Please enter your date of birth", { type: "error" });
       return;
     }
 
@@ -564,7 +579,7 @@ const ProfileScreen = ({ navigation }: any) => {
               display="spinner"
               maximumDate={new Date()}
               minimumDate={new Date("1930-01-01")}
-              value={new Date(userDetails?.dob)}
+              value={userDetails?.dob ? new Date(userDetails?.dob) : new Date()}
               onChange={(val: any) => handleConfirm(val)}
               positiveButton={{ label: "OK", textColor: "green" }}
             />

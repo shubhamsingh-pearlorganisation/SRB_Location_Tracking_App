@@ -40,6 +40,7 @@ const OnBoarding = ({ navigation }: any) => {
   // This method is used to redirect user to login screen
   const redirectToLogin = (comingFrom: string) => {
     navigation.navigate("Login", { comingFrom });
+    // navigation.navigate("Register");
   };
 
   const [completed, setCompleted] = React.useState(false);

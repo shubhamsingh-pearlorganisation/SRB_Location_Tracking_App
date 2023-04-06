@@ -52,6 +52,10 @@ const Register = ({ route }: any) => {
   });
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
+  useEffect(() => {
+    console.log("userDetails::: ", userDetails);
+  }, [userDetails]);
+
   // ================================== Image Upload Functionality -- Start =========================
   // The data of the picked image
   const [pickedImagePath, setPickedImagePath] = useState<any>({}); // Used to store data of the picked image
@@ -133,6 +137,13 @@ const Register = ({ route }: any) => {
 
   // This method is used to update user's profile image using an API
   const updateUserProfileImage = async (imageData: any) => {
+    if (!authContextData?.token) {
+      toast.show("Authentication Failed. Please login again.", {
+        type: "error",
+      });
+      return;
+    }
+    console.log("imageData::: ", imageData);
     try {
       setShowImageUploadLoader(true);
       setDisableSubmitBtn(true);
@@ -140,6 +151,7 @@ const Register = ({ route }: any) => {
       formData.append("token_id", authContextData?.token);
       formData.append("image", imageData);
       const response = await instance.post("/users_image_update", formData);
+      console.log("Image Upload API Response::: ", response);
       if (response.status === 200 && response.data?.status === true) {
         setDisableSubmitBtn(false);
         setShowImageUploadLoader(false);
@@ -173,6 +185,12 @@ const Register = ({ route }: any) => {
 
   // This method is used to update User Details
   const updateUserDetails = async () => {
+    if (!authContextData?.token) {
+      toast.show("Authentication Failed. Please login again.", {
+        type: "error",
+      });
+      return;
+    }
     // Form Validation
     if (userDetails?.name?.toString().length === 0) {
       toast.show("User Name is required", { type: "error" });
@@ -189,8 +207,9 @@ const Register = ({ route }: any) => {
     ) {
       toast.show("Please enter a valid email id.", { type: "error" });
       return;
-    } else if (userDetails?.dob?.toString().length === 0) {
+    } else if (userDetails?.dob?.toString()?.length === 0) {
       toast.show("Please enter your date of birth", { type: "error" });
+      return;
     }
     try {
       setShowLoader(true);
@@ -385,7 +404,7 @@ const Register = ({ route }: any) => {
               display="spinner"
               maximumDate={new Date()}
               minimumDate={new Date("1930-01-01")}
-              value={new Date(userDetails?.dob)}
+              value={userDetails?.dob ? new Date(userDetails?.dob) : new Date()}
               onChange={(val: any) => handleConfirm(val)}
               positiveButton={{ label: "OK", textColor: "green" }}
             />
