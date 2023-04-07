@@ -567,7 +567,6 @@ const ProfileScreen = ({ navigation }: any) => {
             setUserDetails({ ...userDetails, email: val.toString() })
           }
         ></TextInput>
-        <Text>{isDatePickerVisible ? "Shubham" : "Yashasvi"}</Text>
         <Pressable onPress={showDatePicker}>
           <DateTimePickerModal
             isVisible={isDatePickerVisible}

@@ -205,10 +205,10 @@ const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
   useEffect(() => {
     if (individualLocationObj) {
       setLocationData([...locationData, individualLocationObj]);
-      // console.log(
-      //   "individualLocationObj::: ",
-      //   individualLocationObj?.tenMinutesLocationData?.length
-      // );
+      console.log(
+        "individualLocationObj::: ",
+        individualLocationObj?.tenMinutesLocationData?.length
+      );
     }
   }, [individualLocationObj]);
 
