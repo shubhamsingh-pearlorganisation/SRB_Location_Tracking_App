@@ -7,7 +7,6 @@ import { styles } from "./style";
 
 const GroupAvailableOptions = ({ navigation, selectedGroupDetails }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
-
   return (
     <>
       <Pressable

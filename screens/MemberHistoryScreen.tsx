@@ -19,7 +19,7 @@ import {
   convertMonthNumberToName,
 } from "../core/utils/helper";
 import Loader from "../components/Loader";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import NoDataFound from "../components/NoDataFound";
 // ---------------------------------------------------------------------------------------------
 
@@ -204,16 +204,13 @@ const MemberHistory = ({ navigation, route }: any) => {
             </Pressable>
             <Pressable onPress={showDatePicker} style={styles.dateHolder}>
               {isDatePickerVisible && (
-                <RNDateTimePicker
+                <DateTimePickerModal
+                  isVisible={isDatePickerVisible}
                   mode="date"
-                  display="spinner"
+                  onConfirm={handleConfirm}
+                  onCancel={hideDatePicker}
                   maximumDate={new Date()}
                   minimumDate={new Date("1930-01-01")}
-                  value={new Date(historyDate)}
-                  onChange={(val: any) =>
-                    handleConfirm(val.nativeEvent.timestamp)
-                  }
-                  positiveButton={{ label: "OK", textColor: "green" }}
                 />
               )}
               <View style={{ marginHorizontal: "2%", flexDirection: "row" }}>

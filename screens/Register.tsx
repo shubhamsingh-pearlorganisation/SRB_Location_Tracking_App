@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import { instance } from "../core/utils/AxiosInterceptor";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useToast } from "react-native-toast-notifications";
 import {
   AuthContext,
@@ -22,6 +21,7 @@ import {
 import { regexes } from "../core/utils/constants";
 import ImageUploadDialog from "../components/ImageUploadDialog";
 import Loader from "../components/Loader";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 // -----------------------------------------------------------------------------------
 
@@ -51,10 +51,6 @@ const Register = ({ route }: any) => {
       : "",
   });
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  useEffect(() => {
-    console.log("userDetails::: ", userDetails);
-  }, [userDetails]);
 
   // ================================== Image Upload Functionality -- Start =========================
   // The data of the picked image
@@ -143,7 +139,6 @@ const Register = ({ route }: any) => {
       });
       return;
     }
-    console.log("imageData::: ", imageData);
     try {
       setShowImageUploadLoader(true);
       setDisableSubmitBtn(true);
@@ -151,7 +146,6 @@ const Register = ({ route }: any) => {
       formData.append("token_id", authContextData?.token);
       formData.append("image", imageData);
       const response = await instance.post("/users_image_update", formData);
-      console.log("Image Upload API Response::: ", response);
       if (response.status === 200 && response.data?.status === true) {
         setDisableSubmitBtn(false);
         setShowImageUploadLoader(false);
@@ -259,17 +253,13 @@ const Register = ({ route }: any) => {
   };
 
   // --------------------------- Date Picker Handling -- Start -----------------------------------
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+  const showDatePicker = () => setDatePickerVisibility(true);
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  const hideDatePicker = () => setDatePickerVisibility(false);
 
   const handleConfirm = (date: any) => {
-    // let tempDate = new Date(date);
-    let tempDate = new Date(date.nativeEvent.timestamp);
+    let tempDate = new Date(date);
+
     const currentDate = tempDate.getDate();
     const month = tempDate.getMonth() + 1;
     const year = tempDate.getFullYear();
@@ -398,17 +388,14 @@ const Register = ({ route }: any) => {
             Your Birthday
           </Text>
 
-          {isDatePickerVisible && (
-            <RNDateTimePicker
-              mode="date"
-              display="spinner"
-              maximumDate={new Date()}
-              minimumDate={new Date("1930-01-01")}
-              value={userDetails?.dob ? new Date(userDetails?.dob) : new Date()}
-              onChange={(val: any) => handleConfirm(val)}
-              positiveButton={{ label: "OK", textColor: "green" }}
-            />
-          )}
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            maximumDate={new Date()}
+            minimumDate={new Date("1930-01-01")}
+          />
           <View
             style={{
               flexDirection: "row",

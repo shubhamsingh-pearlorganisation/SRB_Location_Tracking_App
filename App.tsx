@@ -123,6 +123,7 @@ const App = () => {
   //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
   const fetchAuthenticationToken = async () => {
     try {
+      await AsyncStorage.setItem("authentication-token", ""); // Only for Testing Purpose - Will Remove in future
       const token = await AsyncStorage.getItem("authentication-token");
       if (token !== null) {
         console.log("Token Found : ", token);
