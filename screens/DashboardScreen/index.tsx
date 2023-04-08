@@ -17,13 +17,23 @@ const Dashboard = ({ navigation }: any) => {
   const [firebaseLocationCoordinates, setFirebaseLocationCoordinates] =
     useState<any>(null);
 
+  // useEffect(() => {
+  //   console.log("firebaseLocationCoordinates::: ", firebaseLocationCoordinates);
+  // }, [firebaseLocationCoordinates]);
+
   useEffect(() => {
     if (
       groupsAndMembersData?.groupsAndMembersDetails &&
       groupsAndMembersData?.groupsAndMembersDetails?.length > 0
     )
       setSelectedGroupData(groupsAndMembersData?.groupsAndMembersDetails[0]);
+    else setSelectedGroupData({});
   }, [groupsAndMembersData?.groupsAndMembersDetails]);
+
+  // console.log(
+  //   "groupsAndMembersData?.groupsAndMembersDetails::: ",
+  //   groupsAndMembersData?.groupsAndMembersDetails
+  // );
 
   const customStyle = showGroupsListing
     ? styles.dropDownEnabled
@@ -117,6 +127,7 @@ const Dashboard = ({ navigation }: any) => {
       <GroupsMembersListing
         navigation={navigation}
         selectedGroupData={selectedGroupData}
+        locationCoordinates={firebaseLocationCoordinates}
       />
     </GestureHandlerRootView>
   );

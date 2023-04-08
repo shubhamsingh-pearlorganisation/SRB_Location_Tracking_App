@@ -63,6 +63,7 @@ const GroupsListing = ({
   const fetchGroupSpecificLocationData = () => {
     try {
       const url = `groups/${selectedGroup_GroupCode}/`;
+      // console.log("URL::: ", url);
 
       const startCountRef = ref(db, url);
       onValue(startCountRef, (snapshot) => {

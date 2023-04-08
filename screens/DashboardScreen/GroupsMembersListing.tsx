@@ -14,7 +14,13 @@ import Loader from "../../components/Loader";
 
 // -------------------------------------------------------------------------------------
 
-const GroupsMembersListing = ({ navigation, selectedGroupData }: any) => {
+const GroupsMembersListing = ({
+  navigation,
+  selectedGroupData,
+  locationCoordinates,
+}: any) => {
+  // console.log("selectedGroupData:::: ", selectedGroupData);
+  // console.log("locationCoordinates::: ", locationCoordinates);
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
   const translateY = useSharedValue(0);
