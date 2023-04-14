@@ -18,6 +18,8 @@ const GroupsListing = ({
 }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
+  console.log("groupsAndMembersData::: ", groupsAndMembersData);
+
   // Component's Local States
   // ========================
   const [selectedGroupData, setSelectedGroupData] = useState<any>(

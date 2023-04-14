@@ -17,6 +17,8 @@ const Groups = ({ navigation, route }: any) => {
   const userDetailsContextData: any = useContext(UserDetailsContext);
   const firebaseLocationContextData: any = useContext(FirebaseLocationContext);
 
+  console.log("firebaseLocationContextData::: ", firebaseLocationContextData);
+
   // Component's Local States
   // ========================
   const [showLoader] = useState<boolean>(false);

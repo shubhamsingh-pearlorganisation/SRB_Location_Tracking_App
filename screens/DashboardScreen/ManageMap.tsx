@@ -21,10 +21,17 @@ import { FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../../constants";
 
 // --------------------------------------------------------------------------------------------------------
-const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
+const ManageMap = ({
+  navigation,
+  firebaseLocationCoordinates,
+  selectedGroupData,
+}: any) => {
   const locTrackingContext: any = useContext(LocationTrackingContext);
 
   const memberLocationData = firebaseLocationCoordinates?.groupMembers;
+
+  console.log("selectedGroupData:: ", selectedGroupData);
+  console.log("memberLocationData::: ", memberLocationData);
 
   const firebaseLocationContextData: any = useContext(FirebaseLocationContext);
 
@@ -122,6 +129,8 @@ const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
         });
 
         if (time === 600) {
+          console.log("Time is::: ", time);
+          console.log("formattedData::: ", formattedData);
           sendUsersLiveLocation(formattedData);
         }
 
@@ -229,6 +238,7 @@ const ManageMap = ({ navigation, firebaseLocationCoordinates }: any) => {
 
   // This method is used to send users live location to App.tsx component
   const sendUsersLiveLocation = (data: any) => {
+    console.log("data::: 237:::: ", data);
     firebaseLocationContextData?.liveLocationData(data);
   };
 

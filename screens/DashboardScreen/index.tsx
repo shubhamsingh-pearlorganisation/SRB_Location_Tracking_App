@@ -12,14 +12,18 @@ import GroupsMembersListing from "./GroupsMembersListing";
 const Dashboard = ({ navigation }: any) => {
   const groupsAndMembersData: any = useContext(GroupsAndMembersContext);
 
+  // useEffect(()=>{
+  //   console.log("groupsAndMembersData::: ", groupsAndMembersData.groupsAndMembersDetails);
+  // },[groupsAndMembersData]);
+
   const [showGroupsListing, setGroupListing] = useState(false);
   const [selectedGroupData, setSelectedGroupData] = useState<any>({});
   const [firebaseLocationCoordinates, setFirebaseLocationCoordinates] =
     useState<any>(null);
 
   // useEffect(() => {
-  //   console.log("firebaseLocationCoordinates::: ", firebaseLocationCoordinates);
-  // }, [firebaseLocationCoordinates]);
+  //   console.log("selectedGroupData::: ", selectedGroupData);
+  // }, [selectedGroupData]);
 
   useEffect(() => {
     if (
@@ -44,6 +48,7 @@ const Dashboard = ({ navigation }: any) => {
 
   const receiveGroupSpecificFirebaseLocationData = useCallback(
     (locationData: any) => {
+      console.log("SHUBHAm::: ", locationData);
       setFirebaseLocationCoordinates(locationData);
     },
     []
@@ -62,6 +67,7 @@ const Dashboard = ({ navigation }: any) => {
       <ManageMap
         navigation={navigation}
         firebaseLocationCoordinates={firebaseLocationCoordinates}
+        selectedGroupData={selectedGroupData}
       />
       {/* ---------------------------------------------------- */}
 

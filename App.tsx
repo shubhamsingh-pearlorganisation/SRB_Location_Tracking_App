@@ -94,6 +94,10 @@ const App = () => {
     lng: "",
   });
 
+  useEffect(() => {
+    console.log("lastLocationObjLatLng::: ", lastLocationObjLatLng);
+  }, [lastLocationObjLatLng]);
+
   // Used to store user's location coordinates of every 6 seconds.
   const [usersLiveLocationData, setUserLiveLocationData] = useState<any>({});
 
@@ -123,7 +127,7 @@ const App = () => {
   //This method is used to fetch JWT Token from @react-native-async-storage/async-storage
   const fetchAuthenticationToken = async () => {
     try {
-      await AsyncStorage.setItem("authentication-token", ""); // Only for Testing Purpose - Will Remove in future
+      // await AsyncStorage.setItem("authentication-token", ""); // Only for Testing Purpose - Will Remove in future
       const token = await AsyncStorage.getItem("authentication-token");
       if (token !== null) {
         console.log("Token Found : ", token);
@@ -382,6 +386,14 @@ const App = () => {
 
   // This method is used to receive user live location coordinates from manage map component.
   const getUsersLiveLocationData = (locData: any) => {
+    console.log("locData::: 385::::  ", locData);
+    console.log("locData !== null::: ", locData !== null);
+    console.log(
+      "Object.keys(locData).length:::: ",
+      Object.keys(locData).length
+    );
+    console.log("locData.latitude:::: ", locData.latitude);
+    console.log("locData.longitude:::: ", locData.longitude);
     if (
       locData !== null &&
       Object.keys(locData).length > 0 &&
